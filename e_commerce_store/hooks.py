@@ -200,4 +200,4 @@ before_uninstall = "e_commerce_store.utils.install.before_uninstall"
 #	"e_commerce_store.auth.validate"
 # ]
 
-website_route_rules = [{'from_route': '/<path:app_path>', 'to_route': 'index'},]
+website_route_rules = [{'from_route': '/<path:app_path>', 'to_route': 'store'},]
