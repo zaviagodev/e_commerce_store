@@ -64,12 +64,12 @@ app_license = "MIT"
 # ------------
 
 # before_install = "e_commerce_store.install.before_install"
-# after_install = "e_commerce_store.install.after_install"
+after_install = "e_commerce_store.utils.install.after_install"
 
 # Uninstallation
 # ------------
 
-# before_uninstall = "e_commerce_store.uninstall.before_uninstall"
+before_uninstall = "e_commerce_store.utils.install.before_uninstall"
 # after_uninstall = "e_commerce_store.uninstall.after_uninstall"
 
 # Desk Notifications
@@ -199,3 +199,5 @@ app_license = "MIT"
 # auth_hooks = [
 #	"e_commerce_store.auth.validate"
 # ]
+
+website_route_rules = [{'from_route': '/<path:app_path>', 'to_route': 'index'},]
