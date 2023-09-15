@@ -18,7 +18,7 @@ export default function Login() {
         if (getToken() || currentUser) {
             navigate("/");
         }
-    }, [])
+    }, [navigate, currentUser])
 
     const formik = useFormik({
         initialValues: {

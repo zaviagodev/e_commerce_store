@@ -21,10 +21,11 @@ function App() {
   const { currentUser } = useFrappeAuth();
   const navigate = useNavigate();
   useEffect(() => {
+    console.log(currentUser);
     if (!getToken() || !currentUser) {
       navigate("/login");
     }
-  }, [navigate]);
+  }, [navigate, currentUser]);
 
   return (
     <UserProvider>
