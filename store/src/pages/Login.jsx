@@ -10,11 +10,12 @@ export default function Login() {
     const { login } = useUser();
     const navigate = useNavigate();
     const {
+        currentUser,
         isLoading,
     } = useFrappeAuth();
 
     useEffect(() => {
-        if (getToken()) {
+        if (getToken() || currentUser) {
             navigate("/");
         }
     }, [])

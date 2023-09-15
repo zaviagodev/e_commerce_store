@@ -1,4 +1,4 @@
-import { FrappeProvider } from "frappe-react-sdk";
+import { FrappeProvider, useFrappeAuth } from "frappe-react-sdk";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import Login from "./pages/Login";
 import NavHeader from "./components/NavHeader";
@@ -18,13 +18,36 @@ import LoyaltyProgram from "./pages/LoyaltyProgram";
 
 
 function App() {
+  const { currentUser } = useFrappeAuth();
   const navigate = useNavigate();
   useEffect(() => {
-    if (!getToken()) {
+    if (!getToken() || !currentUser) {
       navigate("/login");
     }
   }, [navigate]);
 
+  return (
+    <UserProvider>
+      <ProductsProvider>
+        <CartProvider>
+          <NavHeader />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="products/:id" element={<Product />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/loyality-program" element={<LoyaltyProgram />} />
+            <Route path="/thankyou" element={<BankInfoPage />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/login" element={<Login />} />
+          </Routes>
+          <Cart />
+        </CartProvider>
+      </ProductsProvider>
+    </UserProvider>
+  )
+}
+
+export const AppWrapper = () => {
   return (
     <FrappeProvider
       enableSocket={false}
@@ -34,25 +57,10 @@ function App() {
         token: getToken,
       }}
     >
-      <UserProvider>
-        <ProductsProvider>
-          <CartProvider>
-            <NavHeader />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="products/:id" element={<Product />} />
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/loyality-program" element={<LoyaltyProgram />} />
-              <Route path="/thankyou" element={<BankInfoPage />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/login" element={<Login />} />
-            </Routes>
-            <Cart />
-          </CartProvider>
-        </ProductsProvider>
-      </UserProvider>
+      <App />
     </FrappeProvider>
   )
 }
 
-export default App
+
+export default AppWrapper;

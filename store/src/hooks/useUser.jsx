@@ -21,7 +21,7 @@ export const UserProvider = ({ children }) => {
 
     const login = async (usr, pwd) => {
         try {
-            return fetch(`${import.meta.env.VITE_ERP_URL}/api/method/frappeauth_app.authentication.login`, {
+            return fetch(`${import.meta.env.VITE_ERP_URL ?? ""}/api/method/frappeauth_app.authentication.login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
