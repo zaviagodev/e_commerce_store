@@ -26,7 +26,7 @@ function App() {
   }, [navigate]);
 
   return (
-    <FrappeProvider url={import.meta.env.VITE_ERP_URL}
+    <FrappeProvider
       enableSocket={false}
       tokenParams={{
         type: "token",
