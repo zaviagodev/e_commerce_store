@@ -22,7 +22,7 @@ function App() {
   const navigate = useNavigate();
   useEffect(() => {
     console.log(currentUser);
-    if (!getToken() || !currentUser) {
+    if (!getToken() && !currentUser) {
       navigate("/login");
     }
   }, [navigate, currentUser]);
