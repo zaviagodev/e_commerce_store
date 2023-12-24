@@ -45,7 +45,7 @@ const Checkout = () => {
             billing_address: '',
             shipping_address: '',
             use_different_shipping: false,
-            loyalty_points: '',
+            loyalty_points: 0,
             items: cart,
             payment_method: 'bank-transfer',
             branch: '',
