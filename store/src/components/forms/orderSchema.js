@@ -11,7 +11,7 @@ export const orderSchema = Yup.object().shape({
     shipping_address: Yup.string().test('shipping-address', 'Shipping address is required', function (value) {
         return this.parent.use_different_shipping ? !!value : true;
     }),
-    loyalty_points: Yup.number().positive().typeError('Loyalty points must be a number').nullable(),
+    loyalty_points: Yup.number().typeError('Loyalty points must be a number'),
     items: Yup.array().of(
         Yup.object().shape({
             item_code: Yup.string().required('Item code is required'),
