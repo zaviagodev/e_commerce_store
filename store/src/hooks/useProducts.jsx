@@ -7,7 +7,7 @@ export const ProductsProvider = ({ children }) => {
     const [products, setProducts] = useState([])
     const [newP, setNewP] = useState(null)
 
-    useFrappeGetCall('erpnext.e_commerce.api.get_product_filter_data', {
+    useFrappeGetCall('webshop.webshop.api.get_product_filter_data', {
         name: newP,
         query_args: { "field_filters": {}, "attribute_filters": {}, "item_group": null, "start": null, "from_filters": false }
     }, `products-${newP}`, {
