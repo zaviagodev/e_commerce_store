@@ -7,14 +7,14 @@ import {
     SfBadge,
 } from '@storefront-ui/react';
 import viteLogo from '/vite.svg'
-import { useFrappeAuth } from 'frappe-react-sdk';
 import { useCart } from '../hooks/useCart';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useUser } from '../hooks/useUser';
 
 const NavHeader = () => {
     const navigate = useNavigate();
-    const { cartCount, setIsOpen } = useCart()
-    const { currentUser } = useFrappeAuth()
+    const { cartCount, setIsOpen } = useCart();
+    const { user } = useUser();
 
     const actionItems = [
         {
@@ -32,11 +32,11 @@ const NavHeader = () => {
             onClick: () => null,
         },
         {
-            label: currentUser ?? 'Log in',
+            label: user?.name ?? 'Log in',
             icon: <SfIconPerson />,
             ariaLabel: 'Log in',
             role: 'login',
-            onClick: () => currentUser ? navigate('/profile') : navigate('/login'),
+            onClick: () => user?.name ? navigate('/profile') : navigate('/login'),
         },
     ];
 
@@ -45,11 +45,7 @@ const NavHeader = () => {
     return (
         <header className="flex justify-center w-full py-2 px-4 lg:py-5 lg:px-6 bg-white border-b border-neutral-200">
             <div className="flex flex-wrap lg:flex-nowrap items-center flex-row justify-start h-full max-w-[1536px] w-full">
-                <a
-                    href="/"
-                    aria-label="SF Homepage"
-                    className="flex mr-4 focus-visible:outline focus-visible:outline-offset focus-visible:rounded-sm shrink-0"
-                >
+                <Link to="/" className="flex mr-4 focus-visible:outline focus-visible:outline-offset focus-visible:rounded-sm shrink-0">
                     <picture>
                         <source srcSet={viteLogo} media="(min-width: 768px)" />
                         <img
@@ -59,7 +55,7 @@ const NavHeader = () => {
                         />
                     </picture>
                     <h5>Store</h5>
-                </a>
+                </Link>
                 <SfButton
                     aria-label="Open categories"
                     className="lg:hidden order-first lg:order-1 mr-4"
