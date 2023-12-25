@@ -8,7 +8,7 @@
     "build": "yarn install && vite build --base=/assets/e_commerce_store/store/ && yarn copy-html-entry",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "copy-html-entry": "cp ../e_commerce_store/public/store/index.html ../e_commerce_store/www/"
+    "copy-html-entry": "cp ../e_commerce_store/public/store/index.html ../e_commerce_store/www/store.html"
   },
   "dependencies": {
     "frappe-react-sdk": "^1.3.5",
