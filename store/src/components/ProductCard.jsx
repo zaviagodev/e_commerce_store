@@ -12,7 +12,7 @@ const ProductCard = ({
     itemCode,
     isGift
 }) => {
-    const { addToCart } = useCart()
+    const { cart, addToCart } = useCart()
     return (
         <Link to={`/products/${productId}`}>
             <div className="border border-neutral-200 rounded-md hover:shadow-lg max-w-[300px]">
@@ -54,7 +54,7 @@ const ProductCard = ({
                     <span className="block pb-2 font-bold typography-text-lg">{price}</span>
                     <SfButton type="button" size="sm" slotPrefix={<SfIconShoppingCart size="sm" />} onClick={(e) => {
                         e.preventDefault();
-                        addToCart(itemCode)
+                        addToCart(itemCode, cart[itemCode] ? cart[itemCode] + 1 : 1)
                     }}>
                         Add to cart
                     </SfButton>

@@ -40,7 +40,7 @@ const AddressForm = ({
     }, [isCompleted])
 
     return (
-        <form className="py-4 max-w-[950px] flex gap-4 flex-wrap text-neutral-900" onSubmit={formik.handleSubmit}>
+        <form className="p-4 max-w-[950px] flex gap-4 flex-wrap text-neutral-900" onSubmit={formik.handleSubmit}>
             <h2 className="w-full typography-headline-4 md:typography-headline-3 font-bold">Billing address</h2>
             <div className="w-full md:w-auto flex-grow flex flex-col gap-0.5">
                 <label>

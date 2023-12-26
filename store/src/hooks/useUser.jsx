@@ -37,6 +37,7 @@ export const UserProvider = ({ children }) => {
             })
                 .then((response) => response.json())
                 .then((data) => {
+                    console.log(data);
                     if (data.message.token) {
                         // handle jwt
                         setToken(data.message.token);
@@ -52,6 +53,37 @@ export const UserProvider = ({ children }) => {
         }
     };
 
+    const register = async (usr,email, pwd) => {
+        try{
+            fetch(`${import.meta.env.VITE_ERP_URL ?? ""}/api/method/frappe.core.doctype.user.user.sign_up`,{
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body : JSON.stringify({
+                email: email,
+                full_name: usr,
+                password: pwd,
+                redirect_to: "/",
+                })
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.message.token) {
+                    // handle jwt
+                    setToken(data.message.token);
+                }
+                // get user
+                return mutate().then((data) => {
+                    updateCurrentUser();
+                    return data;
+                });
+            });
+        }catch(error){
+            return error;
+        }
+    };
+
     const logout = async () => {
         return frappeLogout().then(() => {
             setUser(null);
@@ -63,7 +95,8 @@ export const UserProvider = ({ children }) => {
     return <userContext.Provider value={{
         user,
         login,
-        logout
+        logout,
+        register
     }}>
         {children}
     </userContext.Provider>

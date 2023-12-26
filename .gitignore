@@ -3,5 +3,6 @@
 *.egg-info
 *.swp
 tags
+.env
 e_commerce_store/docs/current
 node_modules/

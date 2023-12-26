@@ -116,7 +116,7 @@ const Product = () => {
                                 <strong className="text-neutral-900">{product?.in_stock ? "✔ In Stock" : "❌ sold out"}</strong>
                             </p>
                         </div>
-                        <SfButton onClick={() => addToCart(product?.item_code, value)} type="button" size="lg" className="w-full xs:ml-4" slotPrefix={<SfIconShoppingCart size="sm" />}>
+                        <SfButton onClick={() => addToCart(product?.item_code, cart[product?.item_code] ? cart[product?.item_code] + value : value)} type="button" size="lg" className="w-full xs:ml-4" slotPrefix={<SfIconShoppingCart size="sm" />}>
                             Add to cart
                         </SfButton>
                     </div>

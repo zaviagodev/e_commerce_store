@@ -6,8 +6,9 @@ const ProductsContext = createContext([])
 export const ProductsProvider = ({ children }) => {
     const [products, setProducts] = useState([])
     const [newP, setNewP] = useState(null)
+    const [mainGroup, setMainGroup] = useState([])
 
-    useFrappeGetCall('webshop.webshop.api.get_product_filter_data', {
+    const {mutate : mutateItemsList, error : itemListError} = useFrappeGetCall('webshop.webshop.api.get_product_filter_data', {
         name: newP,
         query_args: { "field_filters": {}, "attribute_filters": {}, "item_group": null, "start": null, "from_filters": false }
     }, `products-${newP}`, {
@@ -15,6 +16,13 @@ export const ProductsProvider = ({ children }) => {
         onSuccess: (data) => setProducts(data.message.items)
     })
 
+    const {mutate : mutateGeneralList, error:groupeError} = useFrappeGetCall('webshop.webshop.api.get_main_group',undefined,undefined,{
+        isOnline: () => mainGroup.length === 0,
+        onSuccess: (data) => setMainGroup(data.message)
+    })
+
+
+    
 
     const get = (name) => {
         // if product is already in the list, return it & refetch it in the background
@@ -26,6 +34,10 @@ export const ProductsProvider = ({ children }) => {
         return p
     }
 
+    const getItemByCategorie = (categorie) => {
+        return products.filter((product) => product.item_group === categorie)
+    }
+
     const getByItemCode = (itemCode) => {
         // if product is already in the list, return it & refetch it in the background
         const p = products.find((product) => product.item_code === itemCode)
@@ -33,8 +45,29 @@ export const ProductsProvider = ({ children }) => {
     }
 
 
+    const getProductGroups = () => {
+        return mainGroup
+    }
+
+    const contextValue = {
+        products,
+        setProducts,
+        get,
+        getByItemCode,
+        getProductGroups,
+        mutateGeneralList,
+        groupeError,
+        mutateItemsList,
+        itemListError,
+        getItemByCategorie
+    }
+
+
+
+
+
     return (
-        <ProductsContext.Provider value={{ products, setProducts, get, getByItemCode }}>
+        <ProductsContext.Provider value={contextValue}>
             {children}
         </ProductsContext.Provider>
     )

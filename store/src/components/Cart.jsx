@@ -69,7 +69,7 @@ const Cart = () => {
                                                         <div>
                                                             <div className="flex justify-between text-base font-medium text-gray-900">
                                                                 <h3>
-                                                                    <a href="#">{product?.name}</a>
+                                                                    <a href="#">{product?.web_item_name}</a>
                                                                 </h3>
                                                                 <p className="ml-4">{product?.formatted_price}</p>
                                                             </div>
@@ -87,7 +87,7 @@ const Cart = () => {
                                                                         className="rounded-r-none"
                                                                         aria-controls={null}
                                                                         aria-label="Decrease value"
-                                                                        onClick={() => addToCart(itemCode, cart[itemCode] - 1)}
+                                                                        onClick={() => addToCart(itemCode, cart[itemCode] ? cart[itemCode] - 1 : 0)}
                                                                     >
                                                                         <SfIconRemove />
                                                                     </SfButton>
@@ -105,7 +105,7 @@ const Cart = () => {
                                                                         className="rounded-l-none"
                                                                         aria-controls={null}
                                                                         aria-label="Increase value"
-                                                                        onClick={() => addToCart(itemCode)}
+                                                                        onClick={() => addToCart(itemCode, cart[itemCode]? cart[itemCode] + 1 : 1)}
                                                                     >
                                                                         <SfIconAdd />
                                                                     </SfButton>

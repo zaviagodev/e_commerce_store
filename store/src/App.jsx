@@ -15,6 +15,7 @@ import { UserProvider, useUser } from "./hooks/useUser";
 import { getToken } from "./utils/helper";
 import BankInfoPage from "./pages/BankInfoPage";
 import LoyaltyProgram from "./pages/LoyaltyProgram";
+import { OrderProvider } from "./hooks/useOrders";
 
 
 function App() {
@@ -23,7 +24,7 @@ function App() {
   useEffect(() => {
     console.log("currentUser", user);
     if (!getToken() && !user?.name) {
-      navigate("/login");
+      //navigate("/login");
     }
   }, [navigate, user?.name]);
 
@@ -49,6 +50,7 @@ function App() {
 export const AppWrapper = () => {
   return (
     <FrappeProvider
+      url={import.meta.env.VITE_ERP_URL ?? ""}
       enableSocket={false}
       tokenParams={
         process.env.USE_TOKEN_AUTH ?
@@ -61,9 +63,11 @@ export const AppWrapper = () => {
           null
       }
     >
+      <OrderProvider>
       <UserProvider>
         <App />
       </UserProvider>
+      </OrderProvider>
     </FrappeProvider>
   )
 }
