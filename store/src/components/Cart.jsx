@@ -29,7 +29,6 @@ const Cart = () => {
                 enterDone: 'translate-x-0 transition duration-500 ease-in-out',
                 exitDone: 'translate-x-0',
                 exitActive: 'translate-x-full transition duration-500 ease-in-out',
-
             }}
         >
             <SfDrawer
@@ -37,7 +36,7 @@ const Cart = () => {
                 placement='right'
                 open
                 onClose={() => setIsOpen(false)}
-                className="bg-neutral-50 border border-gray-300 w-1/3"
+                className="bg-neutral-50 border border-gray-300 z-10 lg:w-[600px] md:w-[400px] w-full"
             >
                 <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
                     <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
