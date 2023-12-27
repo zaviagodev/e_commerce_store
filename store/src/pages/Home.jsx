@@ -2,14 +2,15 @@ import React, { useEffect } from 'react'
 import ProductCard from '../components/ProductCard'
 import { useProducts } from '../hooks/useProducts'
 import { useFrappeAuth } from 'frappe-react-sdk';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 const Home = () => {
+
+
     const { updateCurrentUser } = useFrappeAuth();
     const { products } = useProducts()
 
-    const location = useLocation();
-    var idFromUrl = decodeURIComponent(location.hash.substring(1)); // remove the '#' at the start, decode URI components and replace special characters location.hash.toUpperCase().replace(/[^a-zA-Z0-9]/g, ''); // remove the '#' at the start and replace special characters
+    const idFromUrl = useParams().itemsgroup;
 
     useEffect(() => {
         updateCurrentUser();
@@ -18,14 +19,14 @@ const Home = () => {
     return (
         <>
             <header >
-                <h1 className="my-4 px-2">{idFromUrl.toUpperCase() === '' ? 'ALL ITEMS' : idFromUrl.toUpperCase()}</h1>
+                <h1 className="my-4 px-2">{idFromUrl.toUpperCase()}</h1>
             </header>
             <main>
                     <div
                             className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 place-items-center"
 
                         >
-                            {(products ?? []).filter((product) => idFromUrl === '' || idFromUrl === product.item_group).map((product) => (
+                            {(products ?? []).filter((product) => idFromUrl === 'all items' || idFromUrl === product.item_group).map((product) => (
                                 <ProductCard
                                     key={product.item_code}
                                     title={product.web_item_name}

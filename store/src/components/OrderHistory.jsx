@@ -1,22 +1,10 @@
+import { useEffect, useState } from "react";
 import { useOrder } from "../hooks/useOrders";
-import { SfThumbnail, SfButton } from "@storefront-ui/react";
+import { SfThumbnail, SfButton, SfLoaderCircular } from "@storefront-ui/react";
+import { Link } from "react-router-dom";
 
 
-const item = [{
-    name: "name",
-    status: "status",
-    base_total: 300,
-    company: "company",
-    items: [{
-        "item_code": "item_code",
-        "item_name": "item_name",
-        "qty": "qty",
-        "rate": "rate",
-        "amount": "amount"
-    }],
-    creation: "2023-12-24 18:09:28.692383"
 
-}]
 const month = {
     0: "Jan",
     1: "Feb",
@@ -34,12 +22,20 @@ const month = {
 
 
 function OrderHistory() {
-    const {order} = useOrder();
+    const {Order} = useOrder();
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        if (Order.length > 0) {
+            setLoading(false)
+        }
+    }, [Order])
+    
     return ( 
         <div  className="flex flex-col gap-8 py-4 px-2">
         <h1>Recent Order History</h1>
-        <div className="flex flec-col gap-4">
-            {item.map(({name, status, base_total, company, items, creation}) => {
+        <div className="flex flex-col gap-4">
+            {!loading ? Order.slice(0, 3).map(({name, status, base_total, company, items, creation}) => {
 
                 return (
                     <div key={name} className="grid grid-cols-8 grid-rows-3 grid-flow-row place-items-start">
@@ -51,9 +47,10 @@ function OrderHistory() {
                     </div>
                 )
                 }
-            )}
+            )
+            : <SfLoaderCircular/>}
         </div>
-        <SfButton variant="tertiary">View History</SfButton>
+            <Link to='/order-history'><SfButton href="#"  variant="tertiary">View History</SfButton></Link>
         </div> 
     );
 }

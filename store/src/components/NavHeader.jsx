@@ -35,7 +35,6 @@ import { useProducts } from '../hooks/useProducts';
     const navigate = useNavigate();
     const { cartCount, setIsOpen } = useCart();
     const { user } = useUser();
-    
 
     const product = useProducts()
     const groupes = product.getProductGroups()
@@ -60,7 +59,7 @@ import { useProducts } from '../hooks/useProducts';
             icon: <SfIconPerson />,
             ariaLabel: 'Log in',
             role: 'login',
-            onClick: () => user?.name ? navigate('/profile') : navigate('/profile'),
+            onClick: () => user?.name === 'Guest' || !user ? navigate('/login') :  navigate('/profile')  ,
         },
     ];
   
@@ -96,7 +95,7 @@ import { useProducts } from '../hooks/useProducts';
             >
               <SfIconMenu className=" text-white" />
             </SfButton>
-            <Link to="/" className="flex mr-4 focus-visible:outline text-white focus-visible:outline-offset focus-visible:rounded-sm shrink-0">
+            <Link to="home/all items" className="flex mr-4 focus-visible:outline text-white focus-visible:outline-offset focus-visible:rounded-sm shrink-0">
                     <picture>
                         <source srcSet={viteLogo} media="(min-width: 768px)" />
                         <img
@@ -160,6 +159,7 @@ import { useProducts } from '../hooks/useProducts';
                           </h2>
                           <hr className="mb-3.5" />
                           <ul>
+                              <Link to={`home/${name}`}   >
                               <li>
                                 <SfListItem
                                   as="a"
@@ -171,7 +171,9 @@ import { useProducts } from '../hooks/useProducts';
                                   {name}
                                 </SfListItem>
                               </li>
+                              </Link>
                             {children.map(({name, children}) => (
+                              <Link to={`home/${name}`}   >
                               <li key={name}>
                                 <SfListItem
                                   as="a"
@@ -183,6 +185,7 @@ import { useProducts } from '../hooks/useProducts';
                                   {name}
                                 </SfListItem>
                               </li>
+                              </Link>
                             ))}
                           </ul>
                         </div>

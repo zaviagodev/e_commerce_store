@@ -42,28 +42,31 @@ export default function Login() {
 
     const formik = useFormik({
         initialValues: {
-            usr: 'test',
-            email: 'test@gmail.com',
-            pwd: '12345678',
-            pwd_confirm: '12345678'
+            usr: 'Administrator',
+            email: '',
+            pwd: 'toor',
+            pwd_confirm: ''
         },
         validationSchema: getValidationSchema(),
         onSubmit: (values) => {
             if (loginState == false) {
-                register(values.usr,values.email , values.pwd).then(() => navigate("/"))
+                register(values.usr,values.email , values.pwd).then((data) => data.message == 'Logged In' && navigate("/home/all items"))
             }else{
-                login(values.usr, values.pwd ).then(() => navigate("/"))
+                login(values.usr, values.pwd ).then((data) => data.message == 'Logged In' && navigate("/home/all items"));
             }
         }
     });
 
+
     useEffect(() => {
+        console.log(getToken(), currentUser);
         if (getToken() || currentUser) {
-            //navigate("/");
+            navigate("/home/all items");
         }
         if(loginState || !loginState){
             formik.validateForm();
         }
+       
     }, [navigate, currentUser,  loginState])
 
 
@@ -75,7 +78,7 @@ export default function Login() {
 
     return (
         <>
-        <form className="p-4 flex gap-4 flex-wrap text-neutral-900 text-start" onSubmit={formik.handleSubmit}>
+        <form className="p-4 flex gap-4 flex-wrap text-neutral-900 text-start text-big" onSubmit={formik.handleSubmit}>
             <h2 className="w-full typography-headline-4 md:typography-headline-3 font-bold">{loginState ? 'Sign in' : 'Register'}</h2>
             <label className="w-full flex flex-col gap-0.5">
                 <span className="typography-text-sm  font-medium">usr/username</span>

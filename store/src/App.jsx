@@ -1,5 +1,5 @@
 import { FrappeProvider } from "frappe-react-sdk";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { createRoutesFromElements, RouterProvider, Outlet, createBrowserRouter, Route, useNavigate } from "react-router-dom";
 import Login from "./pages/Login";
 import NavHeader from "./components/NavHeader";
 import Home from "./pages/Home";
@@ -11,41 +11,46 @@ import { CartProvider } from "./hooks/useCart";
 import Cart from "./components/Cart";
 import Checkout from "./pages/Checkout";
 import Profile from "./pages/Profile";
-import { UserProvider, useUser } from "./hooks/useUser";
+import { UserProvider } from "./hooks/useUser";
 import { getToken } from "./utils/helper";
 import BankInfoPage from "./pages/BankInfoPage";
 import LoyaltyProgram from "./pages/LoyaltyProgram";
 import { OrderProvider } from "./hooks/useOrders";
+import OrderHistory from "./pages/OrderHistory";
 
 
-function App() {
-  const { user } = useUser();
+const Layer = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    console.log("currentUser", user);
-    if (!getToken() && !user?.name) {
-      //navigate("/login");
-    }
-  }, [navigate, user?.name]);
-
+    navigate("/home/all items")
+  }, [])
   return (
-    <ProductsProvider>
-      <CartProvider>
-        <NavHeader />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="products/:id" element={<Product />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/loyality-program" element={<LoyaltyProgram />} />
-          <Route path="/thankyou" element={<BankInfoPage />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/login" element={<Login />} />
-        </Routes>
-        <Cart />
-      </CartProvider>
-    </ProductsProvider>
-  )
+    <>
+      <NavHeader />
+        <Outlet />
+      <Cart />
+    </>)
 }
+
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<Layer/>}>
+      <Route path="order-history" element={<OrderHistory />} />
+      <Route path="home/:itemsgroup" element={<Home />} />
+      <Route path="products/:id" element={<Product />} />
+      <Route path="checkout" element={<Checkout />} />
+      <Route path="loyality-program" element={<LoyaltyProgram />} />
+      <Route path="thankyou" element={<BankInfoPage />} />
+      <Route path="profile" element={<Profile />} />
+      <Route path="login" element={<Login />} />
+    </Route>
+  ),
+  {basename: "/store"}
+);
+
+
+
+
 
 export const AppWrapper = () => {
   return (
@@ -55,9 +60,9 @@ export const AppWrapper = () => {
       tokenParams={
         process.env.USE_TOKEN_AUTH ?
           {
-            type: "token",
+            type: process.env.TOKEN_TYPE ? process.env.TOKEN_TYPE : "token", 
             useToken: true,
-            token: getToken,
+            token: () => process.env.TOKEN_API ? `${process.env.TOKEN_API}:${process.env.TOKEN_SECRET}` : getToken,
           }
           :
           null
@@ -65,7 +70,11 @@ export const AppWrapper = () => {
     >
       <OrderProvider>
       <UserProvider>
-        <App />
+      <ProductsProvider>
+      <CartProvider>
+      <RouterProvider router={router}/>
+      </CartProvider>
+      </ProductsProvider>
       </UserProvider>
       </OrderProvider>
     </FrappeProvider>

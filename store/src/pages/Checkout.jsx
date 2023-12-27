@@ -11,12 +11,23 @@ import { useProducts } from '../hooks/useProducts';
 import BranchSelect from '../components/form-controls/BranchSelect';
 import { useUser } from '../hooks/useUser';
 
-
 const Checkout = () => {
-    const { user } = useUser()
+
+    const { user } = useUser();
+    const navigate = useNavigate();
+    useEffect(() => {
+      console.log("currentUser", user);
+      if (!getToken() && !user?.name) {
+        navigate("/login");
+      }
+    }, [navigate, user?.name]);
+
+
+
+
     const { getByItemCode } = useProducts()
     const { cart, cartCount, getTotal, resetCart } = useCart();
-    const navigate = useNavigate();
+
 
     const cartContents = useMemo(() => {
         return Object.entries(cart).reduce((acc, [item_code]) => {

@@ -6,11 +6,13 @@ import { useFrappeGetCall } from 'frappe-react-sdk';
 const OrderContext = createContext([])
 
 export const OrderProvider = ({ children }) => {
-    const [Order, setOrder] = useState({})
+    const [Order, setOrder] = useState([])
 
     const {mutate : mutateOrder, error:orderError} = useFrappeGetCall('webshop.webshop.api.get_orders',undefined,undefined,{
-        isOnline: () => mainGroup.length === 0,
-        onSuccess: (data) => setMainGroup(data.message)
+        isOnline: () => Order.length === 0,
+        onSuccess: (data) => {
+            setOrder(data.message)
+        }
     })
     
 

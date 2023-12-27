@@ -1,13 +1,11 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { getToken, removeToken, setToken } from '../utils/helper';
-import { useNavigate } from 'react-router-dom';
 import { useFrappeAuth, useFrappeGetCall } from 'frappe-react-sdk';
 
 const userContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const navigate = useNavigate();
     const {
         updateCurrentUser,
         logout: frappeLogout,
@@ -37,7 +35,6 @@ export const UserProvider = ({ children }) => {
             })
                 .then((response) => response.json())
                 .then((data) => {
-                    console.log(data);
                     if (data.message.token) {
                         // handle jwt
                         setToken(data.message.token);
@@ -88,7 +85,7 @@ export const UserProvider = ({ children }) => {
         return frappeLogout().then(() => {
             setUser(null);
             removeToken();
-            navigate("/login");
+            window.location.reload();
         })
     };
 
