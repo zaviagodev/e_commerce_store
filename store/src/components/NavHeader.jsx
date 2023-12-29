@@ -18,11 +18,14 @@ import viteLogo from '/vite.svg'
 import { useCart } from '../hooks/useCart';
 import { Link, useNavigate } from 'react-router-dom';
 import { useUser } from '../hooks/useUser';
+import { useWish } from '../hooks/useWishe';
 
 import { useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
 import { CSSTransition } from 'react-transition-group';
 import { useProducts } from '../hooks/useProducts';
+
+import SearchWithIcon from './SearchBar';
   
 
   
@@ -34,6 +37,7 @@ import { useProducts } from '../hooks/useProducts';
 
     const navigate = useNavigate();
     const { cartCount, setIsOpen } = useCart();
+    const { WishCount,setIsOpen : setWishOpen } = useWish();
     const { user } = useUser();
 
     const product = useProducts()
@@ -52,7 +56,7 @@ import { useProducts } from '../hooks/useProducts';
             label: '',
             ariaLabel: 'Wishlist',
             role: 'button',
-            onClick: () => null,
+            onClick: () => setWishOpen(true),
         },
         {
             label: user?.name ?? 'Log in',
@@ -205,31 +209,8 @@ import { useProducts } from '../hooks/useProducts';
                 </li>
               </ul>
             </nav>
-            <form role="search" className="hidden md:flex flex-[100%] ml-10" onSubmit={search}>
-              <SfInput
-                value={inputValue}
-                type="search"
-                className="[&::-webkit-search-cancel-button]:appearance-none"
-                placeholder="Search"
-                wrapperClassName="flex-1 h-10 pr-0"
-                size="base"
-                slotSuffix={
-                  <span className="flex items-center">
-                    <SfButton
-                      variant="tertiary"
-                      square
-                      aria-label="search"
-                      type="submit"
-                      className="rounded-l-none hover:bg-transparent active:bg-transparent"
-                    >
-                      <SfIconSearch />
-                    </SfButton>
-                  </span>
-                }
-                onChange={(event) => setInputValue(event.target.value)}
-              />
-            </form>
-            <nav className="flex-1 flex justify-end lg:order-last lg:ml-4">
+            <SearchWithIcon className="hidden md:flex flex-[100%] ml-10" /> 
+            <nav className="flex-1 flex justify-end lg:order-last lg:ml-4  ">
                     <div className="flex flex-row flex-nowrap">
                         {actionItems.map((actionItem) => (
                             <SfButton
@@ -244,6 +225,9 @@ import { useProducts } from '../hooks/useProducts';
                                 {actionItem.ariaLabel === 'Cart' && (
                                     <SfBadge content={cartCount} />
                                 )}
+                                {actionItem.ariaLabel === 'Wishlist' && (
+                                    <SfBadge content={WishCount} />
+                                )}
                                 {actionItem.role === 'login' && (
                                     <p className="hidden xl:inline-flex whitespace-nowrap">{actionItem.label}</p>
                                 )}
@@ -252,30 +236,7 @@ import { useProducts } from '../hooks/useProducts';
                     </div>
                 </nav>
           </div>
-          <form role="search" className="flex md:hidden flex-[100%] my-2 mx-4" onSubmit={search}>
-            <SfInput
-              value={inputValue}
-              type="search"
-              className="[&::-webkit-search-cancel-button]:appearance-none"
-              placeholder="Search"
-              wrapperClassName="flex-1 h-10 pr-0"
-              size="base"
-              slotSuffix={
-                <span className="flex items-center">
-                  <SfButton
-                    variant="tertiary"
-                    square
-                    aria-label="search"
-                    type="submit"
-                    className="rounded-l-none hover:bg-transparent active:bg-transparent"
-                  >
-                    <SfIconSearch />
-                  </SfButton>
-                </span>
-              }
-              onChange={(event) => setInputValue(event.target.value)}
-            />
-          </form>
+          <SearchWithIcon className="flex md:hidden flex-[100%] my-2 mx-4" /> 
         </header>
       </div>
     );

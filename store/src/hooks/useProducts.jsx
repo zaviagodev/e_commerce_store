@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from 'react'
-import { useFrappeGetCall } from 'frappe-react-sdk';
+import {   useFrappeGetCall, useFrappePostCall} from 'frappe-react-sdk';
+
 
 const ProductsContext = createContext([])
 
@@ -7,6 +8,7 @@ export const ProductsProvider = ({ children }) => {
     const [products, setProducts] = useState([])
     const [newP, setNewP] = useState(null)
     const [mainGroup, setMainGroup] = useState([])
+
 
     const {mutate : mutateItemsList, error : itemListError} = useFrappeGetCall('webshop.webshop.api.get_product_filter_data', {
         name: newP,
@@ -16,12 +18,32 @@ export const ProductsProvider = ({ children }) => {
         onSuccess: (data) => setProducts(data.message.items)
     })
 
+    const {call, result, error} = useFrappePostCall('webshop.webshop.api.edit_product_wish')
+
+    const editProduct = async (name , wished) => {
+        await call({
+            "name" : name,
+            "wished" : wished
+        })
+        if (error) {
+            console.log(error)
+            return error
+        }
+        if (result) {
+            mutateItemsList()
+        }
+        return result
+
+    }
+
     const {mutate : mutateGeneralList, error:groupeError} = useFrappeGetCall('webshop.webshop.api.get_main_group',undefined,undefined,{
         isOnline: () => mainGroup.length === 0,
         onSuccess: (data) => setMainGroup(data.message)
     })
 
-
+    const getWishedProducts = () => {
+        return products.filter((product) => product.wished)
+    }
     
 
     const get = (name) => {
@@ -50,16 +72,7 @@ export const ProductsProvider = ({ children }) => {
     }
 
     const contextValue = {
-        products,
-        setProducts,
-        get,
-        getByItemCode,
-        getProductGroups,
-        mutateGeneralList,
-        groupeError,
-        mutateItemsList,
-        itemListError,
-        getItemByCategorie
+
     }
 
 
@@ -67,7 +80,21 @@ export const ProductsProvider = ({ children }) => {
 
 
     return (
-        <ProductsContext.Provider value={contextValue}>
+        <ProductsContext.Provider value={        
+{            
+            products,
+            setProducts,
+            get,
+            getByItemCode,
+            getProductGroups,
+            mutateGeneralList,
+            groupeError,
+            mutateItemsList,
+            itemListError,
+            getWishedProducts,
+            getItemByCategorie,
+            editProduct
+            }}>
             {children}
         </ProductsContext.Provider>
     )

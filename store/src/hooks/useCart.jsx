@@ -1,11 +1,16 @@
 import React, { useEffect, createContext, useContext, useState } from 'react'
 import { useProducts } from './useProducts'
+import { useFrappePutCall } from 'frappe-react-sdk'
+import { useUser } from './useUser'
 
 const CartContext = createContext([])
 
 export const CartProvider = ({ children }) => {
     const [cart, setCart] = useState({})
     const [isOpen, _] = useState(false)
+    const {user} = useUser()
+
+    const {call, result} = useFrappePutCall('webshop.webshop.shopping_cart.cart.update_cart')
 
 
     const cartCount = Object.keys(cart).reduce((total, itemCode) => {
@@ -15,12 +20,24 @@ export const CartProvider = ({ children }) => {
 
     useEffect(() => {
         // get cart state from local storage
-        const cart = localStorage.getItem('cart')
-        if (cart) {
-            setCart(JSON.parse(cart))
-            console.log(cart)
+        const cartStorage = localStorage.getItem('cart')
+        if(Object.keys(cart).length === 0)
+        {
+            setCart(JSON.parse(cartStorage))
+            Object.entries(JSON.parse(cartStorage)).forEach(( [itemCode, value]) => {
+                call({"item_code" : itemCode, 'qty' :value})
+            })
         }
     }, [])
+
+    useEffect(() => {
+        // get cart state from local storage
+        if( user && Object.keys(cart).length !== 0){
+            Object.entries(cart).forEach(( [itemCode, value]) => {
+                call({"item_code" : itemCode, 'qty' :value})
+            })
+        }
+    }, [user, cart])
 
     const setIsOpen = (value) => {
         if (value !== undefined || value !== null) {
@@ -32,7 +49,6 @@ export const CartProvider = ({ children }) => {
 
     const addToCart = async (itemCode, quantity) => {
         setCart({ ...cart, [itemCode]: quantity ?? (cart[itemCode] ?? 0) + 1 })
-        console.log(quantity)
         // store cart state in local storage
         localStorage.setItem('cart', JSON.stringify({ ...cart, [itemCode]: quantity ?? (cart[itemCode] ?? 0) + 1 }))
     }

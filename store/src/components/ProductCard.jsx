@@ -3,21 +3,33 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom';
 import { SfButton, SfRating, SfCounter, SfLink, SfIconShoppingCart, SfIconFavorite } from '@storefront-ui/react';
 import { useCart } from '../hooks/useCart';
+import { useWish } from '../hooks/useWishe';
 
 const ProductCard = ({
     title,
+    description,
     thumbnail,
     price,
     productId,
     itemCode,
     isGift
 }) => {
+    const { Wish,addToWish, removeFromWish } = useWish()
     const { cart, addToCart } = useCart()
+
+    const handleWish = (e) => {
+        e.preventDefault();
+        if (Wish[productId]) {
+            removeFromWish(productId)
+        } else {
+            addToWish(productId)
+        }
+    }
     return (
-        <Link to={`/products/${productId}`}>
+        
             <div className="border border-neutral-200 rounded-md hover:shadow-lg max-w-[300px]">
                 <div className="relative">
-                    <SfLink href="#" className="block">
+                    <Link to={`/products/${productId}`}>
                         <img
                             src={thumbnail}
                             alt={title}
@@ -25,16 +37,17 @@ const ProductCard = ({
                             width="300"
                             height="300"
                         />
-                    </SfLink>
+                    </Link>
                     <SfButton
+                        onClick={handleWish} 
                         type="button"
                         variant="tertiary"
                         size="sm"
                         square
-                        className="absolute bottom-0 right-0 mr-2 mb-2 bg-white ring-1 ring-inset ring-neutral-200 !rounded-full"
+                        className="absolute bottom-2 right-2  bg-white ring-1 ring-inset ring-neutral-200 !rounded-full z-50"
                         aria-label="Add to wishlist"
                     >
-                        <SfIconFavorite size="sm" />
+                        <SfIconFavorite className={`${Wish[itemCode] == 1 && 'text-primary-600'}`}  size="sm" />
                     </SfButton>
                 </div>
                 <div className="p-4 border-t border-neutral-200">
@@ -49,7 +62,7 @@ const ProductCard = ({
                         </SfLink>
                     </div>
                     <p className="block py-2 font-normal typography-text-sm text-neutral-700">
-                        Lightweight • Non slip • Flexible outsole • Easy to wear on and off
+                        {description}
                     </p>
                     <span className="block pb-2 font-bold typography-text-lg">{price}</span>
                     <SfButton type="button" size="sm" slotPrefix={<SfIconShoppingCart size="sm" />} onClick={(e) => {
@@ -60,7 +73,7 @@ const ProductCard = ({
                     </SfButton>
                 </div>
             </div>
-        </Link>
+        
     )
 }
 
@@ -70,5 +83,6 @@ ProductCard.propTypes = {
     title: PropTypes.string.isRequired,
     thumbnail: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
+    description: PropTypes.string.isRequired,
     productId: PropTypes.string.isRequired
 };

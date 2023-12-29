@@ -4,6 +4,7 @@ import { CSSTransition } from 'react-transition-group';
 import { useCart } from '../hooks/useCart'
 import { useProducts } from '../hooks/useProducts'
 import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 import { useRef } from 'react';
 
@@ -62,18 +63,18 @@ const Cart = () => {
                                             return (
                                                 <li key={itemCode} className="flex py-6">
                                                     <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                                        <img src={product?.website_image} alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt." className="h-full w-full object-cover object-center" />
+                                                        <Link to={`/products/${product?.name}`}><img src={product?.website_image} alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt." className="h-full w-full object-cover object-center" /></Link>
                                                     </div>
 
                                                     <div className="ml-4 flex flex-1 flex-col">
                                                         <div>
                                                             <div className="flex justify-between text-base font-medium text-gray-900">
                                                                 <h3>
-                                                                    <a href="#">{product?.web_item_name}</a>
+                                                                    <Link to={`/products/${product?.name}`} >{product?.web_item_name}</Link>
                                                                 </h3>
                                                                 <p className="ml-4">{product?.formatted_price}</p>
                                                             </div>
-                                                            <p className="mt-1 text-sm text-gray-500">Salmon</p>
+                                                            <p className="mt-1 text-sm text-gray-500">{product?.short_description}</p>
                                                         </div>
 
                                                         <div className="flex flex-1 items-center justify-between text-sm">

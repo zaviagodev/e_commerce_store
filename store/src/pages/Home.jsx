@@ -31,6 +31,7 @@ const Home = () => {
                                     key={product.item_code}
                                     title={product.web_item_name}
                                     productId={product.name}
+                                    description={product.short_description}
                                     itemCode={product.item_code}
                                     price={product.formatted_price}
                                     thumbnail={product.website_image ? product.website_image : "https://storage.googleapis.com/sfui_docs_artifacts_bucket_public/production/sneakers.png"}
