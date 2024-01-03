@@ -22,14 +22,17 @@ export const CartProvider = ({ children }) => {
         const cartStorage = localStorage.getItem('cart')
         if(Object.keys(cart).length === 0 && !result && !loading )
         {
-            setCart(JSON.parse(cartStorage))
             const cartObject = JSON.parse(cartStorage);
-            (async () => {
-                for (const [itemCode, value] of Object.entries(cartObject)) {
-                    await call({"item_code" : itemCode, 'qty' : value})
-                }
-                mutateItemsList()
-            })();
+            if(cartObject)
+            {            
+                setCart(cartObject)
+                (async () => {
+                    for (const [itemCode, value] of Object.entries(cartObject)) {
+                        await call({"item_code" : itemCode, 'qty' : value})
+                    }
+                    mutateItemsList()
+                })();
+            }
         }
     }, [])
 

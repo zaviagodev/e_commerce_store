@@ -22,6 +22,9 @@ export const WishProvider = ({ children }) => {
         const wish = localStorage.getItem('Wish')
         if (Object.keys(Wish).length === 0 && !addLoading && !removeLoading ) {
             const parsedWish = JSON.parse(wish)
+            if (!parsedWish) {
+                return
+            }
             setWish(parsedWish)
             for (const [itemCode] of Object.entries(parsedWish)) {
                         addToWishList({'item_code': itemCode})
