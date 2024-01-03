@@ -209,30 +209,7 @@ import SearchWithIcon from './SearchBar';
                 </li>
               </ul>
             </nav>
-            <form role="search" className="hidden md:flex flex-[100%] ml-10 relative" onSubmit={search}>
-              <SfInput
-                value={inputValue}
-                type="search"
-                className="[&::-webkit-search-cancel-button]:appearance-none"
-                placeholder="Search"
-                wrapperClassName="flex-1 h-10 pr-0"
-                size="base"
-                slotSuffix={
-                  <span className="flex items-center">
-                    <SfButton
-                      variant="tertiary"
-                      square
-                      aria-label="search"
-                      type="submit"
-                      className="rounded-l-none hover:bg-transparent active:bg-transparent"
-                    >
-                      <SfIconSearch />
-                    </SfButton>
-                  </span>
-                }
-                onChange={(event) => setInputValue(event.target.value)}
-              />
-            </form>
+            <SearchWithIcon className="hidden md:flex flex-[100%] ml-10 relative" /> 
             <nav className="flex-1 flex justify-end lg:order-last lg:ml-4">
                     <div className="flex flex-row flex-nowrap">
                         {actionItems.map((actionItem) => (
