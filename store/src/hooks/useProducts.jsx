@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState } from 'react'
-import { useFrappeGetCall } from 'frappe-react-sdk';
+import React, { createContext, useContext, useState, useEffect } from 'react'
+import {   useFrappeGetCall} from 'frappe-react-sdk';
+
 
 const ProductsContext = createContext([])
 
@@ -8,20 +9,26 @@ export const ProductsProvider = ({ children }) => {
     const [newP, setNewP] = useState(null)
     const [mainGroup, setMainGroup] = useState([])
 
+
     const {mutate : mutateItemsList, error : itemListError} = useFrappeGetCall('webshop.webshop.api.get_product_filter_data', {
         name: newP,
         query_args: { "field_filters": {}, "attribute_filters": {}, "item_group": null, "start": null, "from_filters": false }
     }, `products-${newP}`, {
         isOnline: () => products.length === 0,
         onSuccess: (data) => setProducts(data.message.items)
+        
     })
+
+
 
     const {mutate : mutateGeneralList, error:groupeError} = useFrappeGetCall('webshop.webshop.api.get_main_group',undefined,undefined,{
         isOnline: () => mainGroup.length === 0,
         onSuccess: (data) => setMainGroup(data.message)
     })
 
-
+    const getWishedProducts = () => {
+        return products.filter((product) => product.wished)
+    }
     
 
     const get = (name) => {
@@ -49,25 +56,25 @@ export const ProductsProvider = ({ children }) => {
         return mainGroup
     }
 
-    const contextValue = {
-        products,
-        setProducts,
-        get,
-        getByItemCode,
-        getProductGroups,
-        mutateGeneralList,
-        groupeError,
-        mutateItemsList,
-        itemListError,
-        getItemByCategorie
-    }
-
 
 
 
 
     return (
-        <ProductsContext.Provider value={contextValue}>
+        <ProductsContext.Provider value={        
+{            
+            products,
+            setProducts,
+            get,
+            getByItemCode,
+            getProductGroups,
+            mutateGeneralList,
+            groupeError,
+            mutateItemsList,
+            itemListError,
+            getWishedProducts,
+            getItemByCategorie,
+            }}>
             {children}
         </ProductsContext.Provider>
     )

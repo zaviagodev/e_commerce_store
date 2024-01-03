@@ -30,6 +30,9 @@ const getAccessibleColor = (hex) => {
   }
 
 
+  const  getUserId = () => Cookies.get('user_id');
+  
+
 
 export { 
     getToken, 
@@ -37,5 +40,6 @@ export {
     setToken,  
     getRGBColor,
     getAccessibleColor,
+    getUserId,
 
 };

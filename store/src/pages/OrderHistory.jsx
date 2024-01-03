@@ -1,9 +1,7 @@
 import { useOrder } from "../hooks/useOrders";
 import { useState, useEffect } from "react";
 import { SfThumbnail, SfLoaderCircular } from "@storefront-ui/react";
-
-
-
+import { Link } from "react-router-dom";
 
 const month = {
     0: "Jan",
@@ -36,21 +34,23 @@ function OrderHistory() {
         <div>
             {!loading ? Order.map(({name, status, base_total, company, items, creation}) => {
 
-        return (
-            <main className="main-section">
-            <div key={name} className="grid grid-cols-auto">
-              <SfThumbnail size="lg"  className="bg-gray-100"/>
-              <div>
-                <h2 className="font-bold">{name}-{}{company}</h2>
-                <p>{`${new Date(creation).getDate()} ${month[new Date(creation).getMonth()]}, ${new Date(creation).getHours()}:${new Date(creation).getMinutes() < 10 ? '0' + new Date(creation).getMinutes(): new Date(creation).getMinutes() }  `}</p>
-                <p>{status}</p>
-              </div>
-              <span>{base_total}</span>
-            </div>
-            </main>
-        )
-    }
-)  : <SfLoaderCircular/>}
+
+return (
+  <main className="main-section">
+    <Link to={`/order-history/${name}`} key={name} className="grid grid-cols-auto">
+        <SfThumbnail size="lg"  className="bg-gray-100"/>
+        <div>
+          <h2 className="font-bold">{name}-{}{company}</h2>
+          <p>{`${new Date(creation).getDate()} ${month[new Date(creation).getMonth()]}, ${new Date(creation).getHours()}:${new Date(creation).getMinutes() < 10 ? '0' + new Date(creation).getMinutes(): new Date(creation).getMinutes() }  `}</p>
+          <p>{status}</p>
+        </div>
+        <span>{base_total}</span>
+    </Link>
+  </main>
+)
+}
+)
+: <SfLoaderCircular/>}
 
         </div>
     );

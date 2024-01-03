@@ -1,40 +1,51 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom';
-import { SfButton, SfRating, SfCounter, SfLink, SfIconShoppingCart, SfIconFavorite } from '@storefront-ui/react';
+import { SfButton, SfRating, SfCounter, SfLink, SfIconShoppingCart, SfIconFavorite, SfLoaderCircular } from '@storefront-ui/react';
 import { useCart } from '../hooks/useCart';
+import { useWish } from '../hooks/useWishe';
 
 const ProductCard = ({
     title,
+    description,
     thumbnail,
     price,
     productId,
     itemCode,
     isGift
 }) => {
-    const { cart, addToCart } = useCart()
+    const { Wish,addToWish, removeFromWish } = useWish()
+    const { cart, addToCart, loading } = useCart()
+
+    const handleWish = (e) => {
+        e.preventDefault();
+        if (Wish[itemCode]) {
+            removeFromWish(itemCode)
+        } else {
+            addToWish(itemCode)
+        }
+    }
     return (
-        <Link to={`/products/${productId}`}>
+        
             <div className="border border-neutral-200 rounded-md hover:shadow-lg">
                 <div className="relative">
-                    <SfLink href="#" className="block">
-                        {thumbnail ? (
-                            <img
+                    <Link to={`/products/${productId}`}>
+                        <img
                             src={thumbnail}
                             alt={title}
                             className="object-cover h-auto rounded-md aspect-square w-full"
                         />
-                        ) : (<div className='bg-gray-100 w-full h-full rounded-md'/>)}
-                    </SfLink>
+                    </Link>
                     <SfButton
+                        onClick={handleWish} 
                         type="button"
                         variant="tertiary"
                         size="sm"
                         square
-                        className="absolute bottom-0 right-0 mr-2 mb-2 bg-white ring-1 ring-inset ring-neutral-200 !rounded-full"
+                        className="absolute bottom-2 right-2  bg-white ring-1 ring-inset ring-neutral-200 !rounded-full z-50"
                         aria-label="Add to wishlist"
                     >
-                        <SfIconFavorite size="sm" />
+                        <SfIconFavorite className={`${Wish[itemCode] == 1 && 'text-primary-600'}`}  size="sm" />
                     </SfButton>
                 </div>
                 <div className="p-4 border-t border-neutral-200">
@@ -49,18 +60,18 @@ const ProductCard = ({
                         </SfLink>
                     </div>
                     <p className="block py-2 font-normal typography-text-sm text-neutral-700">
-                        Lightweight • Non slip • Flexible outsole • Easy to wear on and off
+                        {description}
                     </p>
                     <span className="block pb-2 font-bold typography-text-lg">{price}</span>
-                    <SfButton type="button" size="sm" slotPrefix={<SfIconShoppingCart size="sm" />} onClick={(e) => {
+                    {/*<SfButton disabled={loading} type="button" size="sm" slotPrefix={<SfIconShoppingCart size="sm" />} onClick={(e) => {
                         e.preventDefault();
                         addToCart(itemCode, cart[itemCode] ? cart[itemCode] + 1 : 1)
                     }}>
-                        Add to cart
-                    </SfButton>
+                       {loading ? <SfLoaderCircular/> : 'Add to cart'}
+                    </SfButton>*/}
                 </div>
             </div>
-        </Link>
+        
     )
 }
 
@@ -70,5 +81,6 @@ ProductCard.propTypes = {
     title: PropTypes.string.isRequired,
     thumbnail: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
+    description: PropTypes.string.isRequired,
     productId: PropTypes.string.isRequired
 };

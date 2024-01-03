@@ -17,6 +17,9 @@ import BankInfoPage from "./pages/BankInfoPage";
 import LoyaltyProgram from "./pages/LoyaltyProgram";
 import { OrderProvider } from "./hooks/useOrders";
 import OrderHistory from "./pages/OrderHistory";
+import SingleOrderHistory from "./pages/SingleOrderHistory";
+import { WishProvider } from "./hooks/useWishe";
+import Wish from "./components/Wish";
 
 
 const Layer = () => {
@@ -28,6 +31,7 @@ const Layer = () => {
     <>
       <NavHeader />
         <Outlet />
+        <Wish/>
       <Cart />
     </>)
 }
@@ -43,6 +47,7 @@ const router = createBrowserRouter(
       <Route path="thankyou" element={<BankInfoPage />} />
       <Route path="profile" element={<Profile />} />
       <Route path="login" element={<Login />} />
+      <Route path='order-history/:id' element={<SingleOrderHistory />} />
     </Route>
   ),
   {basename: "/store"}
@@ -50,6 +55,7 @@ const router = createBrowserRouter(
 
 export const AppWrapper = () => {
   {/* Change from import.meta to process after completed the code */}
+
   return (
     <FrappeProvider
       url={import.meta.env.VITE_ERP_URL ?? ""}
@@ -63,14 +69,19 @@ export const AppWrapper = () => {
         } : null
     }>
       <OrderProvider>
+
       <UserProvider>
+      <OrderProvider>
       <ProductsProvider>
+      <WishProvider>
       <CartProvider>
       <RouterProvider router={router}/>
       </CartProvider>
+      </WishProvider>
       </ProductsProvider>
-      </UserProvider>
       </OrderProvider>
+      </UserProvider>
+
     </FrappeProvider>
   )
 }

@@ -1,14 +1,15 @@
 import React from 'react'
-import { SfButton, SfDrawer, useTrapFocus, SfIconAdd, SfIconRemove } from '@storefront-ui/react'
+import { SfButton, SfDrawer, useTrapFocus, SfIconAdd, SfIconRemove, SfLoaderCircular } from '@storefront-ui/react'
 import { CSSTransition } from 'react-transition-group';
 import { useCart } from '../hooks/useCart'
 import { useProducts } from '../hooks/useProducts'
 import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 import { useRef } from 'react';
 
 const Cart = () => {
-    const { cart, cartCount, addToCart, removeFromCart, getTotal, isOpen, setIsOpen } = useCart()
+    const { cart, cartCount, addToCart, removeFromCart, getTotal, isOpen, setIsOpen, loading } = useCart()
     const nodeRef = useRef(null);
     const drawerRef = useRef(null);
     const { getByItemCode } = useProducts()
@@ -61,27 +62,28 @@ const Cart = () => {
                                             return (
                                                 <li key={itemCode} className="flex py-6">
                                                     <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                                        <img src={product?.website_image} alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt." className="h-full w-full object-cover object-center" />
+                                                        <Link to={`/products/${product?.name}`}><img src={product?.website_image} alt={product?.item_name} className="h-full w-full object-cover object-center" /></Link>
                                                     </div>
 
                                                     <div className="ml-4 flex flex-1 flex-col">
                                                         <div>
                                                             <div className="flex justify-between text-base font-medium text-gray-900">
                                                                 <h3>
-                                                                    <a href="#">{product?.web_item_name}</a>
+                                                                    <Link to={`/products/${product?.name}`} >{product?.web_item_name}</Link>
                                                                 </h3>
                                                                 <p className="ml-4">{product?.formatted_price}</p>
                                                             </div>
-                                                            <p className="mt-1 text-sm text-gray-500">Salmon</p>
+                                                            <p className="mt-1 text-sm text-gray-500">{product?.short_description}</p>
                                                         </div>
 
                                                         <div className="flex flex-1 items-center justify-between text-sm">
                                                             <div className="flex items-center justify-between mt-4 sm:mt-0">
                                                                 <div className="flex border border-neutral-300 rounded-md">
                                                                     <SfButton
+                                                                        
                                                                         type="button"
                                                                         variant="tertiary"
-                                                                        disabled={cart[itemCode] === 1}
+                                                                        disabled={cart[itemCode] === 1 || loading}
                                                                         square
                                                                         className="rounded-r-none"
                                                                         aria-controls={null}
@@ -100,6 +102,7 @@ const Cart = () => {
                                                                     <SfButton
                                                                         type="button"
                                                                         variant="tertiary"
+                                                                        disabled={loading}
                                                                         square
                                                                         className="rounded-l-none"
                                                                         aria-controls={null}
@@ -111,7 +114,7 @@ const Cart = () => {
                                                                 </div>
                                                             </div>
                                                             <div className="flex">
-                                                                <button onClick={() => removeFromCart(itemCode)} type="button" className="font-medium text-primary-700 hover:text-primary-600">Remove</button>
+                                                                <button disabled={loading} onClick={() => removeFromCart(itemCode)} type="button" className="font-medium text-primary-700 hover:text-primary-600 disabled:text-slate-400 disabled:cursor-not-allowed">Remove</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -132,7 +135,7 @@ const Cart = () => {
                         </div>
                         <p className="my-1 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                         <SfButton className="w-full" disabled={cartCount == 0} onClick={() => { setIsOpen(false); navigate("/checkout"); }}>
-                            Checkout
+                            {loading ? <SfLoaderCircular/> :  'Checkout'}
                         </SfButton>
                     </div>
                 </div>

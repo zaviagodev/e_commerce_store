@@ -14,13 +14,19 @@ export const OrderProvider = ({ children }) => {
             setOrder(data.message)
         }
     })
+
+    const getOrderByOrderCode = (orderCode) => {
+        const o = Order.find((order) => order.name === orderCode)
+        return o
+    }
     
 
     const ContextValue ={
         Order,
         setOrder,
         mutateOrder,
-        orderError
+        orderError,
+        getOrderByOrderCode
     }
 
     return (
