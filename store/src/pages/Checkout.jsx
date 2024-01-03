@@ -27,7 +27,7 @@ const Checkout = () => {
     
     useEffect(() => {
         if (!deliveryResult) {
-            ApplyDeliveryFee({'shipping_rule' : 'test' })
+            ApplyDeliveryFee({'shipping_rule' : 'Next Day Shipping' })
         }
         console.log(deliveryResult?.message?.doc)
     }, [deliveryResult, deliveryError])
@@ -213,11 +213,11 @@ const Checkout = () => {
                                 <p>Estimated Sales Tax</p>
                             </div>
                             <div className="flex flex-col text-right">
-                                <p>฿ {getTotal()}</p>
+                                <p>{deliveryLoading ? <SfLoaderCircular/> : deliveryResult?.message?.doc?.total ? `฿ ${deliveryResult?.message?.doc?.total}` : "0"}</p>
                                 <p className="my-2">
-                                    {deliveryLoading ? <SfLoaderCircular/> : deliveryResult?.message?.doc?.total_taxes_and_charges ? `฿ ${deliveryResult?.message?.doc?.total_taxes_and_charges}` : "-"}
+                                    {deliveryLoading ? <SfLoaderCircular/> : deliveryResult?.message?.doc?.total_taxes_and_charges ? `฿ ${deliveryResult?.message?.doc?.total_taxes_and_charges}` : "0"}
                                 </p>
-                                <p>฿ 0</p>
+                                <p></p>
                             </div>
                         </div>
                          { !loading ? codeResult ? (
@@ -246,7 +246,7 @@ const Checkout = () => {
                         </p>*/ }
                         <div className="flex justify-between typography-headline-4 md:typography-headline-3 font-bold pb-4 mb-4 border-b border-neutral-200">
                             <p>Total</p>
-                            <p>฿ {getTotal()}</p>
+                            <p>{deliveryLoading ? <SfLoaderCircular/> : deliveryResult?.message?.doc?.grand_total? `฿ ${deliveryResult?.message?.doc?.grand_total}` : "0"}</p>
                         </div>
 
                         <SfInput

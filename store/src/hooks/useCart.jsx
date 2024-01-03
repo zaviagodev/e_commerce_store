@@ -1,16 +1,15 @@
 import React, { useEffect, createContext, useContext, useState } from 'react'
 import { useProducts } from './useProducts'
 import { useFrappePutCall } from 'frappe-react-sdk'
-import { useUser } from './useUser'
 
 const CartContext = createContext([])
 
 export const CartProvider = ({ children }) => {
     const [cart, setCart] = useState({})
     const [isOpen, _] = useState(false)
-    const {user} = useUser()
+    const {mutateItemsList} = useProducts()
 
-    const {call, result} = useFrappePutCall('webshop.webshop.shopping_cart.cart.update_cart')
+    const {call , result, loading} = useFrappePutCall('webshop.webshop.shopping_cart.cart.update_cart')
 
 
     const cartCount = Object.keys(cart).reduce((total, itemCode) => {
@@ -21,23 +20,20 @@ export const CartProvider = ({ children }) => {
     useEffect(() => {
         // get cart state from local storage
         const cartStorage = localStorage.getItem('cart')
-        if(Object.keys(cart).length === 0)
+        if(Object.keys(cart).length === 0 && !result && !loading )
         {
             setCart(JSON.parse(cartStorage))
-            Object.entries(JSON.parse(cartStorage)).forEach(( [itemCode, value]) => {
-                call({"item_code" : itemCode, 'qty' :value})
-            })
+            const cartObject = JSON.parse(cartStorage);
+            (async () => {
+                for (const [itemCode, value] of Object.entries(cartObject)) {
+                    await call({"item_code" : itemCode, 'qty' : value})
+                }
+                mutateItemsList()
+            })();
         }
     }, [])
 
-    useEffect(() => {
-        // get cart state from local storage
-        if( user && Object.keys(cart).length !== 0){
-            Object.entries(cart).forEach(( [itemCode, value]) => {
-                call({"item_code" : itemCode, 'qty' :value})
-            })
-        }
-    }, [user, cart])
+
 
     const setIsOpen = (value) => {
         if (value !== undefined || value !== null) {
@@ -49,6 +45,10 @@ export const CartProvider = ({ children }) => {
 
     const addToCart = async (itemCode, quantity) => {
         setCart({ ...cart, [itemCode]: quantity ?? (cart[itemCode] ?? 0) + 1 })
+        call({"item_code" : itemCode, 'qty' : quantity ?? (cart[itemCode] ?? 0) + 1}).then(() => {
+
+        mutateItemsList()
+        })
         // store cart state in local storage
         localStorage.setItem('cart', JSON.stringify({ ...cart, [itemCode]: quantity ?? (cart[itemCode] ?? 0) + 1 }))
     }
@@ -57,6 +57,10 @@ export const CartProvider = ({ children }) => {
         const newCart = { ...cart }
         delete newCart[itemCode]
         setCart(newCart)
+        call({"item_code" : itemCode, 'qty' : 0}).then(() => {
+            
+            mutateItemsList()
+        })
         // store cart state in local storage
         localStorage.setItem('cart', JSON.stringify(newCart))
     }
@@ -65,6 +69,7 @@ export const CartProvider = ({ children }) => {
         setCart({})
         // store cart state in local storage
         localStorage.setItem('cart', JSON.stringify({}))
+        window.location.reload()
     }
 
 
@@ -79,7 +84,7 @@ export const CartProvider = ({ children }) => {
 
 
     return (
-        <CartContext.Provider value={{ cart, cartCount, addToCart, removeFromCart, resetCart, getTotal, isOpen, setIsOpen }}>
+        <CartContext.Provider value={{loading, cart, cartCount, addToCart, removeFromCart, resetCart, getTotal, isOpen, setIsOpen }}>
             {children}
         </CartContext.Provider>
     )

@@ -1,4 +1,5 @@
 import {
+    SfLoaderCircular,
     SfScrollable,
 } from '@storefront-ui/react';
 import { useCounter } from 'react-use';
@@ -22,7 +23,7 @@ import { useCart } from '../hooks/useCart';
 const Product = () => {
     const { id } = useParams();
     const { get } = useProducts();
-    const { cart, addToCart } = useCart();
+    const { cart, addToCart, loading } = useCart();
     const product = get(id);
     const inputId = "useId('input')";
     const min = 1;
@@ -116,8 +117,8 @@ const Product = () => {
                                 <strong className="text-neutral-900">{product?.in_stock ? "✔ In Stock" : "❌ sold out"}</strong>
                             </p>
                         </div>
-                        <SfButton onClick={() => addToCart(product?.item_code, cart[product?.item_code] ? cart[product?.item_code] + value : value)} type="button" size="lg" className="w-full xs:ml-4" slotPrefix={<SfIconShoppingCart size="sm" />}>
-                            Add to cart
+                        <SfButton disabled={loading}  onClick={() => addToCart(product?.item_code, cart[product?.item_code] ? cart[product?.item_code] + value : value)} type="button" size="lg" className="w-full xs:ml-4" slotPrefix={<SfIconShoppingCart size="sm" />}>
+                            {loading ? <SfLoaderCircular/> : 'Add to cart'}
                         </SfButton>
                     </div>
                 </div>

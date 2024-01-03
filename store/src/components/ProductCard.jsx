@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom';
-import { SfButton, SfRating, SfCounter, SfLink, SfIconShoppingCart, SfIconFavorite } from '@storefront-ui/react';
+import { SfButton, SfRating, SfCounter, SfLink, SfIconShoppingCart, SfIconFavorite, SfLoaderCircular } from '@storefront-ui/react';
 import { useCart } from '../hooks/useCart';
 import { useWish } from '../hooks/useWishe';
 
@@ -15,14 +15,14 @@ const ProductCard = ({
     isGift
 }) => {
     const { Wish,addToWish, removeFromWish } = useWish()
-    const { cart, addToCart } = useCart()
+    const { cart, addToCart, loading } = useCart()
 
     const handleWish = (e) => {
         e.preventDefault();
-        if (Wish[productId]) {
-            removeFromWish(productId)
+        if (Wish[itemCode]) {
+            removeFromWish(itemCode)
         } else {
-            addToWish(productId)
+            addToWish(itemCode)
         }
     }
     return (
@@ -65,12 +65,12 @@ const ProductCard = ({
                         {description}
                     </p>
                     <span className="block pb-2 font-bold typography-text-lg">{price}</span>
-                    <SfButton type="button" size="sm" slotPrefix={<SfIconShoppingCart size="sm" />} onClick={(e) => {
+                    {/*<SfButton disabled={loading} type="button" size="sm" slotPrefix={<SfIconShoppingCart size="sm" />} onClick={(e) => {
                         e.preventDefault();
                         addToCart(itemCode, cart[itemCode] ? cart[itemCode] + 1 : 1)
                     }}>
-                        Add to cart
-                    </SfButton>
+                       {loading ? <SfLoaderCircular/> : 'Add to cart'}
+                    </SfButton>*/}
                 </div>
             </div>
         

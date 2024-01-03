@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState } from 'react'
-import {   useFrappeGetCall, useFrappePostCall} from 'frappe-react-sdk';
+import React, { createContext, useContext, useState, useEffect } from 'react'
+import {   useFrappeGetCall} from 'frappe-react-sdk';
 
 
 const ProductsContext = createContext([])
@@ -16,25 +16,10 @@ export const ProductsProvider = ({ children }) => {
     }, `products-${newP}`, {
         isOnline: () => products.length === 0,
         onSuccess: (data) => setProducts(data.message.items)
+        
     })
 
-    const {call, result, error} = useFrappePostCall('webshop.webshop.api.edit_product_wish')
 
-    const editProduct = async (name , wished) => {
-        await call({
-            "name" : name,
-            "wished" : wished
-        })
-        if (error) {
-            console.log(error)
-            return error
-        }
-        if (result) {
-            mutateItemsList()
-        }
-        return result
-
-    }
 
     const {mutate : mutateGeneralList, error:groupeError} = useFrappeGetCall('webshop.webshop.api.get_main_group',undefined,undefined,{
         isOnline: () => mainGroup.length === 0,
@@ -71,10 +56,6 @@ export const ProductsProvider = ({ children }) => {
         return mainGroup
     }
 
-    const contextValue = {
-
-    }
-
 
 
 
@@ -93,7 +74,6 @@ export const ProductsProvider = ({ children }) => {
             itemListError,
             getWishedProducts,
             getItemByCategorie,
-            editProduct
             }}>
             {children}
         </ProductsContext.Provider>

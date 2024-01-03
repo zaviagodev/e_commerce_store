@@ -1,5 +1,6 @@
 import React, { useEffect, createContext, useContext, useState } from 'react'
 import { useProducts } from './useProducts'
+import { useFrappePostCall } from 'frappe-react-sdk'
 
 const WishContext = createContext([])
 
@@ -10,15 +11,22 @@ export const WishProvider = ({ children }) => {
     const WishCount = Object.keys(Wish).reduce((total, itemCode) => {
         return total + Wish[itemCode]
     }, 0)
-    const { editProduct, getWishedProducts } = useProducts()
 
+    const { getWishedProducts, mutateItemsList } = useProducts()
 
+    const {call : addToWishList, loading : addLoading} = useFrappePostCall('webshop.webshop.doctype.wishlist.wishlist.add_to_wishlist')
+    const {call : removeFromWishList, loading : removeLoading} = useFrappePostCall('webshop.webshop.doctype.wishlist.wishlist.remove_from_wishlist')
 
     useEffect(() => {
         // get Wish state from local storage
-        const Wish = localStorage.getItem('Wish')
-        if (Wish) {
-            setWish(JSON.parse(Wish))
+        const wish = localStorage.getItem('Wish')
+        if (Object.keys(Wish).length === 0 && !addLoading && !removeLoading ) {
+            const parsedWish = JSON.parse(wish)
+            setWish(parsedWish)
+            for (const [itemCode] of Object.entries(parsedWish)) {
+                        addToWishList({'item_code': itemCode})
+            }
+            mutateItemsList()
         }
     }, [])
 
@@ -30,10 +38,13 @@ export const WishProvider = ({ children }) => {
     }
 
 
+
     const addToWish = async (itemCode) => {
         setWish({ ...Wish, [itemCode]:  1 })
         // store Wish state in local storage
-        editProduct(itemCode, true)
+        addToWishList({'item_code': itemCode}).then(() => {
+            mutateItemsList()
+        })
         localStorage.setItem('Wish', JSON.stringify({ ...Wish, [itemCode]:  1 }))
     }
 
@@ -41,17 +52,22 @@ export const WishProvider = ({ children }) => {
         const newWish = { ...Wish }
         delete newWish[itemCode]
         setWish(newWish)
-        editProduct(itemCode, false)
+        removeFromWishList({'item_code': itemCode}).then(() => {
+            mutateItemsList()
+        })
         // store Wish state in local storage
         localStorage.setItem('Wish', JSON.stringify(newWish))
     }
 
     const resetWish = () => {
         setWish({})
-        products = getWishedProducts()
+        const products = getWishedProducts()
         products.map((product) => {
-            editProduct(product.name, false)
+            if (product.wished) {
+                removeFromWishList({'item_code': product.item_code})
+            }
         })
+        mutateItemsList()
         // store Wish state in local storage
         localStorage.setItem('Wish', JSON.stringify({}))
     }

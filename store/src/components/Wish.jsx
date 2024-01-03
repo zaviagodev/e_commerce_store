@@ -11,7 +11,7 @@ const Wish = () => {
     const { Wish, removeFromWish, isOpen, setIsOpen } = useWish()
     const nodeRef = useRef(null);
     const drawerRef = useRef(null);
-    const { get } = useProducts()
+    const { getByItemCode } = useProducts()
 
 
     useTrapFocus(drawerRef, { activeState: isOpen });
@@ -56,12 +56,12 @@ const Wish = () => {
                             <div className="flow-root">
                                 <ul role="list" className="-my-6 divide-y divide-gray-200">
                                     {
-                                        Object.entries(Wish).map(([itemCode],qty) => {
-                                            const product = get(itemCode)
+                                        Object.entries(Wish).map(([itemCode]) => {
+                                            const product = getByItemCode(itemCode)
                                             return (
                                                 <li key={itemCode} className="flex py-6">
                                                     <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                                        <Link to={`/products/${product?.name}`} ><img src={product?.website_image} alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt." className="h-full w-full object-cover object-center" /></Link>
+                                                        <Link to={`/products/${product?.name}`} ><img src={product?.website_image} alt={product?.item_name} className="h-full w-full object-cover object-center" /></Link>
                                                     </div>
 
                                                     <div className="ml-4 flex flex-1 flex-col">
