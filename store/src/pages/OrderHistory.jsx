@@ -36,21 +36,24 @@ function OrderHistory() {
         <div>
             {!loading ? Order.map(({name, status, base_total, company, items, creation}) => {
 
-return (
-    <div key={name} className="grid grid-cols-8 grid-rows-3 grid-flow-row place-items-start">
-        <SfThumbnail size="lg"  className="col-span-1 row-span-1 row-start-1 col-start-1 "/>
-        <h2 className="col-span-6 row-span-1">{name}-{}{company}</h2>
-        <p className="col-span-6 row-span-1 col-start-2 ">{`${new Date(creation).getDate()} ${month[new Date(creation).getMonth()]}, ${new Date(creation).getHours()}:${new Date(creation).getMinutes() < 10 ? '0' + new Date(creation).getMinutes(): new Date(creation).getMinutes() }  `}</p>
-        <p className="row-span-1 col-span-1 row-start-3 col-start-2">{status}</p>
-        <span className="col-span-1 row-span-1 row-start-1 col-start-8">{base_total}</span>
-    </div>
-)
-}
-)
-: <SfLoaderCircular/>}
+        return (
+            <main className="main-section">
+            <div key={name} className="grid grid-cols-auto">
+              <SfThumbnail size="lg"  className="bg-gray-100"/>
+              <div>
+                <h2 className="font-bold">{name}-{}{company}</h2>
+                <p>{`${new Date(creation).getDate()} ${month[new Date(creation).getMonth()]}, ${new Date(creation).getHours()}:${new Date(creation).getMinutes() < 10 ? '0' + new Date(creation).getMinutes(): new Date(creation).getMinutes() }  `}</p>
+                <p>{status}</p>
+              </div>
+              <span>{base_total}</span>
+            </div>
+            </main>
+        )
+    }
+)  : <SfLoaderCircular/>}
 
         </div>
-     );
+    );
 }
 
 export default OrderHistory;

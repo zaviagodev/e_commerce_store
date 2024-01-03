@@ -15,16 +15,16 @@ const ProductCard = ({
     const { cart, addToCart } = useCart()
     return (
         <Link to={`/products/${productId}`}>
-            <div className="border border-neutral-200 rounded-md hover:shadow-lg max-w-[300px]">
+            <div className="border border-neutral-200 rounded-md hover:shadow-lg">
                 <div className="relative">
                     <SfLink href="#" className="block">
-                        <img
+                        {thumbnail ? (
+                            <img
                             src={thumbnail}
                             alt={title}
-                            className="object-cover h-auto rounded-md aspect-square"
-                            width="300"
-                            height="300"
+                            className="object-cover h-auto rounded-md aspect-square w-full"
                         />
+                        ) : (<div className='bg-gray-100 w-full h-full rounded-md'/>)}
                     </SfLink>
                     <SfButton
                         type="button"

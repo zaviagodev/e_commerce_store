@@ -205,7 +205,7 @@ import { useProducts } from '../hooks/useProducts';
                 </li>
               </ul>
             </nav>
-            <form role="search" className="hidden md:flex flex-[100%] ml-10" onSubmit={search}>
+            <form role="search" className="hidden md:flex flex-[100%] ml-10 relative" onSubmit={search}>
               <SfInput
                 value={inputValue}
                 type="search"

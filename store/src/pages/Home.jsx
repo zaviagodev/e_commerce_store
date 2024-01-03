@@ -5,8 +5,6 @@ import { useFrappeAuth } from 'frappe-react-sdk';
 import { useParams } from 'react-router-dom';
 
 const Home = () => {
-
-
     const { updateCurrentUser } = useFrappeAuth();
     const { products } = useProducts()
 
@@ -18,26 +16,23 @@ const Home = () => {
 
     return (
         <>
-            <header >
-                <h1 className="my-4 px-2">{idFromUrl.toUpperCase()}</h1>
-            </header>
-            <main>
-                    <div
-                            className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 place-items-center"
-
-                        >
-                            {(products ?? []).filter((product) => idFromUrl === 'all items' || idFromUrl === product.item_group).map((product) => (
-                                <ProductCard
-                                    key={product.item_code}
-                                    title={product.web_item_name}
-                                    productId={product.name}
-                                    itemCode={product.item_code}
-                                    price={product.formatted_price}
-                                    thumbnail={product.website_image ? product.website_image : "https://storage.googleapis.com/sfui_docs_artifacts_bucket_public/production/sneakers.png"}
-                                    isGift={product?.item_group === "Gift" || product?.item_group === "Gift and Cards"}
-                                />
-                            ))}
-                    </div>
+            <main className='main-section'>
+                <h1 className="mb-4 primary-heading">{idFromUrl.toUpperCase()}</h1>
+                <div
+                    className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center"
+                >
+                    {(products ?? []).filter((product) => idFromUrl === 'all items' || idFromUrl === product.item_group).map((product) => (
+                        <ProductCard
+                            key={product.item_code}
+                            title={product.web_item_name}
+                            productId={product.name}
+                            itemCode={product.item_code}
+                            price={product.formatted_price}
+                            thumbnail={product.website_image ? `${import.meta.env.VITE_ERP_URL}${product.website_image}` : "https://storage.googleapis.com/sfui_docs_artifacts_bucket_public/production/sneakers.png"}
+                            isGift={product?.item_group === "Gift" || product?.item_group === "Gift and Cards"}
+                        />
+                    ))}
+                </div>
             </main>
         </>
     )

@@ -48,26 +48,20 @@ const router = createBrowserRouter(
   {basename: "/store"}
 );
 
-
-
-
-
 export const AppWrapper = () => {
+  {/* Change from import.meta to process after completed the code */}
   return (
     <FrappeProvider
       url={import.meta.env.VITE_ERP_URL ?? ""}
       enableSocket={false}
       tokenParams={
-        import.meta.env.USE_TOKEN_AUTH ?
-          {
-            type: import.meta.env.TOKEN_TYPE ? import.meta.env.TOKEN_TYPE : "token", 
-            useToken: true,
-            token: () => import.meta.env.TOKEN_API ? `${import.meta.env.TOKEN_API}:${import.meta.env.TOKEN_SECRET}` : getToken,
-          }
-          :
-          null
-      }
-    >
+        import.meta.env.VITE_USE_TOKEN_AUTH ?
+        {
+          type: import.meta.env.VITE_TOKEN_TYPE ? import.meta.env.VITE_TOKEN_TYPE : "token", 
+          useToken: true,
+          token: () => import.meta.env.VITE_TOKEN_API ? `${import.meta.env.VITE_TOKEN_API}:${import.meta.env.VITE_TOKEN_SECRET}` : getToken,
+        } : null
+    }>
       <OrderProvider>
       <UserProvider>
       <ProductsProvider>
@@ -80,6 +74,5 @@ export const AppWrapper = () => {
     </FrappeProvider>
   )
 }
-
 
 export default AppWrapper;
