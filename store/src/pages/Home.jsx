@@ -5,8 +5,6 @@ import { useFrappeAuth } from 'frappe-react-sdk';
 import { useParams } from 'react-router-dom';
 
 const Home = () => {
-
-
     const { updateCurrentUser } = useFrappeAuth();
     const { products } = useProducts()
 
@@ -18,13 +16,10 @@ const Home = () => {
 
     return (
         <>
-            <header >
-                <h1 className="my-4 px-2">{idFromUrl.toUpperCase()}</h1>
-            </header>
-            <main>
+            <main className='main-section'>
+              <h1 className="mb-4 primary-heading">{idFromUrl.toUpperCase()}</h1>
                     <div
-                            className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 place-items-center"
-
+                       className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center"
                         >
                             {(products ?? []).filter((product) => idFromUrl === 'all items' || idFromUrl === product.item_group).map((product) => (
                                 <ProductCard

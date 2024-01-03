@@ -12,3 +12,14 @@
   transition: filter 0.5s linear;
 }
 
+.grid-cols-auto {
+  grid-template-columns: auto auto auto
+}
+
+.main-section {
+  @apply max-w-[1536px] m-auto p-10
+}
+
+.primary-heading {
+  @apply text-2xl font-bold
+}

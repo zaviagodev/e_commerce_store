@@ -7,12 +7,18 @@ import OrderHistory from '../components/OrderHistory'
 const Profile = () => {
     const [randomKey, setrandomKey] = useState(0)
     return (
-        <div className='grid lg:grid-cols-2 lg:grid-rows-2 grid-rows-4 grid-cols-1  place-items-center grid-flow-dense'>
-            <ProfileCard />
-            <OrderHistory className="sm:block hidden"/>
-            <AddressForm onSuccess={() => setrandomKey(randomKey + 1)} />
-            <AddressListing randomKey={randomKey} />
-        </div>
+        <main className='main-section'>
+          <div className='flex gap-x-10'>
+            <div className='w-1/3'>
+              <ProfileCard />
+              <OrderHistory className="sm:block hidden"/>
+            </div>
+            <div className='w-2/3'>
+              <AddressForm onSuccess={() => setrandomKey(randomKey + 1)} />
+              <AddressListing randomKey={randomKey} />
+            </div>
+          </div>
+        </main>
     )
 }
 

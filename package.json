@@ -11,5 +11,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {}
+  "devDependencies": {
+    "postcss-import": "^15.1.0"
+  }
 }

@@ -27,15 +27,13 @@ const ProductCard = ({
     }
     return (
         
-            <div className="border border-neutral-200 rounded-md hover:shadow-lg max-w-[300px]">
+            <div className="border border-neutral-200 rounded-md hover:shadow-lg">
                 <div className="relative">
                     <Link to={`/products/${productId}`}>
                         <img
                             src={thumbnail}
                             alt={title}
-                            className="object-cover h-auto rounded-md aspect-square"
-                            width="300"
-                            height="300"
+                            className="object-cover h-auto rounded-md aspect-square w-full"
                         />
                     </Link>
                     <SfButton

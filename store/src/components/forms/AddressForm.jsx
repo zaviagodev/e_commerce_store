@@ -9,7 +9,6 @@ import { addressSchema } from './addressFormSchema';
 const countries = ['Thailand', 'Pakistan', 'Germany', 'Great Britain', 'Poland', 'United States of America'];
 const states = ['Sindh', 'Punjab', 'Balochistan', 'KPK', 'Florida', 'New York', 'Texas'];
 
-
 const AddressForm = ({
     onSuccess = () => { },
 }) => {
@@ -44,7 +43,7 @@ const AddressForm = ({
             <h2 className="w-full typography-headline-4 md:typography-headline-3 font-bold">Billing address</h2>
             <div className="w-full md:w-auto flex-grow flex flex-col gap-0.5">
                 <label>
-                    <span className="typography-text-sm font-medium">Adress line 1</span>
+                    <span className="typography-text-sm font-medium">Address line 1</span>
                     <SfInput
                         name="address_line1"
                         className="mt-0.5"
@@ -60,7 +59,7 @@ const AddressForm = ({
             </div>
             <div className="w-full flex flex-col gap-0.5 md:w-1/2">
                 <label>
-                    <span className="typography-text-sm font-medium">Adress line 2</span>
+                    <span className="typography-text-sm font-medium">Address line 2</span>
                     <SfInput name="address_line2" className="mt-0.5" onChange={formik.handleChange} value={formik.values.address_line2} />
                 </label>
                 <small className="typography-text-xs text-neutral-500">Optional</small>
