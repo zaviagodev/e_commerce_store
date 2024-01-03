@@ -6,3 +6,6 @@ tags
 .env
 e_commerce_store/docs/current
 node_modules/
+e_commerce_store/public/node_modules
+e_commerce_store/public/store/
+e_commerce_store/www/index.html
