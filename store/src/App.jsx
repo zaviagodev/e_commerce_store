@@ -68,8 +68,6 @@ export const AppWrapper = () => {
           token: () => import.meta.env.VITE_TOKEN_API ? `${import.meta.env.VITE_TOKEN_API}:${import.meta.env.VITE_TOKEN_SECRET}` : getToken,
         } : null
     }>
-      <OrderProvider>
-
       <UserProvider>
       <OrderProvider>
       <ProductsProvider>
@@ -81,7 +79,6 @@ export const AppWrapper = () => {
       </ProductsProvider>
       </OrderProvider>
       </UserProvider>
-
     </FrappeProvider>
   )
 }
