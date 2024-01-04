@@ -49,7 +49,7 @@ const Product = () => {
                 >
                     <div className="absolute inline-flex items-center justify-center text-sm font-medium text-white bg-secondary-600 py-1.5 px-3 mb-4">
                         <SfIconSell size="sm" className="mr-1.5" />
-                        Sale
+                        {product?.discount}
                     </div>
                     <div className="flex justify-center h-full basis-full shrink-0 grow snap-center">
                         <img
@@ -65,7 +65,7 @@ const Product = () => {
                 <h1 className="mb-1 font-bold typography-headline-4">
                     {product?.item_name}
                 </h1>
-                <strong className="block font-bold typography-headline-3">{product?.formatted_price}</strong>
+                <span className='flex flex-row items-center justify-start gap-2'>{product?.formated_mrp && <strong className="block font-bold typography-headline-3 line-through">{product?.formatted_mrp}</strong>}<strong className=' block font-bold typography-headline-3'>{product?.formatted_price}</strong></span>
                 <div dangerouslySetInnerHTML={{ __html: product?.short_description }} />
                 <div className="py-4 mb-4 border-gray-200 border-y">
                     {

@@ -19,7 +19,6 @@ function SingleorderHistory() {
 
 
     useEffect(() => {
-        console.log(Order)
         if(Order.length > 0){
             if(products.length > 0){
                 const temp = getOrderByOrderCode(id)
@@ -34,8 +33,7 @@ function SingleorderHistory() {
 
     return (  
         <div>
-            <h1>SingleorderHistory</h1>
-            <h2>Order Details</h2>
+            <h1>Order Details</h1>
             <div>
                 <p>Order Code: {order.name}</p>
                 <p>Order Status: {order.status}</p>
@@ -43,9 +41,10 @@ function SingleorderHistory() {
                 <p>Order Date: {`${new Date(order.creation).getDate()} ${month[new Date(order.creation).getMonth()]}, ${new Date(order.creation).getHours()}:${new Date(order.creation).getMinutes() < 10 ? '0' + new Date(order.creation).getMinutes(): new Date(order.creation).getMinutes() }  `}</p>
             </div>
             <h2>Shipping Details</h2>
+            {order.address_display}
             <AddressCard title={order.shipping_address} addressLine2={order.shipping_country} city={order.shipping_city} state={order.shipping_pincode} country={order.shipping_country} ></AddressCard>
             <div>
-                <p>Shipping Phone: {order.shipping_phone}</p>
+                <p>Shipping Phone: {order.custom_phone_number}</p>
             </div>
             <h2>Purchased items</h2>
             <div>
@@ -55,6 +54,7 @@ function SingleorderHistory() {
                 title={product.web_item_name}
                 productId={product.name}
                 itemCode={product.item_code}
+                salesPrice={product.formatted_mrp}
                 price={product.formatted_price}
                 thumbnail={product.website_image ? product.website_image : "https://storage.googleapis.com/sfui_docs_artifacts_bucket_public/production/sneakers.png"}
                 isGift={product?.item_group === "Gift" || product?.item_group === "Gift and Cards"}

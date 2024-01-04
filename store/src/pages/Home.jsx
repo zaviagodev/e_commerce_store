@@ -30,6 +30,7 @@ const Home = () => {
                                     itemCode={product.item_code}
                                     price={product.formatted_price}
                                     thumbnail={product.website_image}
+                                    salesPrice={product.formatted_mrp}
                                     isGift={product?.item_group === "Gift" || product?.item_group === "Gift and Cards"}
                                 />
                             ))}

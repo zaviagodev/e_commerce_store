@@ -15,6 +15,7 @@ export const CartProvider = ({ children }) => {
     const cartCount = Object.keys(cart).reduce((total, itemCode) => {
         return total + cart[itemCode]
     }, 0)
+
     const { getByItemCode } = useProducts()
 
     useEffect(() => {

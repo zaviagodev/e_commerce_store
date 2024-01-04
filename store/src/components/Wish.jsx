@@ -1,5 +1,5 @@
 import React from 'react'
-import {  SfDrawer, useTrapFocus } from '@storefront-ui/react'
+import {  SfDrawer, useTrapFocus, SfLoaderCircular } from '@storefront-ui/react'
 import { CSSTransition } from 'react-transition-group';
 import { useWish } from '../hooks/useWishe'
 import { useProducts } from '../hooks/useProducts'
@@ -11,7 +11,7 @@ const Wish = () => {
     const { Wish, removeFromWish, isOpen, setIsOpen } = useWish()
     const nodeRef = useRef(null);
     const drawerRef = useRef(null);
-    const { getByItemCode } = useProducts()
+    const { getByItemCode, isLoading } = useProducts()
 
 
     useTrapFocus(drawerRef, { activeState: isOpen });
@@ -56,6 +56,7 @@ const Wish = () => {
                             <div className="flow-root">
                                 <ul role="list" className="-my-6 divide-y divide-gray-200">
                                     {
+                                        isLoading ? <SfLoaderCircular/> :
                                         Object.entries(Wish).map(([itemCode]) => {
                                             const product = getByItemCode(itemCode)
                                             return (

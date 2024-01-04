@@ -12,7 +12,7 @@ const Cart = () => {
     const { cart, cartCount, addToCart, removeFromCart, getTotal, isOpen, setIsOpen, loading } = useCart()
     const nodeRef = useRef(null);
     const drawerRef = useRef(null);
-    const { getByItemCode } = useProducts()
+    const { getByItemCode, isLoading } = useProducts()
     const navigate = useNavigate()
 
 
@@ -56,8 +56,8 @@ const Cart = () => {
                         <div className="mt-8">
                             <div className="flow-root">
                                 <ul role="list" className="-my-6 divide-y divide-gray-200">
-                                    {
-                                        Object.entries(cart).map(([itemCode, qty]) => {
+                                    {isLoading ? <SfLoaderCircular /> :
+                                        Object.entries(cart).map(([itemCode]) => {
                                             const product = getByItemCode(itemCode)
                                             return (
                                                 <li key={itemCode} className="flex py-6">
