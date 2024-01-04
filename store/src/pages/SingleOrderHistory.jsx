@@ -14,12 +14,14 @@ function SingleorderHistory() {
     const [loading, setLoading] = useState(true)
     const [order, setOrder] = useState({})
     const [itemsList, setItemsList] = useState([])
+    const [adressParts, setAdress] = useState([])
 
 
 
 
     useEffect(() => {
         if(Order.length > 0){
+
             if(products.length > 0){
                 const temp = getOrderByOrderCode(id)
                 setOrder(temp)
@@ -29,7 +31,10 @@ function SingleorderHistory() {
                 setLoading(false)
             }
         }
-    }, [Order, products])
+        if(adressParts.length === 0 && order.address_display){
+            setAdress(order.address_display.split('<br>'))
+        }
+    }, [Order, products,order])
 
     return (  
         <div>
@@ -41,8 +46,7 @@ function SingleorderHistory() {
                 <p>Order Date: {`${new Date(order.creation).getDate()} ${month[new Date(order.creation).getMonth()]}, ${new Date(order.creation).getHours()}:${new Date(order.creation).getMinutes() < 10 ? '0' + new Date(order.creation).getMinutes(): new Date(order.creation).getMinutes() }  `}</p>
             </div>
             <h2>Shipping Details</h2>
-            {order.address_display}
-            <AddressCard title={order.shipping_address} addressLine2={order.shipping_country} city={order.shipping_city} state={order.shipping_pincode} country={order.shipping_country} ></AddressCard>
+            <AddressCard title={adressParts[0]} addressLine2={adressParts[1]}  city={adressParts[2]} state={adressParts[3]} country={adressParts[4]} ></AddressCard>
             <div>
                 <p>Shipping Phone: {order.custom_phone_number}</p>
             </div>
