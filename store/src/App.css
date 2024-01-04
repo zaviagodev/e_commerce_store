@@ -3,6 +3,34 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --primary: #323334;
+    --secondary: #7869E3;
+    --text-tag: #000000;
+    --button-primary: #000000;
+    --button-primary-foreground: #FFFFFF;
+    --button-secondary: #F6F6F6;
+    --button-secondary-foreground: #6C6C6C;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+    --radius: 0.5rem;
+  }
+}
+
 .loading {
   filter: blur(10px);
   clip-path: inset(0);
@@ -12,9 +40,9 @@
   transition: filter 0.5s linear;
 }
 
-.grid-cols-auto {
+/* .grid-cols-auto {
   grid-template-columns: auto auto auto
-}
+} */
 
 .main-section {
   @apply max-w-[1536px] m-auto p-10

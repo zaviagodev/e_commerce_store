@@ -29,7 +29,7 @@ const ProductCard = ({
     }
     return (
         
-            <div className="border border-neutral-200 rounded-md hover:shadow-lg">
+            <div className="border border-neutral-200 rounded-md hover:shadow-lg w-full h-full">
                 <div className="relative">
                     <Link to={`/products/${productId}`}>
                         <img
@@ -47,30 +47,29 @@ const ProductCard = ({
                         className="absolute bottom-2 right-2  bg-white ring-1 ring-inset ring-neutral-200 !rounded-full z-50"
                         aria-label="Add to wishlist"
                     >
-                        <SfIconFavorite className={`${Wish[itemCode] == 1 && 'text-primary-600'}`}  size="sm" />
+                        <SfIconFavorite className={`${Wish[itemCode] == 1 && 'text-primary'}`}  size="sm" />
                     </SfButton>
                 </div>
-                <div className="p-4 border-t border-neutral-200">
-                    <SfLink href="#" variant="secondary" className="no-underline">
-                        {title} {isGift && <span className="text-primary-600">- Gift</span>}
-                    </SfLink>
-                    <div className="flex items-center pt-1">
-                        <SfRating size="xs" value={5} max={5} />
-
-                        <SfLink href="#" variant="secondary" className="pl-1 no-underline">
-                            <SfCounter size="xs">{123}</SfCounter>
+                <div className="p-4 border-t border-neutral-200 flex flex-col justify-between">
+                    <div className='flex flex-col mb-2'>
+                        <SfLink href="#" variant="secondary" className="text-texttag text-sm no-underline">
+                            {title} {isGift && <span className="text-primary">- Gift</span>}
                         </SfLink>
+                        <p className="text-primary text-sm">
+                            {description}
+                        </p>
+                        <span className="block text-sm text-primary">{price}</span>
                     </div>
                     <p className="block py-2 font-normal typography-text-sm text-neutral-700">
                         {description}
                     </p>
                     <span className='flex flex-row pb-2 items-center justify-start gap-2'>{salesPrice && <strong className="block font-bold typography-headline-3 line-through">{salesPrice}</strong>}<strong className=' block font-bold typography-headline-3'>{price}</strong></span>
-                    {/*<SfButton disabled={loading} type="button" size="sm" slotPrefix={<SfIconShoppingCart size="sm" />} onClick={(e) => {
+                    {/*<SfButton disabled={loading} className='bg-btn-primary text-btn-primary-foreground' type="button" size="sm" slotPrefix={<SfIconShoppingCart size="sm" />} onClick={(e) => {
                         e.preventDefault();
                         addToCart(itemCode, cart[itemCode] ? cart[itemCode] + 1 : 1)
                     }}>
                        {loading ? <SfLoaderCircular/> : 'Add to cart'}
-                    </SfButton>*/}
+                    </SfButton> */}
                 </div>
             </div>
         

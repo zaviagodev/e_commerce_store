@@ -38,12 +38,11 @@ const Product = () => {
 
 
     return (
-        <main className="mx-auto p-4">
-            <div className="relative flex w-full max-h-[600px] aspect-[4/3] ">
+        <main className="main-section flex">
+            <div className="relative flex w-full aspect-[4/3] w-1/2">
                 <SfScrollable
-                    className="relative w-full h-full snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+                    className="relative [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
                     direction="vertical"
-                    wrapperClassName="h-full"
                     buttonsPlacement="none"
                     drag={{ containerWidth: true }}
                 >
@@ -51,17 +50,15 @@ const Product = () => {
                         <SfIconSell size="sm" className="mr-1.5" />
                         {product?.discount}
                     </div>
-                    <div className="flex justify-center h-full basis-full shrink-0 grow snap-center">
-                        <img
-                            src={`${product?.website_image}`}
-                            className="object-contain w-auto h-full"
-                            aria-label={product?.website_image}
-                            alt={product?.website_image}
-                        />
-                    </div>
+                    <img
+                        src={`${import.meta.env.VITE_ERP_URL}${product?.website_image}`}
+                        className="object-contain w-auto h-full"
+                        aria-label={product?.website_image}
+                        alt={product?.website_image}
+                    />
                 </SfScrollable>
             </div>
-            <section className="md:max-w-[640px] mt-4 md:mt-6">
+            <section className="mt-4 md:mt-6 w-1/2">
                 <h1 className="mb-1 font-bold typography-headline-4">
                     {product?.item_name}
                 </h1>
