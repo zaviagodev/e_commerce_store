@@ -10,5 +10,5 @@ class StorefrontWebsiteSettings(Document):
 
 
 def get_website_settings():
-	website_settings = frappe.get_all("Storefront Website Settings", fields=["*"])
+	website_settings = frappe.get_all("Storefront Website Settings")
 	return website_settings

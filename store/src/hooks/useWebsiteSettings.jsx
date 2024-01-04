@@ -9,7 +9,7 @@ const SettingContext = createContext(null);
 
 export const SettingProvider = ({ children }) => {
 
-    const [settings, setSettings] = useState(null);
+    const [settings, setSettings] = useState([]);
 
     const { mutate } = useFrappeGetCall('headless_e_commerce.api.get_websiteSettings', undefined, undefined, {
         isOnline: () => settings.length === 0,
