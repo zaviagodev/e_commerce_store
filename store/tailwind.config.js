@@ -17,18 +17,18 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}', './node_modules/@storefront-ui/react/**/*.{js,mjs}'],
   theme: {
     extend: {
+      zIndex: {
+        99: 99
+      },
       gridTemplateColumns: {
-        grid: {
-          cols: {
-            auto: 'auto auto auto'
-          }
-        }
+        auto: 'auto auto auto'
       },
       colors: {
         primary: 'var(--primary)',
         secondary: 'var(--secondary)',
         texttag: 'var(--text-tag)',
         destructive: 'var(--destructive)',
+        muted: 'var(--muted)',
         btn: {
           primary: {
             DEFAULT: 'var(--button-primary)',

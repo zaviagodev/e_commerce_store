@@ -46,7 +46,7 @@ const Product = () => {
                     buttonsPlacement="none"
                     drag={{ containerWidth: true }}
                 >
-                    <div className="absolute inline-flex items-center justify-center text-sm font-medium text-white bg-destructive py-1.5 px-3 mb-4">
+                    <div className="absolute inline-flex items-center justify-center text-sm font-medium text-muted bg-destructive py-1.5 px-3 mb-4">
                         <SfIconSell size="sm" className="mr-1.5" />
                         {product?.discount}
                     </div>
@@ -59,11 +59,14 @@ const Product = () => {
                 </SfScrollable>
             </div>
             <section className="mt-4 md:mt-6 w-1/2">
-                <h1 className="mb-1 font-bold typography-headline-4">
+                <h1 className="mb-1 font-bold typography-headline-4 text-texttag">
                     {product?.item_name}
                 </h1>
-                <span className='flex flex-row items-center justify-start gap-2'>{product?.formated_mrp && <strong className="block font-bold typography-headline-3 line-through">{product?.formatted_mrp}</strong>}<strong className=' block font-bold typography-headline-3'>{product?.formatted_price}</strong></span>
                 <div dangerouslySetInnerHTML={{ __html: product?.short_description }} />
+                <span className='flex flex-row items-center justify-start gap-2 mb-4'>
+                    {product?.formatted_mrp && <strong className="block font-bold typography-headline-3 line-through">{product?.formatted_mrp}</strong>}
+                    <strong className={`block font-bold typography-headline-3 text-lg ${product?.formatted_mrp ? 'text-destructive' : 'text-primary'}`}>{product?.formatted_price}</strong>
+                </span>
                 <div className="py-4 mb-4 border-gray-200 border-y">
                     {
                         cart[product?.item_code] && (
@@ -79,7 +82,7 @@ const Product = () => {
                                     type="button"
                                     variant="tertiary"
                                     square
-                                    className="rounded-r-none p-3 bg-btn-primary text-btn-primary-foreground"
+                                    className="rounded-r-none p-3"
                                     disabled={value <= min}
                                     aria-controls={inputId}
                                     aria-label="Decrease value"
@@ -119,7 +122,7 @@ const Product = () => {
                         </SfButton>
                     </div>
                 </div>
-                <div className='mb-4' dangerouslySetInnerHTML={{ __html: product?.web_long_description }} />
+                <div className='mb-4 whitespace-normal' dangerouslySetInnerHTML={{ __html: product?.web_long_description }} />
                 <div className="flex first:mt-4">
                     <SfIconPackage size="sm" className="flex-shrink-0 mr-1 text-neutral-500" />
                     <p className="text-sm">

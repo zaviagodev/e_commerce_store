@@ -37,9 +37,9 @@ const Cart = () => {
                 placement='right'
                 open
                 onClose={() => setIsOpen(false)}
-                className="bg-neutral-50 border border-gray-300 z-10 lg:w-[600px] md:w-[400px] w-full"
+                className="bg-neutral-50 border border-gray-300 z-99 lg:w-[600px] md:w-[400px] w-full"
             >
-                <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
+                <div className="flex h-full flex-col overflow-y-auto bg-white shadow-xl">
                     <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
                         <div className="flex items-start justify-between">
                             <h2 className="text-lg font-medium text-gray-900" id="slide-over-title">Shopping cart</h2>
@@ -68,7 +68,7 @@ const Cart = () => {
                                                     <div className="ml-4 flex flex-1 flex-col">
                                                         <div>
                                                             <div className="flex justify-between text-base font-medium text-gray-900">
-                                                                <h3>
+                                                                <h3 className='text-texttag'>
                                                                     <Link to={`/products/${product?.name}`} >{product?.web_item_name}</Link>
                                                                 </h3>
                                                                 <p className="ml-4">{product?.formatted_price}</p>
@@ -114,7 +114,7 @@ const Cart = () => {
                                                                 </div>
                                                             </div>
                                                             <div className="flex">
-                                                                <button disabled={loading} onClick={() => removeFromCart(itemCode)} type="button" className="font-medium text-primary-700 hover:text-primary-600 disabled:text-slate-400 disabled:cursor-not-allowed">Remove</button>
+                                                                <button disabled={loading} onClick={() => removeFromCart(itemCode)} type="button" className="font-medium text-secondary disabled:text-destructive disabled:cursor-not-allowed">Remove</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -133,8 +133,8 @@ const Cart = () => {
                             <p>Subtotal</p>
                             <p>฿ {getTotal()}</p>
                         </div>
-                        <p className="my-1 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
-                        <SfButton className="w-full" disabled={cartCount == 0} onClick={() => { setIsOpen(false); navigate("/checkout"); }}>
+                        <p className="my-2 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
+                        <SfButton className="w-full text-btn-primary-foreground bg-btn-primary" disabled={cartCount == 0} onClick={() => { setIsOpen(false); navigate("/checkout"); }}>
                             {loading ? <SfLoaderCircular/> :  'Checkout'}
                         </SfButton>
                     </div>
