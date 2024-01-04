@@ -15,6 +15,7 @@ export const CartProvider = ({ children }) => {
     const cartCount = Object.keys(cart).reduce((total, itemCode) => {
         return total + cart[itemCode]
     }, 0)
+
     const { getByItemCode } = useProducts()
 
     useEffect(() => {
@@ -23,16 +24,14 @@ export const CartProvider = ({ children }) => {
         if(Object.keys(cart).length === 0 && !result && !loading )
         {
             const cartObject = JSON.parse(cartStorage);
-            if(cartObject)
-            {            
-                setCart(cartObject)
-                (async () => {
-                    for (const [itemCode, value] of Object.entries(cartObject)) {
-                        await call({"item_code" : itemCode, 'qty' : value})
-                    }
-                    mutateItemsList()
-                })();
-            }
+            if(!cartObject)  return;
+            setCart(cartObject)
+            async() => {
+                for (const [itemCode, value] of Object.entries(cartObject)) {
+                    await call({"item_code" : itemCode, 'qty' : value})
+                }
+                mutateItemsList()
+            };
         }
     }, [])
 

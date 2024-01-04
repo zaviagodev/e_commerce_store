@@ -12,7 +12,9 @@ const ProductCard = ({
     price,
     productId,
     itemCode,
-    isGift
+    isGift,
+    salesPrice,
+    discount,
 }) => {
     const { Wish,addToWish, removeFromWish } = useWish()
     const { cart, addToCart, loading } = useCart()
@@ -58,12 +60,16 @@ const ProductCard = ({
                         </p>
                         <span className="block text-sm text-primary">{price}</span>
                     </div>
-                    <SfButton disabled={loading} className='bg-btn-primary text-btn-primary-foreground' type="button" size="sm" slotPrefix={<SfIconShoppingCart size="sm" />} onClick={(e) => {
+                    <p className="block py-2 font-normal typography-text-sm text-neutral-700">
+                        {description}
+                    </p>
+                    <span className='flex flex-row pb-2 items-center justify-start gap-2'>{salesPrice && <strong className="block font-bold typography-headline-3 line-through">{salesPrice}</strong>}<strong className=' block font-bold typography-headline-3'>{price}</strong></span>
+                    {/*<SfButton disabled={loading} className='bg-btn-primary text-btn-primary-foreground' type="button" size="sm" slotPrefix={<SfIconShoppingCart size="sm" />} onClick={(e) => {
                         e.preventDefault();
                         addToCart(itemCode, cart[itemCode] ? cart[itemCode] + 1 : 1)
                     }}>
                        {loading ? <SfLoaderCircular/> : 'Add to cart'}
-                    </SfButton>
+                    </SfButton> */}
                 </div>
             </div>
         
@@ -77,5 +83,7 @@ ProductCard.propTypes = {
     thumbnail: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     description: PropTypes.string.isRequired,
-    productId: PropTypes.string.isRequired
+    productId: PropTypes.string.isRequired,
+    salesPrice: PropTypes.number,
+    discount: PropTypes.string,
 };
