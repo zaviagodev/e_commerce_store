@@ -8,7 +8,6 @@ const Home = () => {
     const { updateCurrentUser } = useFrappeAuth();
     const { products } = useProducts()
 
-    console.log(products)
 
     const idFromUrl = useParams().itemsgroup;
 

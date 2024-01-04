@@ -20,6 +20,7 @@ import OrderHistory from "./pages/OrderHistory";
 import SingleOrderHistory from "./pages/SingleOrderHistory";
 import { WishProvider } from "./hooks/useWishe";
 import Wish from "./components/Wish";
+import { SettingProvider } from "./hooks/useWebsiteSettings";
 
 
 const Layer = () => {
@@ -69,6 +70,7 @@ export const AppWrapper = () => {
         } : null
     }>
       <UserProvider>
+      <SettingProvider>
       <OrderProvider>
       <ProductsProvider>
       <WishProvider>
@@ -78,6 +80,7 @@ export const AppWrapper = () => {
       </WishProvider>
       </ProductsProvider>
       </OrderProvider>
+      </SettingProvider>
       </UserProvider>
     </FrappeProvider>
   )

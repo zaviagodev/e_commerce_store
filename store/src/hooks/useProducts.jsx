@@ -51,6 +51,10 @@ export const ProductsProvider = ({ children }) => {
         return p
     }
 
+    const getProductsCodeInCart= () => {
+        return products.filter((product) => product.in_cart == true).map((product) => product.item_code).flat()
+    }
+
 
     const getProductGroups = () => {
         return mainGroup
@@ -75,6 +79,7 @@ export const ProductsProvider = ({ children }) => {
             isLoading,
             getWishedProducts,
             getItemByCategorie,
+            getProductsCodeInCart
             }}>
             {children}
         </ProductsContext.Provider>

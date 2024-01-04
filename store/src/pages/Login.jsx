@@ -59,7 +59,6 @@ export default function Login() {
 
 
     useEffect(() => {
-        console.log(getToken(), currentUser);
         if (getToken() || currentUser) {
             navigate("/home/all items");
         }
