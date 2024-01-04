@@ -11,8 +11,8 @@ export const SettingProvider = ({ children }) => {
 
     const [settings, setSettings] = useState(null);
 
-    const { mutate } = useFrappeGetCall('headless_e_commerce.api.get_website_settings', undefined, undefined, {
-        isOnline: () => getToken(),
+    const { mutate } = useFrappeGetCall('headless_e_commerce.api.get_websiteSettings', undefined, undefined, {
+        isOnline: () => settings.length === 0,
         onSuccess: (data) => {
             setSettings(data.message)
             console.log(data.message)
