@@ -134,7 +134,7 @@ const Cart = () => {
                             <p>฿ {getTotal()}</p>
                         </div>
                         <p className="my-2 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
-                        <SfButton className="w-full text-btn-primary-foreground bg-btn-primary" disabled={cartCount == 0} onClick={() => { setIsOpen(false); navigate("/checkout"); }}>
+                        <SfButton className="w-full btn-primary" disabled={cartCount == 0} onClick={() => { setIsOpen(false); navigate("/checkout"); }}>
                             {loading ? <SfLoaderCircular/> :  'Checkout'}
                         </SfButton>
                     </div>

@@ -236,7 +236,7 @@ const Checkout = () => {
                                     wrapperClassName="grow"
                                     onChange={(event) => setInputValue(event.target.value)}
                                 />
-                                <SfButton type="submit" className='bg-btn-primary text-btn-primary-foreground'>
+                                <SfButton type="submit" className='btn-primary'>
                                     Apply
                                 </SfButton>
                             </form>
@@ -257,7 +257,7 @@ const Checkout = () => {
                             value={formik.values.loyalty_points}
                             onChange={formik.handleChange}
                         />
-                        <SfButton size="lg" className="w-full mt-4 bg-btn-primary text-btn-primary-foreground" onClick={formik.handleSubmit}>
+                        <SfButton size="lg" className="w-full mt-4 btn-primary" onClick={formik.handleSubmit}>
                             Place Order
                         </SfButton>
                         <div className="typography-text-sm mt-4 text-center text-primary">

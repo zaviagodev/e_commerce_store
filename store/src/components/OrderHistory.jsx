@@ -35,7 +35,7 @@ function OrderHistory() {
             )
             : <SfLoaderCircular/>}
         </div>
-            <Link to='/order-history'><SfButton href="#"  variant="tertiary" className="text-btn-primary-foreground bg-btn-primary">View History</SfButton></Link>
+            <Link to='/order-history'><SfButton href="#"  variant="tertiary" className="btn-primary">View History</SfButton></Link>
         </div> 
     );
 }

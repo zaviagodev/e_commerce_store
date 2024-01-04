@@ -36,10 +36,9 @@ const Product = () => {
         set(Number(clamp(nextValue, min, max)));
     }
 
-
     return (
-        <main className="main-section flex">
-            <div className="relative flex w-full aspect-[4/3] w-1/2">
+        <main className="main-section grid grid-cols-1 lg:grid-cols-2">
+            <div className="relative flex w-full aspect-[4/3]">
                 <SfScrollable
                     className="relative [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
                     direction="vertical"
@@ -58,7 +57,7 @@ const Product = () => {
                     />
                 </SfScrollable>
             </div>
-            <section className="mt-4 md:mt-6 w-1/2">
+            <section className="mt-4 md:mt-6">
                 <h1 className="mb-1 font-bold typography-headline-4 text-texttag">
                     {product?.item_name}
                 </h1>
@@ -117,40 +116,12 @@ const Product = () => {
                                 <strong className="text-neutral-900">{product?.in_stock ? "✔ In Stock" : "❌ sold out"}</strong>
                             </p>
                         </div>
-                        <SfButton disabled={loading}  onClick={() => addToCart(product?.item_code, cart[product?.item_code] ? cart[product?.item_code] + value : value)} type="button" size="lg" className="w-full xs:ml-4 text-btn-primary-foreground bg-btn-primary" slotPrefix={<SfIconShoppingCart size="sm" />}>
+                        <SfButton disabled={loading}  onClick={() => addToCart(product?.item_code, cart[product?.item_code] ? cart[product?.item_code] + value : value)} type="button" size="lg" className="w-full xs:ml-4 btn-primary" slotPrefix={<SfIconShoppingCart size="sm" />}>
                             {loading ? <SfLoaderCircular/> : 'Add to cart'}
                         </SfButton>
                     </div>
                 </div>
-                <div className='mb-4 whitespace-normal' dangerouslySetInnerHTML={{ __html: product?.web_long_description }} />
-                <div className="flex first:mt-4">
-                    <SfIconPackage size="sm" className="flex-shrink-0 mr-1 text-neutral-500" />
-                    <p className="text-sm">
-                        Free shipping, arrives by Thu, Apr 7. Want it faster?
-                        <SfLink href="#" variant="secondary" className="mx-1 text-secondary no-underline">
-                            Add an address
-                        </SfLink>
-                        to see options
-                    </p>
-                </div>
-                <div className="flex mt-4">
-                    <SfIconWarehouse size="sm" className="flex-shrink-0 mr-1 text-neutral-500" />
-                    <p className="text-sm">
-                        Pickup not available at your shop.
-                        <SfLink href="#" variant="secondary" className="ml-1 text-secondary no-underline">
-                            Check availability nearby
-                        </SfLink>
-                    </p>
-                </div>
-                <div className="flex mt-4">
-                    <SfIconSafetyCheck size="sm" className="flex-shrink-0 mr-1 text-neutral-500" />
-                    <p className="text-sm">
-                        Free 30-days returns.
-                        <SfLink href="#" variant="secondary" className="ml-1 text-secondary no-underline">
-                            Details
-                        </SfLink>
-                    </p>
-                </div>
+                <div className='mb-4 whitespace-normal overflow-hidden' dangerouslySetInnerHTML={{ __html: product?.web_long_description }} />
             </section>
         </main >
     )

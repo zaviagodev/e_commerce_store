@@ -64,7 +64,7 @@ const ProductCard = ({
                         </span>
                     </div>
                     
-                    {/*<SfButton disabled={loading} className='bg-btn-primary text-btn-primary-foreground' type="button" size="sm" slotPrefix={<SfIconShoppingCart size="sm" />} onClick={(e) => {
+                    {/*<SfButton disabled={loading} className='btn-primary' type="button" size="sm" slotPrefix={<SfIconShoppingCart size="sm" />} onClick={(e) => {
                         e.preventDefault();
                         addToCart(itemCode, cart[itemCode] ? cart[itemCode] + 1 : 1)
                     }}>
