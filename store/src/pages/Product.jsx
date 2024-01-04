@@ -46,7 +46,7 @@ const Product = () => {
                     buttonsPlacement="none"
                     drag={{ containerWidth: true }}
                 >
-                    <div className="absolute inline-flex items-center justify-center text-sm font-medium text-white bg-secondary-600 py-1.5 px-3 mb-4">
+                    <div className="absolute inline-flex items-center justify-center text-sm font-medium text-white bg-destructive py-1.5 px-3 mb-4">
                         <SfIconSell size="sm" className="mr-1.5" />
                         {product?.discount}
                     </div>
@@ -79,7 +79,7 @@ const Product = () => {
                                     type="button"
                                     variant="tertiary"
                                     square
-                                    className="rounded-r-none p-3"
+                                    className="rounded-r-none p-3 bg-btn-primary text-btn-primary-foreground"
                                     disabled={value <= min}
                                     aria-controls={inputId}
                                     aria-label="Decrease value"
@@ -114,17 +114,17 @@ const Product = () => {
                                 <strong className="text-neutral-900">{product?.in_stock ? "✔ In Stock" : "❌ sold out"}</strong>
                             </p>
                         </div>
-                        <SfButton disabled={loading}  onClick={() => addToCart(product?.item_code, cart[product?.item_code] ? cart[product?.item_code] + value : value)} type="button" size="lg" className="w-full xs:ml-4" slotPrefix={<SfIconShoppingCart size="sm" />}>
+                        <SfButton disabled={loading}  onClick={() => addToCart(product?.item_code, cart[product?.item_code] ? cart[product?.item_code] + value : value)} type="button" size="lg" className="w-full xs:ml-4 text-btn-primary-foreground bg-btn-primary" slotPrefix={<SfIconShoppingCart size="sm" />}>
                             {loading ? <SfLoaderCircular/> : 'Add to cart'}
                         </SfButton>
                     </div>
                 </div>
-                <div dangerouslySetInnerHTML={{ __html: product?.web_long_description }} />
+                <div className='mb-4' dangerouslySetInnerHTML={{ __html: product?.web_long_description }} />
                 <div className="flex first:mt-4">
                     <SfIconPackage size="sm" className="flex-shrink-0 mr-1 text-neutral-500" />
                     <p className="text-sm">
                         Free shipping, arrives by Thu, Apr 7. Want it faster?
-                        <SfLink href="#" variant="secondary" className="mx-1">
+                        <SfLink href="#" variant="secondary" className="mx-1 text-secondary no-underline">
                             Add an address
                         </SfLink>
                         to see options
@@ -134,7 +134,7 @@ const Product = () => {
                     <SfIconWarehouse size="sm" className="flex-shrink-0 mr-1 text-neutral-500" />
                     <p className="text-sm">
                         Pickup not available at your shop.
-                        <SfLink href="#" variant="secondary" className="ml-1">
+                        <SfLink href="#" variant="secondary" className="ml-1 text-secondary no-underline">
                             Check availability nearby
                         </SfLink>
                     </p>
@@ -143,7 +143,7 @@ const Product = () => {
                     <SfIconSafetyCheck size="sm" className="flex-shrink-0 mr-1 text-neutral-500" />
                     <p className="text-sm">
                         Free 30-days returns.
-                        <SfLink href="#" variant="secondary" className="ml-1">
+                        <SfLink href="#" variant="secondary" className="ml-1 text-secondary no-underline">
                             Details
                         </SfLink>
                     </p>

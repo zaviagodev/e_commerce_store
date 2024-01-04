@@ -28,6 +28,7 @@ export default {
         primary: 'var(--primary)',
         secondary: 'var(--secondary)',
         texttag: 'var(--text-tag)',
+        destructive: 'var(--destructive)',
         btn: {
           primary: {
             DEFAULT: 'var(--button-primary)',
