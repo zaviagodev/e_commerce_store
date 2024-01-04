@@ -23,16 +23,14 @@ export const CartProvider = ({ children }) => {
         if(Object.keys(cart).length === 0 && !result && !loading )
         {
             const cartObject = JSON.parse(cartStorage);
-            if(cartObject)
-            {            
-                setCart(cartObject)
-                (async () => {
-                    for (const [itemCode, value] of Object.entries(cartObject)) {
-                        await call({"item_code" : itemCode, 'qty' : value})
-                    }
-                    mutateItemsList()
-                })();
-            }
+            if(!cartObject)  return;
+            setCart(cartObject)
+            async() => {
+                for (const [itemCode, value] of Object.entries(cartObject)) {
+                    await call({"item_code" : itemCode, 'qty' : value})
+                }
+                mutateItemsList()
+            };
         }
     }, [])
 
