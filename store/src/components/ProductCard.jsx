@@ -58,12 +58,9 @@ const ProductCard = ({
                         <p className="text-primary text-sm">
                             {description}
                         </p>
-                        <span className="block text-sm text-primary">{price}</span>
+                        <span className='flex flex-row pb-2 items-center justify-start gap-2'>{salesPrice && <strong className="block text-sm text-primary line-through">{salesPrice}</strong>}<strong className=' block text-sm text-primary'>{price}</strong></span>
                     </div>
-                    <p className="block py-2 font-normal typography-text-sm text-neutral-700">
-                        {description}
-                    </p>
-                    <span className='flex flex-row pb-2 items-center justify-start gap-2'>{salesPrice && <strong className="block font-bold typography-headline-3 line-through">{salesPrice}</strong>}<strong className=' block font-bold typography-headline-3'>{price}</strong></span>
+                    
                     {/*<SfButton disabled={loading} className='bg-btn-primary text-btn-primary-foreground' type="button" size="sm" slotPrefix={<SfIconShoppingCart size="sm" />} onClick={(e) => {
                         e.preventDefault();
                         addToCart(itemCode, cart[itemCode] ? cart[itemCode] + 1 : 1)
