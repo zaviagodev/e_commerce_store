@@ -8,12 +8,12 @@ const Profile = () => {
     const [randomKey, setrandomKey] = useState(0)
     return (
         <main className='main-section'>
-          <div className='flex gap-x-10'>
-            <div className='w-1/3'>
+          <div className='grid grid-cols-1 lg:grid-cols-3 gap-x-10'>
+            <div className='lg:col-span-1'>
               <ProfileCard />
               <OrderHistory className="sm:block hidden"/>
             </div>
-            <div className='w-2/3'>
+            <div className='lg:col-span-2'>
               <AddressForm onSuccess={() => setrandomKey(randomKey + 1)} />
               <AddressListing randomKey={randomKey} />
             </div>

@@ -234,7 +234,7 @@ const Checkout = () => {
                                     wrapperClassName="grow"
                                     onChange={(event) => setInputValue(event.target.value)}
                                 />
-                                <SfButton type="submit" variant="secondary">
+                                <SfButton type="submit" className='bg-btn-primary text-btn-primary-foreground'>
                                     Apply
                                 </SfButton>
                             </form>
@@ -255,12 +255,12 @@ const Checkout = () => {
                             value={formik.values.loyalty_points}
                             onChange={formik.handleChange}
                         />
-                        <SfButton size="lg" className="w-full mt-4" onClick={formik.handleSubmit}>
+                        <SfButton size="lg" className="w-full mt-4 bg-btn-primary text-btn-primary-foreground" onClick={formik.handleSubmit}>
                             Place Order
                         </SfButton>
-                        <div className="typography-text-sm mt-4 text-center">
-                            By placing my order, you agree to our <SfLink href="#">Terms and Conditions</SfLink> and our{' '}
-                            <SfLink href="#">Privacy Policy.</SfLink>
+                        <div className="typography-text-sm mt-4 text-center text-primary">
+                            By placing my order, you agree to our <SfLink href="#" className='text-secondary'>Terms and Conditions</SfLink> and our{' '}
+                            <SfLink href="#" className='text-secondary'>Privacy Policy.</SfLink>
                         </div>
                     </div>
                 </div>

@@ -112,10 +112,10 @@ const AddressForm = ({
             </label>
 
             <div className="w-full flex gap-4 mt-4 md:mt-0 md:justify-end">
-                <SfButton type="reset" variant="secondary" className="w-full md:w-auto" onClick={formik.handleReset}>
+                <SfButton type="reset" variant='tertiary' className="w-full md:w-auto text-btn-secondary-foreground bg-btn-secondary" onClick={formik.handleReset}>
                     Clear all
                 </SfButton>
-                <SfButton type='submit' className="w-full md:w-auto">Save</SfButton>
+                <SfButton type='submit' className="w-full md:w-auto text-btn-primary-foreground bg-btn-primary">Save</SfButton>
             </div>
         </form>
     )

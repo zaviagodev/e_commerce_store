@@ -36,9 +36,9 @@ const Wish = () => {
                 placement='right'
                 open
                 onClose={() => setIsOpen(false)}
-                className="bg-neutral-50 border border-gray-300 w-1/3"
+                className="bg-neutral-50 border border-gray-300 z-99 lg:w-[600px] md:w-[400px] w-full"
             >
-                <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
+                <div className="flex h-full flex-col overflow-y-auto bg-white shadow-xl">
                     <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
                         <div className="flex items-start justify-between">
                             <h2 className="text-lg font-medium text-gray-900" id="slide-over-title">Shopping Wish</h2>
@@ -68,17 +68,17 @@ const Wish = () => {
                                                     <div className="ml-4 flex flex-1 flex-col">
                                                         <div>
                                                             <div className="flex justify-between text-base font-medium text-gray-900">
-                                                                <h3>
+                                                                <h3 className='text-texttag'>
                                                                     <Link to={`/products/${product?.name}`} >{product?.web_item_name}</Link>
                                                                 </h3>
                                                                 <p className="ml-4">{product?.formatted_price}</p>
                                                             </div>
-                                                            <p className="mt-1 text-sm text-gray-500">{product?.short_description}</p>
+                                                            <p className="mt-1 text-sm text-primary">{product?.short_description}</p>
                                                         </div>
 
                                                         <div className="flex flex-1 items-center justify-between text-sm">
                                                             <div className="flex">
-                                                                <button onClick={() => removeFromWish(itemCode)} type="button" className="font-medium text-primary-700 hover:text-primary-600">Remove</button>
+                                                                <button onClick={() => removeFromWish(itemCode)} type="button" className="font-medium text-secondary">Remove</button>
                                                             </div>
                                                         </div>
                                                     </div>
