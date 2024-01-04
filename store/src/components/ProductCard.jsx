@@ -52,13 +52,16 @@ const ProductCard = ({
                 </div>
                 <div className="p-4 border-t border-neutral-200 flex flex-col justify-between">
                     <div className='flex flex-col mb-2'>
-                        <SfLink href="#" variant="secondary" className="text-texttag text-sm no-underline">
+                        <SfLink href="#" className="text-texttag text-sm no-underline">
                             {title} {isGift && <span className="text-primary">- Gift</span>}
                         </SfLink>
-                        <p className="text-primary text-sm">
+                        <p className="text-black text-sm">
                             {description}
                         </p>
-                        <span className='flex flex-row pb-2 items-center justify-start gap-2'>{salesPrice && <strong className="block text-sm text-primary line-through">{salesPrice}</strong>}<strong className=' block text-sm text-primary'>{price}</strong></span>
+                        <span className='flex flex-row pb-2 items-center justify-start gap-2'>
+                            {salesPrice && <strong className="block text-sm text-primary line-through">{salesPrice}</strong>}
+                            <strong className={`block text-lg ${salesPrice ? 'text-destructive' : 'text-primary'}`}>{price}</strong>
+                        </span>
                     </div>
                     
                     {/*<SfButton disabled={loading} className='bg-btn-primary text-btn-primary-foreground' type="button" size="sm" slotPrefix={<SfIconShoppingCart size="sm" />} onClick={(e) => {

@@ -36,7 +36,6 @@ function OrderHistory() {
 
 
 return (
-  <main className="main-section">
     <Link to={`/order-history/${name}`} key={name} className="grid grid-cols-auto">
         <SfThumbnail size="lg"  className="bg-gray-100"/>
         <div>
@@ -46,7 +45,6 @@ return (
         </div>
         <span>{base_total}</span>
     </Link>
-  </main>
 )
 }
 )

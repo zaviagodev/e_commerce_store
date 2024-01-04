@@ -28,7 +28,7 @@ const ProfileCard = ({
                     {user?.mobile_no && <p className="font-normal typography-text-sm text-neutral-700"><SfIconCall size='sm' /> {user.mobile_no}</p>}
                     <p className="font-normal typography-text-sm text-neutral-700"><SfIconStar size='sm' />{user?.loyalty_program_tier} (<Link className='text-blue-500' to="/loyality-program">{user?.loyalty_points}</Link>)</p>
                 </div>
-                <SfButton className="absolute bottom-0 right-0 m-3" onClick={logout}>Logout</SfButton>
+                <SfButton className="absolute bottom-0 right-0 m-3 text-btn-primary-foreground bg-btn-primary" onClick={logout}>Logout</SfButton>
             </div>
         </div>
     )
