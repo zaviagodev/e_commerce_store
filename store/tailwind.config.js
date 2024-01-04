@@ -17,6 +17,28 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}', './node_modules/@storefront-ui/react/**/*.{js,mjs}'],
   theme: {
     extend: {
+      gridTemplateColumns: {
+        grid: {
+          cols: {
+            auto: 'auto auto auto'
+          }
+        }
+      },
+      colors: {
+        primary: 'var(--primary)',
+        secondary: 'var(--secondary)',
+        texttag: 'var(--text-tag)',
+        btn: {
+          primary: {
+            DEFAULT: 'var(--button-primary)',
+            foreground: 'var(--button-primary-foreground)',
+          },
+          secondary: {
+            DEFAULT: 'var(--button-secondary)',
+            foreground: 'var(--button-secondary-foreground)',
+          }
+        }
+      },
       textColor: {
         skin: {
           primary: withOpacity("--color-primary"),
