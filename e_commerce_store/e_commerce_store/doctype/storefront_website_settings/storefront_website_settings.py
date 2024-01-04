@@ -10,5 +10,5 @@ class StorefrontWebsiteSettings(Document):
 
 
 def get_website_settings():
-	website_settings = frappe.get_all("Storefront Website Settings",filters={}, fields=["*"])
+	website_settings = frappe.get_all("Shipping Rule", filters={"custom_show_on_website": 1}, fields=["name","shipping_rule_type","shipping_amount"])
 	return website_settings
