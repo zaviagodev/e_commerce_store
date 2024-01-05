@@ -22,8 +22,9 @@ import { useCart } from '../hooks/useCart';
 
 const Product = () => {
     const { id } = useParams();
-    const { get } = useProducts();
+    const { get, products } = useProducts();
     const { cart, addToCart, loading } = useCart();
+    
     const product = get(id);
     const inputId = "useId('input')";
     const min = 1;
@@ -37,18 +38,20 @@ const Product = () => {
     }
 
     return (
-        <main className="main-section grid grid-cols-1 lg:grid-cols-2">
-            <div className="relative flex w-full aspect-[4/3]">
+        <main className="main-section grid grid-cols-1 lg:grid-cols-2 lg:gap-x-10">
+            <div className="relative flex w-full">
                 <SfScrollable
                     className="relative [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
                     direction="vertical"
                     buttonsPlacement="none"
                     drag={{ containerWidth: true }}
                 >
-                    <div className="absolute inline-flex items-center justify-center text-sm font-medium text-muted bg-destructive py-1.5 px-3 mb-4">
-                        <SfIconSell size="sm" className="mr-1.5" />
-                        {product?.discount}
-                    </div>
+                    {product?.discount ? (
+                        <div className="absolute inline-flex items-center justify-center text-sm font-medium text-muted bg-destructive py-1 px-2 top-2 left-2 rounded-md">
+                            <SfIconSell size="sm" className="mr-1.5" />
+                            {product?.discount}
+                        </div>
+                    ) : null}
                     <img
                         src={`${import.meta.env.VITE_ERP_URL}${product?.website_image}`}
                         className="object-contain w-auto h-full"
@@ -70,7 +73,7 @@ const Product = () => {
                     {
                         cart[product?.item_code] && (
                             <div className="bg-primary-100 text-primary-700 flex justify-center gap-1.5 py-1.5 typography-text-sm items-center mb-4 rounded-md">
-                                <SfIconShoppingCartCheckout />{cart[product?.item_code]} in cart
+                                <SfIconShoppingCartCheckout />Added {cart[product?.item_code]} {cart[product?.item_code] === 1 ? 'item' : 'items'} to cart.
                             </div>
                         )
                     }
@@ -82,7 +85,7 @@ const Product = () => {
                                     variant="tertiary"
                                     square
                                     className="rounded-r-none p-3"
-                                    disabled={value <= min}
+                                    disabled={value <= min || !product?.in_stock}
                                     aria-controls={inputId}
                                     aria-label="Decrease value"
                                     onClick={() => dec()}
@@ -93,18 +96,19 @@ const Product = () => {
                                     id={inputId}
                                     type="number"
                                     role="spinbutton"
-                                    className="grow appearance-none mx-2 w-8 text-center bg-transparent font-medium [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-inner-spin-button]:display-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-outer-spin-button]:display-none [&::-webkit-outer-spin-button]:m-0 [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none disabled:placeholder-disabled-900 focus-visible:outline focus-visible:outline-offset focus-visible:rounded-sm"
+                                    className="grow appearance-none mx-2 w-8 text-center bg-transparent font-medium outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-inner-spin-button]:display-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-outer-spin-button]:display-none [&::-webkit-outer-spin-button]:m-0 [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none disabled:placeholder-disabled-900 focus-visible:outline focus-visible:outline-offset focus-visible:rounded-sm"
                                     min={min}
                                     max={max}
                                     value={value}
                                     onChange={handleOnChange}
+                                    disabled={!product?.in_stock}
                                 />
                                 <SfButton
                                     type="button"
                                     variant="tertiary"
                                     square
                                     className="rounded-l-none p-3"
-                                    disabled={value >= max}
+                                    disabled={value >= max || !product?.in_stock}
                                     aria-controls={inputId}
                                     aria-label="Increase value"
                                     onClick={() => inc()}
@@ -116,14 +120,14 @@ const Product = () => {
                                 <strong className="text-neutral-900">{product?.in_stock ? "✔ In Stock" : "❌ sold out"}</strong>
                             </p>
                         </div>
-                        <SfButton disabled={loading}  onClick={() => addToCart(product?.item_code, cart[product?.item_code] ? cart[product?.item_code] + value : value)} type="button" size="lg" className="w-full xs:ml-4 btn-primary" slotPrefix={<SfIconShoppingCart size="sm" />}>
-                            {loading ? <SfLoaderCircular/> : 'Add to cart'}
+                        <SfButton disabled={loading || !product?.in_stock}  onClick={() => addToCart(product?.item_code, cart[product?.item_code] ? cart[product?.item_code] + value : value)} type="button" size="lg" className="w-full xs:ml-4 btn-primary" slotPrefix={<SfIconShoppingCart size="sm" />}>
+                            {loading ? <SfLoaderCircular/> : product?.in_stock ? 'Add to cart' : 'Sold out'}
                         </SfButton>
                     </div>
                 </div>
                 <div className='mb-4 whitespace-normal overflow-hidden' dangerouslySetInnerHTML={{ __html: product?.web_long_description }} />
             </section>
-        </main >
+        </main>
     )
 }
 

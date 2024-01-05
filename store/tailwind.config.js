@@ -18,6 +18,7 @@ export default {
   theme: {
     extend: {
       zIndex: {
+        60: 60,
         99: 99
       },
       gridTemplateColumns: {

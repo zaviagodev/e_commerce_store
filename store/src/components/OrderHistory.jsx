@@ -21,14 +21,16 @@ function OrderHistory() {
             {!loading ? Order.slice(0, 3).map(({name, status, base_total, company, items, creation}) => {
 
                 return (
-                    <div key={name} className="grid grid-cols-auto w-full">
-                      <SfThumbnail size="lg" className="bg-gray-100"/>
-                      <div>
-                        <h2 className="font-bold">{name}-{}{company}</h2>
-                        <p>{`${new Date(creation).getDate()} ${month[new Date(creation).getMonth()]}, ${new Date(creation).getHours()}:${new Date(creation).getMinutes() < 10 ? '0' + new Date(creation).getMinutes(): new Date(creation).getMinutes() }  `}</p>
-                        <p>{status}</p>
+                    <div key={name} className="grid grid-cols-4 w-full">
+                      <div className="grid grid-cols-5 col-span-3 gap-x-2">
+                        <SfThumbnail size="lg" className="bg-gray-100"/>
+                        <div className="col-span-4">
+                            <h2 className="font-bold">{name}-{}{company}</h2>
+                            <p>{`${new Date(creation).getDate()} ${month[new Date(creation).getMonth()]}, ${new Date(creation).getHours()}:${new Date(creation).getMinutes() < 10 ? '0' + new Date(creation).getMinutes(): new Date(creation).getMinutes() }  `}</p>
+                            <p>{status}</p>
+                        </div>
                       </div>
-                      <span>{base_total}</span>
+                      <span className="text-right">฿{base_total}</span>
                     </div>
                 )
                 }

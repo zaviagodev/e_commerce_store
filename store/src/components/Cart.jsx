@@ -37,7 +37,7 @@ const Cart = () => {
                 placement='right'
                 open
                 onClose={() => setIsOpen(false)}
-                className="bg-neutral-50 border border-gray-300 z-99 lg:w-[600px] md:w-[400px] w-full"
+                className="bg-neutral-50 border border-gray-300 z-99 lg:w-[500px] w-full"
             >
                 <div className="flex h-full flex-col overflow-y-auto bg-white shadow-xl">
                     <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
@@ -53,7 +53,8 @@ const Cart = () => {
                             </div>
                         </div>
 
-                        <div className="mt-8">
+                        {cartCount > 0 ? (
+                            <div className="mt-8">
                             <div className="flow-root">
                                 <ul role="list" className="-my-6 divide-y divide-gray-200">
                                     {isLoading ? <SfLoaderCircular /> :
@@ -68,7 +69,7 @@ const Cart = () => {
                                                     <div className="ml-4 flex flex-1 flex-col">
                                                         <div>
                                                             <div className="flex justify-between text-base font-medium text-gray-900">
-                                                                <h3 className='text-texttag'>
+                                                                <h3 className='text-texttag hover:underline'>
                                                                     <Link to={`/products/${product?.name}`} >{product?.web_item_name}</Link>
                                                                 </h3>
                                                                 <p className="ml-4">{product?.formatted_price}</p>
@@ -80,7 +81,6 @@ const Cart = () => {
                                                             <div className="flex items-center justify-between mt-4 sm:mt-0">
                                                                 <div className="flex border border-neutral-300 rounded-md">
                                                                     <SfButton
-                                                                        
                                                                         type="button"
                                                                         variant="tertiary"
                                                                         disabled={cart[itemCode] === 1 || loading}
@@ -126,6 +126,15 @@ const Cart = () => {
                                 </ul>
                             </div>
                         </div>
+                        ) : (
+                            <div className="h-1/2 text-center flex flex-col gap-y-3 justify-end">
+                                <h1 className='font-bold text-xl'>Your cart is empty</h1>
+                                <p>Go to the store to browse the products.</p>
+                                <Link to='/home/all%20items'>
+                                    <SfButton onClick={() => setIsOpen(false)} className='btn-primary'>Shop now</SfButton>
+                                </Link>
+                            </div>
+                        )}
                     </div>
 
                     <div className="border-t border-gray-200 px-4 py-6 sm:px-6">

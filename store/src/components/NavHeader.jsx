@@ -83,10 +83,10 @@ import SearchWithIcon from './SearchBar';
   
     return (
       <div className="w-full h-full">
-        {isOpen && <div className="fixed inset-0 bg-neutral-500 bg-opacity-50 transition-opacity" />}
+        {isOpen && <div className="fixed inset-0 bg-neutral-500 bg-opacity-50 transition-opacity z-60" />}
         <header
           ref={menuRef}
-          className="flex flex-wrap md:flex-nowrap justify-center w-full py-2 md:py-5 border-0 bg-primary border-neutral-200 md:relative md:z-10"
+          className="flex flex-wrap md:flex-nowrap justify-center w-full py-2 md:py-5 border-0 bg-primary border-neutral-200 md:relative md:z-99"
         >
           <div className="flex items-center justify-start h-full max-w-[1536px] w-full px-4 md:px-10">
             <SfButton
@@ -139,7 +139,7 @@ import SearchWithIcon from './SearchBar';
                       open
                       disableClickAway
                       placement="top"
-                      className="grid grid-cols-1 md:gap-x-6 md:grid-cols-4 bg-white shadow-lg p-0 max-h-screen overflow-y-auto md:!absolute md:!top-20 max-w-[376px] md:max-w-full md:p-6 mr-[50px] md:mr-0 z-50"
+                      className="grid grid-cols-1 md:gap-x-6 md:grid-cols-4 bg-white shadow-lg p-0 max-h-screen overflow-y-auto md:!absolute md:!top-20 max-w-[376px] md:max-w-full md:p-6 mr-[50px] md:mr-0 z-99"
                     >
                       <div className="sticky top-0 flex items-center justify-between px-4 py-2 bg-primary md:hidden">
                         <div className="flex items-center font-medium text-white typography-text-lg">Browse products</div>

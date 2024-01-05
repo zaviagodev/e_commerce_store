@@ -7,7 +7,7 @@ const AddressListing = ({ randomKey = 0 }) => {
     const { data } = useFrappeGetCall('headless_e_commerce.api.get_addresses', null, `addresses-${randomKey}`)
 
     return (
-        <div className="my-4 flex flex-wrap gap-4 lg:gap-6">
+        <div className="my-4 grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
             {
                 data?.message?.map((address, idx) => (
                     <div key={address.idx + idx} className='relative'>

@@ -1,5 +1,5 @@
 import React from 'react'
-import {  SfDrawer, useTrapFocus, SfLoaderCircular } from '@storefront-ui/react'
+import {  SfDrawer, useTrapFocus, SfLoaderCircular, SfButton } from '@storefront-ui/react'
 import { CSSTransition } from 'react-transition-group';
 import { useWish } from '../hooks/useWishe'
 import { useProducts } from '../hooks/useProducts'
@@ -12,7 +12,6 @@ const Wish = () => {
     const nodeRef = useRef(null);
     const drawerRef = useRef(null);
     const { getByItemCode, isLoading } = useProducts()
-
 
     useTrapFocus(drawerRef, { activeState: isOpen });
 
@@ -36,12 +35,12 @@ const Wish = () => {
                 placement='right'
                 open
                 onClose={() => setIsOpen(false)}
-                className="bg-neutral-50 border border-gray-300 z-99 lg:w-[600px] md:w-[400px] w-full"
+                className="bg-neutral-50 border border-gray-300 z-99 lg:w-[500px] w-full"
             >
                 <div className="flex h-full flex-col overflow-y-auto bg-white shadow-xl">
                     <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
                         <div className="flex items-start justify-between">
-                            <h2 className="text-lg font-medium text-gray-900" id="slide-over-title">Shopping Wish</h2>
+                            <h2 className="text-lg font-medium text-gray-900" id="slide-over-title">Shopping Wishlist</h2>
                             <div className="ml-3 flex h-7 items-center">
                                 <button onClick={() => setIsOpen(false)} type="button" className="-m-2 p-2 text-gray-400 hover:text-gray-500">
                                     <span className="sr-only">Close panel</span>
@@ -52,7 +51,8 @@ const Wish = () => {
                             </div>
                         </div>
 
-                        <div className="mt-8">
+                        {Object.entries(Wish).length > 0 ?
+                        (<div className="mt-8">
                             <div className="flow-root">
                                 <ul role="list" className="-my-6 divide-y divide-gray-200">
                                     {
@@ -62,13 +62,13 @@ const Wish = () => {
                                             return (
                                                 <li key={itemCode} className="flex py-6">
                                                     <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                                        <Link to={`/products/${product?.name}`} ><img src={product?.website_image} alt={product?.item_name} className="h-full w-full object-cover object-center" /></Link>
+                                                        <Link to={`/products/${product?.name}`} ><img src={`${import.meta.env.VITE_ERP_URL}${product?.website_image}`} alt={product?.item_name} className="h-full w-full object-cover object-center" /></Link>
                                                     </div>
 
                                                     <div className="ml-4 flex flex-1 flex-col">
                                                         <div>
                                                             <div className="flex justify-between text-base font-medium text-gray-900">
-                                                                <h3 className='text-texttag'>
+                                                                <h3 className='text-texttag hover:underline'>
                                                                     <Link to={`/products/${product?.name}`} >{product?.web_item_name}</Link>
                                                                 </h3>
                                                                 <p className="ml-4">{product?.formatted_price}</p>
@@ -89,7 +89,15 @@ const Wish = () => {
 
                                 </ul>
                             </div>
-                        </div>
+                        </div>) : (
+                            <div className="h-1/2 text-center flex flex-col gap-y-3 justify-end">
+                                <h1 className='font-bold text-xl'>Your wishlist is empty</h1>
+                                <p>Start saving your preferred products by clicking the heart.</p>
+                                <Link to='/home/all%20items'>
+                                    <SfButton onClick={() => setIsOpen(false)} className='btn-primary'>Start shopping</SfButton>
+                                </Link>
+                            </div>
+                        )}
                     </div>
                 </div>
             </SfDrawer>
