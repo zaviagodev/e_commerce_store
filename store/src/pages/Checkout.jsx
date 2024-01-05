@@ -28,7 +28,6 @@ const Checkout = () => {
         if (!deliveryResult) {
             ApplyDeliveryFee({'shipping_rule' : 'Next Day Shipping' })
         }
-        console.log(deliveryResult?.message?.doc)
     }, [deliveryResult, deliveryError])
 
     useEffect(() => {
@@ -70,7 +69,6 @@ const Checkout = () => {
     const { user } = useUser();
     const navigate = useNavigate();
     useEffect(() => {
-      console.log("currentUser", user);
       if (!getToken() && !user?.name) {
         navigate("/login");
       }

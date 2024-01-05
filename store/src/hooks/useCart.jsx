@@ -7,8 +7,7 @@ const CartContext = createContext([])
 export const CartProvider = ({ children }) => {
     const [cart, setCart] = useState({})
     const [isOpen, _] = useState(false)
-    const {mutateItemsList} = useProducts()
-
+    const {mutateItemsList, getProductsCodeInCart, products} = useProducts()
     const {call , result, loading} = useFrappePutCall('webshop.webshop.shopping_cart.cart.update_cart')
 
 
@@ -20,21 +19,52 @@ export const CartProvider = ({ children }) => {
 
     useEffect(() => {
         // get cart state from local storage
+        if(products.length == 0) return
         const cartStorage = localStorage.getItem('cart')
         if(Object.keys(cart).length === 0 && !result && !loading )
         {
             const cartObject = JSON.parse(cartStorage);
-            if(!cartObject)  return;
-            setCart(cartObject)
-            async() => {
-                for (const [itemCode, value] of Object.entries(cartObject)) {
-                    await call({"item_code" : itemCode, 'qty' : value})
+            if(typeof cartObject != 'undefined')  {
+                setCart(cartObject)
+                if(!verifyCart(cartObject))
+                {
+                    resetBackEndCart
+                    updateCart(cartObject)
                 }
-                mutateItemsList()
-            };
+            }
         }
-    }, [])
+    }, [products])
 
+    function resetBackEndCart() {
+        products.forEach(async (product) => {
+            try {
+                await call({"item_code" : product.item_code, 'qty' : 0})
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        )
+        mutateItemsList()
+    }
+
+    function verifyCart(cartObject) {
+        const productCodes = getProductsCodeInCart();
+
+        const allItemsExist = Object.keys(cartObject).every(itemCode => productCodes.includes(itemCode));
+    
+        return allItemsExist;
+    }
+
+    async function updateCart(cartObject) {
+        for (const [itemCode, value] of Object.entries(cartObject)) {
+            try {
+                await call({"item_code" : itemCode, 'qty' : value})
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        mutateItemsList()
+    }
 
 
     const setIsOpen = (value) => {
@@ -47,10 +77,14 @@ export const CartProvider = ({ children }) => {
 
     const addToCart = async (itemCode, quantity) => {
         setCart({ ...cart, [itemCode]: quantity ?? (cart[itemCode] ?? 0) + 1 })
+        try {
         call({"item_code" : itemCode, 'qty' : quantity ?? (cart[itemCode] ?? 0) + 1}).then(() => {
 
         mutateItemsList()
         })
+        } catch (error) {
+            console.log(error)
+        }
         // store cart state in local storage
         localStorage.setItem('cart', JSON.stringify({ ...cart, [itemCode]: quantity ?? (cart[itemCode] ?? 0) + 1 }))
     }
@@ -59,10 +93,17 @@ export const CartProvider = ({ children }) => {
         const newCart = { ...cart }
         delete newCart[itemCode]
         setCart(newCart)
+        try
+        {
         call({"item_code" : itemCode, 'qty' : 0}).then(() => {
             
             mutateItemsList()
         })
+        }
+        catch(error)
+        {
+            console.log(error)
+        }
         // store cart state in local storage
         localStorage.setItem('cart', JSON.stringify(newCart))
     }
