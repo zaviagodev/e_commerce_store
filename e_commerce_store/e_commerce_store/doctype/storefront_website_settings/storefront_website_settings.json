@@ -36,6 +36,7 @@
   "top_bar",
   "top_bar_items",
   "hide_login",
+  "hide_checkout",
   "navbar_search",
   "show_language_picker",
   "navbar_template_section",
@@ -470,13 +471,19 @@
    "fieldtype": "Table",
    "label": "Route Redirects",
    "options": "Website Route Redirect"
+  },
+  {
+   "default": "0",
+   "fieldname": "hide_checkout",
+   "fieldtype": "Check",
+   "label": "Hide Checkout"
   }
  ],
  "icon": "fa fa-cog",
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-01-04 16:37:10.435207",
+ "modified": "2024-01-05 09:44:40.988475",
  "modified_by": "Administrator",
  "module": "E Commerce Store",
  "name": "Storefront Website Settings",
