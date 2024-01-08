@@ -39,6 +39,9 @@
   "hide_checkout",
   "navbar_search",
   "show_language_picker",
+  "hide_wish",
+  "button_label",
+  "button_link",
   "navbar_template_section",
   "navbar_template",
   "navbar_template_values",
@@ -477,13 +480,30 @@
    "fieldname": "hide_checkout",
    "fieldtype": "Check",
    "label": "Hide Checkout"
+  },
+  {
+   "default": "0",
+   "fieldname": "hide_wish",
+   "fieldtype": "Check",
+   "label": "Hide Wish"
+  },
+  {
+   "description": "if checkout is hidden u have to add a custom link and custom text in the product main button",
+   "fieldname": "button_label",
+   "fieldtype": "Data",
+   "label": "Button label"
+  },
+  {
+   "fieldname": "button_link",
+   "fieldtype": "Data",
+   "label": "Button link"
   }
  ],
  "icon": "fa fa-cog",
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-01-05 09:44:40.988475",
+ "modified": "2024-01-05 14:10:41.025498",
  "modified_by": "Administrator",
  "module": "E Commerce Store",
  "name": "Storefront Website Settings",
