@@ -60,6 +60,7 @@ const ProductCard = ({
                             <SfIconFavorite size="sm" />
                         )}
                     </SfButton>
+}
                 </div>
                 <div className="p-4 border-t border-neutral-200 flex flex-col justify-between">
                     <div className='flex flex-col mb-2'>
