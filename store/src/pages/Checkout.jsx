@@ -233,57 +233,6 @@ const Checkout = () => {
                                     <p></p>
                                 </div>
                             </div>
-                            { !loading ? codeResult ? (
-                                <div className="flex items-center mb-5 py-5 border-y border-neutral-200">
-                                    <p>PromoCode</p>
-                                    <SfButton size="sm" variant="tertiary" className="ml-auto mr-2" onClick={removePromoCode}>
-                                        Remove
-                                    </SfButton>
-                                    <p>{codeResult}</p>
-                                </div>
-                            ) : (
-                                <form className="flex gap-x-2 py-4 border-y border-neutral-200 mb-4" onSubmit={checkPromoCode}>
-                                    <SfInput
-                                        value={inputValue}
-                                        placeholder="Enter promo code"
-                                        wrapperClassName="grow"
-                                        onChange={(event) => setInputValue(event.target.value)}
-                                    />
-                                    <SfButton type="submit" className='btn-primary'>
-                                        Apply
-                                    </SfButton>
-                                </form>
-                            ) : <SfLoaderCircular/>} 
-                            {/*<p className="px-3 py-1.5 bg-secondary-100 text-secondary-700 typography-text-sm rounded-md text-center mb-4">
-                                You are saving ${Math.abs(orderDetails.savings).toFixed(2)} on your order today!
-                            </p>*/ }
-                            <div className="flex justify-between typography-headline-4 md:typography-headline-3 font-bold pb-4 mb-4 border-b border-neutral-200">
-                                <p>Total</p>
-                                <p>{deliveryLoading ? <SfLoaderCircular/> : deliveryResult?.message?.doc?.grand_total? `฿ ${deliveryResult?.message?.doc?.grand_total}` : "0"}</p>
-                            </div>
-
-                            <SfInput
-                                placeholder='Enter loyalty points to redeem'
-                                slotSuffix={<strong className='w-16'>of {user?.loyalty_points}</strong>}
-                                maxLength={user?.loyalty_points?.toString().length}
-                                name="loyalty_points"
-                                value={formik.values.loyalty_points}
-                                onChange={formik.handleChange}
-                            />
-                            <SfButton size="lg" className="w-full mt-4 btn-primary" onClick={formik.handleSubmit}>
-                                Place Order
-                            </SfButton>
-                            <div className="typography-text-sm mt-4 text-center text-primary">
-                                By placing my order, you agree to our <SfLink href="#" className='text-secondary'>Terms and Conditions</SfLink> and our{' '}
-                                <SfLink href="#" className='text-secondary'>Privacy Policy.</SfLink>
-                            </div>
-                            <div className="flex flex-col text-right">
-                                <p>{deliveryLoading ? <SfLoaderCircular/> : typeof codeResult?.message?.doc?.total == 'undefined' ?  deliveryResult?.message?.doc?.total ? `฿ ${deliveryResult?.message?.doc?.total}` : "0" : `฿ ${codeResult?.message?.doc?.total}`}</p>
-                                <p className="my-2">
-                                    {deliveryLoading ? <SfLoaderCircular/> : typeof codeResult?.message?.doc?.total_taxes_and_charges == 'undefined' ?  deliveryResult?.message?.doc?.total_taxes_and_charges ? `฿ ${deliveryResult?.message?.doc?.total_taxes_and_charges}` : "0" : `฿ ${codeResult?.message?.doc?.total_taxes_and_charges}` }
-                                </p>
-                                <p></p>
-                            </div>
                         </div>
                          { !loading ? codeResult ? (
                             <div className="flex items-center mb-5 py-5 border-y border-neutral-200">
