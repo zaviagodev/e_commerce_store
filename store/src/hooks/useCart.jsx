@@ -21,7 +21,7 @@ export const CartProvider = ({ children }) => {
         // get cart state from local storage
         if(products.length == 0) return
         const cartStorage = localStorage.getItem('cart')
-        if(!result && !loading && typeof cartStorage != 'undefined' )
+        if(!result && !loading &&  cartStorage  )
         {
 
             const cartObject = JSON.parse(cartStorage);

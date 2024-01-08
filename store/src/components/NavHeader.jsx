@@ -134,7 +134,7 @@ import SelectDropdownPreselected from './dropDown';
                       className="grid grid-cols-1 lg:gap-x-6 lg:grid-cols-4 bg-white shadow-lg p-0 max-h-screen overflow-y-auto lg:!absolute lg:!top-20 max-w-[376px] lg:max-w-full lg:p-6 mr-[50px] lg:mr-0 z-99"
                     >
                       <div className="sticky top-0 flex items-center justify-between px-4 py-2 bg-primary lg:hidden">
-                        <div className="flex items-center font-medium text-white typography-text-lg">Browse products</div>
+                        <div className="flex items-center font-medium text-white typography-text-lg">{name}</div>
                         <SfButton
                           square
                           variant="tertiary"
@@ -145,47 +145,7 @@ import SelectDropdownPreselected from './dropDown';
                           <SfIconClose />
                         </SfButton>
                       </div>
-                      {groupes.map(({ name, children }) => (
-                        <div key={name} className="[&:nth-child(2)]:pt-0 pt-6 md:pt-0">
-                          <h2
-                            role="presentation"
-                            className="typography-text-base font-medium text-neutral-900 whitespace-nowrap p-4 md:py-1.5"
-                          >
-                            {name}
-                          </h2>
-                          <hr className="mb-3.5" />
-                          <ul>
-                              <Link to={`home/${name}`}   >
-                              <li>
-                                <SfListItem
-                                  as="a"
-                                  size="sm"
-                                  role="none"
-                                  href={`#${name}`}
-                                  className="typography-text-base md:typography-text-sm py-4 md:py-1.5"
-                                >
-                                  {name}
-                                </SfListItem>
-                              </li>
-                              </Link>
-                            {children.map(({name, children}) => (
-                              <Link to={`home/${name}`}   >
-                              <li key={name}>
-                                <SfListItem
-                                  as="a"
-                                  size="sm"
-                                  role="none"
-                                  href={`#${name}`}
-                                  className="typography-text-base md:typography-text-sm py-4 md:py-1.5"
-                                >
-                                  {name}
-                                </SfListItem>
-                              </li>
-                              </Link>
-                            ))}
-                          </ul>
-                        </div>
-                      ))}
+                      {groupes.map((item) => recursiveBuildPhone(item))}
                       <SfButton
                         square
                         size="sm"
@@ -202,6 +162,64 @@ import SelectDropdownPreselected from './dropDown';
           </ul>
         </nav>
         </>
+    function recursiveBuildPhone (itemTop){
+
+      const recurse = (item) => {
+        return(
+          <Link to={`/home/${item.children.length > 0 ? 'group_' : ''}${item.name}`} className='flex flex-1 felx-col items-center justify-between'  >
+            <li key={item.name} className='flex-1'>
+              <SfListItem
+                as="a"
+                size="sm"
+                role="none"
+                href={`#${item.name}`}
+                className="typography-text-base md:typography-text-sm py-4 md:py-1.5 "
+              >
+                {item.name}
+              </SfListItem>
+            </li> 
+            {item.children.length > 0 && <SfIconExpandMore className=" inline-flex m-2 -rotate-90" />}
+          </Link> 
+        )
+      }
+
+      return(
+      <div key={itemTop.name} className="[&:nth-child(2)]:pt-0 pt-6 md:pt-0">
+        <h2
+          role="presentation"
+          className="typography-text-base font-medium text-neutral-900 whitespace-nowrap p-4 md:py-1.5"
+        >
+                    {itemTop.name}
+        </h2>
+        <hr className="mb-3.5" />
+        <ul>
+          {
+            itemTop.children.length > 0 ? itemTop.children.map((child) => {
+              return(
+                 recurse(child)
+              )
+            })
+            :
+            <Link to={`/home/${itemTop.name}`}   >
+            <li key={itemTop.name}>
+              <SfListItem
+                as="a"
+                size="sm"
+                role="none"
+                href={`#${itemTop.name}`}
+                className="typography-text-base md:typography-text-sm py-4 md:py-1.5"
+              >
+                {itemTop.name}
+              </SfListItem>
+            </li>
+          </Link> 
+          }
+        </ul> 
+      </div>
+      )
+
+    }
+
 
     function recursiveBuild (item){
       const button = 

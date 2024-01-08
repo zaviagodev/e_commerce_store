@@ -78,6 +78,7 @@ export const ProductsProvider = ({ children }) => {
             itemListError,
             isLoading,
             getWishedProducts,
+            mainGroup,
             getItemByCategorie,
             getProductsCodeInCart
             }}>
