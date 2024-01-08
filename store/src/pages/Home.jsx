@@ -73,7 +73,7 @@ const Home = () => {
         <>
             <main className='main-section'>
               <h1 className="mb-8 primary-heading text-primary text-center">{idFromUrl.toUpperCase()}</h1>
-                    {<button onClick={() => navigate(-1)} className='flex flex-row items-center justify-between p-2'><SfIconArrowBack/>  { group ? findParentName(mainGroup, group.name) : 'Back'} </button>}
+                    <button onClick={() => navigate(-1)} className='flex flex-row items-center justify-between p-2'><SfIconArrowBack/>  { group ? findParentName(mainGroup, group.name) : 'Back'} </button>
                     {group && 
                         group.children.map((item) => (
                             <Link to={`/home/${item.children.length > 0 ? 'group_' : ''}${item.name}`} className='flex flex-1 felx-col items-center justify-between'  >
