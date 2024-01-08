@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { SfButton, SfRating, SfCounter, SfLink, SfIconShoppingCart, SfIconFavorite, SfLoaderCircular } from '@storefront-ui/react';
 import { useCart } from '../hooks/useCart';
 import { useWish } from '../hooks/useWishe';
+import { useSetting } from '../hooks/useWebsiteSettings';
 
 const ProductCard = ({
     title,
@@ -18,6 +19,7 @@ const ProductCard = ({
 }) => {
     const { Wish,addToWish, removeFromWish } = useWish()
     const { cart, addToCart, loading } = useCart()
+    const { hideWish} = useSetting()
 
     const handleWish = (e) => {
         e.preventDefault();
@@ -38,7 +40,7 @@ const ProductCard = ({
                             className="object-cover h-auto rounded-md aspect-square w-full"
                         />
                     </Link>
-                    <SfButton
+                    {!hideWish && <SfButton
                         onClick={handleWish} 
                         type="button"
                         variant="tertiary"
@@ -47,8 +49,8 @@ const ProductCard = ({
                         className="absolute bottom-2 right-2  bg-white ring-1 ring-inset ring-neutral-200 !rounded-full z-50"
                         aria-label="Add to wishlist"
                     >
-                        <SfIconFavorite className={`${Wish[itemCode] == 1 && 'text-primary'}`}  size="sm" />
-                    </SfButton>
+                         <SfIconFavorite className={`${Wish[itemCode] == 1 && 'text-primary'}`}  size="sm" />
+                    </SfButton>}
                 </div>
                 <div className="p-4 border-t border-neutral-200 flex flex-col justify-between">
                     <div className='flex flex-col mb-2'>

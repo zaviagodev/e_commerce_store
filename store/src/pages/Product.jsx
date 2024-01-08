@@ -19,21 +19,36 @@ import {
 import { useParams } from 'react-router-dom';
 import { useProducts } from '../hooks/useProducts';
 import { useCart } from '../hooks/useCart';
+import { useSetting } from '../hooks/useWebsiteSettings';
+import { useNavigate } from 'react-router-dom';
 
 const Product = () => {
     const { id } = useParams();
     const { get } = useProducts();
+    const {hideCheckout, buttonLabel, buttonLink} = useSetting();
     const { cart, addToCart, loading } = useCart();
     const product = get(id);
     const inputId = "useId('input')";
     const min = 1;
     const max = 999;
     const [value, { inc, dec, set }] = useCounter(min);
+    const navigate = useNavigate();
+
 
     function handleOnChange(event) {
         const { value: currentValue } = event.target;
         const nextValue = parseFloat(currentValue);
         set(Number(clamp(nextValue, min, max)));
+    }
+
+    function handleClickCart() {
+        if(hideCheckout){
+            if(!buttonLink.startsWith('/')) window.location.href = `https://${buttonLink}`
+            else navigate(buttonLink);
+            return
+        }
+        addToCart(product?.item_code, cart[product?.item_code] ? cart[product?.item_code] + value : value)
+        
     }
 
 
@@ -68,15 +83,15 @@ const Product = () => {
                     <strong className={`block font-bold typography-headline-3 text-lg ${product?.formatted_mrp ? 'text-destructive' : 'text-primary'}`}>{product?.formatted_price}</strong>
                 </span>
                 <div className="py-4 mb-4 border-gray-200 border-y">
-                    {
-                        cart[product?.item_code] && (
+                    { 
+                        cart[product?.item_code] && !hideCheckout  && (
                             <div className="bg-primary-100 text-primary-700 flex justify-center gap-1.5 py-1.5 typography-text-sm items-center mb-4 rounded-md">
                                 <SfIconShoppingCartCheckout />{cart[product?.item_code]} in cart
                             </div>
                         )
                     }
                     <div className="items-start xs:flex">
-                        <div className="flex flex-col items-stretch xs:items-center xs:inline-flex">
+                        {!hideCheckout && <div className="flex flex-col items-stretch xs:items-center xs:inline-flex">
                             <div className="flex border border-neutral-300 rounded-md">
                                 <SfButton
                                     type="button"
@@ -116,9 +131,9 @@ const Product = () => {
                             <p className="self-center mt-1 mb-4 text-xs text-neutral-500 xs:mb-0">
                                 <strong className="text-neutral-900">{product?.in_stock ? "✔ In Stock" : "❌ sold out"}</strong>
                             </p>
-                        </div>
-                        <SfButton disabled={loading}  onClick={() => addToCart(product?.item_code, cart[product?.item_code] ? cart[product?.item_code] + value : value)} type="button" size="lg" className="w-full xs:ml-4 text-btn-primary-foreground bg-btn-primary" slotPrefix={<SfIconShoppingCart size="sm" />}>
-                            {loading ? <SfLoaderCircular/> : 'Add to cart'}
+                        </div>}
+                        <SfButton disabled={loading}  onClick={handleClickCart} type="button" size="lg" className="w-full xs:ml-4 text-btn-primary-foreground bg-btn-primary" slotPrefix={!hideCheckout && <SfIconShoppingCart size="sm" />}>
+                            {loading ? <SfLoaderCircular/> : buttonLabel}
                         </SfButton>
                     </div>
                 </div>
