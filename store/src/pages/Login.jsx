@@ -50,9 +50,9 @@ export default function Login() {
         validationSchema: getValidationSchema(),
         onSubmit: (values) => {
             if (loginState == false) {
-                register(values.usr,values.email , values.pwd).then((data) => data.message == 'Logged In' && navigate("/home/all items"))
+                 register(values.usr,values.email , values.pwd).then((data) => data.message == 'Logged In' && navigate("/home/all items"))
             }else{
-                login(values.usr, values.pwd ).then((data) => data.message == 'Logged In' && navigate("/home/all items"));
+                 login(values.usr, values.pwd ).then((data) => data.message == 'Logged In' && navigate("/home/all items"));
             }
         }
     });
@@ -66,7 +66,7 @@ export default function Login() {
             formik.validateForm();
         }
        
-    }, [navigate, currentUser,  loginState, ])
+    }, [ currentUser,  loginState ])
 
 
     const handleLoginState = () => {
