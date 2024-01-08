@@ -1,0 +1,54 @@
+{
+ "actions": [
+  {
+   "action": "frappe.sessions.clear",
+   "action_type": "Server Action",
+   "label": "Clear cache"
+  }
+ ],
+ "creation": "2024-01-05 09:20:44.728783",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "title"
+ ],
+ "fields": [
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "label": "Title"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2024-01-05 09:20:44.728783",
+ "modified_by": "Administrator",
+ "module": "E Commerce Store",
+ "name": "Storefront Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Website Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "All",
+   "share": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

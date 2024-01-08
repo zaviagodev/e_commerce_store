@@ -5,6 +5,5 @@
 from frappe.model.document import Document
 
 
-class StorefrontWebsiteSettings(Document):
+class StorefrontSettings(Document):
 	pass
-

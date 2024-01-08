@@ -12,6 +12,8 @@ import BranchSelect from '../components/form-controls/BranchSelect';
 import { useUser } from '../hooks/useUser';
 import { getToken } from '../utils/helper';
 
+import { SfRadio, SfListItem } from '@storefront-ui/react';
+
 const Checkout = () => {
     const errorTimer = useRef(0);
     const positiveTimer = useRef(0);
@@ -20,15 +22,29 @@ const Checkout = () => {
     const [informationAlert, setInformationAlert] = useState(false);
     const [positiveAlert, setPositiveAlert] = useState(false);
     const [errorAlert, setErrorAlert] = useState(false);
+    const [checkedState, setCheckedState] = useState('');
+    const [shippingRules, setShippingRules] = useState([]);
+
+
 
     const {call : CheckPromoCode, loading, error : codeError, result : codeResult, reset, isCompleted : PromoCompleted } = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_coupon_code');
     const {call : ApplyDeliveryFee, loading : deliveryLoading, result : deliveryResult, error : deliveryError} = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_shipping_rule');
+    const {isLoading : shippingRuleLoading, } = useFrappeGetCall('webshop.webshop.api.get_shipping_methods',undefined, `shippingRules`, {
+        isOnline: () => shippingRules.length === 0,
+        onSuccess: (data) => setShippingRules(data.message)
+    })
+    const {call : deleteCoupon, loading : deleteLoading, result : deleteResult, error : deleteError} = useFrappePostCall('webshop.webshop.shopping_cart.cart.remove_coupon_code');
     
     useEffect(() => {
-        if (!deliveryResult) {
-            ApplyDeliveryFee({'shipping_rule' : 'Next Day Shipping' })
+        if (!deliveryResult && !deliveryError && !shippingRuleLoading && shippingRules.length > 0 && checkedState == '') {
+            const deleteCouponAsync = async () => {
+                await deleteCoupon();
+            };
+            deleteCouponAsync();
+            ApplyDeliveryFee({'shipping_rule' : shippingRules[0].name })
+            setCheckedState(shippingRules[0].name)
         }
-    }, [deliveryResult, deliveryError])
+    }, [deliveryResult, deliveryError, shippingRuleLoading, shippingRules])
 
     useEffect(() => {
         clearTimeout(errorTimer.current);
@@ -54,10 +70,13 @@ const Checkout = () => {
         };
       }, [informationAlert]);
 
-      const removePromoCode = () => {
+
+      const removePromoCode = async() => {
+
         reset()
         setInformationAlert(true);
-    
+        await deleteCoupon()
+        ApplyDeliveryFee({'shipping_rule' : checkedState})
       };
     
       const checkPromoCode = (event) => {
@@ -130,15 +149,19 @@ const Checkout = () => {
         if (error ) {
             setErrorAlert(JSON.parse(JSON.parse(error?._server_messages)[0]).message);
         }
+        if(deliveryError)
+        {
+            setErrorAlert(JSON.parse(JSON.parse(deliveryError?._server_messages)[0]).message);
+        }
         if(codeError)
         {
-            setErrorAlert(true);
+            setErrorAlert(JSON.parse(JSON.parse(codeError?._server_messages)[0]).message);
         }
         if(PromoCompleted)
         {
             setPositiveAlert(true);
         }
-    }, [isCompleted, error, PromoCompleted, codeError])
+    }, [isCompleted, error, PromoCompleted, codeError, deliveryError])
 
     return (
         <main className='main-section'>
@@ -254,6 +277,80 @@ const Checkout = () => {
                                 By placing my order, you agree to our <SfLink href="#" className='text-secondary'>Terms and Conditions</SfLink> and our{' '}
                                 <SfLink href="#" className='text-secondary'>Privacy Policy.</SfLink>
                             </div>
+                            <div className="flex flex-col text-right">
+                                <p>{deliveryLoading ? <SfLoaderCircular/> : typeof codeResult?.message?.doc?.total == 'undefined' ?  deliveryResult?.message?.doc?.total ? `฿ ${deliveryResult?.message?.doc?.total}` : "0" : `฿ ${codeResult?.message?.doc?.total}`}</p>
+                                <p className="my-2">
+                                    {deliveryLoading ? <SfLoaderCircular/> : typeof codeResult?.message?.doc?.total_taxes_and_charges == 'undefined' ?  deliveryResult?.message?.doc?.total_taxes_and_charges ? `฿ ${deliveryResult?.message?.doc?.total_taxes_and_charges}` : "0" : `฿ ${codeResult?.message?.doc?.total_taxes_and_charges}` }
+                                </p>
+                                <p></p>
+                            </div>
+                        </div>
+                         { !loading ? codeResult ? (
+                            <div className="flex items-center mb-5 py-5 border-y border-neutral-200">
+                                <p>PromoCode</p>
+                                <SfButton size="sm" variant="tertiary" className="ml-auto mr-2" onClick={removePromoCode}>
+                                    Remove
+                                </SfButton>
+                                <p>{codeResult.message.coupon_code.toUpperCase()}</p>
+                            </div>
+                        ) : (
+                            <form className="flex gap-x-2 py-4 border-y border-neutral-200 mb-4" onSubmit={checkPromoCode}>
+                                <SfInput
+                                    value={inputValue}
+                                    placeholder="Enter promo code"
+                                    wrapperClassName="grow"
+                                    onChange={(event) => setInputValue(event.target.value)}
+                                />
+                                <SfButton type="submit" className='bg-btn-primary text-btn-primary-foreground'>
+                                    Apply
+                                </SfButton>
+                            </form>
+                        ) : <SfLoaderCircular/>} 
+                        {/*<p className="px-3 py-1.5 bg-secondary-100 text-secondary-700 typography-text-sm rounded-md text-center mb-4">
+                            You are saving ${Math.abs(orderDetails.savings).toFixed(2)} on your order today!
+                        </p>*/ }
+                        <div className="flex justify-between typography-headline-4 md:typography-headline-3 font-bold pb-4 mb-4 border-b border-neutral-200">
+                            <p>Total</p>
+                            <p>{deliveryLoading ? <SfLoaderCircular/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total? `฿ ${deliveryResult?.message?.doc?.grand_total}` : "0" : `฿ ${codeResult?.message?.doc?.grand_total}`}</p>
+                        </div>
+                        <div>
+                        { !shippingRuleLoading ? shippingRules.map(({ name, shipping_amount }) => (
+                            <SfListItem
+                            as="label"
+                            key={name}
+                            disabled={deliveryLoading}
+                            slotPrefix={
+                                <SfRadio
+                                name="delivery-options"
+                                value={name}
+                                Checked={checkedState == name}
+                                onChange={() => {
+                                    setCheckedState(name);
+                                    ApplyDeliveryFee({'shipping_rule' : name })
+                                }}
+                                />
+                            }
+                            slotSuffix={<span className="text-gray-900">{shipping_amount}฿</span>}
+                            className="!items-start max-w-sm border rounded-md border-neutral-200 first-of-type:mr-4 first-of-type:mb-4"
+                            >
+                            {name}
+                            </SfListItem>
+                        )) : <SfLoaderCircular/> }
+                        </div>
+                        <SfInput
+                            placeholder='Enter loyalty points to redeem'
+                            slotSuffix={<strong className='w-16'>of {user?.loyalty_points}</strong>}
+                            maxLength={user?.loyalty_points?.toString().length}
+                            name="loyalty_points"
+                            value={formik.values.loyalty_points}
+                            onChange={formik.handleChange}
+                        />
+                        <SfButton size="lg" className="w-full mt-4 bg-btn-primary text-btn-primary-foreground" onClick={formik.handleSubmit}>
+                            Place Order
+                        </SfButton>
+                        <div className="typography-text-sm mt-4 text-center text-primary">
+                            By placing my order, you agree to our <SfLink href="#" className='text-secondary'>Terms and Conditions</SfLink> and our{' '}
+                            <SfLink href="#" className='text-secondary'>Privacy Policy.</SfLink>
                         </div>
                     </div>
                     <div className="absolute top-0 right-0 mx-2 mt-2 sm:mr-6">
@@ -276,40 +373,40 @@ const Checkout = () => {
             </div>
             )}
             {informationAlert && (
-            <div
-                role="alert"
-                className="flex items-start md:items-center shadow-md max-w-[600px] bg-positive-100 pr-2 pl-4 mb-2 ring-1 ring-positive-200 typography-text-sm md:typography-text-base py-1 rounded-md"
+          <div
+            role="alert"
+            className="flex items-start md:items-center shadow-md max-w-[600px] bg-positive-100 pr-2 pl-4 mb-2 ring-1 ring-positive-200 typography-text-sm md:typography-text-base py-1 rounded-md"
+          >
+            <SfIconCheckCircle className="mr-2 my-2 text-positive-700" />
+            <p className="py-2 mr-2">Your promo code has been removed.</p>
+            <button
+              type="button"
+              className="p-1.5 md:p-2 ml-auto rounded-md text-positive-700 hover:bg-positive-200 active:bg-positive-300 hover:text-positive-800 active:text-positive-900"
+              aria-label="Close positive alert"
+              onClick={() => setInformationAlert(false)}
             >
-                <SfIconCheckCircle className="mr-2 my-2 text-positive-700" />
-                <p className="py-2 mr-2">Your promo code has been removed.</p>
-                <button
-                type="button"
-                className="p-1.5 md:p-2 ml-auto rounded-md text-positive-700 hover:bg-positive-200 active:bg-positive-300 hover:text-positive-800 active:text-positive-900"
-                aria-label="Close positive alert"
-                onClick={() => setInformationAlert(false)}
-                >
-                <SfIconClose className="hidden md:block" />
-                <SfIconClose size="sm" className="md:hidden block" />
-                </button>
-            </div>
-            )}
-            {errorAlert && (
-            <div
-                role="alert"
-                className="flex items-start md:items-center max-w-[600px] shadow-md bg-negative-100 pr-2 pl-4 ring-1 ring-negative-300 typography-text-sm md:typography-text-base py-1 rounded-md"
+              <SfIconClose className="hidden md:block" />
+              <SfIconClose size="sm" className="md:hidden block" />
+            </button>
+          </div>
+        )}
+        {errorAlert && (
+          <div
+            role="alert"
+            className="flex items-start md:items-center max-w-[600px] shadow-md bg-negative-100 pr-2 pl-4 ring-1 ring-negative-300 typography-text-sm md:typography-text-base py-1 rounded-md"
+          >
+            <p className="py-2 mr-2">{errorAlert}</p>
+            <button
+              type="button"
+              className="p-1.5 md:p-2 ml-auto rounded-md text-negative-700 hover:bg-negative-200 active:bg-negative-300 hover:text-negative-800 active:text-negative-900"
+              aria-label="Close error alert"
+              onClick={() => setErrorAlert(false)}
             >
-                <p className="py-2 mr-2">This promo code is not valid.</p>
-                <button
-                type="button"
-                className="p-1.5 md:p-2 ml-auto rounded-md text-negative-700 hover:bg-negative-200 active:bg-negative-300 hover:text-negative-800 active:text-negative-900"
-                aria-label="Close error alert"
-                onClick={() => setErrorAlert(false)}
-                >
-                <SfIconClose className="hidden md:block" />
-                <SfIconClose size="sm" className="md:hidden block" />
-                </button>
-            </div>
-            )}
+              <SfIconClose className="hidden md:block" />
+              <SfIconClose size="sm" className="md:hidden block" />
+            </button>
+          </div>
+        )}
                     </div>
                 </div>
             </div>
