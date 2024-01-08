@@ -5,8 +5,8 @@ import { Link, useLocation } from 'react-router-dom'
 const MyAccountSection = ({children}) => {
   const location = useLocation()
   const menus = [
-    {title:'My Orders', link:'/order-history'},
-    {title:'My Account', link:'/profile'}
+    {title:'My orders', link:'/order-history'},
+    {title:'My account', link:'/profile'}
   ]
   return (
     <main className='main-section'>

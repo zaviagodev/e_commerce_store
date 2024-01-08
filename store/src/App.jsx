@@ -25,9 +25,9 @@ import { SettingProvider } from "./hooks/useWebsiteSettings";
 
 const Layer = () => {
   const navigate = useNavigate();
-  useEffect(() => {
-    navigate("/home/all items")
-  }, [])
+  // useEffect(() => {
+  //   navigate("/home/all items")
+  // }, [])
   return (
     <>
       <NavHeader />
