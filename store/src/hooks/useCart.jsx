@@ -21,24 +21,23 @@ export const CartProvider = ({ children }) => {
         // get cart state from local storage
         if(products.length == 0) return
         const cartStorage = localStorage.getItem('cart')
-        if(Object.keys(cart).length === 0 && !result && !loading )
+        if(!result && !loading && typeof cartStorage != 'undefined' )
         {
+
             const cartObject = JSON.parse(cartStorage);
-            if(typeof cartObject != 'undefined')  {
-                setCart(cartObject)
-                if(!verifyCart(cartObject))
-                {
-                    resetBackEndCart
-                    updateCart(cartObject)
-                }
+            setCart(cartObject)
+            if(!verifyCart(cartObject))
+            {
+                resetBackEndCart()
+                updateCart(cartObject)
             }
         }
     }, [products])
 
     function resetBackEndCart() {
-        products.forEach(async (product) => {
+        getProductsCodeInCart().forEach(async (product) => {
             try {
-                await call({"item_code" : product.item_code, 'qty' : 0})
+                await call({"item_code" : product, 'qty' : 0})
             } catch (error) {
                 console.log(error)
             }
@@ -49,10 +48,9 @@ export const CartProvider = ({ children }) => {
 
     function verifyCart(cartObject) {
         const productCodes = getProductsCodeInCart();
-
-        const allItemsExist = Object.keys(cartObject).every(itemCode => productCodes.includes(itemCode));
-    
-        return allItemsExist;
+        const allCartItemsExist = Object.keys(cartObject).every(itemCode => productCodes.includes(itemCode)) && productCodes.every(itemCode => Object.keys(cartObject).includes(itemCode));
+        console.log(allCartItemsExist)
+        return  allCartItemsExist;
     }
 
     async function updateCart(cartObject) {
