@@ -233,7 +233,6 @@ const Checkout = () => {
                                     <p></p>
                                 </div>
                             </div>
-                            
                         </div>
                          { !loading ? codeResult ? (
                             <div className="flex items-center mb-5 py-5 border-y border-neutral-200">
@@ -274,6 +273,7 @@ const Checkout = () => {
                                 name="delivery-options"
                                 value={name}
                                 Checked={checkedState == name}
+                                className='checked:bg-primary'
                                 onChange={() => {
                                     setCheckedState(name);
                                     ApplyDeliveryFee({'shipping_rule' : name })
