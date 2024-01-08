@@ -29,9 +29,6 @@ import { useProducts } from '../hooks/useProducts';
 import SearchWithIcon from './SearchBar';
 
 import SelectDropdownPreselected from './dropDown';
-  
-
-  
   export default function BaseMegaMenu() {
     const { close, toggle, isOpen } = useDisclosure();
     const drawerRef = useRef(null);
@@ -47,8 +44,7 @@ import SelectDropdownPreselected from './dropDown';
 
     const {appName, appLogo,hideLogin, hideCheckout, navbarSearch, topBarItems, hideWish, isLoading} = useSetting()
 
-
-
+    console.log(topBarItems)
 
     const [actionItems, setActionItems] = useState([
         {
@@ -103,31 +99,31 @@ import SelectDropdownPreselected from './dropDown';
       if(!url.startsWith('/'))  window.location.href = `https://${url}`;
       else navigate(url);
     }
-    
+
     const productList = (name) => 
         <>
         <SfButton
-          className="hidden md:flex text-white bg-transparent font-body hover:bg-primary hover:text-white active:bg-primary active:text-white"
+          className="hidden lg:flex text-white bg-transparent font-body hover:bg-primary hover:text-white active:bg-primary active:text-white"
           aria-haspopup="true"
           aria-expanded={isOpen}
-          slotSuffix={<SfIconExpandMore className="hidden md:inline-flex" />}
+          slotSuffix={<SfIconExpandMore className="hidden lg:inline-flex" />}
           variant="tertiary"
           onClick={toggle}
           square
         >
-        <span className="hidden md:inline-flex whitespace-nowrap px-2">{name}</span>
+        <span className="hidden lg:inline-flex whitespace-nowrap">{name}</span>
         </SfButton>
-        <nav>
+        <nav className='absolute top-0 right-0 w-full'>
           <ul>
-                            <li role="none">
+              <li role="none">
                   <CSSTransition
                     in={isOpen}
                     timeout={500}
                     unmountOnExit
                     classNames={{
-                      enter: '-translate-x-full md:opacity-0 md:translate-x-0',
-                      enterActive: 'translate-x-0 md:opacity-100 transition duration-500 ease-in-out',
-                      exitActive: '-translate-x-full md:opacity-0 md:translate-x-0 transition duration-500 ease-in-out',
+                      enter: '-translate-x-full lg:opacity-0 lg:translate-x-0',
+                      enterActive: 'translate-x-0 lg:opacity-100 transition duration-500 ease-in-out',
+                      exitActive: '-translate-x-full lg:opacity-0 lg:translate-x-0 transition duration-500 ease-in-out',
                     }}
                   >
                     <SfDrawer
@@ -135,9 +131,9 @@ import SelectDropdownPreselected from './dropDown';
                       open
                       disableClickAway
                       placement="top"
-                      className="grid grid-cols-1 md:gap-x-6 md:grid-cols-4 bg-white shadow-lg p-0 max-h-screen overflow-y-auto md:!absolute md:!top-20 max-w-[376px] md:max-w-full md:p-6 mr-[50px] md:mr-0 z-99"
+                      className="grid grid-cols-1 lg:gap-x-6 lg:grid-cols-4 bg-white shadow-lg p-0 max-h-screen overflow-y-auto lg:!absolute lg:!top-20 max-w-[376px] lg:max-w-full lg:p-6 mr-[50px] lg:mr-0 z-99"
                     >
-                      <div className="sticky top-0 flex items-center justify-between px-4 py-2 bg-primary md:hidden">
+                      <div className="sticky top-0 flex items-center justify-between px-4 py-2 bg-primary lg:hidden">
                         <div className="flex items-center font-medium text-white typography-text-lg">{name}</div>
                         <SfButton
                           square
@@ -166,7 +162,6 @@ import SelectDropdownPreselected from './dropDown';
           </ul>
         </nav>
         </>
-
     function recursiveBuildPhone (itemTop){
 
       const recurse = (item) => {
@@ -238,23 +233,20 @@ import SelectDropdownPreselected from './dropDown';
             onClick={() => handleClick(item.url)}
           >{item.label}</SfButton>
         </li>
-
       if(item.children.length === 0) return button
       if(item.children.length > 0) return  <SelectDropdownPreselected dropdowndame={item.label}  options={item.children} />
-
     } 
 
-    
     return (
       <div className="w-full h-full">
         {isOpen && <div className="fixed inset-0 bg-neutral-500 bg-opacity-50 transition-opacity z-60" />}
         <header
           ref={menuRef}
-          className="flex flex-wrap md:flex-nowrap justify-center w-full py-2 md:py-5 border-0 bg-primary border-neutral-200 md:relative md:z-99"
+          className="flex flex-wrap lg:flex-nowrap justify-center w-full py-2 lg:py-5 border-0 bg-primary border-neutral-200 lg:relative lg:z-99"
         >
-          <div className="flex items-center justify-start h-full max-w-[1536px] w-full px-4 md:px-10">
+          <div className="flex items-center justify-start h-full max-w-[1536px] w-full px-4 lg:px-10">
             <SfButton
-              className="block md:hidden text-white bg-transparent font-body hover:bg-primary hover:text-white active:bg-primary active:text-white"
+              className="block lg:hidden text-white bg-transparent font-body hover:bg-primary hover:text-white active:bg-primary active:text-white"
               aria-haspopup="true"
               aria-expanded={isOpen}
               variant="tertiary"
@@ -276,17 +268,15 @@ import SelectDropdownPreselected from './dropDown';
                     <h5>{appName}</h5>
             </Link>
             <nav>
-              <ul className='flex flex-row gap-2 items-center justify-center'>
+              <ul className='flex flex-row gap-4 items-center justify-center'>
                 {topBarItems.map((item) => {
                   if (item.is_product_list) return productList(item.label)
                   else return recursiveBuild(item)
                 })}
               </ul>
             </nav>
-            
 
-            
-            {navbarSearch && <SearchWithIcon className="hidden md:flex flex-[100%] ml-10 relative" /> }
+            {navbarSearch && <SearchWithIcon className="hidden lg:flex flex-[100%] ml-10 relative" /> }
             <nav className="flex-1 flex justify-end lg:order-last lg:ml-4">
                     <div className="flex flex-row flex-nowrap">
                         {actionItems.map((actionItem) => 
@@ -313,11 +303,8 @@ import SelectDropdownPreselected from './dropDown';
                     </div>
                 </nav>
           </div>
-          {navbarSearch && <SearchWithIcon className="flex md:hidden flex-[100%] my-2 mx-4" /> }
+          {navbarSearch && <SearchWithIcon className="flex lg:hidden flex-[100%] my-2 mx-4" /> }
         </header>
       </div>
     );
   }
-
-
-  

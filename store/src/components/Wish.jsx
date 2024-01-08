@@ -35,7 +35,7 @@ const Wish = () => {
                 placement='right'
                 open
                 onClose={() => setIsOpen(false)}
-                className="bg-neutral-50 border border-gray-300 z-99 lg:w-[500px] w-full"
+                className="bg-neutral-50 border border-gray-300 z-99 md:w-[500px] w-full"
             >
                 <div className="flex h-full flex-col overflow-y-auto bg-white shadow-xl">
                     <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">

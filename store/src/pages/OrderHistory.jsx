@@ -32,7 +32,7 @@ function OrderHistory() {
         { title:'Order ID', info:<>{name}-{}{company}</>},
         { title:'Date', info:`${new Date(creation).getDate()} ${month[new Date(creation).getMonth()]}, ${new Date(creation).getHours()}:${new Date(creation).getMinutes() < 10 ? '0' + new Date(creation).getMinutes(): new Date(creation).getMinutes() }`},
         { title:'Status', info:status},
-        { title:'Total', info:total}
+        { title:'Total', info:`฿${total}`}
       ]
       return (
         <div className="w-full border rounded-md p-4 flex gap-x-4 items-center">
@@ -70,7 +70,7 @@ function OrderHistory() {
                     <button onClick={() => setSelectedStatus(option)} key={option} className={`w-full px-4 py-2 border-b-2 ${selectedStatus === option ? 'border-b-black' : 'border-b-white'}`}>{option}</button>
                 ))}
               </div>
-            <div className="flex items-center gap-x-2">
+            <div className="hidden lg:flex items-center gap-x-2">
                     <label className="typography-text-sm font-medium">Show</label>
                     <SfSelect name="state" placeholder="-- Select --" onChange={(e) => setSelectedShow(e.target.value)} className="w-[200px]">
                         {showList.map((list, index) => (
