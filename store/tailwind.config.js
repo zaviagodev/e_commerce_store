@@ -18,6 +18,7 @@ export default {
   theme: {
     extend: {
       zIndex: {
+        60: 60,
         99: 99
       },
       gridTemplateColumns: {
@@ -33,10 +34,18 @@ export default {
           primary: {
             DEFAULT: 'var(--button-primary)',
             foreground: 'var(--button-primary-foreground)',
+            hover: {
+              DEFAULT: 'var(--button-primary-hover)',
+              foreground: 'var(--button-primary-hover-foreground)'
+            }
           },
           secondary: {
             DEFAULT: 'var(--button-secondary)',
             foreground: 'var(--button-secondary-foreground)',
+            hover: {
+              DEFAULT: 'var(--button-secondary-hover)',
+              foreground: 'var(--button-secondary-hover-foreground)'
+            }
           }
         }
       },

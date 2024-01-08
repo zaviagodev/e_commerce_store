@@ -15,7 +15,7 @@ export default function PaymentMethods({
     return (
         <fieldset className="w-full">
             <legend className="mb-4 font-bold text-neutral-900">Payment methods</legend>
-            <div className="grid grid-cols-2 gap-4 items-stretch">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-stretch">
                 {paymentMethods.map(({ label, value: nameVal, logo }) => (
                     <label key={nameVal} className="relative" onClick={() => onChange(nameVal)}>
                         <div className={`h-full flex flex-col items-center justify-center py-7 px-4 cursor-pointer rounded-md border border-neutral-200 -outline-offset-2 hover:border-primary-200 hover:bg-primary-100 peer-focus:border-primary-200 peer-focus:bg-primary-100 ${value == nameVal ? "border-primary-300 bg-primary-100 outline outline-2 outline-primary-700" : ""}`}>

@@ -3,7 +3,7 @@ export const AddressCard = (props) => {
         <div className="flex flex-wrap gap-4 lg:gap-6 lg:flex-nowrap">
             <div
                 key={props.title}
-                className="p-3 w-full min-w-[320px] md:max-w-[450px] lg:w-[380px] relative border border-neutral-200 rounded-md hover:shadow-xl"
+                className="p-3 w-full relative border border-neutral-200 rounded-md hover:shadow-xl"
             >
                 <div className="flex flex-col items-start p-4 grow">
                     {

@@ -16,17 +16,9 @@ import {
 } from '@storefront-ui/react';
 
 
-
-
 // Just for presentation purposes. Replace mock request with the actual API call.
 // eslint-disable-next-line no-promise-executor-return
 const delay = () => new Promise((resolve) => setTimeout(resolve, Math.random() * 1000));
-
-
-
-
-
-
 
 export default function SearchWithIcon( {className}) {
     const { products } = useProducts();
@@ -170,33 +162,44 @@ export default function SearchWithIcon( {className}) {
       {isOpen && (
         <div ref={refs.setFloating} style={style} className="left-0 right-0">
           {isLoadingSnippets ? (
-            <div className="flex items-center justify-center bg-white w-full h-screen sm:h-20 py-2 sm:border sm:border-solid sm:rounded-md sm:border-neutral-100 sm:drop-shadow-md">
+            <div className="flex items-center justify-center bg-white w-[calc(100%_-_40px)] h-screen sm:h-20 py-2 sm:border sm:border-solid sm:rounded-md sm:border-neutral-100 sm:drop-shadow-md">
               <SfLoaderCircular />
             </div>
           ) : (
-            snippets.length > 0 && (
-              <ul
-                ref={dropdownListRef}
-                className="py-2 bg-white h-screen sm:h-auto sm:border sm:border-solid sm:rounded-md sm:border-neutral-100 sm:drop-shadow-md"
-              >
-                {snippets.map(({ highlight, rest, product }) => (
-                  <li key={product.name}>
-                    <SfListItem
-                      as="button"
-                      type="button"
-                      onClick={handleSelect(product)}
-                      className="!py-4 sm:!py-2 flex justify-start"
-                    >
-                      <p className="text-left">
-                        <span>{highlight}</span>
-                        <span className="font-medium">{rest}</span>
-                      </p>
-                      <p className="text-left typography-text-xs text-neutral-500">{product.item_group}</p>
-                    </SfListItem>
-                  </li>
-                ))}
-              </ul>
-            )
+            <>
+            {searchValue !== "" && (
+            <ul
+              ref={dropdownListRef}
+              className="py-2 bg-white h-screen sm:h-auto sm:border sm:border-solid sm:rounded-md sm:border-neutral-100 sm:drop-shadow-md w-[calc(100%_-_40px)]"
+            >
+                {snippets.length > 0 ? (
+                  <>
+                    {snippets.map(({ highlight, rest, product }) => (
+                      <li key={product.name}>
+                        <SfListItem
+                          as="button"
+                          type="button"
+                          onClick={handleSelect(product)}
+                          className="!py-4 sm:!py-2 flex justify-start"
+                        >
+                          <p className="text-left">
+                            <span>{highlight}</span>
+                            <span className="font-medium">{rest}</span>
+                          </p>
+                          <p className="text-left typography-text-xs text-neutral-500">{product.item_group}</p>
+                        </SfListItem>
+                      </li>
+                    ))}
+                  </>
+                ) : (
+                  <div className="py-4 text-center flex flex-col gap-y-2 justify-end">
+                    <h1 className='font-medium text-lg'>No search results</h1>
+                    <p className='text-sm'>Please try another search</p>
+                  </div>
+                )}
+              </ul>)
+              }
+            </>
           )}
         </div>
       )}

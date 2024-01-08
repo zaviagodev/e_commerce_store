@@ -119,90 +119,90 @@ import SelectDropdownPreselected from './dropDown';
         </SfButton>
         <nav>
           <ul>
-            <li role="none">
-              <CSSTransition
-                in={isOpen}
-                timeout={500}
-                unmountOnExit
-                classNames={{
-                  enter: '-translate-x-full md:opacity-0 md:translate-x-0',
-                  enterActive: 'translate-x-0 md:opacity-100 transition duration-500 ease-in-out',
-                  exitActive: '-translate-x-full md:opacity-0 md:translate-x-0 transition duration-500 ease-in-out',
-                }}
-              >
-                <SfDrawer
-                  ref={drawerRef}
-                  open
-                  disableClickAway
-                  placement="top"
-                  className="grid grid-cols-1 md:gap-x-6 md:grid-cols-4 bg-white shadow-lg p-0 max-h-screen overflow-y-auto md:!absolute md:!top-20 max-w-[376px] md:max-w-full md:p-6 mr-[50px] md:mr-0 z-50"
-                >
-                  <div className="sticky top-0 flex items-center justify-between px-4 py-2 bg-primary md:hidden">
-                    <div className="flex items-center font-medium text-white typography-text-lg">Browse products</div>
-                    <SfButton
-                      square
-                      variant="tertiary"
-                      aria-label="Close navigation menu"
-                      onClick={close}
-                      className="text-white ml-2"
-                    >
-                      <SfIconClose />
-                    </SfButton>
-                  </div>
-                  {groupes.map(({ name, children }) => (
-                    <div key={name} className="[&:nth-child(2)]:pt-0 pt-6 md:pt-0">
-                      <h2
-                        role="presentation"
-                        className="typography-text-base font-medium text-neutral-900 whitespace-nowrap p-4 md:py-1.5"
-                      >
-                        {name}
-                      </h2>
-                      <hr className="mb-3.5" />
-                      <ul>
-                          <Link to={`home/${name}`}   >
-                          <li>
-                            <SfListItem
-                              as="a"
-                              size="sm"
-                              role="none"
-                              href={`#${name}`}
-                              className="typography-text-base md:typography-text-sm py-4 md:py-1.5"
-                            >
-                              {name}
-                            </SfListItem>
-                          </li>
-                          </Link>
-                        {children.map(({name, children}) => (
-                          <Link to={`home/${name}`}   >
-                          <li key={name}>
-                            <SfListItem
-                              as="a"
-                              size="sm"
-                              role="none"
-                              href={`#${name}`}
-                              className="typography-text-base md:typography-text-sm py-4 md:py-1.5"
-                            >
-                              {name}
-                            </SfListItem>
-                          </li>
-                          </Link>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                  <SfButton
-                    square
-                    size="sm"
-                    variant="tertiary"
-                    aria-label="Close navigation menu"
-                    onClick={close}
-                    className="hidden md:block md:absolute md:right-0 hover:bg-white active:bg-white"
+                            <li role="none">
+                  <CSSTransition
+                    in={isOpen}
+                    timeout={500}
+                    unmountOnExit
+                    classNames={{
+                      enter: '-translate-x-full md:opacity-0 md:translate-x-0',
+                      enterActive: 'translate-x-0 md:opacity-100 transition duration-500 ease-in-out',
+                      exitActive: '-translate-x-full md:opacity-0 md:translate-x-0 transition duration-500 ease-in-out',
+                    }}
                   >
-                    <SfIconClose className="text-neutral-500" />
-                  </SfButton>
-                </SfDrawer>
-              </CSSTransition>
-            </li>
+                    <SfDrawer
+                      ref={drawerRef}
+                      open
+                      disableClickAway
+                      placement="top"
+                      className="grid grid-cols-1 md:gap-x-6 md:grid-cols-4 bg-white shadow-lg p-0 max-h-screen overflow-y-auto md:!absolute md:!top-20 max-w-[376px] md:max-w-full md:p-6 mr-[50px] md:mr-0 z-99"
+                    >
+                      <div className="sticky top-0 flex items-center justify-between px-4 py-2 bg-primary md:hidden">
+                        <div className="flex items-center font-medium text-white typography-text-lg">Browse products</div>
+                        <SfButton
+                          square
+                          variant="tertiary"
+                          aria-label="Close navigation menu"
+                          onClick={close}
+                          className="text-white ml-2"
+                        >
+                          <SfIconClose />
+                        </SfButton>
+                      </div>
+                      {groupes.map(({ name, children }) => (
+                        <div key={name} className="[&:nth-child(2)]:pt-0 pt-6 md:pt-0">
+                          <h2
+                            role="presentation"
+                            className="typography-text-base font-medium text-neutral-900 whitespace-nowrap p-4 md:py-1.5"
+                          >
+                            {name}
+                          </h2>
+                          <hr className="mb-3.5" />
+                          <ul>
+                              <Link to={`home/${name}`}   >
+                              <li>
+                                <SfListItem
+                                  as="a"
+                                  size="sm"
+                                  role="none"
+                                  href={`#${name}`}
+                                  className="typography-text-base md:typography-text-sm py-4 md:py-1.5"
+                                >
+                                  {name}
+                                </SfListItem>
+                              </li>
+                              </Link>
+                            {children.map(({name, children}) => (
+                              <Link to={`home/${name}`}   >
+                              <li key={name}>
+                                <SfListItem
+                                  as="a"
+                                  size="sm"
+                                  role="none"
+                                  href={`#${name}`}
+                                  className="typography-text-base md:typography-text-sm py-4 md:py-1.5"
+                                >
+                                  {name}
+                                </SfListItem>
+                              </li>
+                              </Link>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                      <SfButton
+                        square
+                        size="sm"
+                        variant="tertiary"
+                        aria-label="Close navigation menu"
+                        onClick={close}
+                        className="hidden md:block md:absolute md:right-0 hover:bg-white active:bg-white"
+                      >
+                        <SfIconClose className="text-neutral-500" />
+                      </SfButton>
+                    </SfDrawer>
+                  </CSSTransition>
+                </li>
           </ul>
         </nav>
         </>
@@ -229,10 +229,10 @@ import SelectDropdownPreselected from './dropDown';
     
     return (
       <div className="w-full h-full">
-        {isOpen && <div className="fixed inset-0 bg-neutral-500 bg-opacity-50 transition-opacity" />}
+        {isOpen && <div className="fixed inset-0 bg-neutral-500 bg-opacity-50 transition-opacity z-60" />}
         <header
           ref={menuRef}
-          className="flex flex-wrap md:flex-nowrap justify-center w-full py-2 md:py-5 border-0 bg-primary border-neutral-200 md:relative md:z-10"
+          className="flex flex-wrap md:flex-nowrap justify-center w-full py-2 md:py-5 border-0 bg-primary border-neutral-200 md:relative md:z-99"
         >
           <div className="flex items-center justify-start h-full max-w-[1536px] w-full px-4 md:px-10">
             <SfButton
