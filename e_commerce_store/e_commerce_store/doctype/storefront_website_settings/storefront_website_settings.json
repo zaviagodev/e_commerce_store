@@ -211,6 +211,7 @@
    "label": "Navbar"
   },
   {
+   "description": "main items should be on top",
    "fieldname": "top_bar_items",
    "fieldtype": "Table",
    "label": "Top Bar Items",
@@ -503,7 +504,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-01-05 14:10:41.025498",
+ "modified": "2024-01-05 18:00:40.433734",
  "modified_by": "Administrator",
  "module": "E Commerce Store",
  "name": "Storefront Website Settings",
