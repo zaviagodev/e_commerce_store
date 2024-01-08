@@ -1,9 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom';
-import { SfButton, SfRating, SfCounter, SfLink, SfIconShoppingCart, SfIconFavorite, SfLoaderCircular } from '@storefront-ui/react';
+import { SfButton, SfRating, SfCounter, SfLink, SfIconShoppingCart, SfIconFavorite, SfLoaderCircular, SfIconSell, SfIconFavoriteFilled } from '@storefront-ui/react';
 import { useCart } from '../hooks/useCart';
 import { useWish } from '../hooks/useWishe';
+import { useSetting } from '../hooks/useWebsiteSettings';
 
 const ProductCard = ({
     title,
@@ -18,6 +19,7 @@ const ProductCard = ({
 }) => {
     const { Wish,addToWish, removeFromWish } = useWish()
     const { cart, addToCart, loading } = useCart()
+    const { hideWish} = useSetting()
 
     const handleWish = (e) => {
         e.preventDefault();
@@ -28,7 +30,6 @@ const ProductCard = ({
         }
     }
     return (
-        
             <div className="border border-neutral-200 rounded-md hover:shadow-lg w-full h-full">
                 <div className="relative">
                     <Link to={`/products/${productId}`}>
@@ -37,8 +38,14 @@ const ProductCard = ({
                             alt={title}
                             className="object-cover h-auto rounded-md aspect-square w-full"
                         />
+                        {discount && (
+                            <div className="absolute inline-flex items-center justify-center text-sm font-medium text-muted bg-destructive py-1 px-2 top-2 left-2 rounded-md">
+                                <SfIconSell size="sm" className="mr-1.5" />
+                                {discount}
+                            </div>
+                        )}
                     </Link>
-                    <SfButton
+                    {!hideWish && <SfButton
                         onClick={handleWish} 
                         type="button"
                         variant="tertiary"
@@ -47,8 +54,13 @@ const ProductCard = ({
                         className="absolute bottom-2 right-2  bg-white ring-1 ring-inset ring-neutral-200 !rounded-full z-50"
                         aria-label="Add to wishlist"
                     >
-                        <SfIconFavorite className={`${Wish[itemCode] == 1 && 'text-primary'}`}  size="sm" />
+                        {Wish[itemCode] == 1 ? (
+                            <SfIconFavoriteFilled size="sm"/>
+                        ) : (
+                            <SfIconFavorite size="sm" />
+                        )}
                     </SfButton>
+}
                 </div>
                 <div className="p-4 border-t border-neutral-200 flex flex-col justify-between">
                     <div className='flex flex-col mb-2'>
@@ -64,7 +76,7 @@ const ProductCard = ({
                         </span>
                     </div>
                     
-                    {/*<SfButton disabled={loading} className='bg-btn-primary text-btn-primary-foreground' type="button" size="sm" slotPrefix={<SfIconShoppingCart size="sm" />} onClick={(e) => {
+                    {/* <SfButton disabled={loading} className='btn-primary' type="button" size="sm" slotPrefix={<SfIconShoppingCart size="sm" />} onClick={(e) => {
                         e.preventDefault();
                         addToCart(itemCode, cart[itemCode] ? cart[itemCode] + 1 : 1)
                     }}>
@@ -72,7 +84,6 @@ const ProductCard = ({
                     </SfButton> */}
                 </div>
             </div>
-        
     )
 }
 

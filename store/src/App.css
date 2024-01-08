@@ -12,8 +12,12 @@
     --text-tag: #000000;
     --button-primary: #000000;
     --button-primary-foreground: #FFFFFF;
+    --button-primary-hover: #393939;
+    --button-primary-hover-foreground: #FFFFFF;
     --button-secondary: #F6F6F6;
     --button-secondary-foreground: #6C6C6C;
+    --button-secondary-hover: #9F9F9F;
+    --button-secondary-hover-foreground: #000000;
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
@@ -50,4 +54,20 @@
 
 .primary-heading {
   @apply text-2xl font-bold
+}
+
+.btn-primary {
+  @apply text-btn-primary-foreground bg-btn-primary
+}
+
+.btn-primary:hover {
+  @apply text-btn-primary-hover-foreground bg-btn-primary-hover
+}
+
+.btn-secondary {
+  @apply text-btn-secondary-foreground bg-btn-secondary
+}
+
+.btn-secondary:hover {
+  @apply text-btn-secondary-hover-foreground bg-btn-secondary-hover
 }
