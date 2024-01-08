@@ -1,6 +1,3 @@
-
-
-
 import { createContext, useContext, useState } from 'react';
 
 import { useFrappeGetCall } from 'frappe-react-sdk';
@@ -8,7 +5,6 @@ import { useFrappeGetCall } from 'frappe-react-sdk';
 const SettingContext = createContext(null);
 
 export const SettingProvider = ({ children }) => {
-
     const [appLogo, setAppLogo] = useState(null);
     const [appName, setAppName] = useState('Store');
     const [disableSignup, setDisableSignup] = useState(false);
@@ -43,10 +39,6 @@ export const SettingProvider = ({ children }) => {
         }
     };
 
-
-
-
-
     const buildTopBarItems = (data) => {
         items = data
         items.forEach((item) => {
@@ -66,8 +58,6 @@ export const SettingProvider = ({ children }) => {
         })
         return itemsCopy;
     }
-
-
 
     const { mutate, isLoading } = useFrappeGetCall('headless_e_commerce.api.get_websiteSettings', undefined, undefined, {
         isOnline: () => appName == 'Store',
@@ -114,4 +104,3 @@ export const SettingProvider = ({ children }) => {
 }
 
 export const useSetting = () => useContext(SettingContext);
-

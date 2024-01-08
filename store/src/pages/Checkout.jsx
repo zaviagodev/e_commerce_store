@@ -213,12 +213,12 @@ const Checkout = () => {
                     }
                 </form>
                 <div className='p-4 w-full col-span-2'>
-                    <div className="md:shadow-lg md:rounded-md md:border md:border-neutral-100">
-                        <div className="flex justify-between items-end bg-neutral-100 md:bg-transparent py-2 px-4 md:px-6 md:pt-6 md:pb-4">
+                    <div className="md:shadow-lg md:rounded-md md:border md:border-neutral-100 md:p-6">
+                        <div className="flex justify-between items-end bg-neutral-100 md:bg-transparent py-2 px-4 md:p-0 md:pb-4">
                             <p className="typography-headline-4 font-bold md:typography-headline-3">Order Summary</p>
                             <p className="typography-text-base font-medium">(Items: {cartCount})</p>
                         </div>
-                        <div className="px-4 pb-4 mt-3 md:px-6 md:pb-6 md:mt-0">
+                        <div className="px-4 pb-4 mt-3 md:p-0 md:mt-0">
                             <div className="flex justify-between typography-text-base pb-4">
                                 <div className="flex flex-col grow pr-2">
                                     <p>Items Subtotal</p>
@@ -262,7 +262,7 @@ const Checkout = () => {
                             <p>Total</p>
                             <p>{deliveryLoading ? <SfLoaderCircular/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total? `฿ ${deliveryResult?.message?.doc?.grand_total}` : "0" : `฿ ${codeResult?.message?.doc?.grand_total}`}</p>
                         </div>
-                        <div>
+                        <div className='flex flex-col gap-y-2 mb-2'>
                         { !shippingRuleLoading ? shippingRules.map(({ name, shipping_amount }) => (
                             <SfListItem
                             as="label"
@@ -281,7 +281,7 @@ const Checkout = () => {
                                 />
                             }
                             slotSuffix={<span className="text-gray-900">{shipping_amount}฿</span>}
-                            className="!items-start max-w-sm border rounded-md border-neutral-200 first-of-type:mr-4 first-of-type:mb-4"
+                            className="!items-start w-full border rounded-md border-neutral-200"
                             >
                             {name}
                             </SfListItem>
