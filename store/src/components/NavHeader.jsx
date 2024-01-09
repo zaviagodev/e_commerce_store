@@ -1,19 +1,19 @@
 import {
-    SfIconShoppingCart,
-    SfIconFavorite,
-    SfIconPerson,
-    SfIconExpandMore,
-    SfIconClose,
-    SfButton,
-    SfDrawer,
-    SfListItem,
-    useDisclosure,
-    useTrapFocus,
-    SfInput,
-    SfBadge,
-    SfIconSearch,
-    SfIconMenu,
-  } from '@storefront-ui/react';
+  SfIconShoppingCart,
+  SfIconFavorite,
+  SfIconPerson,
+  SfIconExpandMore,
+  SfIconClose,
+  SfButton,
+  SfDrawer,
+  SfListItem,
+  useDisclosure,
+  useTrapFocus,
+  SfInput,
+  SfBadge,
+  SfIconSearch,
+  SfIconMenu,
+} from '@storefront-ui/react';
 import { useCart } from '../hooks/useCart';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -44,45 +44,59 @@ export default function BaseMegaMenu() {
 
   const {appName, appLogo,hideLogin, hideCheckout, navbarSearch, topBarItems, hideWish, isLoading} = useSetting()
 
+ const  handlLoginClick = () => {
+    if (user && user.name !== 'Guest') 
+      {
+        navigate('/profile');
+      } 
+    else 
+      {
+        navigate('/login');
+      }
+  }
+
+
+  const [actionItems, setActionItems] = useState([
+      {
+          icon: <></>,
+          label: '',
+          ariaLabel: 'Log in',
+          role: 'login',
+          show: false,
+          onClick: null
+      },
+      {
+          icon: <SfIconShoppingCart />,
+          label: '',
+          ariaLabel: 'Cart',
+          role: 'button',
+          show: false,
+          onClick: () => setIsOpen(true)
+      },
+      {
+          icon: <SfIconFavorite />,
+          label: '',
+          ariaLabel: 'Wishlist',
+          role: 'button',
+          show: false,
+          onClick: () => setWishOpen(true),
+      },
+  ]);
+
   useEffect(() => {
     if(isLoading) return;
     setActionItems(prev => prev.map((item, index) => {
-        if ((index === 1 && !hideWish) || (index === 0 && !hideCheckout)) {
+      
+        if ((index === 2 && !hideWish) || (index === 1 && !hideCheckout)) {
             return { ...item, show: true };
         }
-        if (index === 2 && !hideLogin && typeof user?.name !== 'undefined') {
-            return { ...item, show: true, label: user?.name ?? 'Log in',onClick: () => user?.name === 'Guest' || !user ? navigate('/login') :  navigate('/profile')  };
+        if (index === 0 && !hideLogin  ) {
+          console.log('user', user)
+            return { ...item, show: true };
         }
         return item;
     }));
-  }, [hideWish, hideCheckout, hideLogin, isLoading, user]);
-
-  const [actionItems, setActionItems] = useState([
-    {
-      icon: <SfIconShoppingCart />,
-      label: '',
-      ariaLabel: 'Cart',
-      role: 'button',
-      show: false,
-      onClick: () => setIsOpen(true)
-    },
-    {
-      icon: <SfIconFavorite />,
-      label: '',
-      ariaLabel: 'Wishlist',
-      role: 'button',
-      show: false,
-      onClick: () => setWishOpen(true),
-    },
-    {
-      label: user?.name ?? 'Log in',
-      icon: <SfIconPerson />,
-      ariaLabel: 'Log in',
-      role: 'login',
-      show: false,
-      onClick: () => user?.name === 'Guest' || !user ? navigate('/login') :  navigate('/profile'),
-    },
-  ]);
+}, [hideWish, hideCheckout, hideLogin, isLoading, user]);
 
   useTrapFocus(drawerRef, {
     activeState: isOpen,
@@ -94,12 +108,17 @@ export default function BaseMegaMenu() {
   });
 
   function handleClick(url) {
-    if(!url.startsWith('/'))  window.location.href = `https://${url}`;
-    else navigate(url);
+    
+    if(!url.startsWith('/')){  
+      window.location.assign('https://' + url)
+    }
+    else  {
+      navigate(`https://${url}`)
+    };
   }
 
   const productList = (name) => 
-    <>
+      <>
       <SfButton
         className="hidden lg:flex text-white bg-transparent font-body hover:bg-primary hover:text-white active:bg-primary active:text-white"
         aria-haspopup="true"
@@ -132,7 +151,7 @@ export default function BaseMegaMenu() {
                     className="grid grid-cols-1 lg:gap-x-6 lg:grid-cols-4 bg-white shadow-lg p-0 max-h-screen overflow-y-auto lg:!absolute lg:!top-20 max-w-[376px] lg:max-w-full lg:p-6 mr-[50px] lg:mr-0 z-99"
                   >
                     <div className="sticky top-0 flex items-center justify-between px-4 py-2 bg-primary lg:hidden">
-                      <div className="flex items-center font-medium text-white typography-text-lg">Browse products</div>
+                      <div className="flex items-center font-medium text-white typography-text-lg">{name}</div>
                       <SfButton
                         square
                         variant="tertiary"
@@ -143,47 +162,7 @@ export default function BaseMegaMenu() {
                         <SfIconClose />
                       </SfButton>
                     </div>
-                    {groupes.map(({ name, children }) => (
-                      <div key={name} className="[&:nth-child(2)]:pt-0 pt-6 md:pt-0">
-                        <h2
-                          role="presentation"
-                          className="typography-text-base font-medium text-neutral-900 whitespace-nowrap p-4 md:py-1.5"
-                        >
-                          {name}
-                        </h2>
-                        <hr className="mb-3.5" />
-                        <ul>
-                            <Link to={`home/${name}`}   >
-                            <li>
-                              <SfListItem
-                                as="a"
-                                size="sm"
-                                role="none"
-                                href={`#${name}`}
-                                className="typography-text-base md:typography-text-sm py-4 md:py-1.5"
-                              >
-                                {name}
-                              </SfListItem>
-                            </li>
-                            </Link>
-                          {children.map(({name, children}) => (
-                            <Link to={`home/${name}`}   >
-                            <li key={name}>
-                              <SfListItem
-                                as="a"
-                                size="sm"
-                                role="none"
-                                href={`#${name}`}
-                                className="typography-text-base md:typography-text-sm py-4 md:py-1.5"
-                              >
-                                {name}
-                              </SfListItem>
-                            </li>
-                            </Link>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
+                    {groupes.map((item) => recursiveBuildPhone(item))}
                     <SfButton
                       square
                       size="sm"
@@ -200,6 +179,64 @@ export default function BaseMegaMenu() {
         </ul>
       </nav>
       </>
+  function recursiveBuildPhone (itemTop){
+
+    const recurse = (item) => {
+      return(
+        <Link to={`/home/${item.children.length > 0 ? 'group_' : ''}${item.name}`} className='flex flex-1 felx-col items-center justify-between'  >
+          <li key={item.name} className='flex-1'>
+            <SfListItem
+              as="a"
+              size="sm"
+              role="none"
+              href={`#${item.name}`}
+              className="typography-text-base md:typography-text-sm py-4 md:py-1.5 "
+            >
+              {item.name}
+            </SfListItem>
+          </li> 
+          {item.children.length > 0 && <SfIconExpandMore className=" inline-flex m-2 -rotate-90" />}
+        </Link> 
+      )
+    }
+
+    return(
+    <div key={itemTop.name} className="[&:nth-child(2)]:pt-0 pt-6 md:pt-0">
+      <h2
+        role="presentation"
+        className="typography-text-base font-medium text-neutral-900 whitespace-nowrap p-4 md:py-1.5"
+      >
+                  {itemTop.name}
+      </h2>
+      <hr className="mb-3.5" />
+      <ul>
+        {
+          itemTop.children.length > 0 ? itemTop.children.map((child) => {
+            return(
+               recurse(child)
+            )
+          })
+          :
+          <Link to={`/home/${itemTop.name}`}   >
+          <li key={itemTop.name}>
+            <SfListItem
+              as="a"
+              size="sm"
+              role="none"
+              href={`#${itemTop.name}`}
+              className="typography-text-base md:typography-text-sm py-4 md:py-1.5"
+            >
+              {itemTop.name}
+            </SfListItem>
+          </li>
+        </Link> 
+        }
+      </ul> 
+    </div>
+    )
+
+  }
+
 
   function recursiveBuild (item){
     const button = 
@@ -267,7 +304,7 @@ export default function BaseMegaMenu() {
                               variant="tertiary"
                               square
                               slotPrefix={actionItem.icon}
-                              onClick={actionItem.onClick}
+                              onClick={actionItem.onClick ?? handlLoginClick}
                           >
                               {actionItem.ariaLabel === 'Cart' && (
                                   <SfBadge content={cartCount} />
@@ -276,7 +313,7 @@ export default function BaseMegaMenu() {
                                   <SfBadge content={WishCount} />
                               )}
                               {actionItem.role === 'login' && (
-                                  <p className="hidden xl:inline-flex whitespace-nowrap">{actionItem.label}</p>
+                                  <p className="inline-flex whitespace-nowrap">{user?.name ?? 'Login'}</p>
                               )}
                           </SfButton>}
                       )}

@@ -26,7 +26,11 @@ import { SettingProvider } from "./hooks/useWebsiteSettings";
 const Layer = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    navigate("/home/all items")
+    if(window.location.pathname == "/")
+    {
+      navigate("/home/all items")
+    }
+
   }, [])
   return (
     <>
