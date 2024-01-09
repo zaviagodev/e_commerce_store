@@ -23,7 +23,8 @@ export default function Login() {
         let schema = {
             usr: Yup.string()
             .min(3, 'Must be 3 characters or more')
-            .max(20, 'Must be 20 characters or less')
+            .max(40, 'Must be 40 characters or less')
+            .email('Invalid email address')
             .required('Required'),
         pwd: Yup.string()
             .min(4, 'Must be 4 characters or more')
@@ -91,7 +92,7 @@ export default function Login() {
         <form className="p-4 flex gap-4 flex-wrap text-neutral-900 text-start text-big" onSubmit={formik.handleSubmit}>
             <h2 className="w-full typography-headline-4 md:typography-headline-3 font-bold">{loginState ? 'Sign in' : 'Register'}</h2>
             <label className="w-full flex flex-col gap-0.5">
-                <span className="typography-text-sm  font-medium">usr/username</span>
+                <span className="typography-text-sm  font-medium">email</span>
                 <SfInput name="usr" autoComplete="usr" required onChange={formik.handleChange} value={formik.values.usr} />
                 {formik.errors.usr}
             </label>
