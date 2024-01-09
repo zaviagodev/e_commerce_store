@@ -16,19 +16,17 @@ import {
 } from '@storefront-ui/react';
 import { useCart } from '../hooks/useCart';
 import { Link, useNavigate } from 'react-router-dom';
-
 import { useUser } from '../hooks/useUser';
 import { useWish } from '../hooks/useWishe';
 import { useSetting } from '../hooks/useWebsiteSettings';
-
 import { useEffect, useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
 import { CSSTransition } from 'react-transition-group';
 import { useProducts } from '../hooks/useProducts';
 
 import SearchWithIcon from './SearchBar';
-
 import SelectDropdownPreselected from './dropDown';
+
 export default function BaseMegaMenu() {
   const { close, toggle, isOpen } = useDisclosure();
   const drawerRef = useRef(null);
@@ -55,7 +53,6 @@ export default function BaseMegaMenu() {
       }
   }
 
-
   const [actionItems, setActionItems] = useState([
       {
           icon: <></>,
@@ -66,14 +63,6 @@ export default function BaseMegaMenu() {
           onClick: null
       },
       {
-          icon: <SfIconShoppingCart />,
-          label: '',
-          ariaLabel: 'Cart',
-          role: 'button',
-          show: false,
-          onClick: () => setIsOpen(true)
-      },
-      {
           icon: <SfIconFavorite />,
           label: '',
           ariaLabel: 'Wishlist',
@@ -81,20 +70,27 @@ export default function BaseMegaMenu() {
           show: false,
           onClick: () => setWishOpen(true),
       },
+      {
+          icon: <SfIconShoppingCart />,
+          label: '',
+          ariaLabel: 'Cart',
+          role: 'button',
+          show: false,
+          onClick: () => setIsOpen(true)
+      },
   ]);
 
   useEffect(() => {
     if(isLoading) return;
     setActionItems(prev => prev.map((item, index) => {
-      
-        if ((index === 2 && !hideWish) || (index === 1 && !hideCheckout)) {
-            return { ...item, show: true };
-        }
-        if (index === 0 && !hideLogin  ) {
-          console.log('user', user)
-            return { ...item, show: true };
-        }
-        return item;
+      if ((index === 2 && !hideWish) || (index === 1 && !hideCheckout)) {
+        return { ...item, show: true };
+      }
+      if (index === 0 && !hideLogin  ) {
+        console.log('user', user)
+        return { ...item, show: true };
+      }
+      return item;
     }));
 }, [hideWish, hideCheckout, hideLogin, isLoading, user]);
 
@@ -108,7 +104,6 @@ export default function BaseMegaMenu() {
   });
 
   function handleClick(url) {
-    
     if(!url.startsWith('/')){  
       window.location.assign('https://' + url)
     }
@@ -118,7 +113,7 @@ export default function BaseMegaMenu() {
   }
 
   const productList = (name) => 
-      <>
+    <>
       <SfButton
         className="hidden lg:flex text-white bg-transparent font-body hover:bg-primary hover:text-white active:bg-primary active:text-white"
         aria-haspopup="true"
@@ -150,6 +145,13 @@ export default function BaseMegaMenu() {
                     placement="top"
                     className="grid grid-cols-1 lg:gap-x-6 lg:grid-cols-4 bg-white shadow-lg p-0 max-h-screen overflow-y-auto lg:!absolute lg:!top-20 max-w-[376px] lg:max-w-full lg:p-6 mr-[50px] lg:mr-0 z-99"
                   >
+                    <ul>
+                      {topBarItems.map(item => (
+                        <li>
+                          <SfButton>{item.label}</SfButton>
+                        </li>
+                      ))}
+                    </ul>
                     <div className="sticky top-0 flex items-center justify-between px-4 py-2 bg-primary lg:hidden">
                       <div className="flex items-center font-medium text-white typography-text-lg">{name}</div>
                       <SfButton
@@ -157,7 +159,7 @@ export default function BaseMegaMenu() {
                         variant="tertiary"
                         aria-label="Close navigation menu"
                         onClick={close}
-                        className="text-white ml-2"
+                        className="text-white ml-2 lg:hidden"
                       >
                         <SfIconClose />
                       </SfButton>
@@ -178,24 +180,24 @@ export default function BaseMegaMenu() {
               </li>
         </ul>
       </nav>
-      </>
-  function recursiveBuildPhone (itemTop){
+    </>
 
+  function recursiveBuildPhone (itemTop){
     const recurse = (item) => {
       return(
-        <Link to={`/home/${item.children.length > 0 ? 'group_' : ''}${item.name}`} className='flex flex-1 felx-col items-center justify-between'  >
-          <li key={item.name} className='flex-1'>
+        <Link to={`/home/${item.children.length > 0 ? 'group_' : ''}${item.name}`} className='flex flex-1 relative items-center justify-between'>
+          <li key={item.name} className='flex w-full'>
             <SfListItem
               as="a"
               size="sm"
               role="none"
               href={`#${item.name}`}
-              className="typography-text-base md:typography-text-sm py-4 md:py-1.5 "
+              className="typography-text-base md:typography-text-sm py-4 md:py-1.5 lg:rounded-md"
             >
               {item.name}
             </SfListItem>
           </li> 
-          {item.children.length > 0 && <SfIconExpandMore className=" inline-flex m-2 -rotate-90" />}
+          {item.children.length > 0 && <SfIconExpandMore className=" inline-flex m-2 -rotate-90 absolute right-0" />}
         </Link> 
       )
     }
@@ -206,7 +208,7 @@ export default function BaseMegaMenu() {
         role="presentation"
         className="typography-text-base font-medium text-neutral-900 whitespace-nowrap p-4 md:py-1.5"
       >
-                  {itemTop.name}
+       {itemTop.name}
       </h2>
       <hr className="mb-3.5" />
       <ul>
@@ -234,9 +236,7 @@ export default function BaseMegaMenu() {
       </ul> 
     </div>
     )
-
   }
-
 
   function recursiveBuild (item){
     const button = 
@@ -259,7 +259,7 @@ export default function BaseMegaMenu() {
       {isOpen && <div className="fixed inset-0 bg-neutral-500 bg-opacity-50 transition-opacity z-60" />}
       <header
         ref={menuRef}
-        className="flex flex-wrap lg:flex-nowrap justify-center w-full py-2 lg:py-5 border-0 bg-primary border-neutral-200 lg:relative lg:z-99"
+        className="flex flex-wrap lg:flex-nowrap justify-center w-full py-2 lg:py-5 border-0 bg-primary border-neutral-200 lg:relative lg:z-99 h-15 lg:h-20"
       >
         <div className="flex items-center justify-start h-full max-w-[1536px] w-full px-4 lg:px-10">
           <SfButton
@@ -274,15 +274,15 @@ export default function BaseMegaMenu() {
             <SfIconMenu className=" text-white" />
           </SfButton>
           <Link to="home/all items" className="flex mr-4 focus-visible:outline text-white focus-visible:outline-offset focus-visible:rounded-sm shrink-0">
-                  <picture>
-                      <source srcSet={appLogo} media="(min-width: 768px)" />
-                      <img
-                          src={appLogo}
-                          alt="Sf Logo"
-                          className="w-8 h-8 md:h-6 lg:h-[1.75rem]"
-                      />
-                  </picture>
-                  <h5>{appName}</h5>
+              <picture>
+                  <source srcSet={appLogo} media="(min-width: 768px)" />
+                  <img
+                      src={appLogo}
+                      alt="Sf Logo"
+                      className="w-8 h-8 md:h-6 lg:h-[1.75rem]"
+                  />
+              </picture>
+              <h5>{appName}</h5>
           </Link>
           <nav>
             <ul className='flex flex-row gap-4 items-center justify-center'>
@@ -293,7 +293,7 @@ export default function BaseMegaMenu() {
             </ul>
           </nav>
 
-          {navbarSearch && <SearchWithIcon className="hidden lg:flex flex-[100%] ml-10 relative justify-end" /> }
+          {navbarSearch && <SearchWithIcon className="flex flex-[100%] justify-end" /> }
           <nav className="flex-1 flex justify-end lg:order-last lg:ml-4">
                   <div className="flex flex-row flex-nowrap">
                       {actionItems.map((actionItem) => 
@@ -320,7 +320,6 @@ export default function BaseMegaMenu() {
                   </div>
               </nav>
         </div>
-        {navbarSearch && <SearchWithIcon className="flex lg:hidden flex-[100%] my-2 mx-4" /> }
       </header>
     </div>
   );

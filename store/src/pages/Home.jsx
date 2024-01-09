@@ -64,7 +64,7 @@ const Home = () => {
         return null;
     };
 
-
+    console.log(mainGroup)
 
     useEffect(() => {
         updateCurrentUser();
@@ -77,19 +77,19 @@ const Home = () => {
                     <button onClick={() => navigate(-1)} className='flex flex-row items-center justify-between p-2'><SfIconArrowBack/>  { group ? findParentName(mainGroup, group.name) : 'Back'} </button>
                     {group && 
                         group.children.map((item) => (
-                            <Link to={`/home/${item.children.length > 0 ? 'group_' : ''}${item.name}`} className='flex flex-1 felx-col items-center justify-between'  >
-                                <li key={item.name} className='flex-1'>
+                            <Link to={`/home/${item.children.length > 0 ? 'group_' : ''}${item.name}`} className='flex flex-1 relative items-center justify-between'  >
+                                <li key={item.name} className='flex'>
                                 <SfListItem
                                     as="a"
                                     size="sm"
                                     role="none"
                                     href={`#${item.name}`}
-                                    className="typography-text-base md:typography-text-sm py-4 md:py-1.5 "
+                                    className="typography-text-base md:typography-text-sm py-4 md:py-1.5 list-style-none rounded-md"
                                 >
                                     {item.name}
                                 </SfListItem>
                                 </li> 
-                                {item.children.length > 0 && <SfIconExpandMore className=" inline-flex m-2 -rotate-90" />}
+                                {item.children.length > 0 && <SfIconExpandMore className=" inline-flex m-2 -rotate-90 absolute right-0" />}
                             </Link> 
                         ))
                     }
