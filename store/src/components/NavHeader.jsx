@@ -44,8 +44,27 @@ import SelectDropdownPreselected from './dropDown';
 
     const {appName, appLogo,hideLogin, hideCheckout, navbarSearch, topBarItems, hideWish, isLoading} = useSetting()
 
+   const  handlLoginClick = () => {
+      if (user && user.name !== 'Guest') 
+        {
+          navigate('/profile');
+        } 
+      else 
+        {
+          navigate('/login');
+        }
+    }
+
 
     const [actionItems, setActionItems] = useState([
+        {
+            icon: <></>,
+            label: '',
+            ariaLabel: 'Log in',
+            role: 'login',
+            show: false,
+            onClick: null
+        },
         {
             icon: <SfIconShoppingCart />,
             label: '',
@@ -62,14 +81,6 @@ import SelectDropdownPreselected from './dropDown';
             show: false,
             onClick: () => setWishOpen(true),
         },
-        {
-            label: user?.name ?? 'Login',
-            icon: <SfIconPerson />,
-            ariaLabel: 'Log in',
-            role: 'login',
-            show: false,
-            onClick: () => user?.name === 'Guest' || !user ? navigate('/login') :  navigate('/profile')  ,
-        },
     ]);
 
     useEffect(() => {
@@ -79,8 +90,9 @@ import SelectDropdownPreselected from './dropDown';
           if ((index === 1 && !hideWish) || (index === 0 && !hideCheckout)) {
               return { ...item, show: true };
           }
-          if (index === 2 && !hideLogin ) {
-              return { ...item, show: true, label: user?.name ?? 'Log in',onClick: () => user?.name === 'Guest' || !user ? navigate('/login') :  navigate('/profile')  };
+          if (index === 2 && !hideLogin  ) {
+            console.log('user', user)
+              return { ...item, show: true };
           }
           return item;
       }));
@@ -287,7 +299,7 @@ import SelectDropdownPreselected from './dropDown';
                                 variant="tertiary"
                                 square
                                 slotPrefix={actionItem.icon}
-                                onClick={actionItem.onClick}
+                                onClick={actionItem.onClick ?? handlLoginClick}
                             >
                                 {actionItem.ariaLabel === 'Cart' && (
                                     <SfBadge content={cartCount} />
@@ -296,7 +308,7 @@ import SelectDropdownPreselected from './dropDown';
                                     <SfBadge content={WishCount} />
                                 )}
                                 {actionItem.role === 'login' && (
-                                    <p className="hidden xl:inline-flex whitespace-nowrap">{actionItem.label}</p>
+                                    <p className="inline-flex whitespace-nowrap">{user?.name ?? 'Login'}</p>
                                 )}
                             </SfButton>}
                         )}
