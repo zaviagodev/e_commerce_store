@@ -75,7 +75,7 @@ export default function SearchWithIcon( {className}) {
     if (phrase) {
       setSearchValue(phrase);
     } else {
-      handleReset();
+      setSearchValue('')
     }
   };
 
@@ -129,7 +129,6 @@ export default function SearchWithIcon( {className}) {
 
   return (
     <form role="search" onSubmit={e => e.preventDefault()} ref={refs.setReference} className={className}>
-      {isOpen && <div className="fixed inset-0 bg-neutral-500 bg-opacity-50 transition-opacity z-60" />}
       <nav className='absolute top-0 right-0 w-full'>
         <ul>
             <li role="none">
