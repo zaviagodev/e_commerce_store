@@ -17,6 +17,8 @@ import {
   SfIconClose,
   SfDrawer
 } from '@storefront-ui/react';
+import { useSetting } from '../hooks/useWebsiteSettings';
+import { Link } from 'react-router-dom';
 
 // Just for presentation purposes. Replace mock request with the actual API call.
 // eslint-disable-next-line no-promise-executor-return
@@ -127,9 +129,11 @@ export default function SearchWithIcon( {className}) {
     [searchValue],
   );
 
+  const {appName, appLogo,hideLogin, hideCheckout, navbarSearch, topBarItems, hideWish, isLoading} = useSetting()
+
   return (
     <form role="search" onSubmit={e => e.preventDefault()} ref={refs.setReference} className={className}>
-      <nav className='absolute top-0 right-0 w-full'>
+      <nav className='fixed top-0 right-0 w-full z-[999]'>
         <ul>
             <li role="none">
                 <CSSTransition
@@ -138,8 +142,8 @@ export default function SearchWithIcon( {className}) {
                   unmountOnExit
                   classNames={{
                     enter: 'opacity-0 translate-x-0',
-                    enterActive: 'translate-x-0 opacity-100 transition duration-500 ease-in-out',
-                    exitActive: 'opacity-0 translate-x-0 transition duration-500 ease-in-out',
+                    enterActive: 'translate-x-0 opacity-100 transition duration-300 ease-in-out',
+                    exitActive: 'opacity-0 translate-x-0 transition duration-300 ease-in-out',
                   }}
                 >
                   <SfDrawer
@@ -147,72 +151,90 @@ export default function SearchWithIcon( {className}) {
                     open
                     disableClickAway
                     placement="top"
-                    className="bg-white shadow-lg p-6 absolute top-15 lg:top-20 max-w-full z-99"
+                    className="bg-white shadow-lg p-6 absolute top-0 max-w-full z-99"
                   >
-                    <div className="flex flex-1 justify-end">
-                      <SfInput
-                        ref={inputRef}
-                        value={searchValue}
-                        onChange={handleChange}
-                        wrapperClassName={`w-full rounded-r-none border-0 shadow-none focus-within:shadow-none ring-[0!important]`}
-                        aria-label="Search"
-                        placeholder="Search 'MacBook' or 'iPhone'..."
-                        onKeyDown={handleInputKeyDown}
-                        slotPrefix={<SfIconSearch />}
-                      />
-                    </div>
-                    <div ref={refs.setFloating} className="left-0 right-0">
-                      {isLoadingSnippets ? (
-                        <div className="flex items-center justify-center bg-white w-full sm:h-20 py-2">
-                          <SfLoaderCircular />
-                        </div>
-                      ) : (
-                        <>
-                        {searchValue !== "" && (
-                        <ul
-                          ref={dropdownListRef}
-                          className="py-2 bg-white w-full"
+                    <div className='max-w-[1536px] relative mx-auto px-10'>
+                      <div className="grid grid-cols-3 relative">
+                        <Link to="home/all items" className="flex focus-visible:outline text-white focus-visible:outline-offset focus-visible:rounded-sm shrink-0">
+                            <picture>
+                                <source srcSet={appLogo} media="(min-width: 768px)" />
+                                <img
+                                    src={appLogo}
+                                    alt="Sf Logo"
+                                    className="w-8 h-8 md:h-6 lg:h-[1.75rem]"
+                                />
+                            </picture>
+                            <h5>{appName}</h5>
+                        </Link>
+                        <SfInput
+                          ref={inputRef}
+                          value={searchValue}
+                          onChange={handleChange}
+                          wrapperClassName={`w-full border-0 shadow-none focus-within:shadow-none`}
+                          aria-label="Search"
+                          placeholder="Search 'MacBook' or 'iPhone'..."
+                          onKeyDown={handleInputKeyDown}
+                          slotPrefix={<SfIconSearch />}
+                          slotSuffix={isResetButton && (
+                            <SfIconClose onClick={() => setSearchValue('')}/>
+                          )}
+                        />
+                        <SfButton
+                          square
+                          size="sm"
+                          variant="tertiary"
+                          aria-label="Close navigation menu"
+                          onClick={close}
+                          className="hover:bg-white active:bg-white"
+                          style={{justifyContent:"flex-end"}}
                         >
-                            {snippets.length > 0 ? (
-                              <>
-                                {snippets.map(({ highlight, rest, product }) => (
-                                  <li key={product.name}>
-                                    <SfListItem
-                                      as="button"
-                                      type="button"
-                                      onClick={handleSelect(product)}
-                                      className="!py-4 sm:!py-2 flex justify-start"
-                                    >
-                                      <p className="text-left">
-                                        <span>{highlight}</span>
-                                        <span className="font-medium">{rest}</span>
-                                      </p>
-                                      <p className="text-left typography-text-xs text-neutral-500">{product.item_group}</p>
-                                    </SfListItem>
-                                  </li>
-                                ))}
-                              </>
-                            ) : (
-                              <div className="py-4 text-center flex flex-col gap-y-2 justify-end">
-                                <h1 className='font-medium text-lg'>No search results</h1>
-                                <p className='text-sm'>Please try another search</p>
-                              </div>
-                            )}
-                          </ul>)
-                          }
-                        </>
-                      )}
+                          {/* <SfIconClose className="text-neutral-500" /> */}
+                          Cancel
+                        </SfButton>
+                      </div>
+                      <div ref={refs.setFloating} className="left-0 right-0">
+                        {isLoadingSnippets ? (
+                          <div className="flex items-center justify-center bg-white w-full sm:h-20 py-2">
+                            <SfLoaderCircular />
+                          </div>
+                        ) : (
+                          <>
+                          {searchValue !== "" && (
+                          <ul
+                            ref={dropdownListRef}
+                            className="py-2 bg-white w-full"
+                          >
+                              {snippets.length > 0 ? (
+                                <>
+                                  {snippets.map(({ highlight, rest, product }) => (
+                                    <li key={product.name}>
+                                      <SfListItem
+                                        as="button"
+                                        type="button"
+                                        onClick={handleSelect(product)}
+                                        className="!py-4 sm:!py-2 flex justify-start"
+                                      >
+                                        <p className="text-left">
+                                          <span>{highlight}</span>
+                                          <span className="font-medium">{rest}</span>
+                                        </p>
+                                        <p className="text-left typography-text-xs text-neutral-500">{product.item_group}</p>
+                                      </SfListItem>
+                                    </li>
+                                  ))}
+                                </>
+                              ) : (
+                                <div className="py-4 text-center flex flex-col gap-y-2 justify-end">
+                                  <h1 className='font-medium text-lg'>No search results</h1>
+                                  <p className='text-sm'>Please try another search</p>
+                                </div>
+                              )}
+                            </ul>)
+                            }
+                          </>
+                        )}
+                      </div>
                     </div>
-                    <SfButton
-                      square
-                      size="sm"
-                      variant="tertiary"
-                      aria-label="Close navigation menu"
-                      onClick={close}
-                      className="absolute right-0 top-0 hover:bg-white active:bg-white"
-                    >
-                      <SfIconClose className="text-neutral-500" />
-                    </SfButton>
                   </SfDrawer>
                 </CSSTransition>
               </li>

@@ -12,11 +12,9 @@ const Home = () => {
     const [group, setGroup] = useState(false);
     const navigate = useNavigate();
 
-
-
     const rawIdFromUrl = useParams().itemsgroup;
     const idFromUrl = rawIdFromUrl.startsWith('group_') ? rawIdFromUrl.replace('group_', '') : rawIdFromUrl;
-    
+
     useEffect(() => {
         if (rawIdFromUrl.startsWith('group_') && mainGroup.length > 0) {
             const group = findGroup(mainGroup, rawIdFromUrl.replace('group_', ''));
@@ -43,7 +41,6 @@ const Home = () => {
                 }
             }
         }
-    
         return null;
     };
 
@@ -52,7 +49,6 @@ const Home = () => {
             if (group.name === groupName) {
                 return parent ? parent.name : null;
             }
-    
             if (group.children) {
                 const result = findParentName(group.children, groupName, group);
                 if (result) {
@@ -60,11 +56,8 @@ const Home = () => {
                 }
             }
         }
-    
         return null;
     };
-
-    console.log(mainGroup)
 
     useEffect(() => {
         updateCurrentUser();

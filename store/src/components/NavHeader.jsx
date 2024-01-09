@@ -54,30 +54,30 @@ export default function BaseMegaMenu() {
   }
 
   const [actionItems, setActionItems] = useState([
-      {
-          icon: <></>,
-          label: '',
-          ariaLabel: 'Log in',
-          role: 'login',
-          show: false,
-          onClick: null
-      },
-      {
-          icon: <SfIconFavorite />,
-          label: '',
-          ariaLabel: 'Wishlist',
-          role: 'button',
-          show: false,
-          onClick: () => setWishOpen(true),
-      },
-      {
-          icon: <SfIconShoppingCart />,
-          label: '',
-          ariaLabel: 'Cart',
-          role: 'button',
-          show: false,
-          onClick: () => setIsOpen(true)
-      },
+    {
+      icon: <></>,
+      label: '',
+      ariaLabel: 'Log in',
+      role: 'login',
+      show: false,
+      onClick: null
+    },
+    {
+      icon: <SfIconFavorite />,
+      label: '',
+      ariaLabel: 'Wishlist',
+      role: 'button',
+      show: false,
+      onClick: () => setWishOpen(true),
+    },
+    {
+      icon: <SfIconShoppingCart />,
+      label: '',
+      ariaLabel: 'Cart',
+      role: 'button',
+      show: false,
+      onClick: () => setIsOpen(true)
+    },
   ]);
 
   useEffect(() => {
@@ -259,7 +259,7 @@ export default function BaseMegaMenu() {
       {isOpen && <div className="fixed inset-0 bg-neutral-500 bg-opacity-50 transition-opacity z-60" />}
       <header
         ref={menuRef}
-        className="flex flex-wrap lg:flex-nowrap justify-center w-full py-2 lg:py-5 border-0 bg-primary border-neutral-200 lg:relative lg:z-99 h-15 lg:h-20"
+        className="flex flex-wrap lg:flex-nowrap justify-center w-full py-2 lg:py-5 border-0 bg-primary border-neutral-200 lg:relative z-99 h-15 lg:h-20"
       >
         <div className="flex items-center justify-start h-full max-w-[1536px] w-full px-4 lg:px-10">
           <SfButton
