@@ -108,8 +108,13 @@ import SelectDropdownPreselected from './dropDown';
     });
 
     function handleClick(url) {
-      if(!url.startsWith('/'))  window.location.href = `https://${url}`;
-      else navigate(url);
+      
+      if(!url.startsWith('/')){  
+        window.location.assign('https://' + url)
+      }
+      else  {
+        navigate(`https://${url}`)
+      };
     }
 
     const productList = (name) => 
