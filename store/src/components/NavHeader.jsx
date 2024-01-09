@@ -87,10 +87,10 @@ import SelectDropdownPreselected from './dropDown';
       if(isLoading) return;
       setActionItems(prev => prev.map((item, index) => {
         
-          if ((index === 1 && !hideWish) || (index === 0 && !hideCheckout)) {
+          if ((index === 2 && !hideWish) || (index === 1 && !hideCheckout)) {
               return { ...item, show: true };
           }
-          if (index === 2 && !hideLogin  ) {
+          if (index === 0 && !hideLogin  ) {
             console.log('user', user)
               return { ...item, show: true };
           }
