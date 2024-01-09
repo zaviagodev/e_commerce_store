@@ -85,6 +85,7 @@ export const UserProvider = ({ children }) => {
         return frappeLogout().then(() => {
             setUser(null);
             removeToken();
+            frappeLogout()
             window.location.reload();
         })
     };

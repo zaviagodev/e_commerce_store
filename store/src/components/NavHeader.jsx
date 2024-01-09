@@ -44,7 +44,6 @@ import SelectDropdownPreselected from './dropDown';
 
     const {appName, appLogo,hideLogin, hideCheckout, navbarSearch, topBarItems, hideWish, isLoading} = useSetting()
 
-    console.log(topBarItems)
 
     const [actionItems, setActionItems] = useState([
         {
@@ -64,7 +63,7 @@ import SelectDropdownPreselected from './dropDown';
             onClick: () => setWishOpen(true),
         },
         {
-            label: user?.name ?? 'Log in',
+            label: user?.name ?? 'Login',
             icon: <SfIconPerson />,
             ariaLabel: 'Log in',
             role: 'login',
@@ -76,10 +75,11 @@ import SelectDropdownPreselected from './dropDown';
     useEffect(() => {
       if(isLoading) return;
       setActionItems(prev => prev.map((item, index) => {
+        
           if ((index === 1 && !hideWish) || (index === 0 && !hideCheckout)) {
               return { ...item, show: true };
           }
-          if (index === 2 && !hideLogin && typeof user?.name !== 'undefined') {
+          if (index === 2 && !hideLogin ) {
               return { ...item, show: true, label: user?.name ?? 'Log in',onClick: () => user?.name === 'Guest' || !user ? navigate('/login') :  navigate('/profile')  };
           }
           return item;
