@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useRef, useState} from 'react'
 import { SfButton, SfDrawer, useTrapFocus, SfIconAdd, SfIconRemove, SfLoaderCircular } from '@storefront-ui/react'
 import { CSSTransition } from 'react-transition-group';
 import { useCart } from '../hooks/useCart'
@@ -6,7 +6,8 @@ import { useProducts } from '../hooks/useProducts'
 import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom';
 
-import { useRef } from 'react';
+
+
 
 const Cart = () => {
     const { cart, cartCount, addToCart, removeFromCart, getTotal, isOpen, setIsOpen, loading } = useCart()
@@ -15,8 +16,59 @@ const Cart = () => {
     const { getByItemCode, isLoading } = useProducts()
     const navigate = useNavigate()
 
+    // Ajouter un état pour l'intervalle
+    const [intervalId, setIntervalId] = useState(null);
 
-    useTrapFocus(drawerRef, { activeState: isOpen });
+
+    const inputRefs = useRef({});
+
+
+    const changeCart = (itemcode, qty) =>
+    {
+        if(qty == 0)
+        {
+            return
+        }
+        let qtyStr = String(qty);
+        if(qtyStr.length > 3)
+        {
+            qtyStr = qtyStr.substring(1);
+        }
+
+        const qtyNum = Number(qtyStr);
+        inputRefs.current[itemcode].value = qtyNum;
+        addToCart(itemcode, qty)
+    }
+
+    // Fonction pour commencer à augmenter la valeur
+    const startIncreasing = (itemcode) => {
+        const id = setInterval(() => {
+
+            changeCart(itemcode, Number(inputRefs.current[itemcode].value) + 1);
+
+        }, 100); // Augmenter la valeur toutes les 100 ms
+        setIntervalId(id);
+    };
+
+    const startDecreasing = (itemcode) => {
+        const id = setInterval(() => {
+            
+            changeCart(itemcode, Number(inputRefs.current[itemcode].value) - 1);
+
+        }, 100); // Augmenter la valeur toutes les 100 ms
+        setIntervalId(id);
+    };
+
+
+
+    // Fonction pour arrêter d'augmenter la valeur
+    const stopIncreasing = () => {
+        clearInterval(intervalId);
+        setIntervalId(null);
+    };
+
+    
+    //useTrapFocus(drawerRef, { activeState: isOpen });
 
     return (
         <CSSTransition
@@ -60,6 +112,11 @@ const Cart = () => {
                                     {isLoading ? <SfLoaderCircular /> :
                                         Object.entries(cart).map(([itemCode]) => {
                                             const product = getByItemCode(itemCode)
+                                            if (!inputRefs.current[itemCode]) {
+                                                inputRefs.current[itemCode] = React.createRef();
+                                                inputRefs.current[itemCode].value = Number(cart[itemCode]);
+                                                console.log(inputRefs.current[itemCode].value)
+                                            }
                                             return (
                                                 <li key={itemCode} className="flex py-6">
                                                     <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
@@ -83,31 +140,42 @@ const Cart = () => {
                                                                     <SfButton
                                                                         type="button"
                                                                         variant="tertiary"
-                                                                        disabled={cart[itemCode] === 1 || loading}
+                                                                        disabled={Number(inputRefs.current[itemCode].value) == 1 || loading}
                                                                         square
                                                                         className="rounded-r-none"
                                                                         aria-controls={null}
                                                                         aria-label="Decrease value"
-                                                                        onClick={() => addToCart(itemCode, cart[itemCode] ? cart[itemCode] - 1 : 0)}
+                                                                        onClick={(event) => changeCart(itemCode, Number(inputRefs.current[itemCode].value) - 1 )}
+                                                                        onMouseDown={() => startDecreasing(itemCode)}
+                                                                        onMouseUp={stopIncreasing}
+                                                                        onMouseLeave={stopIncreasing}
                                                                     >
                                                                         <SfIconRemove />
                                                                     </SfButton>
                                                                     <input
+                                                                        ref={el => inputRefs.current[itemCode] = el}
+                                                                        id={itemCode}
                                                                         type="number"
                                                                         role="spinbutton"
                                                                         className="appearance-none mx-2 w-8 text-center bg-transparent font-medium [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-inner-spin-button]:display-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-outer-spin-button]:display-none [&::-webkit-outer-spin-button]:m-0 [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none disabled:placeholder-disabled-900 focus-visible:outline focus-visible:outline-offset focus-visible:rounded-sm"
+                                                                        min={1}
+                                                                        max={999}
                                                                         value={cart[itemCode]}
-                                                                        onChange={null}
+                                                                        onChange={(event) => changeCart(itemCode, Number(event.target.value))}
                                                                     />
                                                                     <SfButton
                                                                         type="button"
                                                                         variant="tertiary"
-                                                                        disabled={loading}
+                                                                        disabled={Number(inputRefs.current[itemCode].value) == 999 || loading}
                                                                         square
                                                                         className="rounded-l-none"
                                                                         aria-controls={null}
                                                                         aria-label="Increase value"
-                                                                        onClick={() => addToCart(itemCode, cart[itemCode]? cart[itemCode] + 1 : 1)}
+                                                                        onClick={(event) => changeCart(itemCode, Number(inputRefs.current[itemCode].value) + 1 )}
+                                                                        onMouseDown={() => startIncreasing(itemCode)}
+                                                                        onMouseUp={stopIncreasing}
+                                                                        onMouseLeave={stopIncreasing}
+
                                                                     >
                                                                         <SfIconAdd />
                                                                     </SfButton>

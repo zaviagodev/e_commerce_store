@@ -1,6 +1,7 @@
 import React, { useEffect, createContext, useContext, useState } from 'react'
 import { useProducts } from './useProducts'
 import { useFrappePutCall } from 'frappe-react-sdk'
+import { debounce } from 'lodash';
 
 const CartContext = createContext([])
 
@@ -9,6 +10,20 @@ export const CartProvider = ({ children }) => {
     const [isOpen, _] = useState(false)
     const {mutateItemsList, getProductsCodeInCart, products} = useProducts()
     const {call , result, loading} = useFrappePutCall('webshop.webshop.shopping_cart.cart.update_cart')
+
+    
+
+    const fectchToAddToCart = (itemCode, quantity) => {
+        try {
+        call({"item_code" : itemCode, 'qty' : quantity ?? (cart[itemCode] ?? 0) + 1}).then(() => {
+        mutateItemsList()
+        })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const debouncedAddToCart = debounce(fectchToAddToCart, 1000, 1);
 
 
     const cartCount = Object.keys(cart).reduce((total, itemCode) => {
@@ -75,14 +90,7 @@ export const CartProvider = ({ children }) => {
 
     const addToCart = async (itemCode, quantity) => {
         setCart({ ...cart, [itemCode]: quantity ?? (cart[itemCode] ?? 0) + 1 })
-        try {
-        call({"item_code" : itemCode, 'qty' : quantity ?? (cart[itemCode] ?? 0) + 1}).then(() => {
-
-        mutateItemsList()
-        })
-        } catch (error) {
-            console.log(error)
-        }
+        debouncedAddToCart(itemCode, quantity ?? (cart[itemCode] ?? 0) + 1)
         // store cart state in local storage
         localStorage.setItem('cart', JSON.stringify({ ...cart, [itemCode]: quantity ?? (cart[itemCode] ?? 0) + 1 }))
     }
