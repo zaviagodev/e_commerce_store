@@ -50,9 +50,20 @@ export default function Login() {
         validationSchema: getValidationSchema(),
         onSubmit: (values) => {
             if (loginState == false) {
-                 register(values.usr,values.email , values.pwd).then((data) => data.message == 'Logged In' && navigate("/home/all items"))
+                 register(values.usr,values.email , values.pwd).then((data) => {
+                    if(data.message == 'Logged In')
+                    {
+                        navigate("/home/all items")
+                    }
+                })
+
             }else{
-                 login(values.usr, values.pwd ).then((data) => data.message == 'Logged In' && navigate("/home/all items"));
+                 login(values.usr, values.pwd ).then((data) => {
+                    if(data.message == 'Logged In')
+                    {
+                        navigate("/home/all items")
+                    }
+                });
             }
         }
     });

@@ -66,7 +66,7 @@ export const AppWrapper = () => {
       url={import.meta.env.VITE_ERP_URL ?? ""}
       enableSocket={false}
       tokenParams={
-        import.meta.env.VITE_USE_TOKEN_AUTH ?
+        import.meta.env.VITE_USE_TOKEN_AUTH == 'true' ?
         {
           type: import.meta.env.VITE_TOKEN_TYPE ? import.meta.env.VITE_TOKEN_TYPE : "token", 
           useToken: true,
