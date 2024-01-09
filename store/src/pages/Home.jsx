@@ -3,6 +3,7 @@ import ProductCard from '../components/ProductCard'
 import { useProducts } from '../hooks/useProducts'
 import { useFrappeAuth } from 'frappe-react-sdk';
 import { useParams } from 'react-router-dom';
+import { SfLoaderCircular } from '@storefront-ui/react';
 
 const Home = () => {
     const { updateCurrentUser } = useFrappeAuth();
@@ -19,7 +20,7 @@ const Home = () => {
         <>
             <main className='main-section'>
               <h1 className="mb-8 primary-heading text-primary text-center">{idFromUrl.toUpperCase()}</h1>
-                    {products ? (
+                    {products.length > 0 ? (
                         <div
                         className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center"
                          >
@@ -38,7 +39,9 @@ const Home = () => {
                              ))}
                      </div>
                     ) : (
-                        <h1>Loading...</h1>
+                        <div className='flex justify-center'>
+                            <SfLoaderCircular/>
+                        </div>
                     )}
             </main>
         </>

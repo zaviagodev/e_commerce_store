@@ -71,3 +71,17 @@
 .btn-secondary:hover {
   @apply text-btn-secondary-hover-foreground bg-btn-secondary-hover
 }
+
+.search_bar {
+  animation:expand_search_bar .3s forwards;
+  overflow:hidden;
+}
+
+@keyframes expand_search_bar {
+  from {
+    width:0%;
+  }
+  to {
+    width:100%;
+  }
+}
