@@ -4,7 +4,6 @@ import { Link, useSearchParams } from 'react-router-dom';
 const BankInfoPage = () => {
     const [searchParams] = useSearchParams();
 
-    console.log(searchParams)
 
     const data = [
       { title:'Order ID', info:searchParams.get("order_id")},

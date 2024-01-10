@@ -9,7 +9,7 @@ export const CartProvider = ({ children }) => {
     const [cart, setCart] = useState({})
     const [isOpen, _] = useState(false)
     const {mutateItemsList, getProductsCodeInCart, products} = useProducts()
-    const {call , result, loading} = useFrappePutCall('webshop.webshop.shopping_cart.cart.update_cart')
+    const {call , result, loading, error} = useFrappePutCall('webshop.webshop.shopping_cart.cart.update_cart')
 
     
 
@@ -35,16 +35,18 @@ export const CartProvider = ({ children }) => {
     useEffect(() => {
         // get cart state from local storage
         if(products.length == 0) return
+        console.log(products)
         const cartStorage = localStorage.getItem('cart')
-        if(!result && !loading &&  cartStorage  )
+        if(!result && !loading &&  cartStorage )
         {
 
             const cartObject = JSON.parse(cartStorage);
             setCart(cartObject)
-            if(!verifyCart(cartObject))
+            if(!verifyCart(cartObject) && error.httpStatus !== 403 )
             {
                 resetBackEndCart()
                 updateCart(cartObject)
+                mutateItemsList()
             }
         }
     }, [products])
@@ -58,13 +60,11 @@ export const CartProvider = ({ children }) => {
             }
         }
         )
-        mutateItemsList()
     }
 
     function verifyCart(cartObject) {
         const productCodes = getProductsCodeInCart();
         const allCartItemsExist = Object.keys(cartObject).every(itemCode => productCodes.includes(itemCode)) && productCodes.every(itemCode => Object.keys(cartObject).includes(itemCode));
-        console.log(allCartItemsExist)
         return  allCartItemsExist;
     }
 
@@ -76,7 +76,6 @@ export const CartProvider = ({ children }) => {
                 console.log(error)
             }
         }
-        mutateItemsList()
     }
 
 

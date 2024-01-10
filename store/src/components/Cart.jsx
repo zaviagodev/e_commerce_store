@@ -115,7 +115,6 @@ const Cart = () => {
                                             if (!inputRefs.current[itemCode]) {
                                                 inputRefs.current[itemCode] = React.createRef();
                                                 inputRefs.current[itemCode].value = Number(cart[itemCode]);
-                                                console.log(inputRefs.current[itemCode].value)
                                             }
                                             return (
                                                 <li key={itemCode} className="flex py-6">

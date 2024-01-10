@@ -91,7 +91,6 @@ import SelectDropdownPreselected from './dropDown';
               return { ...item, show: true };
           }
           if (index === 0 && !hideLogin  ) {
-            console.log('user', user)
               return { ...item, show: true };
           }
           return item;

@@ -59,7 +59,6 @@ const router = createBrowserRouter(
 );
 
 export const AppWrapper = () => {
-  {/* Change from import.meta to process after completed the code */}
 
   return (
     <FrappeProvider
