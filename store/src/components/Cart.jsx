@@ -25,19 +25,18 @@ const Cart = () => {
 
     const changeCart = (itemcode, qty) =>
     {
-        if(qty == 0)
-        {
-            return
-        }
         let qtyStr = String(qty);
+        if(qty == 0 || qty == '' || qty == null)
+        {
+            qtyStr = '1';
+        }
         if(qtyStr.length > 3)
         {
             qtyStr = qtyStr.substring(1);
         }
-
         const qtyNum = Number(qtyStr);
         inputRefs.current[itemcode].value = qtyNum;
-        addToCart(itemcode, qty)
+        addToCart(itemcode, qtyNum)
     }
 
     // Fonction pour commencer à augmenter la valeur

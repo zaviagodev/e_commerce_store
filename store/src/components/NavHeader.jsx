@@ -241,7 +241,6 @@ import { findParentName } from '../utils/helper';
                             <div className="lg:block hidden">
                               {recursiveBuildPhone(item)}
                             </div>
-
                           )
                           }
                           )}
