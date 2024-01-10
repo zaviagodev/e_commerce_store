@@ -133,7 +133,7 @@ export default function SearchWithIcon( {className}) {
 
   return (
     <form role="search" onSubmit={e => e.preventDefault()} ref={refs.setReference} className={className}>
-      <nav className='fixed top-0 right-0 w-full z-[999]'>
+      <nav className='fixed top-0 right-0 w-full z-[999] text-black'>
         <ul>
             <li role="none">
                 <CSSTransition
@@ -151,11 +151,11 @@ export default function SearchWithIcon( {className}) {
                     open
                     disableClickAway
                     placement="top"
-                    className="bg-white shadow-lg p-6 absolute top-0 max-w-full z-99"
+                    className="bg-white shadow-lg py-5 absolute top-0 max-w-full z-99"
                   >
                     <div className='max-w-[1536px] relative mx-auto px-10'>
-                      <div className="grid grid-cols-3 relative">
-                        <Link to="home/all items" className="flex focus-visible:outline text-white focus-visible:outline-offset focus-visible:rounded-sm shrink-0">
+                      <div className="flex lg:grid lg:grid-cols-3 relative items-center gap-4 lg:gap-0">
+                        <Link to="home/all items" className="hidden lg:inline-flex focus-visible:outline text-white focus-visible:outline-offset focus-visible:rounded-sm shrink-0">
                             <picture>
                                 <source srcSet={appLogo} media="(min-width: 768px)" />
                                 <img
@@ -164,7 +164,7 @@ export default function SearchWithIcon( {className}) {
                                     className="w-8 h-8 md:h-6 lg:h-[1.75rem]"
                                 />
                             </picture>
-                            <h5>{appName}</h5>
+                            <h5 className='text-black'>{appName}</h5>
                         </Link>
                         <SfInput
                           ref={inputRef}
@@ -176,25 +176,26 @@ export default function SearchWithIcon( {className}) {
                           onKeyDown={handleInputKeyDown}
                           slotPrefix={<SfIconSearch />}
                           slotSuffix={isResetButton && (
-                            <SfIconClose onClick={() => setSearchValue('')}/>
+                            <SfIconClose className='cursor-pointer' onClick={() => setSearchValue('')}/>
                           )}
                         />
-                        <SfButton
-                          square
-                          size="sm"
-                          variant="tertiary"
-                          aria-label="Close navigation menu"
-                          onClick={close}
-                          className="hover:bg-white active:bg-white"
-                          style={{justifyContent:"flex-end"}}
-                        >
-                          {/* <SfIconClose className="text-neutral-500" /> */}
-                          Cancel
-                        </SfButton>
+                        <div className='justify-end inline-flex'>
+                          <SfButton
+                            square
+                            size="sm"
+                            variant="tertiary"
+                            aria-label="Close navigation menu"
+                            onClick={close}
+                            className="scale-95 hover:scale-100 transition duration-200"
+                          >
+                            {/* <SfIconClose className="text-neutral-500" /> */}
+                            Cancel
+                          </SfButton>
+                        </div>
                       </div>
-                      <div ref={refs.setFloating} className="left-0 right-0">
+                      <div ref={refs.setFloating} className="left-0 right-0 pb-4 pt-9">
                         {isLoadingSnippets ? (
-                          <div className="flex items-center justify-center bg-white w-full sm:h-20 py-2">
+                          <div className="flex items-center justify-center bg-white w-full sm:h-20">
                             <SfLoaderCircular />
                           </div>
                         ) : (
@@ -202,7 +203,7 @@ export default function SearchWithIcon( {className}) {
                           {searchValue !== "" && (
                           <ul
                             ref={dropdownListRef}
-                            className="py-2 bg-white w-full"
+                            className="bg-white w-full"
                           >
                               {snippets.length > 0 ? (
                                 <>
@@ -212,7 +213,7 @@ export default function SearchWithIcon( {className}) {
                                         as="button"
                                         type="button"
                                         onClick={handleSelect(product)}
-                                        className="!py-4 sm:!py-2 flex justify-start"
+                                        className="flex justify-start"
                                       >
                                         <p className="text-left">
                                           <span>{highlight}</span>
@@ -240,7 +241,7 @@ export default function SearchWithIcon( {className}) {
               </li>
         </ul>
       </nav>
-      <SfButton onClick={open} className='shadow-none hover:shadow-none active:shadow-none'>
+      <SfButton onClick={open} className='shadow-none hover:shadow-none active:shadow-none !p-0'>
         <SfIconSearch />
       </SfButton>
     </form>

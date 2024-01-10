@@ -63,6 +63,14 @@ export default function BaseMegaMenu() {
       onClick: null
     },
     {
+      icon: <></>,
+      label: '',
+      ariaLabel: 'Search',
+      role: 'search',
+      show: true,
+      onClick: (e) => e.preventDefault()
+    },
+    {
       icon: <SfIconFavorite />,
       label: '',
       ariaLabel: 'Wishlist',
@@ -83,7 +91,7 @@ export default function BaseMegaMenu() {
   useEffect(() => {
     if(isLoading) return;
     setActionItems(prev => prev.map((item, index) => {
-      if ((index === 2 && !hideWish) || (index === 1 && !hideCheckout)) {
+      if ((index === 3 && !hideWish) || (index === 2 && !hideCheckout)) { // Original: (index === 2 && !hideWish) || (index === 1 && !hideCheckout)
         return { ...item, show: true };
       }
       if (index === 0 && !hideLogin  ) {
@@ -226,7 +234,7 @@ export default function BaseMegaMenu() {
               size="sm"
               role="none"
               href={`#${itemTop.name}`}
-              className="typography-text-base md:typography-text-sm py-4 md:py-1.5"
+              className="typography-text-base md:typography-text-sm py-4 md:py-1.5 lg:rounded-md"
             >
               {itemTop.name}
             </SfListItem>
@@ -293,28 +301,31 @@ export default function BaseMegaMenu() {
             </ul>
           </nav>
 
-          {navbarSearch && <SearchWithIcon className="flex flex-[100%] justify-end" /> }
           <nav className="flex-1 flex justify-end lg:order-last lg:ml-4">
+                  
                   <div className="flex flex-row flex-nowrap">
                       {actionItems.map((actionItem) => 
                           {return actionItem.show && <SfButton
-                              key={actionItem.ariaLabel}
-                              className="relative mr-2 -ml-0.5 rounded-md text-white hover:bg-primary-100 active:bg-primary-200 hover:text-primary-600 active:text-primary-700"
-                              aria-label={actionItem.ariaLabel}
-                              variant="tertiary"
-                              square
-                              slotPrefix={actionItem.icon}
-                              onClick={actionItem.onClick ?? handlLoginClick}
+                            key={actionItem.ariaLabel}
+                            className="relative mr-2 -ml-0.5 rounded-md text-white hover:bg-primary-100 active:bg-primary-200 hover:text-primary-600 active:text-primary-700"
+                            aria-label={actionItem.ariaLabel}
+                            variant="tertiary"
+                            square
+                            slotPrefix={actionItem.icon}
+                            onClick={actionItem.onClick ?? handlLoginClick}
                           >
-                              {actionItem.ariaLabel === 'Cart' && (
-                                  <SfBadge content={cartCount} />
-                              )}
-                              {actionItem.ariaLabel === 'Wishlist' && (
-                                  <SfBadge content={WishCount} />
-                              )}
-                              {actionItem.role === 'login' && (
-                                  <p className="inline-flex whitespace-nowrap">{user?.name ?? 'Login'}</p>
-                              )}
+                            {actionItem.role === 'login' && (
+                                <p className="inline-flex whitespace-nowrap">{user?.name ?? 'Login'}</p>
+                            )}
+                            {actionItem.ariaLabel === 'Search' && (
+                                <>{navbarSearch && <SearchWithIcon className="flex" /> }</>
+                            )}
+                            {actionItem.ariaLabel === 'Cart' && (
+                                <SfBadge content={cartCount} />
+                            )}
+                            {actionItem.ariaLabel === 'Wishlist' && (
+                                <SfBadge content={WishCount} />
+                            )}
                           </SfButton>}
                       )}
                   </div>
