@@ -35,14 +35,13 @@ export const CartProvider = ({ children }) => {
     useEffect(() => {
         // get cart state from local storage
         if(products.length == 0) return
-        console.log(products)
         const cartStorage = localStorage.getItem('cart')
         if(!result && !loading &&  cartStorage )
         {
 
             const cartObject = JSON.parse(cartStorage);
             setCart(cartObject)
-            if(!verifyCart(cartObject) && error.httpStatus !== 403 )
+            if(!verifyCart(cartObject) && error?.httpStatus !== 403 )
             {
                 resetBackEndCart()
                 updateCart(cartObject)

@@ -13,6 +13,7 @@ import {
     SfBadge,
     SfIconSearch,
     SfIconMenu,
+    SfIconArrowBack,
   } from '@storefront-ui/react';
 import { useCart } from '../hooks/useCart';
 import { Link, useNavigate } from 'react-router-dom';
@@ -29,6 +30,7 @@ import { useProducts } from '../hooks/useProducts';
 import SearchWithIcon from './SearchBar';
 
 import SelectDropdownPreselected from './dropDown';
+import { findParentName } from '../utils/helper';
   export default function BaseMegaMenu() {
     const { close, toggle, isOpen } = useDisclosure();
     const drawerRef = useRef(null);
@@ -39,8 +41,11 @@ import SelectDropdownPreselected from './dropDown';
     const { WishCount,setIsOpen : setWishOpen } = useWish();
     const { user } = useUser();
 
-    const product = useProducts()
-    const groupes = product.getProductGroups()
+    const [menu ,setMenu] = useState('Menu')
+    const [group, setGroup] = useState(null)
+    const [navGroup, setNavGroup] = useState(null)
+
+    const {mainGroup} = useProducts()
 
     const {appName, appLogo,hideLogin, hideCheckout, navbarSearch, topBarItems, hideWish, isLoading} = useSetting()
 
@@ -106,6 +111,74 @@ import SelectDropdownPreselected from './dropDown';
       close();
     });
 
+
+    function recursiveBuildPhone (itemTop){
+
+
+      const handleClick = (item) => {
+        if (item.children.length == 0)
+        {
+          navigate('/home/' + item.name)
+        }
+        else{
+          setGroup(item)
+        }
+      }
+
+      const recurse = (item) => {
+        return(
+          <div onClick={() => handleClick(item)}  className='flex flex-1 felx-col items-center justify-between'  >
+            <li key={item.name} className='flex-1'>
+              <SfListItem
+                as="div"
+                size="sm"
+                role="none"
+                className="typography-text-base md:typography-text-sm py-4 md:py-1.5 "
+              >
+                {item.name}
+              </SfListItem>
+            </li> 
+            {item.children.length > 0 && <SfIconExpandMore className=" inline-flex m-2 -rotate-90" />}
+          </div> 
+        )
+      }
+
+      return(
+      <div key={itemTop.name} className="[&:nth-child(2)]:pt-0 pt-6 md:pt-0">
+        <h2
+          role="presentation"
+          className="typography-text-base font-medium text-neutral-900 whitespace-nowrap p-4 md:py-1.5"
+        >
+                    {itemTop.name}
+        </h2>
+        <hr className="mb-3.5" />
+        <ul>
+          {
+            itemTop.children.length > 0 ? itemTop.children.map((child) => {
+              return(
+                 recurse(child)
+              )
+            })
+            :
+            <Link to={`/home/${itemTop.name}`}   >
+            <li key={itemTop.name}>
+              <SfListItem
+                as="div"
+                size="sm"
+                role="none"
+                className="typography-text-base md:typography-text-sm py-4 md:py-1.5"
+              >
+                {itemTop.name}
+              </SfListItem>
+            </li>
+          </Link> 
+          }
+        </ul> 
+      </div>
+      )
+
+    }
+
     function handleClick(url) {
       
       if(!url.startsWith('/')){  
@@ -115,6 +188,7 @@ import SelectDropdownPreselected from './dropDown';
         navigate(`https://${url}`)
       };
     }
+
 
     const productList = (name) => 
         <>
@@ -150,7 +224,7 @@ import SelectDropdownPreselected from './dropDown';
                       className="grid grid-cols-1 lg:gap-x-6 lg:grid-cols-4 bg-white shadow-lg p-0 max-h-screen overflow-y-auto lg:!absolute lg:!top-20 max-w-[376px] lg:max-w-full lg:p-6 mr-[50px] lg:mr-0 z-99"
                     >
                       <div className="sticky top-0 flex items-center justify-between px-4 py-2 bg-primary lg:hidden">
-                        <div className="flex items-center font-medium text-white typography-text-lg">{name}</div>
+                        <div className="flex items-center font-medium text-white typography-text-lg">{menu}</div>
                         <SfButton
                           square
                           variant="tertiary"
@@ -161,14 +235,99 @@ import SelectDropdownPreselected from './dropDown';
                           <SfIconClose />
                         </SfButton>
                       </div>
-                      {groupes.map((item) => recursiveBuildPhone(item))}
+                      
+                          {mainGroup.map((item) => {
+                          return(
+                            <div className="lg:block hidden">
+                              {recursiveBuildPhone(item)}
+                            </div>
+
+                          )
+                          }
+                          )}
+                      
+                      <div className='flex lg:hidden flex-col gap-2'>
+                        {menu == 'Menu' ? topBarItems.map((item) => (
+                          <SfButton
+                            variant={'tertiary'}
+                            onClick={()=>{setMenu(item.label)}}
+                          >
+                            {
+                              item.name
+                            }
+                          </SfButton>
+                        )) :
+                        <button onClick={() => {setMenu('Menu'), setNavGroup(null)}} className='flex flex-row gap-2 items-center justify-start p-2'><SfIconArrowBack/>Back</button>
+                        }
+                      </div>
+                      {menu == name  && (group  ? 
+                        <SecondaryProdNav group={group} groups={mainGroup} setGroup={setGroup} /> 
+                        : 
+                        mainGroup.map((item) => recursiveBuildPhone(item)))               
+                        }
+                      {menu != 'Menu' && (navGroup ? 
+                        <>
+                            <button onClick={() => setNavGroup(null)} className='flex flex-row gap-2 items-center justify-between p-2'><SfIconArrowBack/>  { navGroup ? findParentName(topBarItems, navGroup.name) : 'Back'} </button>
+                            {navGroup.children.map((item) => (
+                                <SfButton variant={'tertiary'} onClick={() => 
+                                    {
+                                    if(item.children.length > 0 )
+                                        {
+                                        setNavGroup(item)
+                                        }
+                                    if(item.children.length ==0 && item.url)
+                                        {
+                                          handleClick(item.url)
+                                        }
+                                }} className='flex flex-1 felx-col pl-2 items-center justify-between'  >
+                                    <li key={item.name} className='flex-1'>
+                                    <SfListItem
+                                        as="div"
+                                        size="sm"
+                                        role="none"
+                                        className="typography-text-base md:typography-text-sm py-4 md:py-1.5 "
+                                    >
+                                        {item.name}
+                                    </SfListItem>
+                                    </li> 
+                                    {item.children.length > 0 && <SfIconExpandMore className=" inline-flex m-2 -rotate-90" />}
+                                </SfButton> 
+                            ))
+                        }
+                        </>
+                        :               
+                        topBarItems.find(item => item.name === menu).children.map((item) =>  
+                              <li> 
+                                <SfButton
+                                  onClick={() => 
+                                    {
+                                      if(item.children.length == 0)
+                                      {
+                                        handleClick(item.url)
+                                      }else{
+                                        setNavGroup(item)
+                                      }
+                                    }
+                                    
+                                  }
+                                  key={item.label}
+                                  className=" pl-2 flex w-full flex-row  items-center justify-between"
+                                  aria-label={item.label}
+                                  variant="tertiary"
+                                  square
+                                >{item.label}
+                                {!item.children.length == 0 && <SfIconExpandMore className='-rotate-90'/>}
+                                </SfButton>
+                            </li>
+                         )
+                      )}
                       <SfButton
                         square
                         size="sm"
                         variant="tertiary"
                         aria-label="Close navigation menu"
                         onClick={close}
-                        className="hidden md:block md:absolute md:right-0 hover:bg-white active:bg-white"
+                        className="hidden lg:block lg:absolute lg:right-0 hover:bg-white active:bg-white"
                       >
                         <SfIconClose className="text-neutral-500" />
                       </SfButton>
@@ -178,64 +337,10 @@ import SelectDropdownPreselected from './dropDown';
           </ul>
         </nav>
         </>
-    function recursiveBuildPhone (itemTop){
 
-      const recurse = (item) => {
-        return(
-          <Link to={`/home/${item.children.length > 0 ? 'group_' : ''}${item.name}`} className='flex flex-1 felx-col items-center justify-between'  >
-            <li key={item.name} className='flex-1'>
-              <SfListItem
-                as="a"
-                size="sm"
-                role="none"
-                href={`#${item.name}`}
-                className="typography-text-base md:typography-text-sm py-4 md:py-1.5 "
-              >
-                {item.name}
-              </SfListItem>
-            </li> 
-            {item.children.length > 0 && <SfIconExpandMore className=" inline-flex m-2 -rotate-90" />}
-          </Link> 
-        )
-      }
+      
 
-      return(
-      <div key={itemTop.name} className="[&:nth-child(2)]:pt-0 pt-6 md:pt-0">
-        <h2
-          role="presentation"
-          className="typography-text-base font-medium text-neutral-900 whitespace-nowrap p-4 md:py-1.5"
-        >
-                    {itemTop.name}
-        </h2>
-        <hr className="mb-3.5" />
-        <ul>
-          {
-            itemTop.children.length > 0 ? itemTop.children.map((child) => {
-              return(
-                 recurse(child)
-              )
-            })
-            :
-            <Link to={`/home/${itemTop.name}`}   >
-            <li key={itemTop.name}>
-              <SfListItem
-                as="a"
-                size="sm"
-                role="none"
-                href={`#${itemTop.name}`}
-                className="typography-text-base md:typography-text-sm py-4 md:py-1.5"
-              >
-                {itemTop.name}
-              </SfListItem>
-            </li>
-          </Link> 
-          }
-        </ul> 
-      </div>
-      )
-
-    }
-
+    
 
     function recursiveBuild (item){
       const button = 
@@ -324,3 +429,87 @@ import SelectDropdownPreselected from './dropDown';
       </div>
     );
   }
+
+
+
+  function SecondaryOtherNav ({group, groups, setNavGroup, handleClick}){
+
+    const handleSubClick = (item) => {
+      if(item.children.length > 0 )
+      {
+        setGroup(item.name)
+      }
+      if(item.children.length ==0)
+      {
+        handleClick(item.url)
+      }
+    }
+
+    return (
+      <div className='w-full h-full flex  flex-col justify-center items-start' >
+      <button onClick={setNavGroup(null)} className='flex flex-row gap-2 items-center justify-between p-2'><SfIconArrowBack/>  { group ? findParentName(groups, group.name) : 'Back'} </button>
+      {group && 
+        group.children.map((item) => (
+            <SfButton variant={'tertiary'} onClick={handleSubClick} className='flex flex-1 felx-col pl-2 items-center justify-between'  >
+                <li key={item.name} className='flex-1'>
+                <SfListItem
+                    as="div"
+                    size="sm"
+                    role="none"
+                    className="typography-text-base md:typography-text-sm py-4 md:py-1.5 "
+                >
+                    {item.name}
+                </SfListItem>
+                </li> 
+                {item.children.length > 0 && <SfIconExpandMore className=" inline-flex m-2 -rotate-90" />}
+            </SfButton> 
+        ))
+    }
+    </div>
+    )
+  }
+  
+
+function SecondaryProdNav ({group, groups, setGroup}){
+
+  const navigate = useNavigate()
+
+  const handleClick = (item) => 
+  {
+    if(item.children.length > 0 )
+    {
+      setGroup(item.name)
+    }
+    if(item.children.length ==0)
+    {
+      navigate(`/home/${item.name}`)
+    }
+  }
+
+  return (
+    <div className='w-full h-full flex  flex-col justify-center items-start' >
+    <button onClick={() => {setGroup(null)}} className='flex flex-row gap-2 items-center justify-between p-2'><SfIconArrowBack/>  { group ? findParentName(groups, group.name) : 'Back'} </button>
+    {group && 
+      group.children.map((item) => (
+          <SfButton variant={'tertiary'} onClick={() => handleClick(item)} className='flex flex-1 felx-col pl-2 items-center justify-between'  >
+              <li key={item.name} className='flex-1'>
+              <SfListItem
+                  as="a"
+                  size="sm"
+                  role="none"
+                  href={`#${item.name}`}
+                  className="typography-text-base md:typography-text-sm py-4 md:py-1.5 "
+              >
+                  {item.name}
+              </SfListItem>
+              </li> 
+              {item.children.length > 0 && <SfIconExpandMore className=" inline-flex m-2 -rotate-90" />}
+          </SfButton> 
+      ))
+  }
+  </div>
+  )
+}
+
+
+  

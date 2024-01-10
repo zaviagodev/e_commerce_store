@@ -49,7 +49,7 @@ export default function SelectDropdownPreselected({options, dropdowndame, submen
 
   return (
     <>
-      <div ref={refs.setReference} className="relative">
+      <div ref={refs.setReference} className="hidden lg:block relative">
         <div
           ref={selectTriggerRef}
           id={id}

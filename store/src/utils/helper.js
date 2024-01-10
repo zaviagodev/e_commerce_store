@@ -31,10 +31,48 @@ const getAccessibleColor = (hex) => {
 
 
   const  getUserId = () => Cookies.get('user_id');
+
+
+    // Helper function for recursive search
+    const findGroup = (groups, groupName) => {
+      for (const group of groups) {
+          if (group.name === groupName) {
+              return group;
+          }
+  
+          if (group.children) {
+              const result = findGroup(group.children, groupName);
+              if (result) {
+                  return result;
+              }
+          }
+      }
+  
+      return null;
+  };
+
+    const findParentName = (groups, groupName, parent = null) => {
+        for (const group of groups) {
+            if (group.name === groupName) {
+                return parent ? parent.name : null;
+            }
+    
+            if (group.children) {
+                const result = findParentName(group.children, groupName, group);
+                if (result) {
+                    return result;
+                }
+            }
+        }
+    
+        return null;
+    };
   
 
 
 export { 
+    findGroup,
+    findParentName,
     getToken, 
     removeToken, 
     setToken,  
