@@ -33,7 +33,7 @@ const Home = () => {
                                      description={product.short_description}
                                      itemCode={product.item_code}
                                      price={product.formatted_price}
-                                     thumbnail={product.website_image ? `${import.meta.env.VITE_ERP_URL}${product.website_image}` : null}
+									 thumbnail={product.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : null}
                                      salesPrice={product?.formatted_mrp}
                                      isGift={product?.item_group === "Gift" || product?.item_group === "Gift and Cards"}
                                  />
