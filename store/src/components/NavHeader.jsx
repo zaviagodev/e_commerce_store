@@ -15,104 +15,123 @@ import {
     SfIconMenu,
     SfIconArrowBack,
   } from '@storefront-ui/react';
+
 import { useCart } from '../hooks/useCart';
 import { Link, useNavigate } from 'react-router-dom';
-
 import { useUser } from '../hooks/useUser';
 import { useWish } from '../hooks/useWishe';
 import { useSetting } from '../hooks/useWebsiteSettings';
-
 import { useEffect, useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
 import { CSSTransition } from 'react-transition-group';
 import { useProducts } from '../hooks/useProducts';
 
 import SearchWithIcon from './SearchBar';
-
 import SelectDropdownPreselected from './dropDown';
+
 import { findParentName } from '../utils/helper';
-  export default function BaseMegaMenu() {
+
+
+
+ export default function BaseMegaMenu() {
+   
     const { close, toggle, isOpen } = useDisclosure();
     const drawerRef = useRef(null);
     const menuRef = useRef(null);
 
-    const navigate = useNavigate();
-    const { cartCount, setIsOpen } = useCart();
-    const { WishCount,setIsOpen : setWishOpen } = useWish();
-    const { user } = useUser();
+
+
+
+
+  const navigate = useNavigate();
+  const { cartCount, setIsOpen } = useCart();
+  const { WishCount,setIsOpen : setWishOpen } = useWish();
+  const { user } = useUser();
 
     const [menu ,setMenu] = useState('Menu')
     const [group, setGroup] = useState(null)
     const [navGroup, setNavGroup] = useState(null)
 
     const {mainGroup} = useProducts()
-
-    const {appName, appLogo,hideLogin, hideCheckout, navbarSearch, topBarItems, hideWish, isLoading} = useSetting()
-
-   const  handlLoginClick = () => {
-      if (user && user.name !== 'Guest') 
-        {
-          navigate('/profile');
-        } 
-      else 
-        {
-          navigate('/login');
-        }
-    }
+    
+  const product = useProducts()
 
 
-    const [actionItems, setActionItems] = useState([
-        {
-            icon: <></>,
-            label: '',
-            ariaLabel: 'Log in',
-            role: 'login',
-            show: false,
-            onClick: null
-        },
-        {
-            icon: <SfIconShoppingCart />,
-            label: '',
-            ariaLabel: 'Cart',
-            role: 'button',
-            show: false,
-            onClick: () => setIsOpen(true)
-        },
-        {
-            icon: <SfIconFavorite />,
-            label: '',
-            ariaLabel: 'Wishlist',
-            role: 'button',
-            show: false,
-            onClick: () => setWishOpen(true),
-        },
-    ]);
 
-    useEffect(() => {
-      if(isLoading) return;
-      setActionItems(prev => prev.map((item, index) => {
-        
-          if ((index === 2 && !hideWish) || (index === 1 && !hideCheckout)) {
-              return { ...item, show: true };
-          }
-          if (index === 0 && !hideLogin  ) {
-              return { ...item, show: true };
-          }
-          return item;
-      }));
-  }, [hideWish, hideCheckout, hideLogin, isLoading, user]);
-  
-    useTrapFocus(drawerRef, {
-      activeState: isOpen,
-      arrowKeysUpDown: true,
-      initialFocus: 'container',
-    });
-    useClickAway(menuRef, () => {
-      close();
-    });
+  const {appName, appLogo,hideLogin, hideCheckout, navbarSearch, topBarItems, hideWish, isLoading} = useSetting()
+
+ const  handlLoginClick = () => {
+    if (user && user.name !== 'Guest') 
+      {
+        navigate('/profile');
+      } 
+    else 
+      {
+        navigate('/login');
+      }
+  }
+
+  const [actionItems, setActionItems] = useState([
+    {
+      icon: <></>,
+      label: '',
+      ariaLabel: 'Log in',
+      role: 'login',
+      show: false,
+      onClick: null
+    },
+    {
+      icon: <></>,
+      label: '',
+      ariaLabel: 'Search',
+      role: 'search',
+      show: false,
+      onClick: (e) => e.preventDefault()
+    },
+    {
+      icon: <SfIconFavorite />,
+      label: '',
+      ariaLabel: 'Wishlist',
+      role: 'button',
+      show: false,
+      onClick: () => setWishOpen(true),
+    },
+    {
+      icon: <SfIconShoppingCart />,
+      label: '',
+      ariaLabel: 'Cart',
+      role: 'button',
+      show: false,
+      onClick: () => setIsOpen(true)
+    },
+  ]);
+
+  useEffect(() => {
+    if(isLoading) return;
+    setActionItems(prev => prev.map((item, index) => {
+      if ((index === 3 && !hideWish) || (index === 2 && !hideCheckout) || (index ==1 && navbarSearch) ) { // Original: (index === 2 && !hideWish) || (index === 1 && !hideCheckout)
+        return { ...item, show: true };
+      }
+      if (index === 0 && !hideLogin  ) {
+        console.log('user', user)
+        return { ...item, show: true };
+      }
+      return item;
+    }));
+}, [hideWish, hideCheckout, hideLogin, isLoading, navbarSearch, user]);
+
+  useTrapFocus(drawerRef, {
+    activeState: isOpen,
+    arrowKeysUpDown: true,
+    initialFocus: 'container',
+  });
+  useClickAway(menuRef, () => {
+    close();
+  });
 
 
-    function recursiveBuildPhone (itemTop){
+
+   function recursiveBuildPhone (itemTop){
 
 
       const handleClick = (item) => {
@@ -179,15 +198,16 @@ import { findParentName } from '../utils/helper';
 
     }
 
-    function handleClick(url) {
+   
+   function handleClick(url) {
       
       if(!url.startsWith('/')){  
         window.location.assign('https://' + url)
       }
       else  {
         navigate(`https://${url}`)
-      };
-    }
+      };  
+  }
 
 
     const productList = (name) => 
@@ -322,13 +342,12 @@ import { findParentName } from '../utils/helper';
                       )}
                       <SfButton
                         square
-                        size="sm"
                         variant="tertiary"
                         aria-label="Close navigation menu"
                         onClick={close}
-                        className="hidden lg:block lg:absolute lg:right-0 hover:bg-white active:bg-white"
+                        className="hidden md:block md:absolute md:right-0 hover:bg-white active:bg-white"
                       >
-                        <SfIconClose className="text-neutral-500" />
+                        <SfIconClose />
                       </SfButton>
                     </SfDrawer>
                   </CSSTransition>
@@ -341,62 +360,46 @@ import { findParentName } from '../utils/helper';
 
     
 
-    function recursiveBuild (item){
-      const button = 
-        <li> 
+
+  return (
+    <div className="w-full h-full">
+      {isOpen && <div className="fixed inset-0 bg-neutral-500 bg-opacity-50 transition-opacity z-60" />}
+      <header
+        ref={menuRef}
+        className="flex flex-wrap lg:flex-nowrap justify-center w-full py-2 lg:py-5 border-0 bg-primary border-neutral-200 lg:relative z-99 h-15 lg:h-20"
+      >
+        <div className="flex items-center justify-start h-full max-w-[1536px] w-full px-4 lg:px-10">
           <SfButton
-            key={item.label}
-            className="hidden md:flex text-white bg-transparent font-body hover:bg-primary hover:text-white active:bg-primary active:text-white"
-            aria-label={item.label}
+            className="block lg:hidden text-white bg-transparent font-body hover:bg-primary hover:text-white active:bg-primary active:text-white"
+            aria-haspopup="true"
+            aria-expanded={isOpen}
             variant="tertiary"
+            onHover={toggle}
+            onClick={toggle}
             square
-            onClick={() => handleClick(item.url)}
-          >{item.label}</SfButton>
-        </li>
-      if(item.children.length === 0) return button
-      if(item.children.length > 0) return  <SelectDropdownPreselected dropdowndame={item.label}  options={item.children} />
-    } 
+          >
+            <SfIconMenu className=" text-white" />
+          </SfButton>
+          <Link to="home/all items" className="flex mr-4 focus-visible:outline text-white focus-visible:outline-offset focus-visible:rounded-sm shrink-0">
+              <picture>
+                  <source srcSet={appLogo} media="(min-width: 768px)" />
+                  <img
+                      src={appLogo}
+                      alt="Sf Logo"
+                      className="w-8 h-8 md:h-6 lg:h-[1.75rem]"
+                  />
+              </picture>
+              <h5>{appName}</h5>
+          </Link>
+          <nav>
+            <ul className='flex flex-row gap-4 items-center justify-center'>
+              {topBarItems.map((item) => {
+                if (item.is_product_list) return productList(item.label)
+                else return recursiveBuild(item)
+              })}
+            </ul>
+          </nav>
 
-    return (
-      <div className="w-full h-full">
-        {isOpen && <div className="fixed inset-0 bg-neutral-500 bg-opacity-50 transition-opacity z-60" />}
-        <header
-          ref={menuRef}
-          className="flex flex-wrap lg:flex-nowrap justify-center w-full py-2 lg:py-5 border-0 bg-primary border-neutral-200 lg:relative lg:z-99"
-        >
-          <div className="flex items-center justify-start h-full max-w-[1536px] w-full px-4 lg:px-10">
-            <SfButton
-              className="block lg:hidden text-white bg-transparent font-body hover:bg-primary hover:text-white active:bg-primary active:text-white"
-              aria-haspopup="true"
-              aria-expanded={isOpen}
-              variant="tertiary"
-              onHover={toggle}
-              onClick={toggle}
-              square
-            >
-              <SfIconMenu className=" text-white" />
-            </SfButton>
-            <Link to="home/all items" className="flex mr-4 focus-visible:outline text-white focus-visible:outline-offset focus-visible:rounded-sm shrink-0">
-                    <picture>
-                        <source srcSet={appLogo} media="(min-width: 768px)" />
-                        <img
-                            src={appLogo}
-                            alt="Sf Logo"
-                            className="w-8 h-8 md:h-6 lg:h-[1.75rem]"
-                        />
-                    </picture>
-                    <h5>{appName}</h5>
-            </Link>
-            <nav>
-              <ul className='flex flex-row gap-4 items-center justify-center'>
-                {topBarItems.map((item) => {
-                  if (item.is_product_list) return productList(item.label)
-                  else return recursiveBuild(item)
-                })}
-              </ul>
-            </nav>
-
-            {navbarSearch && <SearchWithIcon className="hidden lg:flex flex-[100%] ml-10 relative" /> }
             <nav className="flex-1 flex justify-end lg:order-last lg:ml-4">
                     <div className="flex flex-row flex-nowrap">
                         {actionItems.map((actionItem) => 
@@ -412,6 +415,9 @@ import { findParentName } from '../utils/helper';
                                 {actionItem.ariaLabel === 'Cart' && (
                                     <SfBadge content={cartCount} />
                                 )}
+                                {actionItem.ariaLabel === 'Search' && (
+                                    <SearchWithIcon className="flex" /> 
+                                )}
                                 {actionItem.ariaLabel === 'Wishlist' && (
                                     <SfBadge content={WishCount} />
                                 )}
@@ -423,7 +429,6 @@ import { findParentName } from '../utils/helper';
                     </div>
                 </nav>
           </div>
-          {navbarSearch && <SearchWithIcon className="flex lg:hidden flex-[100%] my-2 mx-4" /> }
         </header>
       </div>
     );

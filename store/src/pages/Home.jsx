@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import ProductCard from '../components/ProductCard'
 import { useProducts } from '../hooks/useProducts'
 import { useFrappeAuth } from 'frappe-react-sdk';
+import { SfLoaderCircular } from '@storefront-ui/react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { SfLoaderCircular } from '@storefront-ui/react';
 
@@ -19,7 +20,6 @@ const Home = () => {
 
 
 
-
     useEffect(() => {
         updateCurrentUser();
     }, [updateCurrentUser]);
@@ -28,6 +28,7 @@ const Home = () => {
         <>
             <main className='main-section'>
               <h1 className="mb-8 primary-heading text-primary text-center">{idFromUrl.toUpperCase()}</h1>
+
                     {products.length > 0 ? (
                         <div
                         className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center"
@@ -47,13 +48,16 @@ const Home = () => {
                              ))}
                      </div>
                     ) : (
+
                         <div className='grid place-items-center w-full h-full'>
                             <SfLoaderCircular />
+
                         </div>
                     )}
             </main>
         </>
     )
 }
+
 
 export default Home

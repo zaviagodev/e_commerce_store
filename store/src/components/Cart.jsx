@@ -16,6 +16,7 @@ const Cart = () => {
     const { getByItemCode, isLoading } = useProducts()
     const navigate = useNavigate()
 
+
     // Ajouter un état pour l'intervalle
     const [intervalId, setIntervalId] = useState(null);
 
@@ -69,6 +70,7 @@ const Cart = () => {
     
     //useTrapFocus(drawerRef, { activeState: isOpen });
 
+
     return (
         <CSSTransition
             ref={nodeRef}
@@ -88,7 +90,7 @@ const Cart = () => {
                 placement='right'
                 open
                 onClose={() => setIsOpen(false)}
-                className="bg-neutral-50 border border-gray-300 z-99 md:w-[500px] w-full"
+                className="bg-neutral-50 z-99 md:w-[500px] w-full box-border"
             >
                 <div className="flex h-full flex-col overflow-y-auto bg-white shadow-xl">
                     <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
@@ -155,7 +157,10 @@ const Cart = () => {
                                                                         id={itemCode}
                                                                         type="number"
                                                                         role="spinbutton"
-                                                                        className="appearance-none mx-2 w-8 text-center bg-transparent font-medium [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-inner-spin-button]:display-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-outer-spin-button]:display-none [&::-webkit-outer-spin-button]:m-0 [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none disabled:placeholder-disabled-900 focus-visible:outline focus-visible:outline-offset focus-visible:rounded-sm"
+
+                                                                        className="z-10 appearance-none mx-2 w-8 text-center bg-transparent font-medium [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-inner-spin-button]:display-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-outer-spin-button]:display-none [&::-webkit-outer-spin-button]:m-0 [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none disabled:placeholder-disabled-900 focus-visible:outline focus-visible:outline-offset focus-visible:rounded-sm"
+
+                                                                     
                                                                         min={1}
                                                                         max={999}
                                                                         value={cart[itemCode]}
