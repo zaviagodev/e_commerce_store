@@ -131,8 +131,6 @@ import { findParentName } from '../utils/helper';
 
 
    function recursiveBuildPhone (itemTop){
-
-
       const handleClick = (item) => {
         if (item.children.length == 0)
         {

@@ -255,11 +255,11 @@ const Checkout = () => {
                             {/*<p className="px-3 py-1.5 bg-secondary-100 text-secondary-700 typography-text-sm rounded-md text-center mb-4">
                                 You are saving ${Math.abs(orderDetails.savings).toFixed(2)} on your order today!
                             </p>*/ }
-                            <div className="flex justify-between typography-headline-4 md:typography-headline-3 font-bold pt-4">
-                                <p>Total</p>
-                                <p>{deliveryLoading ? <SfLoaderCircular/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total? `฿ ${deliveryResult?.message?.doc?.grand_total + getTotal()}` : `฿ ${getTotal()}` : `฿ ${codeResult?.message?.doc?.grand_total}`}</p>
-                            </div>
                          </div>
+                         <div className="flex justify-between typography-headline-4 md:typography-headline-3 font-bold pt-4 ml-28">
+                            <p>Total</p>
+                            <p>{deliveryLoading ? <SfLoaderCircular/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total? `฿ ${deliveryResult?.message?.doc?.grand_total + getTotal()}` : `฿ ${getTotal()}` : `฿ ${codeResult?.message?.doc?.grand_total}`}</p>
+                        </div>
                         {/* <SfInput
                             placeholder='Enter loyalty points to redeem'
                             slotSuffix={<strong className='w-16'>of {user?.loyalty_points}</strong>}
