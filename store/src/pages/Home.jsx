@@ -4,7 +4,6 @@ import { useProducts } from '../hooks/useProducts'
 import { useFrappeAuth } from 'frappe-react-sdk';
 import { SfLoaderCircular } from '@storefront-ui/react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { SfLoaderCircular } from '@storefront-ui/react';
 
 const Home = () => {
     const { updateCurrentUser } = useFrappeAuth();

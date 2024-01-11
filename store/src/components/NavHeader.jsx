@@ -113,7 +113,6 @@ import { findParentName } from '../utils/helper';
         return { ...item, show: true };
       }
       if (index === 0 && !hideLogin  ) {
-        console.log('user', user)
         return { ...item, show: true };
       }
       return item;
@@ -355,6 +354,23 @@ import { findParentName } from '../utils/helper';
           </ul>
         </nav>
         </>
+
+    
+    function recursiveBuild (item){
+      const button = 
+        <li> 
+          <SfButton
+            key={item.label}
+            className="hidden md:flex text-white bg-transparent font-body hover:bg-primary hover:text-white active:bg-primary active:text-white"
+            aria-label={item.label}
+            variant="tertiary"
+            square
+            onClick={() => handleClick(item.url)}
+          >{item.label}</SfButton>
+        </li>
+      if(item.children.length === 0) return button
+      if(item.children.length > 0) return  <SelectDropdownPreselected dropdowndame={item.label}  options={item.children} />
+    } 
 
       
 

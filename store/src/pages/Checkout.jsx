@@ -90,7 +90,7 @@ const Checkout = () => {
       if (!getToken() && !user?.name) {
         navigate("/login");
       }
-    }, [navigate, user?.name]);
+    }, [ user?.name]);
 
     const { getByItemCode } = useProducts()
     const { cart, cartCount, getTotal, resetCart } = useCart();
