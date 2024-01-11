@@ -26,7 +26,7 @@ import { SettingProvider } from "./hooks/useWebsiteSettings";
 const Layer = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    if(window.location.pathname == "/")
+    if(window.location.pathname == "/store/")
     {
       navigate("/home/all items")
     }
@@ -59,14 +59,13 @@ const router = createBrowserRouter(
 );
 
 export const AppWrapper = () => {
-  {/* Change from import.meta to process after completed the code */}
 
   return (
     <FrappeProvider
       url={import.meta.env.VITE_ERP_URL ?? ""}
       enableSocket={false}
       tokenParams={
-        import.meta.env.VITE_USE_TOKEN_AUTH ?
+        import.meta.env.VITE_USE_TOKEN_AUTH == 'true' ?
         {
           type: import.meta.env.VITE_TOKEN_TYPE ? import.meta.env.VITE_TOKEN_TYPE : "token", 
           useToken: true,

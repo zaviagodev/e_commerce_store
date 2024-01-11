@@ -4,60 +4,21 @@ import { useProducts } from '../hooks/useProducts'
 import { useFrappeAuth } from 'frappe-react-sdk';
 import { SfLoaderCircular } from '@storefront-ui/react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { SfIconArrowBack, SfIconExpandMore, SfListItem } from '@storefront-ui/react';
+import { SfLoaderCircular } from '@storefront-ui/react';
 
 const Home = () => {
     const { updateCurrentUser } = useFrappeAuth();
     const { products, mainGroup } = useProducts()
-    const [group, setGroup] = useState(false);
     const navigate = useNavigate();
 
-    const rawIdFromUrl = useParams().itemsgroup;
-    const idFromUrl = rawIdFromUrl.startsWith('group_') ? rawIdFromUrl.replace('group_', '') : rawIdFromUrl;
 
-    useEffect(() => {
-        if (rawIdFromUrl.startsWith('group_') && mainGroup.length > 0) {
-            const group = findGroup(mainGroup, rawIdFromUrl.replace('group_', ''));
-            if (group) {
-                setGroup(group);
-            }
-        }
-        return () => {
-            setGroup(false);
-        };
-    }, [rawIdFromUrl, mainGroup]);
 
-    // Helper function for recursive search
-    const findGroup = (groups, groupName) => {
-        for (const group of groups) {
-            if (group.name === groupName) {
-                return group;
-            }
+    const idFromUrl = useParams().itemsgroup;
     
-            if (group.children) {
-                const result = findGroup(group.children, groupName);
-                if (result) {
-                    return result;
-                }
-            }
-        }
-        return null;
-    };
 
-    const findParentName = (groups, groupName, parent = null) => {
-        for (const group of groups) {
-            if (group.name === groupName) {
-                return parent ? parent.name : null;
-            }
-            if (group.children) {
-                const result = findParentName(group.children, groupName, group);
-                if (result) {
-                    return result;
-                }
-            }
-        }
-        return null;
-    };
+
+
+
 
     useEffect(() => {
         updateCurrentUser();
@@ -67,26 +28,8 @@ const Home = () => {
         <>
             <main className='main-section'>
               <h1 className="mb-8 primary-heading text-primary text-center">{idFromUrl.toUpperCase()}</h1>
-                    <button onClick={() => navigate(-1)} className='flex flex-row items-center justify-between p-2'><SfIconArrowBack/>  { group ? findParentName(mainGroup, group.name) : 'Back'} </button>
-                    {group && 
-                        group.children.map((item) => (
-                            <Link to={`/home/${item.children.length > 0 ? 'group_' : ''}${item.name}`} className='flex flex-1 relative items-center justify-between'  >
-                                <li key={item.name} className='flex'>
-                                <SfListItem
-                                    as="a"
-                                    size="sm"
-                                    role="none"
-                                    href={`#${item.name}`}
-                                    className="typography-text-base md:typography-text-sm py-4 md:py-1.5 list-style-none rounded-md"
-                                >
-                                    {item.name}
-                                </SfListItem>
-                                </li> 
-                                {item.children.length > 0 && <SfIconExpandMore className=" inline-flex m-2 -rotate-90 absolute right-0" />}
-                            </Link> 
-                        ))
-                    }
-                    {products.length > 0  ? (
+
+                    {products.length > 0 ? (
                         <div
                         className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center"
                          >
@@ -105,13 +48,16 @@ const Home = () => {
                              ))}
                      </div>
                     ) : (
-                        <div className='flex justify-center'>
-                            <SfLoaderCircular/>
+
+                        <div className='grid place-items-center w-full h-full'>
+                            <SfLoaderCircular />
+
                         </div>
                     )}
             </main>
         </>
     )
 }
+
 
 export default Home

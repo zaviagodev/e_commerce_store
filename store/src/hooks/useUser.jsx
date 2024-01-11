@@ -40,10 +40,11 @@ export const UserProvider = ({ children }) => {
                         setToken(data.message.token);
                     }
                     // get user
-                    return mutate().then((data) => {
+                    mutate().then((s) => {
                         updateCurrentUser();
-                        return data;
                     });
+                    return data;
+
                 });
         } catch (error) {
             return error;
@@ -71,10 +72,11 @@ export const UserProvider = ({ children }) => {
                     setToken(data.message.token);
                 }
                 // get user
-                return mutate().then((data) => {
+                mutate().then((data) => {
                     updateCurrentUser();
-                    return data;
                 });
+
+                return data;
             });
         }catch(error){
             return error;
@@ -85,6 +87,7 @@ export const UserProvider = ({ children }) => {
         return frappeLogout().then(() => {
             setUser(null);
             removeToken();
+            frappeLogout()
             window.location.reload();
         })
     };
