@@ -7,7 +7,7 @@ import { addressSchema } from './addressFormSchema';
 // Here you should provide a list of countries you want to support
 // or use an up-to-date country list like: https://www.npmjs.com/package/country-list
 const countries = ['Thailand', 'Pakistan', 'Germany', 'Great Britain', 'Poland', 'United States of America'];
-const states = ['Sindh', 'Punjab', 'Balochistan', 'KPK', 'Florida', 'New York', 'Texas'];
+const states = ['Sindh', 'Punjab', 'Balochistan', 'KPK', 'Florida', 'New York', 'Texas', 'Frankfurt', 'Berlin'];
 
 const AddressForm = ({
     onSuccess = () => { },
@@ -40,10 +40,10 @@ const AddressForm = ({
 
     return (
         <form className="max-w-[950px] flex gap-4 flex-wrap text-neutral-900" onSubmit={formik.handleSubmit}>
-            <h2 className="w-full typography-headline-4 md:typography-headline-3 font-bold">Billing address</h2>
+            {/* <h2 className="w-full typography-headline-4 md:typography-headline-3 font-bold">Billing address</h2> */}
             <div className="w-full md:w-auto flex-grow flex flex-col gap-0.5">
                 <label>
-                    <span className="typography-text-sm font-medium mb-2 block">Address line 1</span>
+                    <span className="typography-text-sm font-medium mb-2 block">Address line 1 <span className='text-red-500'>*</span></span>
                     <SfInput
                         name="address_line1"
                         className="mt-0.5"
@@ -62,11 +62,10 @@ const AddressForm = ({
                     <span className="typography-text-sm font-medium mb-2 block">Address line 2</span>
                     <SfInput name="address_line2" className="mt-0.5" onChange={formik.handleChange} value={formik.values.address_line2} />
                 </label>
-                <small className="typography-text-xs text-neutral-500">Optional</small>
             </div>
             <div className="w-full flex flex-col gap-0.5 flex flex-col gap-0.5">
                 <label>
-                    <span className="typography-text-sm font-medium mb-2 block">Country</span>
+                    <span className="typography-text-sm font-medium mb-2 block">Country <span className='text-red-500'>*</span></span>
                     <SfSelect name="country" placeholder="-- Select --" onChange={formik.handleChange} value={formik.values.country} invalid={formik.errors.country}>
                         {countries.map((countryName) => (
                             <option key={countryName} value={countryName}>{countryName}</option>
@@ -85,31 +84,31 @@ const AddressForm = ({
                     ))}
                 </SfSelect>
             </label>
-            <div className='w-full flex flex-col gap-2 md:flex-row md:justify-between'>
+            <div className='w-full flex flex-col gap-4 md:flex-row md:justify-between'>
                 <div className="w-full flex flex-col gap-0.5">
                     <label >
-                        <span className="typography-text-sm font-medium mb-2 block">City</span>
+                        <span className="typography-text-sm font-medium mb-2 block">City <span className='text-red-500'>*</span></span>
                         <SfInput name="city" placeholder="eg. New York" onChange={formik.handleChange} value={formik.values.city} invalid={formik.errors.city} />
                     </label>
                     {formik.errors.city && (
                         <strong className="typography-error-sm text-negative-700 font-medium">{formik.errors.city}</strong>
                     )}
                 </div>
-                <div className="w-full flex flex-col gap-0.5 md:w-[120px]">
+                <div className="w-full flex flex-col gap-0.5">
                     <label >
-                        <span className="typography-text-sm font-medium mb-2 block">ZIP Code</span>
+                        <span className="typography-text-sm font-medium mb-2 block">Postal code</span>
                         <SfInput name="pincode" placeholder="eg. 12345" onChange={formik.handleChange} value={formik.values.pincode} />
                     </label>
                 </div>
             </div>
 
-            <label className="w-full flex items-center gap-2">
+            {/* <label className="w-full flex items-center gap-2">
                 <SfCheckbox
                     name="is_shipping_address"
                     onChange={e => formik.setFieldValue('is_shipping_address', e.target.checked ? 1 : 0)}
                     checked={formik.values.is_shipping_address === 1 ? true : false} />
                 Use as shipping address
-            </label>
+            </label> */}
 
             <div className="w-full flex gap-4 mt-4 md:mt-0 md:justify-end">
                 <SfButton type="reset" variant='tertiary' className="w-full md:w-auto btn-secondary" onClick={formik.handleReset}>

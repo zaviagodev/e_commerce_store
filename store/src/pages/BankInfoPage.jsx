@@ -4,7 +4,6 @@ import { Link, useSearchParams } from 'react-router-dom';
 const BankInfoPage = () => {
     const [searchParams] = useSearchParams();
 
-
     const data = [
       { title:'Order ID', info:searchParams.get("order_id")},
       { title:'Date', info:''},
@@ -12,8 +11,8 @@ const BankInfoPage = () => {
     ]
 
     return (
-        <div className='p-12 w-full bg-primary-100'>
-            <div className='max-w-3xl mx-auto flex flex-col gap-y-8'>
+        <div className='pt-20 w-full bg-primary-100'>
+            <div className='max-w-2xl mx-auto flex flex-col gap-y-8'>
                 <h1 className='text-3xl text-center font-medium'>Thank you for your order</h1>
                 <p className='text-center'>You have completely made a payment, we will confirm your payment within 6 hours and will send the payment details onto your email.</p>
                 {/* <h3 className='text-xl'>Please transfer money to the following bank account:</h3>
