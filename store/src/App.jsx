@@ -25,13 +25,13 @@ import { SettingProvider } from "./hooks/useWebsiteSettings";
 
 const Layer = () => {
   const navigate = useNavigate();
-  // useEffect(() => {
-  //   if(window.location.pathname == "/store/")
-  //   {
-  //     navigate("/home/all items")
-  //   }
+  useEffect(() => {
+    if(window.location.pathname == "/store/")
+    {
+      navigate("/home/all items")
+    }
 
-  // }, [])
+  }, [])
   return (
     <>
       <NavHeader />
