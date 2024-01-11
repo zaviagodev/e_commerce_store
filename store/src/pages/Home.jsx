@@ -10,14 +10,7 @@ const Home = () => {
     const { products, mainGroup } = useProducts()
     const navigate = useNavigate();
 
-
-
     const idFromUrl = useParams().itemsgroup;
-    
-
-
-
-
 
     useEffect(() => {
         updateCurrentUser();
@@ -57,6 +50,5 @@ const Home = () => {
         </>
     )
 }
-
 
 export default Home

@@ -269,10 +269,9 @@ import { findParentName } from '../utils/helper';
                           <SfButton
                             variant={'tertiary'}
                             onClick={()=>{setMenu(item.label)}}
+                            className='justify-start w-full'
                           >
-                            {
-                              item.name
-                            }
+                            {item.name}
                           </SfButton>
                         )) :
                         <button onClick={() => {setMenu('Menu'), setNavGroup(null)}} className='flex flex-row gap-2 items-center justify-start p-2'><SfIconArrowBack/>Back</button>
