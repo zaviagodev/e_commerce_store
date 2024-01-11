@@ -15,12 +15,15 @@ import {
     SfIconWarehouse,
     SfIconSafetyCheck,
     SfIconShoppingCartCheckout,
+    SfIconFavoriteFilled,
+    SfIconFavorite
 } from '@storefront-ui/react';
 import { useParams } from 'react-router-dom';
 import { useProducts } from '../hooks/useProducts';
 import { useCart } from '../hooks/useCart';
 import { useSetting } from '../hooks/useWebsiteSettings';
 import { useNavigate } from 'react-router-dom';
+import { useWish } from '../hooks/useWishe';
 
 const Product = () => {
     const { id } = useParams();
@@ -37,24 +40,32 @@ const Product = () => {
     const [value, { inc, dec, set }] = useCounter(min);
     const navigate = useNavigate();
 
-
     function handleOnChange(event) {
         const { value: currentValue } = event.target;
         const nextValue = parseFloat(currentValue);
         set(Number(clamp(nextValue, min, max)));
     }
 
-
     function handleClickCart() {
+        addToCart(product?.item_code, cart[product?.item_code] ? cart[product?.item_code] + value : value)
         if(hideCheckout){
             if(!buttonLink.startsWith('/')) window.location.href = `https://${buttonLink}`
             else navigate(buttonLink);
             return
         }
-        addToCart(product?.item_code, cart[product?.item_code] ? cart[product?.item_code] + value : value)
-        
     }
 
+    const { Wish,addToWish, removeFromWish } = useWish()
+    const { hideWish} = useSetting()
+
+    const handleWish = (e) => {
+        e.preventDefault();
+        if (Wish[product?.item_code]) {
+            removeFromWish(product?.item_code)
+        } else {
+            addToWish(product?.item_code)
+        }
+    }
 
     return (
         <main className="main-section grid grid-cols-1 lg:grid-cols-2 lg:gap-x-10">
@@ -79,23 +90,33 @@ const Product = () => {
                     />
                 </SfScrollable>
             </div>
-            <section className="mt-4 md:mt-6">
-                <h1 className="mb-1 font-bold typography-headline-4 text-texttag">
-                    {product?.item_name}
-                </h1>
+            <section className="mt-4 md:mt-6 w-[80%]">
+                <div className='flex items-center justify-between'>
+                    <h1 className="mb-1 font-bold typography-headline-4 text-texttag">
+                        {product?.item_name}
+                    </h1>
+                    {!hideWish && <SfButton
+                        onClick={handleWish} 
+                        type="button"
+                        variant="tertiary"
+                        size="sm"
+                        square
+                        className="bg-white ring-1 ring-inset ring-neutral-200 !rounded-full z-50 p-[10px]"
+                        aria-label="Add to wishlist"
+                    >
+                        {Wish[product?.item_code] == 1 ? (
+                            <SfIconFavoriteFilled className='w-6 h-6'/>
+                        ) : (
+                            <SfIconFavorite className='w-6 h-6' />
+                        )}
+                    </SfButton>}
+                </div>
                 <div dangerouslySetInnerHTML={{ __html: product?.short_description }} />
                 <span className='flex flex-row items-center justify-start gap-2 mb-4'>
                     {product?.formatted_mrp && <strong className="block font-bold typography-headline-3 line-through">{product?.formatted_mrp}</strong>}
                     <strong className={`block font-bold typography-headline-3 text-lg ${product?.formatted_mrp ? 'text-destructive' : 'text-primary'}`}>{product?.formatted_price}</strong>
                 </span>
                 <div className="py-4 mb-4 border-gray-200 border-y">
-                    { 
-                        cart[product?.item_code] && !hideCheckout  && (
-                            <div className="bg-primary-100 text-primary-700 flex justify-center gap-1.5 py-1.5 typography-text-sm items-center mb-4 rounded-md">
-                                <SfIconShoppingCartCheckout />Added {cart[product?.item_code]} {cart[product?.item_code] === 1 ? 'item' : 'items'} to cart.
-                            </div>
-                        )
-                    }
                     <div className="items-start xs:flex">
                         {!hideCheckout && <div className="flex flex-col items-stretch xs:items-center xs:inline-flex">
                             <div className="flex border border-neutral-300 rounded-md">
@@ -135,10 +156,6 @@ const Product = () => {
                                     <SfIconAdd />
                                 </SfButton>
                             </div>
-                            <p className="self-center mt-1 mb-4 text-xs text-neutral-500 xs:mb-0">
-                                <strong className="text-neutral-900">{product?.in_stock ? "✔ In Stock" : "❌ sold out"}</strong>
-                            </p>
-
                         </div>}
                         <SfButton disabled={loading || !product?.in_stock}  onClick={handleClickCart} type="button" size="lg" className="w-full xs:ml-4 btn-primary" slotPrefix={!hideCheckout && <SfIconShoppingCart size="sm" />}>
                             {loading ? <SfLoaderCircular/> : product?.in_stock ? buttonLabel : 'Sold out'}
