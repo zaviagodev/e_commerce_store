@@ -52,6 +52,10 @@
   @apply max-w-[1536px] m-auto p-10
 }
 
+.main-section-small {
+  @apply max-w-[1200px] m-auto p-10
+}
+
 .primary-heading {
   @apply text-2xl font-bold
 }
@@ -75,6 +79,16 @@
 .search_bar {
   animation:expand_search_bar .3s forwards;
   overflow:hidden;
+}
+
+.add_to_cart {
+  opacity:0;
+  transition:opacity 200ms;
+}
+
+.product_card:hover .add_to_cart {
+  opacity:1;
+  transition:opacity 200ms;
 }
 
 @keyframes expand_search_bar {
