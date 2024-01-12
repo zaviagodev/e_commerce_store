@@ -30,13 +30,13 @@ const ProductCard = ({
         }
     }
     return (
-            <div className="border border-neutral-200 rounded-md hover:shadow-lg w-full h-full">
+            <div className="w-full h-full">
                 <div className="relative">
                     <Link to={`/products/${productId}`}>
                         <img
                             src={thumbnail}
                             alt={title}
-                            className="object-cover h-auto rounded-md aspect-square w-full"
+                            className="object-cover h-auto aspect-[3/4] w-full"
                         />
                         {discount && (
                             <div className="absolute inline-flex items-center justify-center text-sm font-medium text-muted bg-destructive py-1 px-2 top-2 left-2 rounded-md">
@@ -62,20 +62,20 @@ const ProductCard = ({
                     </SfButton>
 }
                 </div>
-                <div className="p-4 border-t border-neutral-200 flex flex-col justify-between">
+                <div className="py-2 flex flex-col justify-between">
                     <div className='flex flex-col mb-2'>
-                        <SfLink href="#" className="text-texttag text-sm no-underline">
+                        <SfLink href="#" className="text-texttag text-sm no-underline font-medium">
                             {title} {isGift && <span className="text-primary">- Gift</span>}
                         </SfLink>
-                        <p className="text-black text-sm">
+                        <p className="text-black text-sm font-medium">
                             {description}
                         </p>
-                        <span className='flex flex-row pb-2 items-center justify-start gap-2'>
+                        <span className='flex flex-row items-center justify-start gap-2 font-medium'>
                             {salesPrice && <strong className="block text-sm text-primary line-through">{salesPrice}</strong>}
-                            <strong className={`block text-lg ${salesPrice ? 'text-destructive' : 'text-primary'}`}>{price}</strong>
+                            <strong className={`block text-sm ${salesPrice ? 'text-destructive' : 'text-primary'}`}>{price}</strong>
                         </span>
                     </div>
-                    
+
                     {/* <SfButton disabled={loading} className='btn-primary' type="button" size="sm" slotPrefix={<SfIconShoppingCart size="sm" />} onClick={(e) => {
                         e.preventDefault();
                         addToCart(itemCode, cart[itemCode] ? cart[itemCode] + 1 : 1)

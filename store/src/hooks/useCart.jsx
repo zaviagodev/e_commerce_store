@@ -23,7 +23,7 @@ export const CartProvider = ({ children }) => {
         }
     }
 
-    const debouncedAddToCart = debounce(fectchToAddToCart, 1000, 1);
+    const debouncedAddToCart = debounce(fectchToAddToCart, 500, 1);
 
 
     const cartCount = Object.keys(cart).reduce((total, itemCode) => {
