@@ -395,9 +395,9 @@ import { findParentName } from '../utils/helper';
           </SfButton>
           <Link to="home/all items" className="flex mr-4 focus-visible:outline text-white focus-visible:outline-offset focus-visible:rounded-sm shrink-0">
               <picture>
-                  <source srcSet={appLogo} media="(min-width: 768px)" />
+                  <source srcSet={`${import.meta.env.VITE_ERP_URL ?? ''}${appLogo}`} media="(min-width: 768px)" />
                   <img
-                      src={appLogo}
+                      src={`${import.meta.env.VITE_ERP_URL ?? ''}${appLogo}`}
                       alt="Sf Logo"
                       className="w-8 h-8 md:h-6 lg:h-[1.75rem]"
                   />

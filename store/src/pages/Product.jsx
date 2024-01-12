@@ -83,7 +83,7 @@ const Product = () => {
                         </div>
                     ) : null}
                     <img
-                        src={`${import.meta.env.VITE_ERP_URL}${product?.website_image}`}
+                        src={`${import.meta.env.VITE_ERP_URL ?? ''}${product?.website_image}`}
                         className="object-contain w-auto h-full"
                         aria-label={product?.website_image}
                         alt={product?.website_image}

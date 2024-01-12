@@ -24,7 +24,7 @@ export const SettingProvider = ({ children }) => {
         const link = document.querySelector("link[rel*='icon']") || document.createElement('link');
         link.type = 'image/x-icon';
         link.rel = 'shortcut icon';
-        link.href = iconUrl;
+        link.href = `${import.meta.env.VITE_ERP_URL ?? ''}${iconUrl}`;
         document.getElementsByTagName('head')[0].appendChild(link);
       }
 
