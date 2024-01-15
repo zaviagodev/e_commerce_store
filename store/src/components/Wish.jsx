@@ -60,13 +60,10 @@ const Wish = () => {
                                             const product = getByItemCode(itemCode)
                                             return (
                                                 <li key={itemCode} className="flex py-6">
-<<<<<<< HEAD
-                                                    <div className="h-32 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                                        <Link to={`/products/${product?.name}`} ><img src={`${import.meta.env.VITE_ERP_URL}${product?.website_image}`} alt={product?.item_name} className="h-full w-full object-cover object-center" /></Link>
-=======
+
                                                     <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                                         <Link to={`/products/${product?.name}`} ><img src={`${import.meta.env.VITE_ERP_URL ?? ""}${product?.website_image}`} alt={product?.item_name} className="h-full w-full object-cover object-center" /></Link>
->>>>>>> 7a5f595646b738db641c7a28e80d004e0bd10122
+
                                                     </div>
 
                                                     <div className="ml-4 flex flex-1 flex-col">
