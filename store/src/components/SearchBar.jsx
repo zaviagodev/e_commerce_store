@@ -155,22 +155,11 @@ export default function SearchWithIcon( {className}) {
                   >
                     <div className='max-w-[1536px] relative mx-auto px-10'>
                       <div className="flex lg:grid lg:grid-cols-3 relative items-center gap-4 lg:gap-0">
-                        <Link to="home/all items" className="hidden lg:inline-flex focus-visible:outline text-white focus-visible:outline-offset focus-visible:rounded-sm shrink-0">
-                            <picture>
-                                <source srcSet={appLogo} media="(min-width: 768px)" />
-                                <img
-                                    src={appLogo}
-                                    alt="Sf Logo"
-                                    className="w-8 h-8 md:h-6 lg:h-[1.75rem]"
-                                />
-                            </picture>
-                            <h5 className='text-black'>{appName}</h5>
-                        </Link>
                         <SfInput
                           ref={inputRef}
                           value={searchValue}
                           onChange={handleChange}
-                          wrapperClassName={`w-full border-0 shadow-none focus-within:shadow-none`}
+                          wrapperClassName={`w-full border-0 shadow-none focus-within:shadow-none col-span-2`}
                           aria-label="Search"
                           placeholder="Search 'MacBook' or 'iPhone'..."
                           onKeyDown={handleInputKeyDown}
@@ -179,7 +168,7 @@ export default function SearchWithIcon( {className}) {
                             <SfIconClose className='cursor-pointer' onClick={() => setSearchValue('')}/>
                           )}
                         />
-                        <div className='justify-end inline-flex'>
+                        <div className='justify-end inline-flex col-span-1'>
                           <SfButton
                             square
                             size="sm"
@@ -213,7 +202,7 @@ export default function SearchWithIcon( {className}) {
                                         as="button"
                                         type="button"
                                         onClick={handleSelect(product)}
-                                        className="flex justify-start"
+                                        className="flex justify-start rounded-sm"
                                       >
                                         <p className="text-left">
                                           <span>{highlight}</span>

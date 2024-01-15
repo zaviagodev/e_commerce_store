@@ -37,8 +37,8 @@ const Wish = () => {
                 className="bg-neutral-50 z-99 md:w-[500px] w-full box-border"
             >
                 <div className="flex h-full flex-col overflow-y-auto bg-white shadow-xl">
-                    <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
-                        <div className="grid grid-cols-3">
+                    <div className="flex-1 overflow-y-auto">
+                        <div className="grid grid-cols-3 px-4 py-6 sm:px-6 border-b">
                             <div className="flex h-7 items-center">
                                 <button onClick={() => setIsOpen(false)} type="button" className="-m-2 p-2 text-gray-400 hover:text-gray-500">
                                     <span className="sr-only">Close panel</span>
@@ -52,7 +52,7 @@ const Wish = () => {
 
                         {Object.entries(Wish).length > 0 ?
                         (<div className="mt-8">
-                            <div className="flow-root">
+                            <div className="flow-root px-4 sm:px-6">
                                 <ul role="list" className="-my-6 divide-y divide-gray-200">
                                     {
                                         isLoading ? <SfLoaderCircular/> :
@@ -60,25 +60,25 @@ const Wish = () => {
                                             const product = getByItemCode(itemCode)
                                             return (
                                                 <li key={itemCode} className="flex py-6">
+<<<<<<< HEAD
+                                                    <div className="h-32 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                                                        <Link to={`/products/${product?.name}`} ><img src={`${import.meta.env.VITE_ERP_URL}${product?.website_image}`} alt={product?.item_name} className="h-full w-full object-cover object-center" /></Link>
+=======
                                                     <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                                         <Link to={`/products/${product?.name}`} ><img src={`${import.meta.env.VITE_ERP_URL ?? ""}${product?.website_image}`} alt={product?.item_name} className="h-full w-full object-cover object-center" /></Link>
+>>>>>>> 7a5f595646b738db641c7a28e80d004e0bd10122
                                                     </div>
 
                                                     <div className="ml-4 flex flex-1 flex-col">
-                                                        <div>
-                                                            <div className="flex justify-between text-base font-medium text-gray-900">
-                                                                <h3 className='text-texttag hover:underline'>
-                                                                    <Link to={`/products/${product?.name}`} >{product?.web_item_name}</Link>
-                                                                </h3>
-                                                                <p className="ml-4">{product?.formatted_price}</p>
-                                                            </div>
-                                                            <p className="mt-1 text-sm text-primary">{product?.short_description}</p>
+                                                        <div className="flex justify-between text-base font-medium text-gray-900">
+                                                            <h3 className='text-texttag hover:underline'>
+                                                                <Link to={`/products/${product?.name}`} >{product?.web_item_name}</Link>
+                                                            </h3>
+                                                            <p className="ml-4">{product?.formatted_price}</p>
                                                         </div>
 
-                                                        <div className="flex flex-1 items-center justify-between text-sm">
-                                                            <div className="flex">
-                                                                <button onClick={() => removeFromWish(itemCode)} type="button" className="font-medium text-secondary">Remove</button>
-                                                            </div>
+                                                        <div className="flex text-sm">
+                                                            <button onClick={() => removeFromWish(itemCode)} type="button" className="font-medium text-secondary">Remove</button>
                                                         </div>
                                                     </div>
                                                 </li>
@@ -101,7 +101,6 @@ const Wish = () => {
                 </div>
             </SfDrawer>
         </CSSTransition>
-
     );
 
     // return (

@@ -3,12 +3,12 @@ export const AddressCard = (props) => {
         <div className="flex flex-wrap gap-4 lg:gap-6 lg:flex-nowrap">
             <div
                 key={props.title}
-                className="p-3 w-full relative border border-neutral-200 rounded-md hover:shadow-xl"
+                className="w-full relative border border-neutral-200 rounded-lg hover:shadow-xl"
             >
-                <div className="flex flex-col items-start p-4 grow">
+                <div className="flex flex-col items-start p-3 grow">
                     {
                         Object.keys(props).map((key, idx) => idx === 0 ?
-                            (<p key={key} className="my-1 font-medium typography-text-base">{props[key]}</p>) :
+                            (<p key={key} className="font-medium typography-text-base">{props[key]}</p>) :
                             (
                                 <p key={key} className="font-normal typography-text-sm text-neutral-700">{props[key]}</p>
                             )

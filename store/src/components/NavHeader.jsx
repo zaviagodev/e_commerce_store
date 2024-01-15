@@ -160,7 +160,7 @@ import { findParentName } from '../utils/helper';
       }
 
       return(
-      <div key={itemTop.name} className="[&:nth-child(2)]:pt-0 pt-6 md:pt-0">
+      <div key={itemTop.name} className="pt-0">
         <h2
           role="presentation"
           className="typography-text-base font-medium text-neutral-900 whitespace-nowrap p-4 md:py-1.5"
@@ -294,7 +294,7 @@ import { findParentName } from '../utils/helper';
                                         {
                                           handleClick(item.url)
                                         }
-                                }} className='flex flex-1 felx-col pl-2 items-center justify-between'  >
+                                }} className='flex flex-1 felx-col pl-2 items-center justify-between'>
                                     <li key={item.name} className='flex-1'>
                                     <SfListItem
                                         as="div"
@@ -369,11 +369,6 @@ import { findParentName } from '../utils/helper';
       if(item.children.length > 0) return  <SelectDropdownPreselected dropdowndame={item.label}  options={item.children} />
     } 
 
-      
-
-    
-
-
   return (
     <div className="w-full h-full">
       {isOpen && <div className="fixed inset-0 bg-neutral-500 bg-opacity-50 transition-opacity z-60" />}
@@ -399,13 +394,12 @@ import { findParentName } from '../utils/helper';
                   <img
                       src={`${import.meta.env.VITE_ERP_URL ?? ''}${appLogo}`}
                       alt="Sf Logo"
-                      className="w-8 h-8 md:h-6 lg:h-[1.75rem]"
+                      className='max-h-6'
                   />
               </picture>
-              <h5>{appName}</h5>
           </Link>
           <nav>
-            <ul className='flex flex-row gap-4 items-center justify-center'>
+            <ul className='flex flex-row gap-2 items-center justify-center'>
               {topBarItems.map((item) => {
                 if (item.is_product_list) return productList(item.label)
                 else return recursiveBuild(item)
@@ -414,11 +408,11 @@ import { findParentName } from '../utils/helper';
           </nav>
 
             <nav className="flex-1 flex justify-end lg:order-last lg:ml-4">
-                    <div className="flex flex-row flex-nowrap">
+                    <div className="flex flex-row flex-nowrap gap-x-4 items-center">
                         {actionItems.map((actionItem) => 
                             {return actionItem.show && <SfButton
                                 key={actionItem.ariaLabel}
-                                className="relative mr-2 -ml-0.5 rounded-md text-white hover:bg-primary-100 active:bg-primary-200 hover:text-primary-600 active:text-primary-700"
+                                className="relative rounded-md text-white hover:bg-primary-100 active:bg-primary-200 hover:text-primary-600 active:text-primary-700"
                                 aria-label={actionItem.ariaLabel}
                                 variant="tertiary"
                                 square
@@ -435,7 +429,7 @@ import { findParentName } from '../utils/helper';
                                     <SfBadge content={WishCount} />
                                 )}
                                 {actionItem.role === 'login' && (
-                                    <p className="inline-flex whitespace-nowrap">{user?.name ?? 'Login'}</p>
+                                    <p className="inline-flex whitespace-nowrap border-r border-r-white pr-5">{user?.name ?? 'Login'}</p>
                                 )}
                             </SfButton>}
                         )}
@@ -463,7 +457,7 @@ import { findParentName } from '../utils/helper';
     }
 
     return (
-      <div className='w-full h-full flex  flex-col justify-center items-start' >
+      <div className='w-full h-full flex flex-col justify-center items-start'>
       <button onClick={setNavGroup(null)} className='flex flex-row gap-2 items-center justify-between p-2'><SfIconArrowBack/>  { group ? findParentName(groups, group.name) : 'Back'} </button>
       {group && 
         group.children.map((item) => (
