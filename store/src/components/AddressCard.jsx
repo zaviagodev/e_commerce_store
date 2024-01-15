@@ -8,9 +8,9 @@ export const AddressCard = (props) => {
                 <div className="flex flex-col items-start p-3 grow">
                     {
                         Object.keys(props).map((key, idx) => idx === 0 ?
-                            (<p key={key} className="font-medium typography-text-base">{props[key]}</p>) :
+                            (<p key={key} className="font-semibold text-base mb-2">{props[key]}</p>) :
                             (
-                                <p key={key} className="font-normal typography-text-sm text-neutral-700">{props[key]}</p>
+                                <p key={key} className="font-normal text-sm text-neutral-700">{props[key]}</p>
                             )
                         )
                     }

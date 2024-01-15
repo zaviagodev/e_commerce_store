@@ -17,8 +17,8 @@ const ProductCard = ({
     salesPrice,
     discount,
 }) => {
-    const { Wish,addToWish, removeFromWish } = useWish()
-    const { cart, addToCart, loading } = useCart()
+    const { Wish,addToWish, removeFromWish, setIsOpen:setWishOpen } = useWish()
+    const { cart, addToCart, loading, setIsOpen } = useCart()
     const { hideWish} = useSetting()
 
     const handleWish = (e) => {
@@ -27,6 +27,7 @@ const ProductCard = ({
             removeFromWish(itemCode)
         } else {
             addToWish(itemCode)
+            setWishOpen(true)
         }
     }
 
@@ -48,7 +49,8 @@ const ProductCard = ({
                     <div className='p-2 w-full absolute bottom-0 add_to_cart'>
                         <SfButton disabled={loading} className='btn-primary w-full py-3' type="button" size="sm" onClick={(e) => {
                             e.preventDefault();
-                            addToCart(itemCode, cart[itemCode] ? cart[itemCode] + 1 : 1)
+                            addToCart(itemCode, cart[itemCode] ? cart[itemCode] + 1 : 1);
+                            setIsOpen(true)
                         }}>
                         {loading ? <SfLoaderCircular/> : 'Add to cart'}
                         </SfButton>

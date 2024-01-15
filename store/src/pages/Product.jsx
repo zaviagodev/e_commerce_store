@@ -33,7 +33,7 @@ const Product = () => {
     const { get, products } = useProducts();
     const {hideCheckout, buttonLabel, buttonLink} = useSetting();
 
-    const { cart, addToCart, loading } = useCart();
+    const { cart, addToCart, loading, isOpen, setIsOpen } = useCart();
     
     const product = get(id);
     const inputId = "useId('input')";
@@ -52,12 +52,13 @@ const Product = () => {
         addToCart(product?.item_code, cart[product?.item_code] ? cart[product?.item_code] + value : value)
         if(hideCheckout){
             if(!buttonLink.startsWith('/')) window.location.href = `https://${buttonLink}`
-            else navigate(buttonLink);
+            else navigate(buttonLink)
             return
         }
+        setIsOpen(true)
     }
 
-    const { Wish,addToWish, removeFromWish } = useWish()
+    const { Wish,addToWish, removeFromWish, setIsOpen:setWishOpen } = useWish()
     const { hideWish} = useSetting()
 
     const handleWish = (e) => {
@@ -65,7 +66,8 @@ const Product = () => {
         if (Wish[product?.item_code]) {
             removeFromWish(product?.item_code)
         } else {
-            addToWish(product?.item_code)
+            addToWish(product?.item_code);
+            setWishOpen(true)
         }
     }
 

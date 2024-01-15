@@ -47,26 +47,21 @@ const Wish = () => {
                                     </svg>
                                 </button>
                             </div>
-                            <h2 className="text-lg font-medium text-gray-900" id="slide-over-title">Shopping Wishlist</h2>
+                            <h2 className="text-lg font-semibold text-gray-900 text-center whitespace-pre" id="slide-over-title">Wishlist</h2>
                         </div>
 
                         {Object.entries(Wish).length > 0 ?
                         (<div className="mt-8">
                             <div className="flow-root px-4 sm:px-6">
-                                <ul role="list" className="-my-6 divide-y divide-gray-200">
+                                <ul role="list" className="-my-6">
                                     {
                                         isLoading ? <SfLoaderCircular/> :
                                         Object.entries(Wish).map(([itemCode]) => {
                                             const product = getByItemCode(itemCode)
                                             return (
                                                 <li key={itemCode} className="flex py-6">
-<<<<<<< HEAD
-                                                    <div className="h-32 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                                                    <div className="h-32 w-24 flex-shrink-0 border border-gray-200">
                                                         <Link to={`/products/${product?.name}`} ><img src={`${import.meta.env.VITE_ERP_URL}${product?.website_image}`} alt={product?.item_name} className="h-full w-full object-cover object-center" /></Link>
-=======
-                                                    <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                                        <Link to={`/products/${product?.name}`} ><img src={`${import.meta.env.VITE_ERP_URL ?? ""}${product?.website_image}`} alt={product?.item_name} className="h-full w-full object-cover object-center" /></Link>
->>>>>>> 7a5f595646b738db641c7a28e80d004e0bd10122
                                                     </div>
 
                                                     <div className="ml-4 flex flex-1 flex-col">
@@ -74,7 +69,7 @@ const Wish = () => {
                                                             <h3 className='text-texttag hover:underline'>
                                                                 <Link to={`/products/${product?.name}`} >{product?.web_item_name}</Link>
                                                             </h3>
-                                                            <p className="ml-4">{product?.formatted_price}</p>
+                                                            <p className="ml-4 whitespace-pre">{product?.formatted_price}</p>
                                                         </div>
 
                                                         <div className="flex text-sm">
