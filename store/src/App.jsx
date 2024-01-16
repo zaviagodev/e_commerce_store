@@ -21,6 +21,7 @@ import SingleOrderHistory from "./pages/SingleOrderHistory";
 import { WishProvider } from "./hooks/useWishe";
 import Wish from "./components/Wish";
 import { SettingProvider } from "./hooks/useWebsiteSettings";
+import MyAddresses from "./pages/MyAddresses";
 
 
 const Layer = () => {
@@ -48,6 +49,7 @@ const router = createBrowserRouter(
       <Route path="home/:itemsgroup" element={<Home />} />
       <Route path="products/:id" element={<Product />} />
       <Route path="checkout" element={<Checkout />} />
+      <Route path="my-addresses" element={<MyAddresses />} />
       <Route path="loyality-program" element={<LoyaltyProgram />} />
       <Route path="thankyou" element={<BankInfoPage />} />
       <Route path="profile" element={<Profile />} />

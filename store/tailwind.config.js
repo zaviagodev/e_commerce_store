@@ -26,6 +26,9 @@ export default {
       margin: {
         15: '3.75rem'
       },
+      top: {
+        15: '3.75rem'
+      },
       zIndex: {
         60: 60,
         99: 99

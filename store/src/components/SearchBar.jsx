@@ -129,8 +129,6 @@ export default function SearchWithIcon( {className}) {
     [searchValue],
   );
 
-  const {appName, appLogo,hideLogin, hideCheckout, navbarSearch, topBarItems, hideWish, isLoading} = useSetting()
-
   return (
     <form role="search" onSubmit={e => e.preventDefault()} ref={refs.setReference} className={className}>
       <nav className='fixed top-0 right-0 w-full z-[999] text-black'>
@@ -153,13 +151,13 @@ export default function SearchWithIcon( {className}) {
                     placement="top"
                     className="bg-white shadow-lg py-5 absolute top-0 max-w-full z-99"
                   >
-                    <div className='max-w-[1536px] relative mx-auto px-10'>
-                      <div className="flex lg:grid lg:grid-cols-3 relative items-center gap-4 lg:gap-0">
+                    <div className='w-full lg:max-w-[512px] relative mx-auto px-4'>
+                      <div className="flex relative justify-center gap-2 lg:gap-0">
                         <SfInput
                           ref={inputRef}
                           value={searchValue}
                           onChange={handleChange}
-                          wrapperClassName={`w-full border-0 shadow-none focus-within:shadow-none col-span-2`}
+                          wrapperClassName={`w-full border-0 shadow-none focus-within:shadow-none`}
                           aria-label="Search"
                           placeholder="Search 'MacBook' or 'iPhone'..."
                           onKeyDown={handleInputKeyDown}
@@ -168,7 +166,7 @@ export default function SearchWithIcon( {className}) {
                             <SfIconClose className='cursor-pointer' onClick={() => setSearchValue('')}/>
                           )}
                         />
-                        <div className='justify-end inline-flex col-span-1'>
+                        <div className='justify-end inline-flex lg:hidden'>
                           <SfButton
                             square
                             size="sm"
@@ -182,7 +180,7 @@ export default function SearchWithIcon( {className}) {
                           </SfButton>
                         </div>
                       </div>
-                      <div ref={refs.setFloating} className="left-0 right-0 pb-4 pt-9">
+                      <div ref={refs.setFloating} className="left-0 right-0 py-4">
                         {isLoadingSnippets ? (
                           <div className="flex items-center justify-center bg-white w-full sm:h-20">
                             <SfLoaderCircular />
@@ -202,7 +200,7 @@ export default function SearchWithIcon( {className}) {
                                         as="button"
                                         type="button"
                                         onClick={handleSelect(product)}
-                                        className="flex justify-start rounded-sm"
+                                        className="flex justify-start rounded-md"
                                       >
                                         <p className="text-left">
                                           <span>{highlight}</span>

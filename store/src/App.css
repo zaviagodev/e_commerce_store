@@ -3,6 +3,34 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family:graphikTH;
+  src: url('../src/fonts/graphikTH/GraphikTH-Bold-2_1.woff');
+  font-weight:700
+}
+
+@font-face {
+  font-family:graphikTH;
+  src: url('../src/fonts/graphikTH/graphikth-medium-1_1.woff');
+  font-weight:500
+}
+
+@font-face {
+  font-family:graphikTH;
+  src: url('../src/fonts/graphikTH/graphikth-regular-2_1.woff');
+  font-weight:400
+}
+
+@font-face {
+  font-family:graphikTH;
+  src: url('../src/fonts/graphikTH/GraphikThai-Semibold-Web-1_1.woff');
+  font-weight:600
+}
+
+* {
+  font-family:'Inter', 'graphikTH', sans-serif
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -14,8 +42,8 @@
     --button-primary-foreground: #FFFFFF;
     --button-primary-hover: #393939;
     --button-primary-hover-foreground: #FFFFFF;
-    --button-secondary: #F6F6F6;
-    --button-secondary-foreground: #6C6C6C;
+    --button-secondary: #F4F4F5;
+    --button-secondary-foreground: #18181B;
     --button-secondary-hover: #9F9F9F;
     --button-secondary-hover-foreground: #000000;
     --card: 0 0% 100%;
@@ -71,10 +99,10 @@
 .btn-secondary {
   @apply text-btn-secondary-foreground bg-btn-secondary
 }
-
+/* 
 .btn-secondary:hover {
   @apply text-btn-secondary-hover-foreground bg-btn-secondary-hover
-}
+} */
 
 .search_bar {
   animation:expand_search_bar .3s forwards;

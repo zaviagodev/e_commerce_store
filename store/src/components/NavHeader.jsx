@@ -128,8 +128,6 @@ import { findParentName } from '../utils/helper';
     close();
   });
 
-
-
    function recursiveBuildPhone (itemTop){
       const handleClick = (item) => {
         if (item.children.length == 0)
@@ -143,18 +141,18 @@ import { findParentName } from '../utils/helper';
 
       const recurse = (item) => {
         return(
-          <div onClick={() => handleClick(item)}  className='flex flex-1 felx-col items-center justify-between'  >
+          <div onClick={() => handleClick(item)}  className='flex flex-1 items-center justify-between relative'>
             <li key={item.name} className='flex-1'>
               <SfListItem
                 as="div"
                 size="sm"
                 role="none"
-                className="typography-text-base md:typography-text-sm py-4 md:py-1.5 "
+                className="typography-text-base md:typography-text-sm py-4 md:py-1.5 rounded-lg active:font-medium"
               >
                 {item.name}
               </SfListItem>
             </li> 
-            {item.children.length > 0 && <SfIconExpandMore className=" inline-flex m-2 -rotate-90" />}
+            {item.children.length > 0 && <SfIconExpandMore className=" inline-flex m-2 -rotate-90 absolute right-0" />}
           </div> 
         )
       }
@@ -165,7 +163,7 @@ import { findParentName } from '../utils/helper';
           role="presentation"
           className="typography-text-base font-medium text-neutral-900 whitespace-nowrap p-4 md:py-1.5"
         >
-                    {itemTop.name}
+          {itemTop.name}
         </h2>
         <hr className="mb-3.5" />
         <ul>
@@ -182,7 +180,7 @@ import { findParentName } from '../utils/helper';
                 as="div"
                 size="sm"
                 role="none"
-                className="typography-text-base md:typography-text-sm py-4 md:py-1.5"
+                className="typography-text-base md:typography-text-sm py-4 md:py-1.5 rounded-lg active:font-medium"
               >
                 {itemTop.name}
               </SfListItem>
@@ -195,17 +193,14 @@ import { findParentName } from '../utils/helper';
 
     }
 
-   
    function handleClick(url) {
-      
-      if(!url.startsWith('/')){  
-        window.location.assign('https://' + url)
-      }
-      else  {
-        navigate(`https://${url}`)
-      };  
+    if(!url.startsWith('/')){  
+      window.location.assign('https://' + url)
+    }
+    else  {
+      navigate(`https://${url}`)
+    };
   }
-
 
     const productList = (name) => 
         <>
@@ -294,24 +289,22 @@ import { findParentName } from '../utils/helper';
                                         {
                                           handleClick(item.url)
                                         }
-                                }} className='flex flex-1 felx-col pl-2 items-center justify-between'>
+                                }} className='flex flex-1 pl-2 items-center justify-between relative'>
                                     <li key={item.name} className='flex-1'>
                                     <SfListItem
-                                        as="div"
-                                        size="sm"
-                                        role="none"
-                                        className="typography-text-base md:typography-text-sm py-4 md:py-1.5 "
+                                      as="div"
+                                      size="sm"
+                                      role="none"
+                                      className="typography-text-base md:typography-text-sm py-4 md:py-1.5 rounded-lg active:font-medium"
                                     >
-                                        {item.name}
+                                      {item.name}
                                     </SfListItem>
                                     </li> 
-                                    {item.children.length > 0 && <SfIconExpandMore className=" inline-flex m-2 -rotate-90" />}
+                                    {item.children.length > 0 && <SfIconExpandMore className="inline-flex m-2 -rotate-90 absolute right-0" />}
                                 </SfButton> 
                             ))
                         }
-                        </>
-                        :               
-                        topBarItems.find(item => item.name === menu).children.map((item) =>  
+                        </> : topBarItems.find(item => item.name === menu).children.map((item) =>  
                               <li> 
                                 <SfButton
                                   onClick={() => 
@@ -326,7 +319,7 @@ import { findParentName } from '../utils/helper';
                                     
                                   }
                                   key={item.label}
-                                  className=" pl-2 flex w-full flex-row  items-center justify-between"
+                                  className=" pl-2 flex w-full flex-row items-center justify-between"
                                   aria-label={item.label}
                                   variant="tertiary"
                                   square
@@ -461,18 +454,18 @@ import { findParentName } from '../utils/helper';
       <button onClick={setNavGroup(null)} className='flex flex-row gap-2 items-center justify-between p-2'><SfIconArrowBack/>  { group ? findParentName(groups, group.name) : 'Back'} </button>
       {group && 
         group.children.map((item) => (
-            <SfButton variant={'tertiary'} onClick={handleSubClick} className='flex flex-1 felx-col pl-2 items-center justify-between'  >
+            <SfButton variant={'tertiary'} onClick={handleSubClick} className='flex flex-1 pl-2 items-center justify-between relative'  >
                 <li key={item.name} className='flex-1'>
                 <SfListItem
-                    as="div"
-                    size="sm"
-                    role="none"
-                    className="typography-text-base md:typography-text-sm py-4 md:py-1.5 "
+                  as="div"
+                  size="sm"
+                  role="none"
+                  className="typography-text-base md:typography-text-sm py-4 md:py-1.5 rounded-lg active:font-medium"
                 >
-                    {item.name}
+                  {item.name}
                 </SfListItem>
                 </li> 
-                {item.children.length > 0 && <SfIconExpandMore className=" inline-flex m-2 -rotate-90" />}
+                {item.children.length > 0 && <SfIconExpandMore className=" inline-flex m-2 -rotate-90 absolute right-0" />}
             </SfButton> 
         ))
     }
@@ -502,19 +495,19 @@ function SecondaryProdNav ({group, groups, setGroup}){
     <button onClick={() => {setGroup(null)}} className='flex flex-row gap-2 items-center justify-between p-2'><SfIconArrowBack/>  { group ? findParentName(groups, group.name) : 'Back'} </button>
     {group && 
       group.children.map((item) => (
-          <SfButton variant={'tertiary'} onClick={() => handleClick(item)} className='flex flex-1 felx-col pl-2 items-center justify-between'  >
+          <SfButton variant={'tertiary'} onClick={() => handleClick(item)} className='flex flex-1 pl-2 items-center justify-between relative'  >
               <li key={item.name} className='flex-1'>
               <SfListItem
                   as="a"
                   size="sm"
                   role="none"
                   href={`#${item.name}`}
-                  className="typography-text-base md:typography-text-sm py-4 md:py-1.5 "
+                  className="typography-text-base md:typography-text-sm py-4 md:py-1.5 rounded-lg active:font-medium"
               >
                   {item.name}
               </SfListItem>
               </li> 
-              {item.children.length > 0 && <SfIconExpandMore className=" inline-flex m-2 -rotate-90" />}
+              {item.children.length > 0 && <SfIconExpandMore className=" inline-flex m-2 -rotate-90 absolute right-0" />}
           </SfButton> 
       ))
   }
