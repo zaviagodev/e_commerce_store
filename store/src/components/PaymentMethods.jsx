@@ -20,8 +20,8 @@ export default function PaymentMethods({
                 {paymentMethods.map(({ label, value: nameVal, logo }) => (
                     <label key={nameVal} className="relative" onClick={() => onChange(nameVal)}>
                         <div className={`h-full flex ${paymentMethods?.length > 1 ? 'flex-col gap-y-2' : 'items-center gap-x-2'} p-3 cursor-pointer rounded-lg border border-neutral-200 -outline-offset-2 hover:border-primary-200 hover:bg-primary-100 peer-focus:border-primary-200 peer-focus:bg-primary-100 ${value == nameVal ? "border-primary-300 bg-primary-100 outline outline-2 outline-primary-700" : ""}`}>
-                            <img src={logo} alt={label} className="h-10 w-10 select-none object-cover rounded-lg" />
-                            <p className={`${value == nameVal ? 'text-black' : 'text-[#A1A1A1]'} text-sm`}>Cash</p>
+                            <img src={logo} alt={label} className="h-5 w-5 select-none object-cover rounded-[2px]" />
+                            <p className={`${value == nameVal ? 'text-black' : 'text-maingray'} text-sm`}>QRCode Promptpay</p>
                         </div>
                     </label>
                 ))}

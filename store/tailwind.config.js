@@ -37,6 +37,7 @@ export default {
         auto: 'auto auto auto'
       },
       colors: {
+        maingray: '#A1A1A1',
         primary: 'var(--primary)',
         secondary: 'var(--secondary)',
         texttag: 'var(--text-tag)',

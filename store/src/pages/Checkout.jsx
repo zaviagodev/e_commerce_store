@@ -190,7 +190,7 @@ export default function Checkout(){
                         <p className="typography-headline-4 font-medium md:typography-headline-3">Order Summary</p>
                         <div className='flex items-center gap-x-2'>
                             <h1 className='typography-headline-4 font-bold md:typography-headline-3 lg:hidden'>{deliveryLoading ? <SfLoaderCircular/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total? `฿ ${deliveryResult?.message?.doc?.grand_total + getTotal()}` : `฿ ${getTotal()}` : `฿ ${codeResult?.message?.doc?.grand_total}`}</h1>
-                            <p className="typography-text-base text-[#A1A1A1]">(Items: {cartCount})</p>
+                            <p className="typography-text-base text-maingray">(Items: {cartCount})</p>
                             <span onClick={() => setShowOrderSum(!showOrderSum)} className='lg:hidden cursor-pointer'>
                                 {showOrderSum ? <SfIconExpandLess /> : <SfIconExpandMore />}
                             </span>
@@ -203,7 +203,6 @@ export default function Checkout(){
                                 <ul className='flex flex-col gap-y-2'>
                                     {Object.entries(cart).map(([itemCode]) => {
                                         const product = getByItemCode(itemCode)
-                                        // console.log(product)
                                         return (
                                         <li key={itemCode} className="flex pb-6">
                                             <div className="h-32 w-24 flex-shrink-0 overflow-hidden border border-gray-200">
@@ -216,7 +215,7 @@ export default function Checkout(){
                                                     <p className='whitespace-pre'>{product?.formatted_price}</p>
                                                 </div>
 
-                                                <div className="flex justify-between text-sm text-[#A1A1A1] font-medium">
+                                                <div className="flex justify-between text-sm text-maingray font-medium">
                                                     {cart[itemCode]} {cart[itemCode] === 1 ? 'item' : 'items'}
                                                 </div>
                                             </div>
@@ -229,7 +228,7 @@ export default function Checkout(){
                             <div className="flex flex-col grow pr-2">
                                 <p className='font-medium text-sm'>Items Subtotal</p>
                                 <p className="my-6 font-medium text-sm">Delivery</p>
-                                <p className='text-[#A1A1A1] text-sm'>Estimated Sales Tax</p>
+                                <p className='text-maingray text-sm'>Estimated Sales Tax</p>
                             </div>
                             <div className="flex flex-col text-right">
                                 <p className='font-medium text-sm'>{deliveryLoading ? <SfLoaderCircular/> : deliveryResult?.message?.doc?.total ? `฿${deliveryResult?.message?.doc?.total}` : `฿${getTotal()}`}</p>
@@ -247,7 +246,7 @@ export default function Checkout(){
                                         <div className='bg-neutral-100 rounded-md p-[10px] flex items-center gap-x-2 text-sm'>
                                             <p>{codeResult.message.coupon_code.toUpperCase()}</p>
                                             <SfButton size="sm" variant="tertiary" className='!p-0' onClick={removePromoCode}>
-                                                <SfIconClose size='sm' className='text-[#A1A1A1]'/>
+                                                <SfIconClose size='sm' className='text-maingray'/>
                                             </SfButton>
                                         </div>
                                         <p className='text-sm'>{codeResult.message.coupon_code.toUpperCase()}</p>
@@ -294,7 +293,7 @@ export default function Checkout(){
                         /> */}
                     </div>
                 </div>
-                <form className="w-full flex gap-8 flex-wrap text-neutral-900">
+                <form className="w-full flex flex-col gap-8 text-neutral-900">
                     {cartContents.hasNormalItem && (
                         <>
                             {addressList?.message?.length > 0 ? (
@@ -304,7 +303,7 @@ export default function Checkout(){
                                             <legend className="mb-8 font-bold text-neutral-900 text-lg">Billing and shipping address</legend>
                                             <div className='flex flex-col gap-y-2'>
                                                 <h2 className="font-medium text-sm text-neutral-900">Address <span className='text-red-500'>*</span></h2>
-                                                {formik.values.billing_address && !addNewAddress ? (
+                                                {(formik.values.billing_address && !addNewAddress) && (
                                                 <div className='border rounded-lg p-3 mb-1'>
                                                     {addressList?.message?.filter(address => address.name === formik.values.billing_address).map(a => (
                                                         <div className='flex flex-col'>
@@ -315,7 +314,7 @@ export default function Checkout(){
                                                         </div>
                                                     ))}
                                                 </div>
-                                                ) : null}
+                                                )}
                                             </div>
                                         </label>
                                         <div className='flex items-center gap-x-4 w-full'>

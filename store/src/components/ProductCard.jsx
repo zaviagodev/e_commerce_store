@@ -67,7 +67,7 @@ const ProductCard = ({
                                 variant="tertiary"
                                 size="sm"
                                 square
-                                className="absolute top-0 right-0 bg-white z-50 !p-0"
+                                className="absolute top-0 right-0 bg-white z-50 !px-2"
                                 aria-label="Add to wishlist"
                             >
                                 {Wish[itemCode] == 1 ? (
@@ -83,7 +83,7 @@ const ProductCard = ({
                         </p>
                         <span className='flex flex-row items-center justify-start gap-2 font-medium pt-2'>
                             <strong className={`block text-sm ${salesPrice ? 'text-destructive' : 'text-primary'}`}>{price}</strong>
-                            {salesPrice && <span className="block text-sm text-[#A1A1A1] line-through">{salesPrice}</span>}
+                            {salesPrice && <span className="block text-sm text-maingray line-through">{salesPrice}</span>}
                         </span>
                     </div>
                 </div>

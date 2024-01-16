@@ -4,6 +4,7 @@ import { useProducts } from '../hooks/useProducts'
 import { useFrappeAuth } from 'frappe-react-sdk';
 import { SfButton, SfIconTune, SfLoaderCircular, SfSelect } from '@storefront-ui/react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Skeleton } from '../components/Skeleton';
 
 const Home = () => {
     const { updateCurrentUser } = useFrappeAuth();
@@ -52,7 +53,7 @@ const Home = () => {
                     {products.length > 0 ? (
                         <div>
                             <div className='flex items-center justify-between border-b mb-5'>
-                                <h3 className='font-medium text-base'>All products <span className='font-normal text-sm text-[#A1A1A1]'>({products.length} {products.length === 1 ? 'product': 'products'})</span></h3>
+                                <h3 className='font-medium text-base'>All products <span className='font-normal text-sm text-maingray'>({products.length} {products.length === 1 ? 'product': 'products'})</span></h3>
                                 <div className='flex items-center'>
                                     <h3 className='font-medium text-sm flex items-center gap-x-1'>
                                         <SfIconTune size='xs' />
@@ -66,7 +67,7 @@ const Home = () => {
                                 </div>
                             </div>
                             <div
-                                className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center"
+                                className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center"
                                 >
                                     {products.filter((product) => idFromUrl === 'all items' || idFromUrl === product.item_group).sort(sortOptions.find(option => option.state === true).onChange).map((product) => (
                                         <ProductCard
@@ -85,7 +86,7 @@ const Home = () => {
                         </div>
                     ) : (
                         <div className='grid place-items-center w-full h-full'>
-                            <SfLoaderCircular />
+                            <Skeleton className='h-4 w-[500px]'/>
                         </div>
                     )}
             </main>

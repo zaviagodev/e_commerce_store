@@ -39,10 +39,6 @@ import { findParentName } from '../utils/helper';
     const drawerRef = useRef(null);
     const menuRef = useRef(null);
 
-
-
-
-
   const navigate = useNavigate();
   const { cartCount, setIsOpen } = useCart();
   const { WishCount,setIsOpen : setWishOpen } = useWish();
@@ -233,9 +229,9 @@ import { findParentName } from '../utils/helper';
                       open
                       disableClickAway
                       placement="top"
-                      className="grid grid-cols-1 lg:gap-x-6 lg:grid-cols-4 bg-white shadow-lg p-0 max-h-screen overflow-y-auto lg:!absolute lg:!top-20 max-w-[376px] lg:max-w-full lg:p-6 mr-[50px] lg:mr-0 z-99"
+                      className="grid grid-cols-1 lg:gap-x-6 lg:grid-cols-4 bg-white shadow-lg p-0 max-h-screen overflow-y-auto lg:!absolute lg:!top-[60px] max-w-[376px] lg:max-w-full lg:p-6 mr-[50px] lg:mr-0 z-99"
                     >
-                      <div className="sticky top-0 flex items-center justify-between px-4 py-2 bg-primary lg:hidden">
+                      <div className="sticky top-0 flex items-center justify-between p-2 bg-primary lg:hidden">
                         <div className="flex items-center font-medium text-white typography-text-lg">{menu}</div>
                         <SfButton
                           square
@@ -256,7 +252,6 @@ import { findParentName } from '../utils/helper';
                           )
                           }
                           )}
-                      
                       <div className='flex lg:hidden flex-col gap-2'>
                         {menu == 'Menu' ? topBarItems.map((item) => (
                           <SfButton
@@ -316,7 +311,6 @@ import { findParentName } from '../utils/helper';
                                         setNavGroup(item)
                                       }
                                     }
-                                    
                                   }
                                   key={item.label}
                                   className=" pl-2 flex w-full flex-row items-center justify-between"
@@ -345,7 +339,6 @@ import { findParentName } from '../utils/helper';
         </nav>
         </>
 
-    
     function recursiveBuild (item){
       const button = 
         <li> 
@@ -367,7 +360,8 @@ import { findParentName } from '../utils/helper';
       {isOpen && <div className="fixed inset-0 bg-neutral-500 bg-opacity-50 transition-opacity z-60" />}
       <header
         ref={menuRef}
-        className="flex flex-wrap lg:flex-nowrap justify-center w-full py-2 lg:py-5 border-0 bg-primary border-neutral-200 lg:relative z-99 h-15 lg:h-20"
+        onClick={isOpen && toggle}
+        className="flex flex-wrap lg:flex-nowrap justify-center w-full py-2 lg:py-5 border-0 bg-primary border-neutral-200 lg:relative z-99 h-15"
       >
         <div className="flex items-center justify-start h-full max-w-[1536px] w-full px-4 lg:px-10">
           <SfButton
@@ -381,7 +375,7 @@ import { findParentName } from '../utils/helper';
           >
             <SfIconMenu className=" text-white" />
           </SfButton>
-          <Link to="home/all items" className="flex mr-4 focus-visible:outline text-white focus-visible:outline-offset focus-visible:rounded-sm shrink-0">
+          <Link to="home/all items" className="flex mr-6 focus-visible:outline text-white focus-visible:outline-offset focus-visible:rounded-sm shrink-0">
               <picture>
                   <source srcSet={`${import.meta.env.VITE_ERP_URL ?? ''}${appLogo}`} media="(min-width: 768px)" />
                   <img
@@ -401,7 +395,7 @@ import { findParentName } from '../utils/helper';
           </nav>
 
             <nav className="flex-1 flex justify-end lg:order-last lg:ml-4">
-                    <div className="flex flex-row flex-nowrap gap-x-4 items-center">
+                    <div className="flex flex-row flex-nowrap gap-x-2 items-center">
                         {actionItems.map((actionItem) => 
                             {return actionItem.show && <SfButton
                                 key={actionItem.ariaLabel}
@@ -422,7 +416,7 @@ import { findParentName } from '../utils/helper';
                                     <SfBadge content={WishCount} />
                                 )}
                                 {actionItem.role === 'login' && (
-                                    <p className="inline-flex whitespace-nowrap border-r border-r-white pr-5">{user?.name ?? 'Login'}</p>
+                                    <p className="inline-flex whitespace-nowrap border-r border-r-white pr-6">{user?.name ?? 'Login'}</p>
                                 )}
                             </SfButton>}
                         )}
@@ -454,7 +448,7 @@ import { findParentName } from '../utils/helper';
       <button onClick={setNavGroup(null)} className='flex flex-row gap-2 items-center justify-between p-2'><SfIconArrowBack/>  { group ? findParentName(groups, group.name) : 'Back'} </button>
       {group && 
         group.children.map((item) => (
-            <SfButton variant={'tertiary'} onClick={handleSubClick} className='flex flex-1 pl-2 items-center justify-between relative'  >
+            <SfButton variant={'tertiary'} onClick={handleSubClick} className='flex flex-1 pl-2 items-center justify-between relative'>
                 <li key={item.name} className='flex-1'>
                 <SfListItem
                   as="div"
@@ -495,7 +489,7 @@ function SecondaryProdNav ({group, groups, setGroup}){
     <button onClick={() => {setGroup(null)}} className='flex flex-row gap-2 items-center justify-between p-2'><SfIconArrowBack/>  { group ? findParentName(groups, group.name) : 'Back'} </button>
     {group && 
       group.children.map((item) => (
-          <SfButton variant={'tertiary'} onClick={() => handleClick(item)} className='flex flex-1 pl-2 items-center justify-between relative'  >
+          <SfButton variant={'tertiary'} onClick={() => handleClick(item)} className='flex flex-1 pl-2 items-center justify-between relative'>
               <li key={item.name} className='flex-1'>
               <SfListItem
                   as="a"

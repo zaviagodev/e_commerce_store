@@ -28,7 +28,11 @@
 }
 
 * {
-  font-family:'Inter', 'graphikTH', sans-serif
+  font-family:'Inter', 'graphikTH', sans-serif !important
+}
+
+.shadow-main {
+  box-shadow:0 5px 15px #00000012;
 }
 
 @layer base {

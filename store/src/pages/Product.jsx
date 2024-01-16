@@ -1,9 +1,11 @@
 import {
+    SfAccordionItem,
     SfLoaderCircular,
     SfScrollable,
 } from '@storefront-ui/react';
 import { useCounter } from 'react-use';
 import { clamp } from '@storefront-ui/shared';
+import classNames from 'classnames'
 import {
     SfButton,
     SfLink,
@@ -16,7 +18,8 @@ import {
     SfIconSafetyCheck,
     SfIconShoppingCartCheckout,
     SfIconFavoriteFilled,
-    SfIconFavorite
+    SfIconFavorite,
+    SfIconChevronLeft
 } from '@storefront-ui/react';
 import { useParams } from 'react-router-dom';
 import { useProducts } from '../hooks/useProducts';
@@ -25,10 +28,22 @@ import { useSetting } from '../hooks/useWebsiteSettings';
 import { useNavigate } from 'react-router-dom';
 import { useWish } from '../hooks/useWishe';
 import ProductCard from '../components/ProductCard';
+import { useState, useRef } from 'react';
 
 const Product = () => {
     const { id } = useParams();
     const idFromUrl = useParams().itemsgroup;
+
+    const [openedAccordion, setOpenedAccordion] = useState([]);
+    const isAccordionOpen = (id) => openedAccordion.includes(id);
+
+    const handleToggleAccordion = (id) => (open) => {
+        if (open) {
+          setOpenedAccordion((current) => [...current, id]);
+        } else {
+          setOpenedAccordion((current) => current.filter((item) => item !== id));
+        }
+      };
 
     const { get, products } = useProducts();
     const {hideCheckout, buttonLabel, buttonLink} = useSetting();
@@ -71,10 +86,47 @@ const Product = () => {
         }
     }
 
+    const accordionItems = [
+        {
+          id: 'acc-1',
+          summary: 'Long description',
+          details:(<div className='mb-4 whitespace-normal overflow-hidden' dangerouslySetInnerHTML={{ __html: product?.web_long_description }} />),
+        },
+      ];
+
+    const thumbsRef = useRef(null);
+    const [activeIndex, setActiveIndex] = useState(0);
+
+    const onDragged = (event) => {
+        if (event.swipeRight && activeIndex > 0) {
+          setActiveIndex((currentActiveIndex) => currentActiveIndex - 1);
+        } else if (event.swipeLeft && activeIndex < images.length - 1) {
+          setActiveIndex((currentActiveIndex) => currentActiveIndex + 1);
+        }
+      };
+
     return (
         <main className='main-section'>
-            <main className="grid grid-cols-1 lg:grid-cols-2 lg:gap-x-10">
-                <div className="relative flex w-full">
+            <main className="grid grid-cols-1 lg:grid-cols-2 lg:gap-x-[50px] xl:gap-x-[94px]">
+                <div className="relative flex w-full gap-x-2">
+                    <SfScrollable
+                        className="relative [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] !gap-y-2"
+                        direction="vertical"
+                        buttonsPlacement="none"
+                        drag={{ containerWidth: true }}
+                        ref={thumbsRef}
+                    >
+                        {product?.slider_images?.map((image, index) => (
+                            <img
+                                src={`${import.meta.env.VITE_ERP_URL ?? ''}${image}`}
+                                className="h-32 w-24 min-w-[96px] object-cover"
+                                aria-label={image}
+                                alt={image}
+                                id={`img-product-${index}`}
+                                key={`img-product-${index}`}
+                            />
+                        ))}
+                    </SfScrollable>
                     <SfScrollable
                         className="relative [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
                         direction="vertical"
@@ -95,7 +147,7 @@ const Product = () => {
                         />
                     </SfScrollable>
                 </div>
-                <section className="mt-4 md:mt-6 w-[80%]">
+                <section className="mt-4 w-full lg:max-w-[486px]">
                     <div className='flex items-center justify-between'>
                         <h1 className="font-bold typography-headline-4 text-texttag">
                             {product?.item_name}
@@ -106,7 +158,7 @@ const Product = () => {
                             variant="tertiary"
                             size="sm"
                             square
-                            className="bg-white ring-1 ring-inset ring-neutral-200 !rounded-full z-50 p-[10px]"
+                            className="bg-white z-50"
                             aria-label="Add to wishlist"
                         >
                             {Wish[product?.item_code] == 1 ? (
@@ -118,10 +170,10 @@ const Product = () => {
                     </div>
                     <div dangerouslySetInnerHTML={{ __html: product?.short_description }} />
                     <span className='flex flex-row items-center justify-start gap-2 mb-4'>
-                        <strong className={`block typography-headline-3 text-lg ${product?.formatted_mrp ? 'text-destructive' : 'text-primary'}`}>{product?.formatted_price}</strong>
-                        {product?.formatted_mrp && <span className="block text-[#A1A1A1] typography-headline-3 line-through font-medium">{product?.formatted_mrp}</span>}
+                        <strong className={`block typography-headline-3 text-base ${product?.formatted_mrp ? 'text-destructive' : 'text-primary'}`}>{product?.formatted_price}</strong>
+                        {product?.formatted_mrp && <span className="block text-maingray typography-headline-3 line-through font-medium">{product?.formatted_mrp}</span>}
                     </span>
-                    <div className="pt-4 pb-6 mb-4 border-gray-200 border-b">
+                    <div className="pt-4 pb-6 border-gray-200 border-b">
                         <div className="items-start xs:flex">
                             {!hideCheckout && <div className="flex flex-col items-stretch xs:items-center xs:inline-flex">
                                 <div className="flex border border-neutral-300 rounded-md">
@@ -168,8 +220,26 @@ const Product = () => {
                         </div>
                     </div>
                     <div>
-                        <h1 className="font-bold typography-headline-4 text-black">Long description</h1>
-                        <div className='mb-4 whitespace-normal overflow-hidden' dangerouslySetInnerHTML={{ __html: product?.web_long_description }} />
+                        {accordionItems.map(({id, summary, details}) => (
+                        <SfAccordionItem 
+                            key={id} 
+                            summary={<div className={classNames('flex items-center justify-between py-4', {'border-b': !isAccordionOpen(id)})}>
+                                <h2 className='font-medium'>{summary}</h2>
+                                <SfIconChevronLeft
+                                    className={classNames('text-neutral-500', {
+                                    'rotate-90': isAccordionOpen(id),
+                                    '-rotate-90': !isAccordionOpen(id),
+                                    })}
+                                />
+                            </div>}
+                            onToggle={handleToggleAccordion(id)}
+                            open={isAccordionOpen(id)}
+                        >
+                            <div className={classNames('pb-4 border-b')}>
+                                {details}
+                            </div>
+                        </SfAccordionItem>
+                        ))}
                     </div>
                 </section>
             </main>
@@ -178,7 +248,7 @@ const Product = () => {
                 <section className='pt-20'>
                 <h1 className='mb-8 text-primary text-center text-xl font-bold'>Recommended Products</h1>
                 <div
-                    className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center"
+                    className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center"
                     >
                         {products?.map((product) => (
                             <ProductCard

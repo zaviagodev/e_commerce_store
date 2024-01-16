@@ -34,11 +34,11 @@ const Wish = () => {
                 placement='right'
                 open
                 onClose={() => setIsOpen(false)}
-                className="bg-neutral-50 z-99 md:w-[500px] w-full box-border"
+                className="bg-neutral-50 z-99 md:w-[375px] w-full box-border"
             >
                 <div className="flex h-full flex-col overflow-y-auto bg-white shadow-xl">
                     <div className="flex-1 overflow-y-auto">
-                        <div className="grid grid-cols-3 px-4 py-6 sm:px-6 border-b">
+                        <div className="grid grid-cols-3 p-4 border-b">
                             <div className="flex h-7 items-center">
                                 <button onClick={() => setIsOpen(false)} type="button" className="-m-2 p-2 text-gray-400 hover:text-gray-500">
                                     <span className="sr-only">Close panel</span>
@@ -51,19 +51,17 @@ const Wish = () => {
                         </div>
 
                         {Object.entries(Wish).length > 0 ?
-                        (<div className="mt-8">
-                            <div className="flow-root px-4 sm:px-6">
-                                <ul role="list" className="-my-6">
+                        (<div>
+                            <div className="flow-root p-4">
+                                <ul role="list" className="flex flex-col gap-y-8">
                                     {
                                         isLoading ? <SfLoaderCircular/> :
                                         Object.entries(Wish).map(([itemCode]) => {
                                             const product = getByItemCode(itemCode)
                                             return (
-                                                <li key={itemCode} className="flex py-6">
-
+                                                <li key={itemCode} className="flex">
                                                     <div className="h-32 w-24 flex-shrink-0 border border-gray-200">
                                                         <Link to={`/products/${product?.name}`} ><img src={`${import.meta.env.VITE_ERP_URL ?? ""}${product?.website_image}`} alt={product?.item_name} className="h-full w-full object-cover object-center" /></Link>
-
                                                     </div>
 
                                                     <div className="ml-4 flex flex-1 flex-col">
