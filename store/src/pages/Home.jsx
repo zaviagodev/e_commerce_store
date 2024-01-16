@@ -5,9 +5,10 @@ import { useFrappeAuth } from 'frappe-react-sdk';
 import { SfButton, SfIconTune, SfLoaderCircular, SfSelect } from '@storefront-ui/react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 
+
 const Home = () => {
     const { updateCurrentUser } = useFrappeAuth();
-    const { products, mainGroup } = useProducts()
+    const { products, mainGroup,settingPage } = useProducts()
     const navigate = useNavigate();
 
     const idFromUrl = useParams().itemsgroup;
@@ -68,6 +69,7 @@ const Home = () => {
                             <div
                                 className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center"
                                 >
+                                    {console.log(settingPage.default_product_image)}
                                     {products.filter((product) => idFromUrl === 'all items' || idFromUrl === product.item_group).sort(sortOptions.find(option => option.state === true).onChange).map((product) => (
                                         <ProductCard
                                             key={product.item_code}
@@ -76,7 +78,7 @@ const Home = () => {
                                             description={product.short_description}
                                             itemCode={product.item_code}
                                             price={product.formatted_price}
-                                            thumbnail={product.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : null}
+                                            thumbnail={product.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`}
                                             salesPrice={product?.formatted_mrp}
                                             isGift={product?.item_group === "Gift" || product?.item_group === "Gift and Cards"}
                                         />
