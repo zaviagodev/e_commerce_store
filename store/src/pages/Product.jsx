@@ -93,6 +93,18 @@ const Product = () => {
                             aria-label={product?.website_image}
                             alt={product?.website_image}
                         />
+
+
+                        {product?.slider_images && product.slider_images.map((image, index) => (
+                            <img
+                                key={index}
+                                src={`${import.meta.env.VITE_ERP_URL ?? ''}${image}`}
+                                className="object-contain w-auto h-full"
+                                aria-label={image}
+                                alt={image}
+                            />
+                        ))}
+
                     </SfScrollable>
                 </div>
                 <section className="mt-4 md:mt-6 w-[80%]">
