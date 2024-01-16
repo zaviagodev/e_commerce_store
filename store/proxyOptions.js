@@ -1,4 +1,5 @@
-const { webserver_port } = 8080;
+const common_site_config = require('../../../sites/common_site_config.json');
+const { webserver_port } = common_site_config;
 
 export default {
 	'^/(app|api|assets|files)': {
