@@ -11,8 +11,6 @@ export const CartProvider = ({ children }) => {
     const {mutateItemsList, getProductsCodeInCart, products} = useProducts()
     const {call , result, loading, error} = useFrappePutCall('webshop.webshop.shopping_cart.cart.update_cart')
 
-    
-
     const fectchToAddToCart = (itemCode, quantity) => {
         try {
         call({"item_code" : itemCode, 'qty' : quantity ?? (cart[itemCode] ?? 0) + 1}).then(() => {
@@ -45,7 +43,6 @@ export const CartProvider = ({ children }) => {
             {
                 resetBackEndCart()
                 updateCart(cartObject)
-                mutateItemsList()
             }
         }
     }, [products])

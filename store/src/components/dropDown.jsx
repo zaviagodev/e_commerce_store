@@ -21,8 +21,8 @@ export default function SelectDropdownPreselected({options, dropdowndame, submen
   const { refs, style: dropdownStyle } = useDropdown({ isOpen, onClose: close });
   const submenuStyle = {
     position:"absolute",
-    top:"0%",
-    left:"100%"
+    top:"-16px",
+    left:"calc(100% + 16px)"
   }
 
   useTrapFocus(refs.floating, {
@@ -57,7 +57,7 @@ export default function SelectDropdownPreselected({options, dropdowndame, submen
           aria-controls={listboxId}
           aria-expanded={isOpen}
           aria-label="Select one option"
-          className={classNames("flex gap-2 justify-between items-center relative font-normal typography-text-base cursor-pointer px-4 py-2 transparent", {'text-white w-max': !submenu})}
+          className={classNames("flex gap-2 justify-between items-center relative px-3 py-2 cursor-pointer transparent text-base", {'text-black w-max !p-2': !submenu})}
           tabIndex={0}
           onKeyDown={handleTriggerKeyDown}
           onClick={toggle}
@@ -70,7 +70,7 @@ export default function SelectDropdownPreselected({options, dropdowndame, submen
           ref={refs.setFloating}
           role="listbox"
           aria-label="Select one option"
-          className={classNames('w-full py-2 rounded-md shadow-md border border-neutral-100 bg-white z-10', {hidden: !isOpen})}
+          className={classNames('w-[250px] p-4 rounded-md shadow-main border border-neutral-100 bg-white z-10', {hidden: !isOpen})}
           style={submenu ? submenuStyle : dropdownStyle}
         >
           {options.map((option) => (
@@ -79,7 +79,7 @@ export default function SelectDropdownPreselected({options, dropdowndame, submen
               key={option.label}
               role="option"
               tabIndex={0}
-              className={option.children.length > 0 ? 'p-[0!important]' : 'block'}
+              className={`${option.children.length > 0 ? 'p-[0!important]' : 'block !px-3'} text-maingray hover:text-black text-base`}
               onClick={() => handleClick(option.url)}
               onKeyDown={(event) => handleOptionItemKeyDown(event, option)}
             >

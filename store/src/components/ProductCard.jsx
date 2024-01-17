@@ -19,7 +19,7 @@ const ProductCard = ({
 }) => {
     const { Wish,addToWish, removeFromWish, setIsOpen:setWishOpen } = useWish()
     const { cart, addToCart, loading, setIsOpen } = useCart()
-    const { hideWish} = useSetting()
+    const {hideCheckout, buttonLabel, buttonLink, hideWish} = useSetting();
 
     const handleWish = (e) => {
         e.preventDefault();
@@ -38,7 +38,7 @@ const ProductCard = ({
                         <img
                             src={thumbnail}
                             alt={title}
-                            className="object-cover h-auto aspect-[3/4] w-full"
+                            className="object-cover h-auto aspect-square w-full"
                         />
                         {discount && (
                             <div className="absolute inline-flex items-center justify-center text-sm font-medium text-white bg-destructive py-1 px-2 top-2 left-2 rounded-md">
@@ -47,27 +47,27 @@ const ProductCard = ({
                         )}
                     </Link>
                     <div className='p-2 w-full absolute bottom-0 add_to_cart'>
-                        <SfButton disabled={loading} className='btn-primary w-full py-3' type="button" size="sm" onClick={(e) => {
+                        <SfButton disabled={loading} className='btn-secondary w-full py-3 !text-base' type="button" size="sm" onClick={(e) => {
                             e.preventDefault();
                             addToCart(itemCode, cart[itemCode] ? cart[itemCode] + 1 : 1);
                             setIsOpen(true)
                         }}>
-                        {loading ? <SfLoaderCircular/> : 'Add to cart'}
+                        {loading ? <SfLoaderCircular/> : buttonLabel}
                         </SfButton>
                     </div>
                 </div>
-                <div className="py-2 flex flex-col justify-between">
+                <div className="py-6 flex flex-col justify-between">
                     <div className='flex flex-col'>
-                        <SfLink href="#" className="text-texttag text-sm no-underline font-medium relative">
-                            <p className='overflow-hidden text-ellipsis pr-3'>{title}</p>
+                        <SfLink href="#" className="text-texttag text-base no-underline font-medium relative">
+                            <p className='product-title text-maingray'>{title}</p>
                             {isGift && <span className="text-primary">- Gift</span>}
-                            {!hideWish && <SfButton
+                            {/* {!hideWish && <SfButton
                                 onClick={handleWish} 
                                 type="button"
                                 variant="tertiary"
                                 size="sm"
                                 square
-                                className="absolute top-0 right-0 bg-white z-50 !p-0"
+                                className="absolute top-0 right-0 bg-white z-50 !px-2"
                                 aria-label="Add to wishlist"
                             >
                                 {Wish[itemCode] == 1 ? (
@@ -76,14 +76,14 @@ const ProductCard = ({
                                     <SfIconFavorite size="sm" />
                                 )}
                             </SfButton>
-                            }
+                            } */}
                         </SfLink>
-                        <p className="text-black text-sm font-medium overflow-hidden text-ellipsis pr-3">
+                        {/* <p className="product-desc text-maingray text-base">
                             {description}
-                        </p>
-                        <span className='flex flex-row items-center justify-start gap-2 font-medium pt-2'>
-                            <strong className={`block text-sm ${salesPrice ? 'text-destructive' : 'text-primary'}`}>{price}</strong>
-                            {salesPrice && <span className="block text-sm text-[#A1A1A1] line-through">{salesPrice}</span>}
+                        </p> */}
+                        <span className='flex flex-row items-center justify-start gap-2 pt-2'>
+                            <strong className={`block text-base ${salesPrice ? 'text-destructive' : 'text-maingray product-price'}`}>{price}</strong>
+                            {salesPrice && <span className="block text-base text-maingray line-through product-price">{salesPrice}</span>}
                         </span>
                     </div>
                 </div>

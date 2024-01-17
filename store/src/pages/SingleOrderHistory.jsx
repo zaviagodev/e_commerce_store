@@ -7,6 +7,7 @@ import { useProducts } from "../hooks/useProducts";
 import { month } from "../data/month";
 import AddressCard from "../components/AddressCard";
 import MyAccountSection from "../components/MyAccountSection";
+import { Skeleton } from "../components/Skeleton";
 
 function SingleorderHistory() {
     const id = useParams().id;
@@ -18,7 +19,7 @@ function SingleorderHistory() {
     const [adressParts, setAdress] = useState([])
 
     const orderDetails = [
-        {title:'Order Code:',value:order.name},
+        {title:'Order ID:',value:order.name},
         {title:'Order Status:',value:order.status},
         {title:'Order Total:',value:`฿${order.base_total}`},
         {title:'Order Date:',value:`${new Date(order.creation).getDate()} ${month[new Date(order.creation).getMonth()]}, ${new Date(order.creation).getHours()}:${new Date(order.creation).getMinutes() < 10 ? '0' + new Date(order.creation).getMinutes(): new Date(order.creation).getMinutes()}`},
@@ -39,11 +40,11 @@ function SingleorderHistory() {
     const PurchasedList = ({name, company, status, creation, image, price}) => {
         return (
           <div className="w-full flex gap-x-4">
-              {image ? <img src={image} className="rounded-full w-20 h-20 min-w-[80px]"/> : <SfThumbnail size="lg" className="bg-gray-100 h-20 w-20 min-w-[80px]"/>}
+              {image ? <img src={image} className="w-24 h-32"/> : <SfThumbnail size="lg" className="bg-gray-100 h-32 w-24"/>}
               <div className="flex flex-col gap-y-1 w-full">
                 <div className="flex items-center justify-between">
                   <h2 className="font-medium text-sm">{name}</h2>
-                  <p className="text-sm">{price}</p>
+                  <p className="text-sm font-medium">{price}</p>
                 </div>
               </div>
           </div>
@@ -69,34 +70,56 @@ function SingleorderHistory() {
     return (  
         <MyAccountSection>
             <div className="flex flex-col gap-y-8">
-                <h2 className="primary-heading text-primary">Order Details</h2>
-                <div className="flex flex-col gap-y-2">
-                    {orderDetails.map(detail => (
-                        <div className="flex items-center justify-between">
-                            <h3 className="font-medium">{detail.title}</h3>
-                            <p>{detail.value ? detail.value : '-'}</p>
-                        </div>
-                    ))}
-                </div>
-                <h2 className="primary-heading text-primary">Shipping Details</h2>
                 <div className="flex flex-col gap-y-4">
-                    <AddressCard title={adressParts[0]} addressLine2={adressParts[1]}  city={adressParts[2]} state={adressParts[3]} country={adressParts[4]} />
+                    <h2 className="text-base font-bold text-primary">Order Details</h2>
+                    <div className="flex flex-col gap-y-2">
+                        {!loading ? (
+                            <>
+                                {orderDetails.map(detail => (
+                                    <div className="flex items-center justify-between">
+                                        <h3 className="font-medium text-sm">{detail.title}</h3>
+                                        <p className="text-sm">{detail.value ? detail.value : '-'}</p>
+                                    </div>
+                                ))}
+                            </>
+                        ) : (
+                            <>
+                                {orderDetails.map(d => (
+                                    <div className="flex items-center justify-between">
+                                        <Skeleton className='h-4 w-[200px]'/>
+                                        <Skeleton className='h-4 w-[200px]'/>
+                                    </div>
+                                ))}
+                            </>
+                        )}
+                    </div>
                 </div>
-                <h2 className="primary-heading text-primary">Purchased items</h2>
-                <div className="grid grid-cols-1 gap-4 place-items-center">
-                    {!loading ? itemsList.map((product) => (
-                        <PurchasedList name={product.web_item_name} image={product.website_image ? product.website_image : "https://storage.googleapis.com/sfui_docs_artifacts_bucket_public/production/sneakers.png"} price={product.formatted_price}/>
-                //     <ProductCard
-                //     key={product.item_code}
-                //     title={product.web_item_name}
-                //     productId={product.name}
-                //     itemCode={product.item_code}
-                //     salesPrice={product.formatted_mrp}
-                //     price={product.formatted_price}
-                //     thumbnail={product.website_image ? product.website_image : "https://storage.googleapis.com/sfui_docs_artifacts_bucket_public/production/sneakers.png"}
-                //     isGift={product?.item_group === "Gift" || product?.item_group === "Gift and Cards"}
-                // />
-                    )): <SfLoaderCircular />}
+                <div className="flex flex-col gap-y-4">
+                    <h2 className="text-base font-bold text-primary">Shipping Details</h2>
+                    <div className="flex flex-col gap-y-4">
+                        {adressParts.length > 0 ? (
+                            <AddressCard title={adressParts[0]} addressLine2={adressParts[1]}  city={adressParts[2]} state={adressParts[3]} country={adressParts[4]} />
+                        ) : (
+                            <Skeleton className='h-24 w-full'/>
+                        )}
+                    </div>
+                </div>
+                <div className="flex flex-col gap-y-4">
+                    <h2 className="text-base font-bold text-primary">Purchased items</h2>
+                    <div className="grid grid-cols-1 gap-4 place-items-center">
+                        {!loading ? itemsList.map(product => (
+                            <PurchasedList name={product.web_item_name} image={product.website_image ? product.website_image : "https://storage.googleapis.com/sfui_docs_artifacts_bucket_public/production/sneakers.png"} price={product.formatted_price}/>
+                        )): (itemsList.map(p => (
+                                <div className='flex justify-between w-full'>
+                                    <div className='flex gap-x-2'>
+                                    <Skeleton className='h-32 w-24'/>
+                                    <Skeleton className='h-4 w-[200px]'/>
+                                    </div>
+                                    <Skeleton className='h-4 w-16'/>
+                                </div>
+                            ))
+                        )}
+                    </div>
                 </div>
                 <div className="flex justify-center gap-x-2">
                     <SfButton variant='tertiary' className="btn-primary">
