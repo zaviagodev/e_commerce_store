@@ -35,6 +35,7 @@ const Product = () => {
     const { id } = useParams();
     const idFromUrl = useParams().itemsgroup;
 
+
     const [openedAccordion, setOpenedAccordion] = useState([]);
     const isAccordionOpen = (id) => openedAccordion.includes(id);
 
@@ -46,7 +47,9 @@ const Product = () => {
         }
       };
 
-    const { get, products } = useProducts();
+
+    const { get, products,settingPage } = useProducts();
+
     const {hideCheckout, buttonLabel, buttonLink} = useSetting();
 
     const { cart, addToCart, loading, isOpen, setIsOpen } = useCart();
@@ -142,11 +145,23 @@ const Product = () => {
                             </div>
                         ) : null}
                         <img
-                            src={`${import.meta.env.VITE_ERP_URL ?? ''}${product?.website_image}`}
+                            src={product.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`}
                             className="object-contain w-auto h-full"
                             aria-label={product?.website_image}
                             alt={product?.website_image}
                         />
+
+
+                        {product?.slider_images && product.slider_images.map((image, index) => (
+                            <img
+                                key={index}
+                                src={`${import.meta.env.VITE_ERP_URL ?? ''}${image}`}
+                                className="object-contain w-auto h-full"
+                                aria-label={image}
+                                alt={image}
+                            />
+                        ))}
+
                     </SfScrollable>
                 </div>
                 ) : (<Skeleton className='aspect-[3/4] w-full h-full'/>)}

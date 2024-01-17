@@ -113,7 +113,7 @@ export const CartProvider = ({ children }) => {
         setCart({})
         // store cart state in local storage
         localStorage.setItem('cart', JSON.stringify({}))
-        window.location.reload()
+        //window.location.reload()
     }
 
 

@@ -41,7 +41,6 @@
   "show_language_picker",
   "hide_wish",
   "button_label",
-  "button_link",
   "navbar_template_section",
   "navbar_template",
   "navbar_template_values",
@@ -211,7 +210,6 @@
    "label": "Navbar"
   },
   {
-   "description": "main items should be on top",
    "fieldname": "top_bar_items",
    "fieldtype": "Table",
    "label": "Top Bar Items",
@@ -489,22 +487,16 @@
    "label": "Hide Wish"
   },
   {
-   "description": "if checkout is hidden u have to add a custom link and custom text in the product main button",
    "fieldname": "button_label",
    "fieldtype": "Data",
-   "label": "Button label"
-  },
-  {
-   "fieldname": "button_link",
-   "fieldtype": "Data",
-   "label": "Button link"
+   "label": "Button Text"
   }
  ],
  "icon": "fa fa-cog",
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-01-05 18:00:40.433734",
+ "modified": "2024-01-17 17:41:08.991741",
  "modified_by": "Administrator",
  "module": "E Commerce Store",
  "name": "Storefront Website Settings",
