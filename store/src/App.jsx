@@ -29,7 +29,7 @@ const Layer = () => {
   useEffect(() => {
     if(window.location.pathname == "/store/")
     {
-      navigate("/home/all items")
+      navigate("/home/all%20items")
     }
 
   }, [])

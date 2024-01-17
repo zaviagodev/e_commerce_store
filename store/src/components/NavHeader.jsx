@@ -53,11 +53,7 @@ import { Icons } from './icons';
     
   const product = useProducts()
 
-
-
   const {appName, appLogo,hideLogin, hideCheckout, navbarSearch, topBarItems, hideWish, isLoading} = useSetting()
-
-  console.log(topBarItems)
 
  const  handlLoginClick = () => {
     if (user && user.name !== 'Guest') 
