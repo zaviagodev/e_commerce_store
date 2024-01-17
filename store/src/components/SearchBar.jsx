@@ -19,6 +19,7 @@ import {
 } from '@storefront-ui/react';
 import { useSetting } from '../hooks/useWebsiteSettings';
 import { Link } from 'react-router-dom';
+import { Icons } from './icons';
 
 // Just for presentation purposes. Replace mock request with the actual API call.
 // eslint-disable-next-line no-promise-executor-return
@@ -229,7 +230,7 @@ export default function SearchWithIcon( {className}) {
         </ul>
       </nav>
       <SfButton onClick={open} className='shadow-none hover:shadow-none active:shadow-none !p-0'>
-        <SfIconSearch />
+        <Icons.searchIcon className='text-black'/>
       </SfButton>
     </form>
   );

@@ -14,6 +14,7 @@ import { useUser } from '../hooks/useUser';
 import { getToken } from '../utils/helper';
 import { SfRadio, SfListItem } from '@storefront-ui/react';
 import AddressForm from '../components/forms/AddressForm';
+import { Skeleton } from '../components/Skeleton';
 
 export default function Checkout(){
     const errorTimer = useRef(0);
@@ -189,7 +190,7 @@ export default function Checkout(){
                     <div className="flex justify-between items-center pb-6 lg:pb-0 border-b lg:border-0">
                         <p className="typography-headline-4 font-medium md:typography-headline-3">Order Summary</p>
                         <div className='flex items-center gap-x-2'>
-                            <h1 className='typography-headline-4 font-bold md:typography-headline-3 lg:hidden'>{deliveryLoading ? <SfLoaderCircular/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total? `฿ ${deliveryResult?.message?.doc?.grand_total + getTotal()}` : `฿ ${getTotal()}` : `฿ ${codeResult?.message?.doc?.grand_total}`}</h1>
+                            <h1 className='typography-headline-4 font-bold md:typography-headline-3 lg:hidden'>{deliveryLoading || !getTotal() ? <Skeleton className='h-4 w-[200px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total? `฿ ${deliveryResult?.message?.doc?.grand_total + getTotal()}` : `฿ ${getTotal()}` : `฿ ${codeResult?.message?.doc?.grand_total}`}</h1>
                             <p className="typography-text-base text-maingray">(Items: {cartCount})</p>
                             <span onClick={() => setShowOrderSum(!showOrderSum)} className='lg:hidden cursor-pointer'>
                                 {showOrderSum ? <SfIconExpandLess /> : <SfIconExpandMore />}
@@ -197,7 +198,7 @@ export default function Checkout(){
                         </div>
                     </div>
                     <div className={`${showOrderSum ? 'block' : 'hidden'} lg:!block`}>
-                        <h1 className='text-[40px] font-bold pt-3 hidden lg:block'>{deliveryLoading ? <SfLoaderCircular/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total? `฿ ${deliveryResult?.message?.doc?.grand_total + getTotal()}` : `฿ ${getTotal()}` : `฿ ${codeResult?.message?.doc?.grand_total}`}</h1>
+                        <h1 className='text-[40px] font-bold pt-3 hidden lg:block'>{deliveryLoading || !getTotal() ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total? `฿ ${deliveryResult?.message?.doc?.grand_total + getTotal()}` : `฿ ${getTotal()}` : `฿ ${codeResult?.message?.doc?.grand_total}`}</h1>
                         <div className="flex flex-col typography-text-base pt-10 pb-6">
                             {cartCount > 0 ? (
                                 <ul className='flex flex-col gap-y-2'>
@@ -223,24 +224,48 @@ export default function Checkout(){
                                         )
                                     })}
                                 </ul>
-                            ) : <SfLoaderCircular />}
-                        <div className='flex justify-between lg:ml-28 pt-3 border-t'>
-                            <div className="flex flex-col grow pr-2">
-                                <p className='font-medium text-sm'>Items Subtotal</p>
-                                <p className="my-6 font-medium text-sm">Delivery</p>
-                                <p className='text-maingray text-sm'>Estimated Sales Tax</p>
-                            </div>
-                            <div className="flex flex-col text-right">
-                                <p className='font-medium text-sm'>{deliveryLoading ? <SfLoaderCircular/> : deliveryResult?.message?.doc?.total ? `฿${deliveryResult?.message?.doc?.total}` : `฿${getTotal()}`}</p>
-                                <p className="my-6 text-sm">
-                                    {deliveryLoading ? <SfLoaderCircular/> : deliveryResult?.message?.doc?.total_taxes_and_charges ? `฿${deliveryResult?.message?.doc?.total_taxes_and_charges}` : "฿0"}
-                                </p>
-                                <p></p>
-                            </div>
-                        </div>
+                            ) : (
+                                <div className='flex justify-between mb-4'>
+                                    <div className='flex gap-x-2'>
+                                        <Skeleton className='h-32 w-24'/>
+                                        <Skeleton className='h-4 w-[200px]'/>
+                                    </div>
+                                    <Skeleton className='h-4 w-[100px]'/>
+                                </div>
+                            )}
+                            {deliveryLoading || !getTotal() ? (
+                                <div className='flex justify-between lg:ml-28 pt-3 border-t'>
+                                    <div className="flex flex-col gap-y-6 grow pr-2">
+                                        <Skeleton className='h-4 w-[100px]'/>
+                                        <Skeleton className='h-4 w-[100px]'/>
+                                        <Skeleton className='h-4 w-[100px]'/>
+                                    </div>
+                                    <div className="flex flex-col gap-y-6">
+                                        <Skeleton className='h-4 w-[100px]'/>
+                                        <Skeleton className='h-4 w-[100px]'/>
+                                        <Skeleton className='h-4 w-[100px]'/>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className='flex justify-between lg:ml-28 pt-3 border-t'>
+                                    <div className="flex flex-col grow pr-2">
+                                        <p className='font-medium text-sm'>Items Subtotal</p>
+                                        <p className="my-6 font-medium text-sm">Delivery</p>
+                                        <p className='text-maingray text-sm'>Estimated Sales Tax</p>
+                                    </div>
+                                    <div className="flex flex-col text-right">
+                                        <p className='font-medium text-sm'>{deliveryResult?.message?.doc?.total ? `฿${deliveryResult?.message?.doc?.total}` : `฿${getTotal()}`}</p>
+                                        <p className="my-6 text-sm">
+                                            {deliveryResult?.message?.doc?.total_taxes_and_charges ? `฿${deliveryResult?.message?.doc?.total_taxes_and_charges}` : "฿0"}
+                                        </p>
+                                        <p></p>
+                                    </div>
+                                </div>
+                            )}
+
                     </div>
-                            <div className='lg:ml-28'>
-                            { !loading ? (codeResult ? (
+                        <div className='lg:ml-28'>
+                            {!loading ? (codeResult ? (
                                 <div className='flex flex-col gap-y-2'>
                                     <div className="flex items-center justify-between">
                                         <div className='bg-neutral-100 rounded-md p-[10px] flex items-center gap-x-2 text-sm'>
@@ -273,16 +298,22 @@ export default function Checkout(){
                                 </form>
                             ) : (
                                 <a className='text-secondary hover:underline cursor-pointer inline-block font-medium text-sm' onClick={() => setAddPromo(true)}>Add promo code</a>
-                            ))
-                            : <SfLoaderCircular/>} 
+                            )) : <Skeleton className='h-6 w-[100px]'/>} 
                             {/*<p className="px-3 py-1.5 bg-secondary-100 text-secondary-700 typography-text-sm rounded-lg text-center mb-4">
                                 You are saving ${Math.abs(orderDetails.savings).toFixed(2)} on your order today!
                             </p>*/ }
                             </div>
-                            <div className="flex justify-between typography-headline-4 md:typography-headline-3 py-6 lg:pt-6 lg:ml-28 border-y lg:border-b-0 mt-6 font-medium">
-                                <p className='text-sm'>Total</p>
-                                <p>{deliveryLoading ? <SfLoaderCircular/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total? `฿ ${deliveryResult?.message?.doc?.grand_total + getTotal()}` : `฿ ${getTotal()}` : `฿ ${codeResult?.message?.doc?.grand_total}`}</p>
-                            </div>
+                            {deliveryLoading || !getTotal() ? (
+                                <div className="flex justify-between typography-headline-4 md:typography-headline-3 py-6 lg:pt-6 lg:ml-28 border-y lg:border-b-0 mt-6 font-medium">
+                                    <Skeleton className='h-4 w-[100px]'/>
+                                    <Skeleton className='h-4 w-[100px]'/>
+                                </div>
+                            ) : (
+                                <div className="flex justify-between typography-headline-4 md:typography-headline-3 py-6 lg:pt-6 lg:ml-28 border-y lg:border-b-0 mt-6 font-medium">
+                                    <p className='text-sm'>Total</p>
+                                    <p>{typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total? `฿ ${deliveryResult?.message?.doc?.grand_total + getTotal()}` : `฿ ${getTotal()}` : `฿ ${codeResult?.message?.doc?.grand_total}`}</p>
+                                </div>
+                            )}
                         {/* <SfInput
                             placeholder='Enter loyalty points to redeem'
                             slotSuffix={<strong className='w-16'>of {user?.loyalty_points}</strong>}
@@ -294,7 +325,7 @@ export default function Checkout(){
                     </div>
                 </div>
                 <form className="w-full flex flex-col gap-8 text-neutral-900">
-                    {cartContents.hasNormalItem && (
+                    {cartContents.hasNormalItem ? (
                         <>
                             {addressList?.message?.length > 0 ? (
                                 <>
@@ -399,17 +430,27 @@ export default function Checkout(){
                                     </label>
                                 )}
                             <PaymentMethods onChange={value => formik.setFieldValue('payment_method', value)} value={formik.values.payment_method} error={formik.errors.payment_method} />
+                            <div className='w-full'>
+                                <SfButton size="lg" className="w-full bg-btn-primary text-btn-primary-foreground text-sm" onClick={formik.handleSubmit}>
+                                    Place Order
+                                </SfButton>
+                                <div className="typography-text-sm mt-3 text-sm text-primary">
+                                    By placing my order, you agree to our <SfLink href="#" className='text-[#006AFF] no-underline'>Terms and Conditions</SfLink> and our{' '}
+                                    <SfLink href="#" className='text-[#006AFF] no-underline'>Privacy Policy.</SfLink>
+                                </div>
+                            </div>
                         </>
-                    )}
-                    <div className='w-full'>
-                        <SfButton size="lg" className="w-full bg-btn-primary text-btn-primary-foreground text-sm" onClick={formik.handleSubmit}>
-                            Place Order
-                        </SfButton>
-                        <div className="typography-text-sm mt-3 text-sm text-primary">
-                            By placing my order, you agree to our <SfLink href="#" className='text-[#006AFF] no-underline'>Terms and Conditions</SfLink> and our{' '}
-                            <SfLink href="#" className='text-[#006AFF] no-underline'>Privacy Policy.</SfLink>
+                    ) : (
+                        <div className='flex flex-col gap-y-8'>
+                            <Skeleton className='h-4 w-[300px]'/>
+                            <div className='flex flex-col gap-y-2'>
+                                <Skeleton className='h-6 w-full'/>
+                                <Skeleton className='h-6 w-full'/>
+                                <Skeleton className='h-6 w-full'/>
+                                <Skeleton className='h-12 w-full mt-6'/>
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </form>
             </div>
         </main>
@@ -439,11 +480,11 @@ const MoreAddresses = ({isOpen, setIsOpen, children}) => {
                 placement='right'
                 open
                 onClose={() => setIsOpen(false)}
-                className="bg-neutral-50 z-99 md:w-[500px] w-full box-border"
+                className="bg-neutral-50 z-99 md:w-[375px] w-full box-border"
             >
                 <div className="flex h-full flex-col overflow-y-auto bg-white shadow-xl">
                     <div className="flex-1 overflow-y-auto">
-                        <div className="grid grid-cols-3 px-4 py-6 sm:px-6 border-b">
+                        <div className="grid grid-cols-3 p-4 border-b">
                             <div className="flex h-7 items-center">
                                 <button onClick={() => setIsOpen(false)} type="button" className="-m-2 p-2 text-gray-400 hover:text-gray-500">
                                     <span className="sr-only">Close panel</span>
@@ -452,12 +493,10 @@ const MoreAddresses = ({isOpen, setIsOpen, children}) => {
                                     </svg>
                                 </button>
                             </div>
-                            <h2 className="text-lg font-medium text-gray-900 text-center" id="slide-over-title">My Addresses</h2>
+                            <h2 className="text-lg font-medium text-gray-900 text-center whitespace-pre" id="slide-over-title">My Addresses</h2>
                         </div>
-                        <div className="mt-8">
-                            <div className="flow-root px-4 sm:px-6">
-                                {children}
-                            </div>
+                        <div className="flow-root p-4">
+                            {children}
                         </div>
                     </div>
                 </div>

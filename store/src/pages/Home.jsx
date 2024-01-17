@@ -5,6 +5,7 @@ import { useFrappeAuth } from 'frappe-react-sdk';
 import { SfButton, SfIconTune, SfLoaderCircular, SfSelect } from '@storefront-ui/react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Skeleton } from '../components/Skeleton';
+import { Icons } from '../components/icons'
 
 const Home = () => {
     const { updateCurrentUser } = useFrappeAuth();
@@ -49,17 +50,17 @@ const Home = () => {
     return (
         <>
             <main className='main-section'>
-              <h1 className="mb-8 text-primary text-center text-[34px] font-bold">{idFromUrl.toUpperCase()}</h1>
+              <h1 className="mb-8 text-primary text-center text-xl font-bold">{idFromUrl}</h1>
                     {products.length > 0 ? (
                         <div>
-                            <div className='flex items-center justify-between border-b mb-5'>
-                                <h3 className='font-medium text-base'>All products <span className='font-normal text-sm text-maingray'>({products.length} {products.length === 1 ? 'product': 'products'})</span></h3>
-                                <div className='flex items-center'>
-                                    <h3 className='font-medium text-sm flex items-center gap-x-1'>
-                                        <SfIconTune size='xs' />
-                                        SORT:
+                            <div className='flex items-center justify-between mb-5'>
+                                <h3 className='font-medium text-base'>สินค้าทั้งหมด <span className='font-normal text-maingray'>({products.length} ไอเทม)</span></h3>
+                                <div className='flex items-center gap-x-[22px]'>
+                                    <h3 className='font-medium flex items-center gap-x-1 text-base'>
+                                        <Icons.filterLines />
+                                        เรียงตาม
                                     </h3>
-                                    <SfSelect className='text-sm !ring-0 !border-0 !text-right !pr-12 !pl-2' onChange={handleSortOptions} value={sortOptions.find(option => option.state)?.title}>
+                                    <SfSelect size='sm' className='!ring-0 !border-0 !text-right !pr-12 !bg-[#F3F3F3] !text-[#7A7A7A] !rounded-[9px] leading-6 text-base' onChange={handleSortOptions} value={sortOptions.find(option => option.state)?.title}>
                                         {sortOptions.map((option, index) => (
                                             <option value={option.title} key={index} className={`text-left ${option.state ? 'font-bold' : 'font-normal'}`} selected={option.state ? true : false}>{option.title}</option>
                                         ))}
@@ -85,8 +86,13 @@ const Home = () => {
                             </div>
                         </div>
                     ) : (
-                        <div className='grid place-items-center w-full h-full'>
-                            <Skeleton className='h-4 w-[500px]'/>
+                        <div className='flex flex-col gap-y-2'>
+                            <div className='grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center w-full h-full gap-3'>
+                                <Skeleton className='h-full w-full aspect-square'/>
+                                <Skeleton className='h-full w-full aspect-square'/>
+                                <Skeleton className='h-full w-full aspect-square'/>
+                                <Skeleton className='h-full w-full aspect-square'/>
+                            </div>
                         </div>
                     )}
             </main>

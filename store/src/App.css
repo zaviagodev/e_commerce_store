@@ -27,8 +27,26 @@
   font-weight:600
 }
 
+@font-face {
+  font-family:'DB Helvethaica X';
+  src: url('../src/fonts/DB Helvethaica X/DB Helvethaica X Bd v3.2.ttf');
+  font-weight:700
+}
+
+@font-face {
+  font-family:'DB Helvethaica X';
+  src: url('../src/fonts/DB Helvethaica X/DB Helvethaica X Med v3.2.ttf');
+  font-weight:500
+}
+
+@font-face {
+  font-family:'DB Helvethaica X';
+  src: url('../src/fonts/DB Helvethaica X/DB Helvethaica X v3.2.ttf');
+  font-weight:400
+}
+
 * {
-  font-family:'Inter', 'graphikTH', sans-serif !important
+  font-family:'DB Helvethaica X', sans-serif !important;
 }
 
 .shadow-main {
@@ -46,8 +64,8 @@
     --button-primary-foreground: #FFFFFF;
     --button-primary-hover: #393939;
     --button-primary-hover-foreground: #FFFFFF;
-    --button-secondary: #F4F4F5;
-    --button-secondary-foreground: #18181B;
+    --button-secondary: #FFFFFF;
+    --button-secondary-foreground: #000000;
     --button-secondary-hover: #9F9F9F;
     --button-secondary-hover-foreground: #000000;
     --card: 0 0% 100%;
@@ -121,6 +139,22 @@
 .product_card:hover .add_to_cart {
   opacity:1;
   transition:opacity 200ms;
+}
+
+.product-title {
+  @apply overflow-hidden text-ellipsis pr-3 font-medium
+}
+
+.product-desc {
+  @apply text-sm font-medium overflow-hidden text-ellipsis pr-3
+}
+
+.product-price {
+  @apply font-normal
+}
+
+.product_card:hover .product-title, .product_card:hover .product-desc, .product_card:hover .product-price {
+  @apply text-black
 }
 
 @keyframes expand_search_bar {

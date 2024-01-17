@@ -15,7 +15,7 @@ import {
     SfIconMenu,
     SfIconArrowBack,
   } from '@storefront-ui/react';
-
+import defaultLogo from '../assets/defaultBrandIcon.svg'
 import { useCart } from '../hooks/useCart';
 import { Link, useNavigate } from 'react-router-dom';
 import { useUser } from '../hooks/useUser';
@@ -30,6 +30,7 @@ import SearchWithIcon from './SearchBar';
 import SelectDropdownPreselected from './dropDown';
 
 import { findParentName } from '../utils/helper';
+import { Icons } from './icons';
 
 
 
@@ -55,6 +56,8 @@ import { findParentName } from '../utils/helper';
 
 
   const {appName, appLogo,hideLogin, hideCheckout, navbarSearch, topBarItems, hideWish, isLoading} = useSetting()
+
+  console.log(topBarItems)
 
  const  handlLoginClick = () => {
     if (user && user.name !== 'Guest') 
@@ -85,7 +88,7 @@ import { findParentName } from '../utils/helper';
       onClick: (e) => e.preventDefault()
     },
     {
-      icon: <SfIconFavorite />,
+      icon: <Icons.heart />,
       label: '',
       ariaLabel: 'Wishlist',
       role: 'button',
@@ -93,7 +96,7 @@ import { findParentName } from '../utils/helper';
       onClick: () => setWishOpen(true),
     },
     {
-      icon: <SfIconShoppingCart />,
+      icon: <Icons.shoppingBag01 />,
       label: '',
       ariaLabel: 'Cart',
       role: 'button',
@@ -105,7 +108,7 @@ import { findParentName } from '../utils/helper';
   useEffect(() => {
     if(isLoading) return;
     setActionItems(prev => prev.map((item, index) => {
-      if ((index === 3 && !hideWish) || (index === 2 && !hideCheckout) || (index ==1 && navbarSearch) ) { // Original: (index === 2 && !hideWish) || (index === 1 && !hideCheckout)
+      if ((index === 2 && !hideWish) || (index === 3 && !hideCheckout) || (index ==1 && navbarSearch) ) { // Original: (index === 2 && !hideWish) || (index === 1 && !hideCheckout)
         return { ...item, show: true };
       }
       if (index === 0 && !hideLogin  ) {
@@ -143,7 +146,7 @@ import { findParentName } from '../utils/helper';
                 as="div"
                 size="sm"
                 role="none"
-                className="typography-text-base md:typography-text-sm py-4 md:py-1.5 rounded-lg active:font-medium"
+                className="text-base py-4 md:py-1.5 rounded-lg active:font-medium"
               >
                 {item.name}
               </SfListItem>
@@ -157,7 +160,7 @@ import { findParentName } from '../utils/helper';
       <div key={itemTop.name} className="pt-0">
         <h2
           role="presentation"
-          className="typography-text-base font-medium text-neutral-900 whitespace-nowrap p-4 md:py-1.5"
+          className="text-base font-medium text-neutral-900 whitespace-nowrap p-4 md:py-1.5"
         >
           {itemTop.name}
         </h2>
@@ -176,7 +179,7 @@ import { findParentName } from '../utils/helper';
                 as="div"
                 size="sm"
                 role="none"
-                className="typography-text-base md:typography-text-sm py-4 md:py-1.5 rounded-lg active:font-medium"
+                className="py-4 md:py-1.5 rounded-lg active:font-medium text-base"
               >
                 {itemTop.name}
               </SfListItem>
@@ -201,7 +204,7 @@ import { findParentName } from '../utils/helper';
     const productList = (name) => 
         <>
         <SfButton
-          className="hidden lg:flex text-white bg-transparent font-body hover:bg-primary hover:text-white active:bg-primary active:text-white"
+          className="hidden lg:flex text-black bg-transparent font-body hover:bg-white hover:text-black active:bg-white active:text-black"
           aria-haspopup="true"
           aria-expanded={isOpen}
           slotSuffix={<SfIconExpandMore className="hidden lg:inline-flex" />}
@@ -232,13 +235,13 @@ import { findParentName } from '../utils/helper';
                       className="grid grid-cols-1 lg:gap-x-6 lg:grid-cols-4 bg-white shadow-lg p-0 max-h-screen overflow-y-auto lg:!absolute lg:!top-[60px] max-w-[376px] lg:max-w-full lg:p-6 mr-[50px] lg:mr-0 z-99"
                     >
                       <div className="sticky top-0 flex items-center justify-between p-2 bg-primary lg:hidden">
-                        <div className="flex items-center font-medium text-white typography-text-lg">{menu}</div>
+                        <div className="flex items-center font-medium text-black typography-text-lg">{menu}</div>
                         <SfButton
                           square
                           variant="tertiary"
                           aria-label="Close navigation menu"
                           onClick={close}
-                          className="text-white ml-2"
+                          className="text-black ml-2"
                         >
                           <SfIconClose />
                         </SfButton>
@@ -290,7 +293,7 @@ import { findParentName } from '../utils/helper';
                                       as="div"
                                       size="sm"
                                       role="none"
-                                      className="typography-text-base md:typography-text-sm py-4 md:py-1.5 rounded-lg active:font-medium"
+                                      className="py-4 md:py-1.5 rounded-lg active:font-medium text-base"
                                     >
                                       {item.name}
                                     </SfListItem>
@@ -313,7 +316,7 @@ import { findParentName } from '../utils/helper';
                                     }
                                   }
                                   key={item.label}
-                                  className=" pl-2 flex w-full flex-row items-center justify-between"
+                                  className=" pl-2 flex w-full flex-row items-center justify-between text-base"
                                   aria-label={item.label}
                                   variant="tertiary"
                                   square
@@ -344,7 +347,7 @@ import { findParentName } from '../utils/helper';
         <li> 
           <SfButton
             key={item.label}
-            className="hidden md:flex text-white bg-transparent font-body hover:bg-primary hover:text-white active:bg-primary active:text-white"
+            className="hidden md:flex text-black bg-transparent font-body hover:bg-white hover:text-black active:bg-white active:text-black"
             aria-label={item.label}
             variant="tertiary"
             square
@@ -361,11 +364,11 @@ import { findParentName } from '../utils/helper';
       <header
         ref={menuRef}
         onClick={isOpen && toggle}
-        className="flex flex-wrap lg:flex-nowrap justify-center w-full py-2 lg:py-5 border-0 bg-primary border-neutral-200 lg:relative z-99 h-15"
+        className="flex flex-wrap lg:flex-nowrap justify-center w-full py-2 lg:py-5 border-0 bg-white border-neutral-200 lg:relative z-99 h-15 border-b"
       >
         <div className="flex items-center justify-start h-full max-w-[1536px] w-full px-4 lg:px-10">
           <SfButton
-            className="block lg:hidden text-white bg-transparent font-body hover:bg-primary hover:text-white active:bg-primary active:text-white"
+            className="block lg:hidden text-black bg-transparent font-body hover:bg-white hover:text-black active:bg-white active:text-black"
             aria-haspopup="true"
             aria-expanded={isOpen}
             variant="tertiary"
@@ -373,20 +376,20 @@ import { findParentName } from '../utils/helper';
             onClick={toggle}
             square
           >
-            <SfIconMenu className=" text-white" />
+            <SfIconMenu className=" text-black" />
           </SfButton>
-          <Link to="home/all items" className="flex mr-6 focus-visible:outline text-white focus-visible:outline-offset focus-visible:rounded-sm shrink-0">
+          <Link to="home/all items" className="flex mr-6 focus-visible:outline text-black focus-visible:outline-offset focus-visible:rounded-sm shrink-0">
               <picture>
-                  <source srcSet={`${import.meta.env.VITE_ERP_URL ?? ''}${appLogo}`} media="(min-width: 768px)" />
+                  <source srcSet={appLogo ? `${import.meta.env.VITE_ERP_URL ?? ''}${appLogo}` : defaultLogo} media="(min-width: 768px)" />
                   <img
-                      src={`${import.meta.env.VITE_ERP_URL ?? ''}${appLogo}`}
+                      src={appLogo ? `${import.meta.env.VITE_ERP_URL ?? ''}${appLogo}` : defaultLogo}
                       alt="Sf Logo"
-                      className='max-h-6'
+                      className='max-h-8'
                   />
               </picture>
           </Link>
           <nav>
-            <ul className='flex flex-row gap-2 items-center justify-center'>
+            <ul className='flex flex-row gap-2 items-center justify-center font-medium'>
               {topBarItems.map((item) => {
                 if (item.is_product_list) return productList(item.label)
                 else return recursiveBuild(item)
@@ -399,12 +402,12 @@ import { findParentName } from '../utils/helper';
                         {actionItems.map((actionItem) => 
                             {return actionItem.show && <SfButton
                                 key={actionItem.ariaLabel}
-                                className="relative rounded-md text-white hover:bg-primary-100 active:bg-primary-200 hover:text-primary-600 active:text-primary-700"
+                                className="relative rounded-md text-black hover:bg-primary-100 active:bg-primary-200 hover:text-primary-600 active:text-primary-700"
                                 aria-label={actionItem.ariaLabel}
                                 variant="tertiary"
                                 square
                                 slotPrefix={actionItem.icon}
-                                onClick={actionItem.onClick ?? handlLoginClick}
+                                onClick={actionItem.onClick}
                             >
                                 {actionItem.ariaLabel === 'Cart' && (
                                     <SfBadge content={cartCount} />
@@ -416,7 +419,10 @@ import { findParentName } from '../utils/helper';
                                     <SfBadge content={WishCount} />
                                 )}
                                 {actionItem.role === 'login' && (
-                                    <p className="inline-flex whitespace-nowrap border-r border-r-white pr-6">{user?.name ?? 'Login'}</p>
+                                    <div className='flex items-center gap-x-[10px] border-r pr-6'>
+                                      <p className="inline-flex whitespace-nowrap" onClick={handlLoginClick}>{user?.name ?? 'Login'}</p>
+                                      {user?.name && <Icons.login />}
+                                    </div>
                                 )}
                             </SfButton>}
                         )}
@@ -454,7 +460,7 @@ import { findParentName } from '../utils/helper';
                   as="div"
                   size="sm"
                   role="none"
-                  className="typography-text-base md:typography-text-sm py-4 md:py-1.5 rounded-lg active:font-medium"
+                  className="py-4 md:py-1.5 rounded-lg active:font-medium text-base"
                 >
                   {item.name}
                 </SfListItem>
@@ -485,7 +491,7 @@ function SecondaryProdNav ({group, groups, setGroup}){
   }
 
   return (
-    <div className='w-full h-full flex  flex-col justify-center items-start' >
+    <div className='w-full h-full flex  flex-col justify-center items-start'>
     <button onClick={() => {setGroup(null)}} className='flex flex-row gap-2 items-center justify-between p-2'><SfIconArrowBack/>  { group ? findParentName(groups, group.name) : 'Back'} </button>
     {group && 
       group.children.map((item) => (
@@ -496,7 +502,7 @@ function SecondaryProdNav ({group, groups, setGroup}){
                   size="sm"
                   role="none"
                   href={`#${item.name}`}
-                  className="typography-text-base md:typography-text-sm py-4 md:py-1.5 rounded-lg active:font-medium"
+                  className="text-base py-4 md:py-1.5 rounded-lg active:font-medium"
               >
                   {item.name}
               </SfListItem>
