@@ -40,6 +40,7 @@
   "navbar_search",
   "show_language_picker",
   "hide_wish",
+  "button_label",
   "navbar_template_section",
   "navbar_template",
   "navbar_template_values",
@@ -484,13 +485,18 @@
    "fieldname": "hide_wish",
    "fieldtype": "Check",
    "label": "Hide Wish"
+  },
+  {
+   "fieldname": "button_label",
+   "fieldtype": "Data",
+   "label": "Button Text"
   }
  ],
  "icon": "fa fa-cog",
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-01-17 17:14:32.221499",
+ "modified": "2024-01-17 17:41:08.991741",
  "modified_by": "Administrator",
  "module": "E Commerce Store",
  "name": "Storefront Website Settings",
