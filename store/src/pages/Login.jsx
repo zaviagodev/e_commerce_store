@@ -44,8 +44,7 @@ export default function Login() {
             if (loginState == false) {
                  register(values.email,values.pwd).then((data) => {
 
-                    if(data.message == 'Logged In')
-                    {
+                    if(data.message.message == 'Logged In'){
                         navigate("/home/all items")
                     }
                     else{

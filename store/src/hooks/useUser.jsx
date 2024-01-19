@@ -52,38 +52,38 @@ export const UserProvider = ({ children }) => {
     };
 
     const register = async (email, pwd) => {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_ERP_URL ?? ""}/api/method/frappe.core.doctype.user.user.sign_up`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    email: email,
-                    full_name: email,
-                    password: pwd,
-                    redirect_to: "/",
-                }),
-            });
-    
-            const data = await response.json();
-    
-            if (data.message.token) {
-                // handle jwt
-                setToken(data.message.token);
-            }
-    
-            // get user
-            await mutate();
-            updateCurrentUser();
-    
-            return data;
-        } catch (error) {
-            console.error("Error during registration:", error);
-            throw error; // Re-throw the error so it can be caught by the calling code if necessary
+    try {
+        const response = await fetch(`${import.meta.env.VITE_ERP_URL ?? ""}/api/method/webshop.webshop.api.sign_up`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                email: email,
+                full_name: email,
+                password: pwd,
+                redirect_to: "/",
+            }),
+        });
+
+        const data = await response.json();
+
+        if (data.message.token) {
+            // handle jwt
+            setToken(data.message.token);
         }
-    };
-    
+
+        // get user
+        await mutate();
+        updateCurrentUser();
+
+        return data;
+    } catch (error) {
+        console.error("Error during registration:", error);
+        throw error; // Re-throw the error so it can be caught by the calling code if necessary
+    }
+};
+
 
     const logout = async () => {
         return frappeLogout().then(() => {
