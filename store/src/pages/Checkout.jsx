@@ -165,6 +165,13 @@ export default function Checkout(){
         )
     }
 
+    const UpdateAddresses = () => {
+        setAddNewAddress(false);
+        setrandomKey(randomKey + 1);
+        setMoreAddresses(true);
+    }
+
+
     const NewAddressForm = () => {
         return (
             <label className="w-full">
@@ -172,7 +179,7 @@ export default function Checkout(){
                     <legend className="font-bold text-neutral-900 text-base">New address</legend>
                     <a className='text-sm hover:underline cursor-pointer inline-block font-medium' onClick={() => setAddNewAddress(false)}>Cancel</a>
                 </div>) : null}
-                <AddressForm/>
+                <AddressForm onFormSubmit={() => UpdateAddresses() }/>
             </label>
         )
     }

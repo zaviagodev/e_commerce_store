@@ -9,9 +9,7 @@ import { addressSchema } from './addressFormSchema';
 const countries = ['Thailand', 'Pakistan', 'Germany', 'Great Britain', 'Poland', 'United States of America'];
 const states = ['Sindh', 'Punjab', 'Balochistan', 'KPK', 'Florida', 'New York', 'Texas', 'Frankfurt', 'Berlin'];
 
-const AddressForm = ({
-    onSuccess = () => { },
-}) => {
+const AddressForm = ({ onFormSubmit }) => {
     const { call, isCompleted } = useFrappePostCall('headless_e_commerce.api.add_address')
     const formik = useFormik({
         initialValues: {
@@ -28,20 +26,21 @@ const AddressForm = ({
         },
         validationSchema: addressSchema,
         validateOnChange: false,
-        onSubmit: async (values) => {
-            call(values);
-        }
+       
     });
 
-    useEffect(() => {
-        if (isCompleted) {
-            onSuccess();
-            formik.resetForm();
+    const CreateNewAddress = () => {
+        
+        formik.validateForm()
+        if(!formik.isValid){
+            call(formik.values).then((data) => {
+                onFormSubmit(data);
+            });
         }
-    }, [isCompleted])
+    }
 
     return (
-        <form className="max-w-[950px] flex gap-x-4 gap-y-8 flex-wrap text-neutral-900" onSubmit={formik.handleSubmit}>
+        <form className="max-w-[950px] flex gap-x-4 gap-y-8 flex-wrap text-neutral-900" >
             {/* <h2 className="w-full typography-headline-4 md:typography-headline-3 font-bold">Billing address</h2> */}
             <div className='w-full flex flex-col gap-4 md:flex-row md:justify-between'>
                 <div className="w-full flex-grow flex flex-col gap-0.5">
@@ -141,7 +140,7 @@ const AddressForm = ({
                 {/* <SfButton type="reset" variant='tertiary' className="w-full md:w-auto btn-secondary text-sm" onClick={formik.handleReset}>
                     Clear all
                 </SfButton> */}
-                <SfButton type='submit' className="w-full md:w-auto btn-primary text-sm">Confirm address</SfButton>
+                <SfButton  className="w-full md:w-auto btn-primary text-sm" onClick={() => CreateNewAddress()}>Confirm address</SfButton>
             </div>
         </form>
     )
