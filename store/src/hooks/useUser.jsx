@@ -75,7 +75,6 @@ export const UserProvider = ({ children }) => {
                 mutate().then((data) => {
                     updateCurrentUser();
                 });
-
                 return data;
             });
         }catch(error){
