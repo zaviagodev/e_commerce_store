@@ -297,7 +297,7 @@ const Product = () => {
 
                         {console.log(products)}
                         {products
-                        .filter((product) => product?.item_group === products[0]?.item_group)
+                        .filter((productz) => productz?.item_group === product?.item_group)
                         .slice(0, 4)
                         .map((product) => (
                             <ProductCard
