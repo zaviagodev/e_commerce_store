@@ -176,7 +176,7 @@ const Product = () => {
                         </>
                         ) : (<Skeleton className='h-4 w-[300px]'/>)}
                         {product !== undefined ? (
-                            <span className='flex flex-row items-center justify-start gap-2 mb-6'>
+                            <span className='flex flex-row items-center justify-start gap-2 mb-4'>
                                 <strong className={`block typography-headline-3 text-base ${product?.formatted_mrp ? 'text-destructive' : 'text-primary'}`}>{product?.formatted_price}</strong>
                                 {product?.formatted_mrp && <span className="block text-maingray typography-headline-3 line-through font-medium text-base">{product?.formatted_mrp}</span>}
                             </span>
@@ -184,7 +184,7 @@ const Product = () => {
                     </div>
 
                     {product !== undefined ? (
-                        <div className='text-[20px] leading-6 pb-[60px]' dangerouslySetInnerHTML={{ __html: product?.short_description }} />
+                        <div className='text-[20px] leading-6 pb-[60px] font-medium' dangerouslySetInnerHTML={{ __html: product?.short_description }} />
                     ) : (<Skeleton className='h-10 w-[300px] mt-2 mb-[60px]'/>)}
 
                     <div className="pb-6 border-gray-200 border-b">
@@ -233,7 +233,7 @@ const Product = () => {
                                 {product !== undefined ? (                                
                                     <>
                                         <SfButton disabled={loading || !product?.in_stock}  onClick={handleClickCart} type="button" size="lg" className="w-full btn-primary flex items-center gap-x-[10px] rounded-xl h-[50px]">
-                                            <Icons.shoppingBag01 color='white' />
+                                            <Icons.shoppingBag01 color='white' className='w-[22px] h-[22px]'/>
                                             {product?.in_stock ? buttonLabel : 'Sold out'}
                                         </SfButton>
                                     </>

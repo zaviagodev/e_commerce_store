@@ -83,7 +83,7 @@ import { Icons } from './icons';
       onClick: (e) => e.preventDefault()
     },
     {
-      icon: <Icons.heart />,
+      icon: <Icons.heart className='w-[22px] h-[22px]'/>,
       label: '',
       ariaLabel: 'Wishlist',
       role: 'button',
@@ -91,7 +91,7 @@ import { Icons } from './icons';
       onClick: () => setWishOpen(true),
     },
     {
-      icon: <Icons.shoppingBag01 />,
+      icon: <Icons.shoppingBag01 className='w-[22px] h-[22px]'/>,
       label: '',
       ariaLabel: 'Cart',
       role: 'button',
@@ -199,7 +199,7 @@ import { Icons } from './icons';
     const productList = (name) => 
         <>
         <SfButton
-          className="hidden lg:flex text-black bg-transparent font-body hover:bg-white hover:text-black active:bg-white active:text-black"
+          className="hidden lg:flex text-black bg-transparent font-body hover:bg-white hover:text-black active:bg-white active:text-black gap-[2px]"
           aria-haspopup="true"
           aria-expanded={isOpen}
           slotSuffix={<SfIconExpandMore className="hidden lg:inline-flex" />}
@@ -409,18 +409,18 @@ import { Icons } from './icons';
                                 onClick={actionItem.onClick}
                             >
                                 {actionItem.ariaLabel === 'Cart' && (
-                                    <SfBadge content={cartCount} className='!text-black !text-[14px] !bg-gray-300'/>
+                                    <SfBadge content={cartCount} className='!text-black !text-[14px] !bg-gray-300 w-4 h-4 flex items-center justify-center !p-0'/>
                                 )}
                                 {actionItem.ariaLabel === 'Search' && (
                                     <SearchWithIcon className="flex" /> 
                                 )}
                                 {actionItem.ariaLabel === 'Wishlist' && (
-                                    <SfBadge content={WishCount} className='!text-black !text-[14px] !bg-[#FF8C8C]'/>
+                                    <SfBadge content={WishCount} className='!text-black !text-[14px] !bg-[#FF8C8C] w-4 h-4 flex items-center justify-center !p-0'/>
                                 )}
                                 {actionItem.role === 'login' && (
                                     <div className='flex items-center gap-x-[10px] border-r-2 pr-6'>
                                       <p className="inline-flex whitespace-nowrap text-basesm font-bold" onClick={handlLoginClick}>{user?.name ?? 'Login'}</p>
-                                      {user?.name && <Icons.login />}
+                                      {user?.name && <Icons.login className='w-[22px] h-[22px]'/>}
                                     </div>
                                 )}
                             </SfButton>}

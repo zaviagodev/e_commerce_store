@@ -86,7 +86,7 @@ const Wish = () => {
 
                                                         <div className="flex text-base">
                                                             <button onClick={() => removeFromWish(itemCode)} type="button" className="font-medium text-secondary">
-                                                                <Icons.trash01 color='#979797'/>
+                                                                <Icons.trash01 color='#979797' className='w-5 h-5'/>
                                                             </button>
                                                         </div>
                                                     </div>

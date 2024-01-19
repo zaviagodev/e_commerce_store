@@ -138,20 +138,20 @@ const Cart = () => {
                                                         </Link>
                                                     </div>
 
-                                                    <div className="ml-4 flex flex-1 flex-col justify-between">
+                                                    <div className="ml-[10px] flex flex-1 flex-col justify-between">
                                                         <div>
                                                             <div className="flex justify-between text-base font-medium text-gray-900">
                                                                 <h3 className='text-texttag hover:underline text-sm'>
                                                                     <Link to={`/products/${product?.name}`} >{product?.web_item_name}</Link>
                                                                 </h3>
-                                                                <p className="ml-4 whitespace-pre text-base">{product?.formatted_price}</p>
+                                                                <p className="ml-4 whitespace-pre text-basesm font-bold">{product?.formatted_price}</p>
                                                             </div>
                                                             {/* <p className="mt-1 text-base text-gray-500">{product?.short_description}</p> */}
                                                         </div>
 
                                                         <div className="flex items-center justify-between text-base">
                                                             <div className="flex items-center justify-between mt-4 sm:mt-0">
-                                                                <div className="flex rounded-xl bg-[#F3F3F3]">
+                                                                <div className="flex rounded-[7px] bg-[#F3F3F3]">
                                                                     <SfButton
                                                                         type="button"
                                                                         variant="tertiary"
@@ -198,7 +198,7 @@ const Cart = () => {
                                                             </div>
                                                             <div className="flex">
                                                                 <button disabled={loading} onClick={() => removeFromCart(itemCode)} type="button" className="font-medium text-secondary disabled:text-maingray disabled:cursor-not-allowed">
-                                                                    <Icons.trash01 color='#979797' />
+                                                                    <Icons.trash01 color='#979797' className='w-5 h-5'/>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -215,28 +215,28 @@ const Cart = () => {
                                 <h1 className='font-bold text-lg'>Your cart is empty</h1>
                                 <p className='text-base'>Go to the store to browse the products.</p>
                                 <Link to='/home/all%20items'>
-                                    <SfButton onClick={() => setIsOpen(false)} className='btn-primary'>Shop now</SfButton>
+                                    <SfButton onClick={() => setIsOpen(false)} className='btn-primary rounded-xl'>Shop now</SfButton>
                                 </Link>
                             </div>
                         )}
                     </div>
 
                     {cartCount > 0 && (
-                        <div className="p-6 flex flex-col gap-y-9">
-                        <div className="flex justify-between text-base font-medium text-gray-900">
+                        <div className="p-6 pb-[10px] flex flex-col gap-y-9">
+                        <div className="flex justify-between text-basesm font-bold text-gray-900 leading-[10px]">
                             <p>ยอดชำระ</p>
                             <p>฿ {getTotal()}</p>
                         </div>
                         <div className='flex flex-col gap-y-4'>
                             {!loading ? (   
-                                <SfButton className="w-full btn-primary h-[50px] flex items-center gap-x-[10px]" disabled={cartCount == 0} onClick={() => { setIsOpen(false); navigate("/checkout"); }}>
+                                <SfButton className="w-full btn-primary h-[50px] flex items-center gap-x-[10px] rounded-xl" disabled={cartCount == 0} onClick={() => { setIsOpen(false); navigate("/checkout"); }}>
                                     ชำระเงิน
-                                    <Icons.shoppingBag01 color='white' />
+                                    <Icons.shoppingBag01 color='white' className='w-[22px] h-[22px]'/>
                                 </SfButton>                             
                             ) : (
                                 <Skeleton className='h-[50px] w-full'/>
                             )}
-                            <p className="text-sm text-center text-gray-500">ค่าจัดส่งและภาษีคำนวณเมื่อชำระเงิน</p>
+                            <p className="text-sm text-center text-gray-500 leading-[9px]">ค่าจัดส่งและภาษีคำนวณเมื่อชำระเงิน</p>
                         </div>
                     </div>
                     )}
