@@ -45,7 +45,9 @@ export default function Login() {
                  register(values.email,values.pwd).then((data) => {
 
                     if(data.message.message == 'Logged In'){
-                        navigate("/home/all items")
+                        setLoginState(true);
+                        setapiResponse('Registered successfully, Please Login');
+                        //navigate("/home/all items")
                     }
                     else{
                         setapiResponse(data.message[1]);

@@ -68,14 +68,14 @@ export const UserProvider = ({ children }) => {
 
         const data = await response.json();
 
-        if (data.message.token) {
+        //if (data.message.token) {
             // handle jwt
-            setToken(data.message.token);
-        }
+        //    //setToken(data.message.token);
+       // }
 
         // get user
-        await mutate();
-        updateCurrentUser();
+        //await mutate();
+       // updateCurrentUser();
 
         return data;
     } catch (error) {
