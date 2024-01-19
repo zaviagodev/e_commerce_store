@@ -23,7 +23,7 @@ export const UserProvider = ({ children }) => {
 
     const login = async (usr, pwd) => {
         try {
-            return fetch(`${import.meta.env.VITE_ERP_URL ?? ""}/api/method/${process.env.USE_TOKEN_AUTH ? "frappeauth_app.authentication.login" : "login"}`, {
+            return fetch(`${import.meta.env.VITE_ERP_URL ?? ""}/api/method/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -51,36 +51,39 @@ export const UserProvider = ({ children }) => {
         }
     };
 
-    const register = async (usr,email, pwd) => {
-        try{
-            fetch(`${import.meta.env.VITE_ERP_URL ?? ""}/api/method/frappe.core.doctype.user.user.sign_up`,{
+    const register = async (email, pwd) => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_ERP_URL ?? ""}/api/method/frappe.core.doctype.user.user.sign_up`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body : JSON.stringify({
-                email: email,
-                full_name: usr,
-                password: pwd,
-                redirect_to: "/",
-                })
-            })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.message.token) {
-                    // handle jwt
-                    setToken(data.message.token);
-                }
-                // get user
-                mutate().then((data) => {
-                    updateCurrentUser();
-                });
-                return data;
+                body: JSON.stringify({
+                    email: email,
+                    full_name: email,
+                    password: pwd,
+                    redirect_to: "/",
+                }),
             });
-        }catch(error){
-            return error;
+    
+            const data = await response.json();
+    
+            if (data.message.token) {
+                // handle jwt
+                setToken(data.message.token);
+            }
+    
+            // get user
+            await mutate();
+            updateCurrentUser();
+    
+            return data;
+        } catch (error) {
+            console.error("Error during registration:", error);
+            throw error; // Re-throw the error so it can be caught by the calling code if necessary
         }
     };
+    
 
     const logout = async () => {
         return frappeLogout().then(() => {

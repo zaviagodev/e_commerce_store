@@ -43,15 +43,24 @@ export default function Login() {
         onSubmit: (values) => {
             if (loginState == false) {
                  register(values.email,values.pwd).then((data) => {
-                    console.log(data);
+
+                    if(data.message == 'Logged In')
+                    {
+                        navigate("/home/all items")
+                    }
+                    else{
+                        setapiResponse(data.message[1]);
+                    }
                     
                 })
 
             }else{
                  login(values.usr, values.pwd ).then((data) => {
-                    if(data.message == 'Logged In')
-                    {
+                    if(data.message == 'Logged In'){
                         navigate("/home/all items")
+                    }
+                    else{
+                        setapiResponse(data.message);
                     }
                 });
             }
@@ -67,6 +76,7 @@ export default function Login() {
 
     const handleLoginState = () => {
         setLoginState(!loginState);
+        setapiResponse('');
     }
 
     return (
