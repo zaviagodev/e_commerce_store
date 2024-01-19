@@ -25,6 +25,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
 import { CSSTransition } from 'react-transition-group';
 import { useProducts } from '../hooks/useProducts';
+import { Skeleton } from './Skeleton';
 
 import SearchWithIcon from './SearchBar';
 import SelectDropdownPreselected from './dropDown';
@@ -32,10 +33,8 @@ import SelectDropdownPreselected from './dropDown';
 import { findParentName } from '../utils/helper';
 import { Icons } from './icons';
 
-
-
  export default function BaseMegaMenu() {
-   
+
     const { close, toggle, isOpen } = useDisclosure();
     const drawerRef = useRef(null);
     const menuRef = useRef(null);
@@ -142,7 +141,7 @@ import { Icons } from './icons';
                 as="div"
                 size="sm"
                 role="none"
-                className="text-base py-4 md:py-1.5 rounded-lg active:font-medium"
+                className="text-basesm py-4 md:py-1.5 rounded-lg active:font-bold font-bold"
               >
                 {item.name}
               </SfListItem>
@@ -156,7 +155,7 @@ import { Icons } from './icons';
       <div key={itemTop.name} className="pt-0">
         <h2
           role="presentation"
-          className="text-base font-medium text-neutral-900 whitespace-nowrap p-4 md:py-1.5"
+          className="text-basesm font-bold text-neutral-900 whitespace-nowrap p-4 md:py-1.5"
         >
           {itemTop.name}
         </h2>
@@ -175,7 +174,7 @@ import { Icons } from './icons';
                 as="div"
                 size="sm"
                 role="none"
-                className="py-4 md:py-1.5 rounded-lg active:font-medium text-base"
+                className="py-4 md:py-1.5 rounded-lg active:font-bold text-basesm font-bold"
               >
                 {itemTop.name}
               </SfListItem>
@@ -208,7 +207,7 @@ import { Icons } from './icons';
           onClick={toggle}
           square
         >
-        <span className="hidden lg:inline-flex whitespace-nowrap">{name}</span>
+        <span className="hidden lg:inline-flex whitespace-nowrap text-basesm font-bold">{name}</span>
         </SfButton>
         <nav className='absolute top-0 right-0 w-full'>
           <ul>
@@ -228,10 +227,10 @@ import { Icons } from './icons';
                       open
                       disableClickAway
                       placement="top"
-                      className="grid grid-cols-1 lg:gap-x-6 lg:grid-cols-4 bg-white shadow-lg p-0 max-h-screen overflow-y-auto lg:!absolute lg:!top-[60px] max-w-[376px] lg:max-w-full lg:p-6 mr-[50px] lg:mr-0 z-99"
+                      className="grid grid-cols-1 lg:gap-x-6 lg:grid-cols-4 bg-white shadow-lg p-0 max-h-screen overflow-y-auto lg:!absolute lg:!top-[57px] max-w-[376px] lg:max-w-full lg:p-6 mr-[50px] lg:mr-0 z-99"
                     >
                       <div className="sticky top-0 flex items-center justify-between p-2 bg-primary lg:hidden">
-                        <div className="flex items-center font-medium text-black typography-text-lg">{menu}</div>
+                        <div className="flex items-center font-bold text-black typography-text-lg">{menu}</div>
                         <SfButton
                           square
                           variant="tertiary"
@@ -289,7 +288,7 @@ import { Icons } from './icons';
                                       as="div"
                                       size="sm"
                                       role="none"
-                                      className="py-4 md:py-1.5 rounded-lg active:font-medium text-base"
+                                      className="py-4 md:py-1.5 rounded-lg active:font-bold text-base"
                                     >
                                       {item.name}
                                     </SfListItem>
@@ -343,7 +342,7 @@ import { Icons } from './icons';
         <li> 
           <SfButton
             key={item.label}
-            className="hidden md:flex text-black bg-transparent font-body hover:bg-white hover:text-black active:bg-white active:text-black"
+            className="hidden md:flex text-black bg-transparent !font-bold hover:bg-white hover:text-black active:bg-white active:text-black !text-basesm"
             aria-label={item.label}
             variant="tertiary"
             square
@@ -360,11 +359,11 @@ import { Icons } from './icons';
       <header
         ref={menuRef}
         onClick={isOpen && toggle}
-        className="flex flex-wrap lg:flex-nowrap justify-center w-full py-2 lg:py-5 border-0 bg-white border-neutral-200 lg:relative z-99 h-15 border-b"
+        className="flex flex-wrap lg:flex-nowrap justify-center w-full py-2 lg:py-5 border-0 bg-white border-neutral-200 lg:relative z-99 h-[57px] border-b border-b-[#F4F4F4]"
       >
-        <div className="flex items-center justify-start h-full max-w-[1536px] w-full px-4 lg:px-10">
+        <div className="flex items-center justify-start h-full max-w-[1400px] box-content w-full px-4 lg:px-10">
           <SfButton
-            className="block lg:hidden text-black bg-transparent font-body hover:bg-white hover:text-black active:bg-white active:text-black"
+            className="block lg:hidden text-black bg-transparent font-bold hover:bg-white hover:text-black active:bg-white active:text-black"
             aria-haspopup="true"
             aria-expanded={isOpen}
             variant="tertiary"
@@ -374,18 +373,22 @@ import { Icons } from './icons';
           >
             <SfIconMenu className=" text-black" />
           </SfButton>
-          <Link to="home/all items" className="flex mr-6 focus-visible:outline text-black focus-visible:outline-offset focus-visible:rounded-sm shrink-0">
-              <picture>
-                  <source srcSet={appLogo ? `${import.meta.env.VITE_ERP_URL ?? ''}${appLogo}` : defaultLogo} media="(min-width: 768px)" />
-                  <img
-                      src={appLogo ? `${import.meta.env.VITE_ERP_URL ?? ''}${appLogo}` : defaultLogo}
-                      alt="Sf Logo"
-                      className='max-h-8'
-                  />
-              </picture>
+          <Link to="home/all items" className="flex mr-10 focus-visible:outline text-black focus-visible:outline-offset focus-visible:rounded-sm shrink-0">
+            {appLogo === null ? (
+                <Skeleton className='h-8 w-[120px]'/>
+            ) : (
+                <picture>
+                <source srcSet={appLogo ? `${import.meta.env.VITE_ERP_URL ?? ''}${appLogo}` : defaultLogo} media="(min-width: 768px)" />
+                <img
+                    src={appLogo ? `${import.meta.env.VITE_ERP_URL ?? ''}${appLogo}` : defaultLogo}
+                    alt="Sf Logo"
+                    // className='max-h-8'
+                />
+                </picture>
+            )}
           </Link>
           <nav>
-            <ul className='flex flex-row gap-2 items-center justify-center font-medium'>
+            <ul className='flex flex-row gap-4 items-center justify-center font-bold'>
               {topBarItems.map((item) => {
                 if (item.is_product_list) return productList(item.label)
                 else return recursiveBuild(item)
@@ -406,17 +409,17 @@ import { Icons } from './icons';
                                 onClick={actionItem.onClick}
                             >
                                 {actionItem.ariaLabel === 'Cart' && (
-                                    <SfBadge content={cartCount} />
+                                    <SfBadge content={cartCount} className='!text-black !text-[14px] !bg-gray-300'/>
                                 )}
                                 {actionItem.ariaLabel === 'Search' && (
                                     <SearchWithIcon className="flex" /> 
                                 )}
                                 {actionItem.ariaLabel === 'Wishlist' && (
-                                    <SfBadge content={WishCount} />
+                                    <SfBadge content={WishCount} className='!text-black !text-[14px] !bg-[#FF8C8C]'/>
                                 )}
                                 {actionItem.role === 'login' && (
-                                    <div className='flex items-center gap-x-[10px] border-r pr-6'>
-                                      <p className="inline-flex whitespace-nowrap" onClick={handlLoginClick}>{user?.name ?? 'Login'}</p>
+                                    <div className='flex items-center gap-x-[10px] border-r-2 pr-6'>
+                                      <p className="inline-flex whitespace-nowrap text-basesm font-bold" onClick={handlLoginClick}>{user?.name ?? 'Login'}</p>
                                       {user?.name && <Icons.login />}
                                     </div>
                                 )}
@@ -456,7 +459,7 @@ import { Icons } from './icons';
                   as="div"
                   size="sm"
                   role="none"
-                  className="py-4 md:py-1.5 rounded-lg active:font-medium text-base"
+                  className="py-4 md:py-1.5 rounded-lg active:font-bold text-base"
                 >
                   {item.name}
                 </SfListItem>
@@ -498,7 +501,7 @@ function SecondaryProdNav ({group, groups, setGroup}){
                   size="sm"
                   role="none"
                   href={`#${item.name}`}
-                  className="text-base py-4 md:py-1.5 rounded-lg active:font-medium"
+                  className="text-base py-4 md:py-1.5 rounded-lg active:font-bold"
               >
                   {item.name}
               </SfListItem>

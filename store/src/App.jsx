@@ -29,13 +29,13 @@ const Layer = () => {
   useEffect(() => {
     if(window.location.pathname == "/store/")
     {
-      navigate("/home/all%20items")
+      navigate("/home/all items")
     }
 
   }, [])
   return (
     <>
-      <NavHeader />
+      {window.location.pathname.includes('/checkout') || window.location.pathname.includes('/thankyou') ? null : <NavHeader />}
         <Outlet />
         <Wish/>
       <Cart />

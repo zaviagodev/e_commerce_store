@@ -36,15 +36,19 @@ export default {
       fontSize: {
         DEFAULT: ['23px', '20px'],
         sm: ['19px', '20px'],
+        basesm: ['21px', '20px'],
         base: ['23px', '20px'],
         lg: ['34px', '20px'],
-        xl: ['50px', '20px']
+        xl: ['50px', '27px']
       },
       gridTemplateColumns: {
         auto: 'auto auto auto'
       },
       colors: {
         maingray: '#858585',
+        secgray: '#979797',
+        darkgray: '#595959',
+        lightgray: '#F3F3F3',
         primary: 'var(--primary)',
         secondary: 'var(--secondary)',
         texttag: 'var(--text-tag)',

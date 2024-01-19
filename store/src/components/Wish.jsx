@@ -6,6 +6,8 @@ import { useProducts } from '../hooks/useProducts'
 import { Link } from 'react-router-dom';
 
 import { useRef } from 'react';
+import { Icons } from './icons';
+import { Skeleton } from './Skeleton';
 
 const Wish = () => {
     const { Wish, removeFromWish, isOpen, setIsOpen } = useWish()
@@ -34,37 +36,47 @@ const Wish = () => {
                 placement='right'
                 open
                 onClose={() => setIsOpen(false)}
-                className="bg-neutral-50 z-99 md:w-[375px] w-full box-border"
+                className="bg-neutral-50 z-99 md:w-[408px] w-full box-border"
             >
                 <div className="flex h-full flex-col overflow-y-auto bg-white shadow-xl">
                     <div className="flex-1 overflow-y-auto">
-                        <div className="grid grid-cols-3 p-4 border-b">
+                        <div className="grid grid-cols-4 px-3 py-[14px] border-b border-b-[#F4F4F4] items-center">
                             <div className="flex h-7 items-center">
                                 <button onClick={() => setIsOpen(false)} type="button" className="-m-2 p-2 text-gray-400 hover:text-gray-500">
                                     <span className="sr-only">Close panel</span>
-                                    <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
+                                    <Icons.flipBackward />
                                 </button>
                             </div>
-                            <h2 className="text-lg font-semibold text-gray-900 text-center whitespace-pre" id="slide-over-title">Wishlist</h2>
+                            <h2 className="text-basesm font-semibold text-gray-900 text-center whitespace-pre col-span-2 leading-[11px]" id="slide-over-title">รายการสินค้าที่สนใจของฉัน</h2>
                         </div>
 
                         {Object.entries(Wish).length > 0 ?
                         (<div>
-                            <div className="flow-root p-4">
-                                <ul role="list" className="flex flex-col gap-y-8">
+                            <div className="flow-root p-6">
+                                <ul role="list" className="flex flex-col gap-y-9">
                                     {
-                                        isLoading ? <SfLoaderCircular/> :
+                                        isLoading ? (
+                                            <div className='flex flex-col gap-y-2'>
+                                                <Skeleton className='h-6 w-full'/>
+                                                <Skeleton className='h-6 w-full'/>
+                                                <Skeleton className='h-6 w-full'/>
+                                            </div>
+                                        ) :
                                         Object.entries(Wish).map(([itemCode]) => {
                                             const product = getByItemCode(itemCode)
                                             return (
                                                 <li key={itemCode} className="flex">
-                                                    <div className="h-32 w-24 flex-shrink-0 border border-gray-200">
-                                                        <Link to={`/products/${product?.name}`} ><img src={`${import.meta.env.VITE_ERP_URL ?? ""}${product?.website_image}`} alt={product?.item_name} className="h-full w-full object-cover object-center" /></Link>
+                                                    <div className="h-[90px] w-[90px] flex-shrink-0">
+                                                        <Link to={`/products/${product?.name}`} >
+                                                        {product?.website_image ? (
+                                                            <img src={`${import.meta.env.VITE_ERP_URL ?? ""}${product?.website_image}`} alt={product?.item_name} className="h-full w-full object-cover object-center" />
+                                                        ) : (
+                                                            <div className='w-[90px] h-[90px] bg-gray-200'/>
+                                                        )}
+                                                        </Link>
                                                     </div>
 
-                                                    <div className="ml-4 flex flex-1 flex-col">
+                                                    <div className="ml-4 flex flex-1 flex-col justify-between">
                                                         <div className="flex justify-between text-base font-medium text-gray-900">
                                                             <h3 className='text-texttag hover:underline'>
                                                                 <Link to={`/products/${product?.name}`} >{product?.web_item_name}</Link>
@@ -72,21 +84,22 @@ const Wish = () => {
                                                             <p className="ml-4 whitespace-pre">{product?.formatted_price}</p>
                                                         </div>
 
-                                                        <div className="flex text-sm">
-                                                            <button onClick={() => removeFromWish(itemCode)} type="button" className="font-medium text-secondary">Remove</button>
+                                                        <div className="flex text-base">
+                                                            <button onClick={() => removeFromWish(itemCode)} type="button" className="font-medium text-secondary">
+                                                                <Icons.trash01 color='#979797'/>
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </li>
                                             )
                                         })
                                     }
-
                                 </ul>
                             </div>
                         </div>) : (
-                            <div className="h-1/2 text-center flex flex-col gap-y-3 justify-end">
-                                <h1 className='font-bold text-xl'>Your wishlist is empty</h1>
-                                <p>Start saving your preferred products by clicking the heart.</p>
+                            <div className="h-1/2 text-center flex flex-col gap-y-3 justify-end px-6">
+                                <h1 className='font-bold text-lg'>Your wishlist is empty</h1>
+                                <p className='text-base'>Start saving your preferred products by clicking the heart.</p>
                                 <Link to='/home/all%20items'>
                                     <SfButton onClick={() => setIsOpen(false)} className='btn-primary'>Start shopping</SfButton>
                                 </Link>
@@ -140,10 +153,10 @@ const Wish = () => {
     //                                                                             </h3>
     //                                                                             <p className="ml-4">{product?.formatted_price}</p>
     //                                                                         </div>
-    //                                                                         <p className="mt-1 text-sm text-gray-500">Salmon</p>
+    //                                                                         <p className="mt-1 text-base text-gray-500">Salmon</p>
     //                                                                     </div>
 
-    //                                                                     <div className="flex flex-1 items-center justify-between text-sm">
+    //                                                                     <div className="flex flex-1 items-center justify-between text-base">
     //                                                                         <div className="flex items-center justify-between mt-4 sm:mt-0">
     //                                                                             <div className="flex border border-neutral-300 rounded-md">
     //                                                                                 <SfButton
@@ -198,7 +211,7 @@ const Wish = () => {
     //                                         <p>Subtotal</p>
     //                                         <p>฿ {getTotal()}</p>
     //                                     </div>
-    //                                     <p className="my-1 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
+    //                                     <p className="my-1 text-base text-gray-500">Shipping and taxes calculated at checkout.</p>
     //                                     <SfButton className="w-full" disabled={WishCount == 0} onClick={() => { setIsOpen(false); navigate("/checkout"); }}>
     //                                         Checkout
     //                                     </SfButton>
