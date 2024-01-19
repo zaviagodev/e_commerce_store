@@ -12,9 +12,7 @@ const states = ['Sindh', 'Punjab', 'Balochistan', 'KPK', 'Florida', 'New York', 
 const AddressForm = ({
     onSuccess = () => { },
 }) => {
-
     const { call, isCompleted } = useFrappePostCall('headless_e_commerce.api.add_address')
-
     const formik = useFormik({
         initialValues: {
             address_title: "",
@@ -30,7 +28,9 @@ const AddressForm = ({
         },
         validationSchema: addressSchema,
         validateOnChange: false,
-        onSubmit: call
+        onSubmit: async (values) => {
+            call(values);
+        }
     });
 
     useEffect(() => {

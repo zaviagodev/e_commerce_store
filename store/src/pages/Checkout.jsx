@@ -172,7 +172,7 @@ export default function Checkout(){
                     <legend className="font-bold text-neutral-900 text-base">New address</legend>
                     <a className='text-sm hover:underline cursor-pointer inline-block font-medium' onClick={() => setAddNewAddress(false)}>Cancel</a>
                 </div>) : null}
-                <AddressForm onSuccess={() => setrandomKey(randomKey + 1)}/>
+                <AddressForm/>
             </label>
         )
     }

@@ -294,7 +294,12 @@ const Product = () => {
                 <div
                     className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center"
                     >
-                        {products?.map((product) => (
+
+                        {console.log(products)}
+                        {products
+                        .filter((product) => product?.item_group === products[0]?.item_group)
+                        .slice(0, 4)
+                        .map((product) => (
                             <ProductCard
                                 key={product.item_code}
                                 title={product.web_item_name}
