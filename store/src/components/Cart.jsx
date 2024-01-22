@@ -225,21 +225,26 @@ const Cart = () => {
 
                     {cartCount > 0 && (
                         <div className="p-6 pb-[10px] flex flex-col gap-y-9">
-                        <div className="flex justify-between text-basesm font-bold text-gray-900 leading-[10px]">
-                            <p>ยอดชำระ</p>
-                            <p>฿ {getTotal()}</p>
-                        </div>
-                        <div className='flex flex-col gap-y-4'>
-                            {!loading ? (   
+                        {getTotal() ? (
+                            <>
+                            <div className="flex justify-between text-basesm font-bold text-gray-900 leading-[10px]">
+                                <p>ยอดชำระ</p>
+                                <p>฿ {getTotal()}</p>
+                            </div>
+                            <div className='flex flex-col gap-y-4'>
                                 <SfButton className="w-full btn-primary h-[50px] flex items-center gap-x-[10px] rounded-xl" disabled={cartCount == 0} onClick={() => { setIsOpen(false); navigate("/checkout"); }}>
                                     ชำระเงิน
                                     <Icons.shoppingBag01 color='white' className='w-[22px] h-[22px]'/>
-                                </SfButton>                             
-                            ) : (
+                                </SfButton>  
+                                <p className="text-sm text-center text-gray-500 leading-[9px]">ค่าจัดส่งและภาษีคำนวณเมื่อชำระเงิน</p>
+                            </div>
+                            </>
+                        ) : (
+                            <div className='flex flex-col gap-y-2'>
+                                <Skeleton className='h-4 w-full'/>
                                 <Skeleton className='h-[50px] w-full'/>
-                            )}
-                            <p className="text-sm text-center text-gray-500 leading-[9px]">ค่าจัดส่งและภาษีคำนวณเมื่อชำระเงิน</p>
-                        </div>
+                            </div>
+                        )}
                     </div>
                     )}
                 </div>
