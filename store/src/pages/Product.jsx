@@ -96,7 +96,7 @@ const Product = () => {
         {
           id: 'acc-1',
           summary: 'รายละเอียด',
-          details:(<div className='mb-4 whitespace-normal overflow-hidden' dangerouslySetInnerHTML={{ __html: product?.web_long_description }} />)
+          details:(product?.web_long_description && <div className='mb-4 whitespace-normal overflow-hidden' dangerouslySetInnerHTML={{ __html: product?.web_long_description }} />)
         },
       ];
 
@@ -229,7 +229,7 @@ const Product = () => {
                             </div>}
                             <p className='text-basesm'>รับ Cashback สูงถึง ฿ 105 เมื่อเป็นสมาชิก</p>
                             <div className='flex items-center gap-x-[10px] w-full'>
-                                {product !== undefined ? (                                
+                                {product !== undefined || loading ? (                                
                                     <>
                                         <SfButton disabled={loading || !product?.in_stock}  onClick={handleClickCart} type="button" size="lg" className="w-full btn-primary flex items-center gap-x-[10px] rounded-xl h-[50px]">
                                             <Icons.shoppingBag01 color='white' className='w-[22px] h-[22px]'/>
@@ -264,25 +264,36 @@ const Product = () => {
                         {product !== undefined ? (
                             <>
                                 {accordionItems.map(({id, summary, details}) => (
-                                <SfAccordionItem 
-                                    key={id} 
-                                    summary={<div className={classNames('flex items-center justify-between p-4 pr-2', {'border-b': !isAccordionOpen(id)})}>
-                                        <h2 className='font-medium text-base'>{summary}</h2>
-                                        <SfIconChevronLeft
-                                            className={classNames('text-black w-8 h-8', {
-                                            'rotate-90': isAccordionOpen(id),
-                                            '-rotate-90': !isAccordionOpen(id),
-                                            })}
-                                        />
-                                    </div>}
-                                    onToggle={handleToggleAccordion(id)}
-                                    open={isAccordionOpen(id)}
-                                >
-                                    <div className={classNames('p-4 pt-0 border-b text-base')}>
-                                        {details}
-                                    </div>
-                                </SfAccordionItem>
+                                <>
+                                    {details !== "" && (
+                                        <SfAccordionItem 
+                                            key={id} 
+                                            summary={<div className={classNames('flex items-center justify-between p-4 pr-2', {'border-b': !isAccordionOpen(id)})}>
+                                                <h2 className='font-medium text-base'>{summary}</h2>
+                                                <SfIconChevronLeft
+                                                    className={classNames('text-black w-8 h-8', {
+                                                    'rotate-90': isAccordionOpen(id),
+                                                    '-rotate-90': !isAccordionOpen(id),
+                                                    })}
+                                                />
+                                            </div>}
+                                            onToggle={handleToggleAccordion(id)}
+                                            open={isAccordionOpen(id)}
+                                        >
+                                            <div className={classNames('p-4 pt-0 border-b text-base')}>
+                                                {details}
+                                            </div>
+                                        </SfAccordionItem>
+                                    )}
+                                </>
                                 ))}
+
+                            <div className='w-full flex justify-center h-10 items-center mt-6'>
+                                <button className='flex items-center gap-x-2 text-base font-medium'>
+                                    <Icons.messageQuestionCircle />
+                                    ขอความช่วยเหลือ
+                                </button>
+                            </div>
                             </>
                         ) : (
                             <div className='flex flex-col gap-y-2 my-4'>
@@ -291,12 +302,6 @@ const Product = () => {
                                 <Skeleton className='h-6 w-full'/>
                             </div>
                         )}
-                        <div className='w-full flex justify-center h-10 items-center mt-6'>
-                            <button className='flex items-center gap-x-2 text-base font-medium'>
-                                <Icons.messageQuestionCircle />
-                                ขอความช่วยเหลือ
-                            </button>
-                        </div>
                     </div>
                 </section>
             </main>

@@ -33,19 +33,22 @@ export const CartProvider = ({ children }) => {
     useEffect(() => {
         // get cart state from local storage
         if(products.length == 0) return
-        const cartStorage = localStorage.getItem('cart')
-        if(!result && !loading &&  cartStorage )
+        if(!result && !loading )
         {
-
-            const cartObject = JSON.parse(cartStorage);
-            setCart(cartObject)
-            if(!verifyCart(cartObject) && error?.httpStatus !== 403 )
+            if(!verifyCart(cart) && error?.httpStatus !== 403 )
             {
                 resetBackEndCart()
-                updateCart(cartObject)
+                updateCart(cart)
             }
         }
     }, [products])
+
+    useEffect(() => {
+        const cartStorage = localStorage.getItem('cart')
+        if (!cartStorage) return;
+        const cartObject = JSON.parse(cartStorage);
+        setCart(cartObject)
+    }, [])
 
     function resetBackEndCart() {
         getProductsCodeInCart().forEach(async (product) => {

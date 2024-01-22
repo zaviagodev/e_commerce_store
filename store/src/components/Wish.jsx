@@ -50,61 +50,64 @@ const Wish = () => {
                             <h2 className="text-basesm font-semibold text-gray-900 text-center whitespace-pre col-span-2 leading-[11px]" id="slide-over-title">รายการสินค้าที่สนใจของฉัน</h2>
                         </div>
 
-                        {Object.entries(Wish).length > 0 ?
-                        (<div>
-                            <div className="flow-root p-6">
-                                <ul role="list" className="flex flex-col gap-y-9">
-                                    {
-                                        isLoading ? (
-                                            <div className='flex flex-col gap-y-2'>
-                                                <Skeleton className='h-6 w-full'/>
-                                                <Skeleton className='h-6 w-full'/>
-                                                <Skeleton className='h-6 w-full'/>
-                                            </div>
-                                        ) :
-                                        Object.entries(Wish).map(([itemCode]) => {
-                                            const product = getByItemCode(itemCode)
-                                            return (
-                                                <li key={itemCode} className="flex">
-                                                    <div className="h-[90px] w-[90px] flex-shrink-0">
-                                                        <Link to={`/products/${product?.name}`} >
-                                                        {product?.website_image ? (
-                                                            <img src={`${import.meta.env.VITE_ERP_URL ?? ""}${product?.website_image}`} alt={product?.item_name} className="h-full w-full object-cover object-center" />
-                                                        ) : (
-                                                            <div className='w-[90px] h-[90px] bg-gray-200'/>
-                                                        )}
-                                                        </Link>
-                                                    </div>
-
-                                                    <div className="ml-4 flex flex-1 flex-col justify-between">
-                                                        <div className="flex justify-between text-base font-medium text-gray-900">
-                                                            <h3 className='text-texttag hover:underline'>
-                                                                <Link to={`/products/${product?.name}`} >{product?.web_item_name}</Link>
-                                                            </h3>
-                                                            <p className="ml-4 whitespace-pre">{product?.formatted_price}</p>
+                        {isLoading ? (
+                            <div className='flex flex-col gap-y-2 p-6'>
+                                <Skeleton className='h-6 w-full'/>
+                                <Skeleton className='h-6 w-full'/>
+                                <Skeleton className='h-6 w-full'/>
+                            </div>
+                        ) : (
+                            <>
+                            {Object.entries(Wish).length > 0 ?
+                                (<div>
+                                    <div className="flow-root p-6">
+                                        <ul role="list" className="flex flex-col gap-y-9">
+                                            {Object.entries(Wish).map(([itemCode]) => {
+                                                const product = getByItemCode(itemCode)
+                                                    return (
+                                                    <li key={itemCode} className="flex">
+                                                        <div className="h-[90px] w-[90px] flex-shrink-0">
+                                                            <Link to={`/products/${product?.name}`} >
+                                                            {product?.website_image ? (
+                                                                <img src={`${import.meta.env.VITE_ERP_URL ?? ""}${product?.website_image}`} alt={product?.item_name} className="h-full w-full object-cover object-center" />
+                                                            ) : (
+                                                                <div className='w-[90px] h-[90px] bg-gray-200'/>
+                                                            )}
+                                                            </Link>
                                                         </div>
 
-                                                        <div className="flex text-base">
-                                                            <button onClick={() => removeFromWish(itemCode)} type="button" className="font-medium text-secondary">
-                                                                <Icons.trash01 color='#979797' className='w-5 h-5'/>
-                                                            </button>
+                                                        <div className="ml-4 flex flex-1 flex-col justify-between">
+                                                            <div className="flex justify-between text-base font-medium text-gray-900">
+                                                                <h3 className='text-texttag hover:underline'>
+                                                                    <Link to={`/products/${product?.name}`} >{product?.web_item_name}</Link>
+                                                                </h3>
+                                                                <p className="ml-4 whitespace-pre">{product?.formatted_price}</p>
+                                                            </div>
+
+                                                            <div className="flex text-base">
+                                                                <button onClick={() => removeFromWish(itemCode)} type="button" className="font-medium text-secondary">
+                                                                    <Icons.trash01 color='#979797' className='w-5 h-5'/>
+                                                                </button>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </li>
-                                            )
-                                        })
-                                    }
-                                </ul>
-                            </div>
-                        </div>) : (
-                            <div className="h-1/2 text-center flex flex-col gap-y-3 justify-end px-6">
-                                <h1 className='font-bold text-lg'>Your wishlist is empty</h1>
-                                <p className='text-base'>Start saving your preferred products by clicking the heart.</p>
-                                <Link to='/home/all%20items'>
-                                    <SfButton onClick={() => setIsOpen(false)} className='btn-primary'>Start shopping</SfButton>
-                                </Link>
-                            </div>
+                                                    </li>
+                                                )
+                                            })
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>) : (
+                                    <div className="h-1/2 text-center flex flex-col gap-y-3 justify-end px-6">
+                                        <h1 className='font-bold text-lg'>Your wishlist is empty</h1>
+                                        <p className='text-base'>Start saving your preferred products by clicking the heart.</p>
+                                        <Link to='/home/all%20items'>
+                                            <SfButton onClick={() => setIsOpen(false)} className='btn-primary'>Start shopping</SfButton>
+                                        </Link>
+                                    </div>
+                                )}
+                            </>
                         )}
+                        
                     </div>
                 </div>
             </SfDrawer>

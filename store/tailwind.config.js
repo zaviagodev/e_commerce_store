@@ -18,8 +18,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        'graphikTH': ['graphikTH', 'sans-serif'],
-        'db-helvethaica-x': ['DB Helvethaica X', 'sans-serif']
+        dbx: ['DB Helvethaica X', 'sans-serif']
       },
       height: {
         15: '3.75rem'

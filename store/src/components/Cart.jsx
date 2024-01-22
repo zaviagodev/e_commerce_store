@@ -70,7 +70,6 @@ const Cart = () => {
     
     //useTrapFocus(drawerRef, { activeState: isOpen });
 
-
     return (
         <CSSTransition
             ref={nodeRef}
@@ -108,117 +107,120 @@ const Cart = () => {
                                 </button>
                             </div>
                         </div>
-
-                        {cartCount > 0 ? (
+                        {isLoading ? (
+                            <div className='flex flex-col gap-y-2 p-6'>
+                                <Skeleton className='h-6 w-full'/>
+                                <Skeleton className='h-6 w-full'/>
+                                <Skeleton className='h-6 w-full'/>
+                            </div>
+                        ) : (
+                            <>
+                            {cartCount > 0 ? (
                             <div className="mt-6">
-                            <div className="flow-root px-6">
-                                <ul role="list" className="flex flex-col gap-y-9">
-                                    {isLoading ? (
-                                        <div className='flex flex-col gap-y-2'>
-                                            <Skeleton className='h-6 w-full'/>
-                                            <Skeleton className='h-6 w-full'/>
-                                            <Skeleton className='h-6 w-full'/>
-                                        </div>
-                                    ) :
-                                        Object.entries(cart).map(([itemCode]) => {
-                                            const product = getByItemCode(itemCode)
-                                            if (!inputRefs.current[itemCode]) {
-                                                inputRefs.current[itemCode] = React.createRef();
-                                                inputRefs.current[itemCode].value = Number(cart[itemCode]);
-                                            }
-                                            return (
-                                                <li key={itemCode} className="flex">
-                                                    <div className="h-[90px] w-[90px] flex-shrink-0">
-                                                        <Link to={`/products/${product?.name}`}>
-                                                            {product?.website_image ? (
-                                                                <img src={`${import.meta.env.VITE_ERP_URL ?? ""}${product?.website_image}`} alt={product?.item_name} className="h-full w-full object-cover object-center" />
-                                                            ) : (
-                                                                <div className='w-[90px] h-[90px] bg-gray-200'/>
-                                                            )}
-                                                        </Link>
-                                                    </div>
-
-                                                    <div className="ml-[10px] flex flex-1 flex-col justify-between">
-                                                        <div>
-                                                            <div className="flex justify-between text-base font-medium text-gray-900">
-                                                                <h3 className='text-texttag hover:underline text-sm'>
-                                                                    <Link to={`/products/${product?.name}`} >{product?.web_item_name}</Link>
-                                                                </h3>
-                                                                <p className="ml-4 whitespace-pre text-basesm font-bold">{product?.formatted_price}</p>
-                                                            </div>
-                                                            {/* <p className="mt-1 text-base text-gray-500">{product?.short_description}</p> */}
+                                <div className="flow-root px-6">
+                                    <ul role="list" className="flex flex-col gap-y-9">
+                                        {Object.entries(cart).map(([itemCode]) => {
+                                                const product = getByItemCode(itemCode)
+                                                if (!inputRefs.current[itemCode]) {
+                                                    inputRefs.current[itemCode] = React.createRef();
+                                                    inputRefs.current[itemCode].value = Number(cart[itemCode]);
+                                                }
+                                                return (
+                                                    <li key={itemCode} className="flex">
+                                                        <div className="h-[90px] w-[90px] flex-shrink-0">
+                                                            <Link to={`/products/${product?.name}`}>
+                                                                {product?.website_image ? (
+                                                                    <img src={`${import.meta.env.VITE_ERP_URL ?? ""}${product?.website_image}`} alt={product?.item_name} className="h-full w-full object-cover object-center" />
+                                                                ) : (
+                                                                    <div className='w-[90px] h-[90px] bg-gray-200'/>
+                                                                )}
+                                                            </Link>
                                                         </div>
 
-                                                        <div className="flex items-center justify-between text-base">
-                                                            <div className="flex items-center justify-between mt-4 sm:mt-0">
-                                                                <div className="flex rounded-[7px] bg-[#F3F3F3]">
-                                                                    <SfButton
-                                                                        type="button"
-                                                                        variant="tertiary"
-                                                                        disabled={Number(inputRefs.current[itemCode].value) == 1 || loading}
-                                                                        square
-                                                                        className="rounded-r-none px-2 text-secgray"
-                                                                        aria-controls={null}
-                                                                        aria-label="Decrease value"
-                                                                        onClick={() => changeCart(itemCode, Number(inputRefs.current[itemCode].value) - 1 )}
-                                                                        // onMouseDown={() => startDecreasing(itemCode)}
-                                                                        // onMouseUp={stopIncreasing}
-                                                                        // onMouseLeave={stopIncreasing}
-                                                                    >
-                                                                        <Icons.minus color='#979797'/>
-                                                                    </SfButton>
-                                                                    <input
-                                                                        ref={el => inputRefs.current[itemCode] = el}
-                                                                        id={itemCode}
-                                                                        type="number"
-                                                                        role="spinbutton"
-                                                                        className="text-sm text-secgray outline-none z-10 appearance-none w-6 h-[33px] text-center bg-transparent [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-inner-spin-button]:display-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-outer-spin-button]:display-none [&::-webkit-outer-spin-button]:m-0 [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none disabled:placeholder-disabled-900"
-                                                                        min={1}
-                                                                        max={999}
-                                                                        value={cart[itemCode]}
-                                                                        onChange={(event) => changeCart(itemCode, Number(event.target.value))}
-                                                                    />
-                                                                    <SfButton
-                                                                        type="button"
-                                                                        variant="tertiary"
-                                                                        disabled={Number(inputRefs.current[itemCode].value) == 999 || loading}
-                                                                        square
-                                                                        className="rounded-l-none px-2 text-secgray"
-                                                                        aria-controls={null}
-                                                                        aria-label="Increase value"
-                                                                        onClick={() => changeCart(itemCode, Number(inputRefs.current[itemCode].value) + 1 )}
-                                                                        // onMouseDown={() => startIncreasing(itemCode)}
-                                                                        // onMouseUp={stopIncreasing}
-                                                                        // onMouseLeave={stopIncreasing}
+                                                        <div className="ml-[10px] flex flex-1 flex-col justify-between">
+                                                            <div>
+                                                                <div className="flex justify-between text-base font-medium text-gray-900">
+                                                                    <h3 className='text-texttag hover:underline text-sm'>
+                                                                        <Link to={`/products/${product?.name}`} >{product?.web_item_name}</Link>
+                                                                    </h3>
+                                                                    <p className="ml-4 whitespace-pre text-basesm font-bold">{product?.formatted_price}</p>
+                                                                </div>
+                                                                {/* <p className="mt-1 text-base text-gray-500">{product?.short_description}</p> */}
+                                                            </div>
 
-                                                                    >
-                                                                        <Icons.plus color='#979797'/>
-                                                                    </SfButton>
+                                                            <div className="flex items-center justify-between text-base">
+                                                                <div className="flex items-center justify-between mt-4 sm:mt-0">
+                                                                    <div className="flex rounded-[7px] bg-[#F3F3F3]">
+                                                                        <SfButton
+                                                                            type="button"
+                                                                            variant="tertiary"
+                                                                            disabled={Number(inputRefs.current[itemCode].value) == 1 || loading}
+                                                                            square
+                                                                            className="rounded-r-none px-2 text-secgray"
+                                                                            aria-controls={null}
+                                                                            aria-label="Decrease value"
+                                                                            onClick={() => changeCart(itemCode, Number(inputRefs.current[itemCode].value) - 1 )}
+                                                                            // onMouseDown={() => startDecreasing(itemCode)}
+                                                                            // onMouseUp={stopIncreasing}
+                                                                            // onMouseLeave={stopIncreasing}
+                                                                        >
+                                                                            <Icons.minus color='#979797'/>
+                                                                        </SfButton>
+                                                                        <input
+                                                                            ref={el => inputRefs.current[itemCode] = el}
+                                                                            id={itemCode}
+                                                                            type="number"
+                                                                            role="spinbutton"
+                                                                            className="text-sm text-secgray outline-none z-10 appearance-none w-6 h-[33px] text-center bg-transparent [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-inner-spin-button]:display-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-outer-spin-button]:display-none [&::-webkit-outer-spin-button]:m-0 [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none disabled:placeholder-disabled-900"
+                                                                            min={1}
+                                                                            max={999}
+                                                                            value={cart[itemCode]}
+                                                                            onChange={(event) => changeCart(itemCode, Number(event.target.value))}
+                                                                        />
+                                                                        <SfButton
+                                                                            type="button"
+                                                                            variant="tertiary"
+                                                                            disabled={Number(inputRefs.current[itemCode].value) == 999 || loading}
+                                                                            square
+                                                                            className="rounded-l-none px-2 text-secgray"
+                                                                            aria-controls={null}
+                                                                            aria-label="Increase value"
+                                                                            onClick={() => changeCart(itemCode, Number(inputRefs.current[itemCode].value) + 1 )}
+                                                                            // onMouseDown={() => startIncreasing(itemCode)}
+                                                                            // onMouseUp={stopIncreasing}
+                                                                            // onMouseLeave={stopIncreasing}
+
+                                                                        >
+                                                                            <Icons.plus color='#979797'/>
+                                                                        </SfButton>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="flex">
+                                                                    <button disabled={loading} onClick={() => removeFromCart(itemCode)} type="button" className="font-medium text-secondary disabled:text-maingray disabled:cursor-not-allowed">
+                                                                        <Icons.trash01 color='#979797' className='w-5 h-5'/>
+                                                                    </button>
                                                                 </div>
                                                             </div>
-                                                            <div className="flex">
-                                                                <button disabled={loading} onClick={() => removeFromCart(itemCode)} type="button" className="font-medium text-secondary disabled:text-maingray disabled:cursor-not-allowed">
-                                                                    <Icons.trash01 color='#979797' className='w-5 h-5'/>
-                                                                </button>
-                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </li>
-                                            )
-                                        })
-                                    }
-                                </ul>
+                                                    </li>
+                                                )
+                                            })
+                                        }
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
-                        ) : (
-                            <div className="h-1/2 text-center flex flex-col gap-y-3 justify-end px-4">
-                                <h1 className='font-bold text-lg'>Your cart is empty</h1>
-                                <p className='text-base'>Go to the store to browse the products.</p>
-                                <Link to='/home/all%20items'>
-                                    <SfButton onClick={() => setIsOpen(false)} className='btn-primary rounded-xl'>Shop now</SfButton>
-                                </Link>
-                            </div>
+                            ) : (
+                                <div className="h-1/2 text-center flex flex-col gap-y-3 justify-end px-4">
+                                    <h1 className='font-bold text-lg'>Your cart is empty</h1>
+                                    <p className='text-base'>Go to the store to browse the products.</p>
+                                    <Link to='/home/all%20items'>
+                                        <SfButton onClick={() => setIsOpen(false)} className='btn-primary rounded-xl'>Shop now</SfButton>
+                                    </Link>
+                                </div>
+                            )}
+                            </>
                         )}
+                        
                     </div>
 
                     {cartCount > 0 && (
