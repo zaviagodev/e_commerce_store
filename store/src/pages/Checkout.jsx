@@ -228,7 +228,7 @@ export default function Checkout(){
                         </div>
                     </div>
                     <div className={`${showOrderSum ? 'block' : 'hidden'} lg:!block lg:px-5`}>
-                        <h1 className='text-[56px] font-bold pt-6 hidden lg:block leading-5'>{deliveryLoading  ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? `฿ ${codeResult?.message?.doc?.grand_total}` :`฿ ${deliveryResult?.message?.doc?.grand_total }`  }</h1>
+                        <h1 className='text-[56px] font-bold pt-6 hidden lg:block leading-5'>{deliveryLoading  ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total}` : 'Change address' : `฿ ${codeResult?.message?.doc?.grand_total}`  }</h1>
                         <div className="flex flex-col typography-text-basesm pt-16 pb-6">
                             {cartCount > 0 ? (
                                 <ul className='flex flex-col gap-y-4'>
@@ -285,8 +285,10 @@ export default function Checkout(){
                                         ภาษีสินค้า
                                         {`(${
                                             defaultTaxe?.rate !== 0 ? defaultTaxe?.rate+'%' : ''
-                                        } + ${
-                                            defaultTaxe?.amout !== 0 ? defaultTaxe?.amout+'฿' : ''
+                                        } ${
+                                            defaultTaxe?.rate !== 0 && defaultTaxe?.amout !== 0 ? '+' : ''
+                                        } ${
+                                            defaultTaxe?.amout !== 0 ? +defaultTaxe?.amout+'฿' : ''
                                         })`}
                                         </p>
                                     </div>
@@ -347,7 +349,7 @@ export default function Checkout(){
                             ) : (
                                 <div className="flex justify-between typography-headline-4 md:typography-headline-3 py-4 lg:pt-4 lg:ml-[69px] border-y lg:border-b-0 mt-4 font-medium">
                                     <p className='text-basesm'>ยอดชำระเงินทั้งหมด</p>
-                                    <p className='text-basesm'>{typeof codeResult?.message?.doc?.grand_total == 'undefined' ? `฿ ${deliveryResult?.message?.doc?.grand_total}` : `฿ ${codeResult?.message?.doc?.grand_total}`}</p>
+                                    <p className='text-basesm'>{typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total}` : 'Your address is not supported' : `฿ ${codeResult?.message?.doc?.grand_total}`}</p>
                                 </div>
                             )}
                         {/* <SfInput
