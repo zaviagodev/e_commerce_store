@@ -56,6 +56,8 @@ function SingleorderHistory() {
             if(products.length > 0){
                 const temp = getOrderByOrderCode(id)
                 setOrder(temp)
+                console.log(temp);
+                setItemsList([]);
                 temp.items.forEach((item) => {
                     setItemsList((prev) => [...prev, getByItemCode(item.item_code)])
                 })
