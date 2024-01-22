@@ -55,7 +55,8 @@ export default function Checkout(){
             };
             deleteCouponAsync();
             ApplyDeliveryFee({'shipping_rule' : shippingRules[0].name })
-            setCheckedState(shippingRules[0].name)
+            setCheckedState(shippingRules[0].name);
+            formik.setFieldValue('shipping_method', shippingRules[0].name) 
         }
     }, [deliveryResult, deliveryError, shippingRuleLoading, shippingRules])
 
@@ -95,7 +96,7 @@ export default function Checkout(){
         CheckPromoCode({"applied_code" : inputValue, "applied_referral_sales_partner" : false}) // change refereer here when we have it
       };
 
-    const { user } = useUser();
+    const { user } =  useUser();
     const navigate = useNavigate();
     useEffect(() => {
       if (!getToken() && !user?.name) {
@@ -219,7 +220,6 @@ export default function Checkout(){
                     <div className="flex justify-between items-center pb-6 lg:pb-0 border-b lg:border-0 lg:pl-5">
                         <p className="font-medium text-sm text-secgray">ยอดรวมทั้งหมด</p>
                         <div className='flex items-center gap-x-2'>
-
                             <h1 className='font-bold lg:hidden text-sm'>{deliveryLoading  ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? `฿ ${codeResult?.message?.doc?.grand_total}` :`฿ ${deliveryResult?.message?.doc?.grand_total }`  }</h1>
                             <p className="text-secgray text-sm">{cartCount} ชิ้น</p>
                             <span onClick={() => setShowOrderSum(!showOrderSum)} className='lg:hidden cursor-pointer'>
@@ -462,6 +462,7 @@ export default function Checkout(){
                                                 className='checked:bg-black !border border-primary flex hidden'
                                                 onChange={() => {
                                                     setCheckedState(name);
+                                                    formik.setFieldValue('shipping_method', value);
                                                     ApplyDeliveryFee({'shipping_rule' : name })
                                                 }}
                                                 />
