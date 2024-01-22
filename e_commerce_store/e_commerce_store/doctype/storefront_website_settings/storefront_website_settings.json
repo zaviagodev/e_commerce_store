@@ -22,6 +22,8 @@
   "disable_signup",
   "column_break_9",
   "app_logo",
+  "taxes_section",
+  "default_taxe",
   "section_break_6",
   "website_theme",
   "website_theme_image",
@@ -490,13 +492,25 @@
    "fieldname": "button_label",
    "fieldtype": "Data",
    "label": "Button Text"
+  },
+  {
+   "fieldname": "taxes_section",
+   "fieldtype": "Section Break",
+   "label": "Taxes"
+  },
+  {
+   "fieldname": "default_taxe",
+   "fieldtype": "Link",
+   "label": "Default Taxe",
+   "options": "Sales Taxes and Charges Template",
+   "reqd": 1
   }
  ],
  "icon": "fa fa-cog",
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-01-17 17:41:08.991741",
+ "modified": "2024-01-22 11:34:12.504488",
  "modified_by": "Administrator",
  "module": "E Commerce Store",
  "name": "Storefront Website Settings",

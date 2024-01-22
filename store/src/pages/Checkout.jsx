@@ -36,8 +36,7 @@ export default function Checkout(){
     const [moreAddresses, setMoreAddresses] = useState(false)
     const [morePayments, setMorePayments] = useState(false)
 
-    const {appName, appLogo,hideLogin, hideCheckout, navbarSearch, topBarItems, hideWish, isLoading} = useSetting()
-
+    const {appName, appLogo,defaultTaxe ,hideLogin, hideCheckout, navbarSearch, topBarItems, hideWish, isLoading} = useSetting()
     const {call : CheckPromoCode, loading, error : codeError, result : codeResult, reset, isCompleted : PromoCompleted } = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_coupon_code');
     const {call : ApplyDeliveryFee, loading : deliveryLoading, result : deliveryResult, error : deliveryError} = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_shipping_rule');
     const {isLoading : shippingRuleLoading, } = useFrappeGetCall('webshop.webshop.api.get_shipping_methods',undefined, `shippingRules`, {
@@ -220,7 +219,7 @@ export default function Checkout(){
                     <div className="flex justify-between items-center pb-6 lg:pb-0 border-b lg:border-0 lg:pl-5">
                         <p className="font-medium text-sm text-secgray">ยอดรวมทั้งหมด</p>
                         <div className='flex items-center gap-x-2'>
-                            <h1 className='font-bold lg:hidden text-sm'>{deliveryLoading || !getTotal() ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? `฿ ${codeResult?.message?.doc?.grand_total}` :`฿ ${deliveryResult?.message?.doc?.grand_total }`  }</h1>
+                            <h1 className='font-bold lg:hidden text-sm'>{deliveryLoading  ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? `฿ ${codeResult?.message?.doc?.grand_total}` :`฿ ${deliveryResult?.message?.doc?.grand_total }`  }</h1>
                             <p className="text-secgray text-sm">{cartCount} ชิ้น</p>
                             <span onClick={() => setShowOrderSum(!showOrderSum)} className='lg:hidden cursor-pointer'>
                                 {showOrderSum ? <SfIconExpandLess /> : <SfIconExpandMore />}
@@ -228,7 +227,7 @@ export default function Checkout(){
                         </div>
                     </div>
                     <div className={`${showOrderSum ? 'block' : 'hidden'} lg:!block lg:px-5`}>
-                        <h1 className='text-[56px] font-bold pt-6 hidden lg:block leading-5'>{deliveryLoading || !getTotal() ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? `฿ ${codeResult?.message?.doc?.grand_total}` :`฿ ${deliveryResult?.message?.doc?.grand_total }`  }</h1>
+                        <h1 className='text-[56px] font-bold pt-6 hidden lg:block leading-5'>{deliveryLoading  ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? `฿ ${codeResult?.message?.doc?.grand_total}` :`฿ ${deliveryResult?.message?.doc?.grand_total }`  }</h1>
                         <div className="flex flex-col typography-text-basesm pt-16 pb-6">
                             {cartCount > 0 ? (
                                 <ul className='flex flex-col gap-y-4'>
@@ -263,7 +262,7 @@ export default function Checkout(){
                                     <Skeleton className='h-4 w-[100px]'/>
                                 </div>
                             )}
-                            {deliveryLoading || !getTotal() ? (
+                            {deliveryLoading  ? (
                                 <div className='flex justify-between lg:ml-[69px] pt-3 border-t'>
                                     <div className="flex flex-col gap-y-6 grow pr-2">
                                         <Skeleton className='h-4 w-[100px]'/>
@@ -281,7 +280,7 @@ export default function Checkout(){
                                     <div className="flex flex-col grow pr-2">
                                         <p className='text-basesm'>ยอดรวมย่อย</p>
                                         <p className="my-4 text-maingray text-basesm">ค่าจัดส่ง</p>
-                                        <p className='text-maingray text-basesm'>ภาษีสินค้า (7%)</p>
+                                        <p className='text-maingray text-basesm'>ภาษีสินค้า{defaultTaxe}</p>
                                     </div>
                                     <div className="flex flex-col text-right">
                                         <p className='text-basesm'>{deliveryResult?.message?.doc?.total ? `฿${deliveryResult?.message?.doc?.total}` : `฿${getTotal()}`}</p>
@@ -332,7 +331,7 @@ export default function Checkout(){
                                 You are saving ${Math.abs(orderDetails.savings).toFixed(2)} on your order today!
                             </p>*/ }
                             </div>
-                            {deliveryLoading || !getTotal() ? (
+                            {deliveryLoading  ? (
                                 <div className="flex justify-between typography-headline-4 md:typography-headline-3 py-4 lg:pt-4 lg:ml-[69px] border-y lg:border-b-0 mt-4 font-medium">
                                     <Skeleton className='h-4 w-[100px]'/>
                                     <Skeleton className='h-4 w-[100px]'/>
@@ -340,7 +339,7 @@ export default function Checkout(){
                             ) : (
                                 <div className="flex justify-between typography-headline-4 md:typography-headline-3 py-4 lg:pt-4 lg:ml-[69px] border-y lg:border-b-0 mt-4 font-medium">
                                     <p className='text-basesm'>ยอดชำระเงินทั้งหมด</p>
-                                    <p className='text-basesm'>{typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total? `฿ ${deliveryResult?.message?.doc?.grand_total + getTotal()}` : `฿ ${getTotal()}` : `฿ ${codeResult?.message?.doc?.grand_total}`}</p>
+                                    <p className='text-basesm'>{typeof codeResult?.message?.doc?.grand_total == 'undefined' ? `฿ ${deliveryResult?.message?.doc?.grand_total}` : `฿ ${codeResult?.message?.doc?.grand_total}`}</p>
                                 </div>
                             )}
                         {/* <SfInput
@@ -392,7 +391,7 @@ export default function Checkout(){
                                     </div>
                                     <AddressDrawer isOpen={moreAddresses} setIsOpen={setMoreAddresses} title='เลือกที่อยู่'>
                                         <AddressOptions
-                                            onChange={value => formik.setFieldValue('billing_address', value)}
+                                            onChange={value => {formik.setFieldValue('billing_address', value); }}
                                             value={formik.values.billing_address}
                                             error={formik.errors.billing_address}
                                             randomKey={randomKey}
