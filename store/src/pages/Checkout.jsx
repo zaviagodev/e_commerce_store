@@ -212,7 +212,7 @@ export default function Checkout(){
                             <img
                                 src={appLogo ? `${import.meta.env.VITE_ERP_URL ?? ''}${appLogo}` : defaultLogo}
                                 alt="Sf Logo"
-                                // className='max-h-8'
+                                className='max-h-10'
                             />
                             </picture>
                         )}
