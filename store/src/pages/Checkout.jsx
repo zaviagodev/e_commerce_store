@@ -220,7 +220,7 @@ export default function Checkout(){
                     <div className="flex justify-between items-center pb-6 lg:pb-0 border-b lg:border-0 lg:pl-5">
                         <p className="font-medium text-sm text-secgray">ยอดรวมทั้งหมด</p>
                         <div className='flex items-center gap-x-2'>
-                            <h1 className='font-bold lg:hidden text-sm'>{deliveryLoading || !getTotal() ? <Skeleton className='h-4 w-[200px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total? `฿ ${deliveryResult?.message?.doc?.grand_total + getTotal()}` : `฿ ${getTotal()}` : `฿ ${codeResult?.message?.doc?.grand_total}`}</h1>
+                            <h1 className='font-bold lg:hidden text-sm'>{deliveryLoading || !getTotal() ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? `฿ ${codeResult?.message?.doc?.grand_total}` :`฿ ${deliveryResult?.message?.doc?.grand_total }`  }</h1>
                             <p className="text-secgray text-sm">{cartCount} ชิ้น</p>
                             <span onClick={() => setShowOrderSum(!showOrderSum)} className='lg:hidden cursor-pointer'>
                                 {showOrderSum ? <SfIconExpandLess /> : <SfIconExpandMore />}
@@ -228,7 +228,7 @@ export default function Checkout(){
                         </div>
                     </div>
                     <div className={`${showOrderSum ? 'block' : 'hidden'} lg:!block lg:px-5`}>
-                        <h1 className='text-[56px] font-bold pt-6 hidden lg:block leading-5'>{deliveryLoading || !getTotal() ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total? `฿ ${deliveryResult?.message?.doc?.grand_total + getTotal()}` : `฿ ${getTotal()}` : `฿ ${codeResult?.message?.doc?.grand_total}`}</h1>
+                        <h1 className='text-[56px] font-bold pt-6 hidden lg:block leading-5'>{deliveryLoading || !getTotal() ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? `฿ ${codeResult?.message?.doc?.grand_total}` :`฿ ${deliveryResult?.message?.doc?.grand_total }`  }</h1>
                         <div className="flex flex-col typography-text-basesm pt-16 pb-6">
                             {cartCount > 0 ? (
                                 <ul className='flex flex-col gap-y-4'>
