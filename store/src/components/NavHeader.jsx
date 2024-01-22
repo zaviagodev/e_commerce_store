@@ -199,11 +199,6 @@ import { Icons } from './icons';
     };
   }
 
-  useEffect(() => {
-    console.log('testing')
-    console.log(user?.name)
-  })
-
     const productList = (name) => 
         <>
         <SfButton
@@ -419,22 +414,6 @@ import { Icons } from './icons';
                     >
                         {actionItem.ariaLabel === 'Cart' && (
                           <SfBadge content={cartCount} className='!text-black !text-[14px] !bg-gray-300 w-4 h-4 flex items-center justify-center !p-0'/>
-
-                                )}
-                                {actionItem.ariaLabel === 'Search' && (
-                                    <SearchWithIcon className="flex" /> 
-                                )}
-                                {actionItem.ariaLabel === 'Wishlist' && (
-                                    <SfBadge content={WishCount} className='!text-black !text-[14px] !bg-[#FF8C8C] w-4 h-4 flex items-center justify-center !p-0'/>
-                                )}
-                                {actionItem.role === 'login' && (
-                                    <div className='flex items-center gap-x-[10px] border-r-2 pr-6'>
-                                      <p className="inline-flex whitespace-nowrap text-basesm font-bold" onClick={handlLoginClick}>{user?.name ?? 'Login'}</p>
-                                      {user?.name && <Icons.login onClick={logout} className='w-[22px] h-[22px]'/>}
-                                    </div>
-                                )}
-                            </SfButton>}
-
                         )}
                         {actionItem.ariaLabel === 'Search' && (
                           <SearchWithIcon className="flex" /> 
