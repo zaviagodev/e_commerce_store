@@ -62,7 +62,6 @@ const Product = () => {
     const [value, { inc, dec, set }] = useCounter(min);
     const navigate = useNavigate();
 
-    console.log(product)
 
     function handleOnChange(event) {
         const { value: currentValue } = event.target;
@@ -309,7 +308,7 @@ const Product = () => {
                     className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 place-items-center"
                     >
 
-                        {console.log(products)}
+         
                         {products
                         .filter((productz) => productz?.item_group === product?.item_group)
                         .slice(0, 4)
