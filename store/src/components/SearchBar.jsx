@@ -230,7 +230,7 @@ export default function SearchWithIcon( {className}) {
         </ul>
       </nav>
       <SfButton onClick={open} className='shadow-none hover:shadow-none active:shadow-none !p-0'>
-        <Icons.searchIcon className='text-black'/>
+        <Icons.searchIcon className='text-black w-[22px] h-[22px]'/>
       </SfButton>
     </form>
   );

@@ -30,6 +30,7 @@ import { useWish } from '../hooks/useWishe';
 import ProductCard from '../components/ProductCard';
 import { useState, useRef } from 'react';
 import { Skeleton } from '../components/Skeleton';
+import { Icons } from '../components/icons';
 
 const Product = () => {
     const { id } = useParams();
@@ -60,6 +61,8 @@ const Product = () => {
     const max = 999;
     const [value, { inc, dec, set }] = useCounter(min);
     const navigate = useNavigate();
+
+    console.log(product)
 
     function handleOnChange(event) {
         const { value: currentValue } = event.target;
@@ -93,7 +96,7 @@ const Product = () => {
     const accordionItems = [
         {
           id: 'acc-1',
-          summary: 'Long description',
+          summary: 'รายละเอียด',
           details:(<div className='mb-4 whitespace-normal overflow-hidden' dangerouslySetInnerHTML={{ __html: product?.web_long_description }} />)
         },
       ];
@@ -110,12 +113,12 @@ const Product = () => {
       };
 
     return (
-        <main className='main-section'>
-            <main className="grid grid-cols-1 lg:grid-cols-2 lg:gap-x-[50px] xl:gap-x-[94px]">
-                {product?.website_image ? (
-                <div className="relative flex w-full gap-x-2">
+        <main className='main-section-single-product'>
+            <main className="flex flex-col lg:flex-row gap-[33px]"> {/* grid grid-cols-1 lg:grid-cols-2 */}
+                {product?.website_image?.length > 0 ? (
+                <div className="relative flex w-full gap-x-4">
                     <SfScrollable
-                        className="relative [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] !gap-y-2"
+                        className="relative [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] !gap-y-4"
                         direction="vertical"
                         buttonsPlacement="none"
                         drag={{ containerWidth: true }}
@@ -124,7 +127,7 @@ const Product = () => {
                         {product?.slider_images?.map((image, index) => (
                             <img
                                 src={`${import.meta.env.VITE_ERP_URL ?? ''}${image}`}
-                                className="h-32 w-24 min-w-[96px] object-cover"
+                                className="h-[134px] w-[134px] min-w-[134px] object-cover"
                                 aria-label={image}
                                 alt={image}
                                 id={`img-product-${index}`}
@@ -146,37 +149,33 @@ const Product = () => {
                         ) : null}
                         <img
                             src={product.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`}
-                            className="object-contain w-auto h-full"
+                            className="object-cover w-[500px] h-auto aspect-square"
                             aria-label={product?.website_image}
                             alt={product?.website_image}
                         />
-
 
                         {product?.slider_images && product.slider_images.map((image, index) => (
                             <img
                                 key={index}
                                 src={`${import.meta.env.VITE_ERP_URL ?? ''}${image}`}
-                                className="object-contain w-auto h-full"
+                                className="object-cover w-[500px] h-auto aspect-square"
                                 aria-label={image}
                                 alt={image}
                             />
                         ))}
-
                     </SfScrollable>
                 </div>
-                ) : (<Skeleton className='aspect-[3/4] w-full h-full'/>)}
+                ) : (<Skeleton className='aspect-square w-full h-full'/>)}
 
-                <section className="mt-4 w-full lg:max-w-[486px]">
+                <section className="w-full px-10 py-[30px] lg:max-w-[536px]">
                     <div className='flex flex-col gap-y-[14px]'>
-                        {product?.item_name ? (
+                        {product !== undefined ? (
                         <>
-                            <h2 className='text-[#979797] text-sm font-medium'>หมวดหมู่สินค้า</h2>
-                            <h1 className="font-bold typography-headline-4 text-texttag text-lg">
-                                {product?.item_name}
-                            </h1>
+                            <h2 className='text-secgray text-sm font-medium leading-[9px]'>หมวดหมู่สินค้า</h2>
+                            <h1 className="font-bold text-texttag text-lg">{product?.item_name}</h1>
                         </>
                         ) : (<Skeleton className='h-4 w-[300px]'/>)}
-                        {product?.formatted_price ? (
+                        {product !== undefined ? (
                             <span className='flex flex-row items-center justify-start gap-2 mb-4'>
                                 <strong className={`block typography-headline-3 text-base ${product?.formatted_mrp ? 'text-destructive' : 'text-primary'}`}>{product?.formatted_price}</strong>
                                 {product?.formatted_mrp && <span className="block text-maingray typography-headline-3 line-through font-medium text-base">{product?.formatted_mrp}</span>}
@@ -184,31 +183,31 @@ const Product = () => {
                         ) : (<Skeleton className='h-4 w-[100px] mt-2'/>)}
                     </div>
 
-                    {product?.short_description ? (
-                        <div className='text-base' dangerouslySetInnerHTML={{ __html: product?.short_description }} />
-                    ) : (<Skeleton className='h-10 w-[300px] mt-2'/>)}
+                    {product !== undefined ? (
+                        <div className='text-[20px] leading-6 pb-[60px] font-medium' dangerouslySetInnerHTML={{ __html: product?.short_description }} />
+                    ) : (<Skeleton className='h-10 w-[300px] mt-2 mb-[60px]'/>)}
 
-                    <div className="pt-4 pb-6 border-gray-200 border-b">
-                        {product?.in_stock ? (<div className="items-start flex flex-col gap-y-[14px]">
+                    <div className="pb-6 border-gray-200 border-b">
+                        {product !== undefined ? (<div className="items-start flex flex-col gap-y-[14px]">
                             {!hideCheckout && <div className="flex flex-col items-stretch xs:items-center xs:inline-flex">
-                                <div className="flex border border-neutral-300 rounded-md">
+                                <div className="flex bg-[#F3F3F3] rounded-xl items-center">
                                     <SfButton
                                         type="button"
                                         variant="tertiary"
                                         square
-                                        className="rounded-r-none p-3"
+                                        className="rounded-r-none p-4 text-secgray"
                                         disabled={value <= min || !product?.in_stock}
                                         aria-controls={inputId}
                                         aria-label="Decrease value"
                                         onClick={() => dec()}
                                     >
-                                        <SfIconRemove />
+                                        <Icons.minus color='#979797'/>
                                     </SfButton>
                                     <input
                                         id={inputId}
                                         type="number"
                                         role="spinbutton"
-                                        className="grow appearance-none text-base mx-2 w-8 text-center bg-transparent font-medium outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-inner-spin-button]:display-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-outer-spin-button]:display-none [&::-webkit-outer-spin-button]:m-0 [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none disabled:placeholder-disabled-900 focus-visible:outline focus-visible:outline-offset focus-visible:rounded-sm"
+                                        className="text-secgray grow appearance-none text-base w-6 h-[50px] text-center bg-transparent outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-inner-spin-button]:display-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-outer-spin-button]:display-none [&::-webkit-outer-spin-button]:m-0 [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none disabled:placeholder-disabled-900 focus-visible:outline focus-visible:outline-offset focus-visible:rounded-sm"
                                         min={min}
                                         max={max}
                                         value={value}
@@ -219,33 +218,42 @@ const Product = () => {
                                         type="button"
                                         variant="tertiary"
                                         square
-                                        className="rounded-l-none p-3"
+                                        className="rounded-l-none p-4 text-secgray"
                                         disabled={value >= max || !product?.in_stock}
                                         aria-controls={inputId}
                                         aria-label="Increase value"
                                         onClick={() => inc()}
                                     >
-                                        <SfIconAdd />
+                                        <Icons.plus color='#979797'/>
                                     </SfButton>
                                 </div>
                             </div>}
+                            <p className='text-basesm'>รับ Cashback สูงถึง ฿ 105 เมื่อเป็นสมาชิก</p>
                             <div className='flex items-center gap-x-[10px] w-full'>
-                                <SfButton disabled={loading || !product?.in_stock}  onClick={handleClickCart} type="button" size="lg" className="w-full btn-primary">
-                                    {loading ? <Skeleton className='h-6 w-full'/> : product?.in_stock ? buttonLabel : 'Sold out'}
-                                </SfButton>
+                                {product !== undefined ? (                                
+                                    <>
+                                        <SfButton disabled={loading || !product?.in_stock}  onClick={handleClickCart} type="button" size="lg" className="w-full btn-primary flex items-center gap-x-[10px] rounded-xl h-[50px]">
+                                            <Icons.shoppingBag01 color='white' className='w-[22px] h-[22px]'/>
+                                            {product?.in_stock ? buttonLabel : 'Sold out'}
+                                        </SfButton>
+                                    </>
+                                ) : (
+                                    <Skeleton className='h-[50px] w-full'/>
+                                )}
+
                                 {!hideWish && <SfButton
                                     onClick={handleWish} 
                                     type="button"
                                     variant="tertiary"
                                     size="sm"
                                     square
-                                    className="bg-white z-50 border-2 border-black p-[10px]"
+                                    className="bg-white z-50 border-2 border-black p-[10px] rounded-xl w-[57px] min-w-[57px] h-[50px]"
                                     aria-label="Add to wishlist"
                                 >
                                     {Wish[product?.item_code] == 1 ? (
-                                        <SfIconFavoriteFilled className='w-6 h-6'/>
+                                        <Icons.heart className='w-6 h-6' fill='black'/>
                                     ) : (
-                                        <SfIconFavorite className='w-6 h-6' />
+                                        <Icons.heart className='w-6 h-6' />
                                     )}
                                 </SfButton>}
                             </div>
@@ -254,15 +262,15 @@ const Product = () => {
                         )}
                     </div>
                     <div>
-                        {product?.web_long_description ? (
+                        {product !== undefined ? (
                             <>
                                 {accordionItems.map(({id, summary, details}) => (
                                 <SfAccordionItem 
                                     key={id} 
-                                    summary={<div className={classNames('flex items-center justify-between py-4', {'border-b': !isAccordionOpen(id)})}>
+                                    summary={<div className={classNames('flex items-center justify-between p-4 pr-2', {'border-b': !isAccordionOpen(id)})}>
                                         <h2 className='font-medium text-base'>{summary}</h2>
                                         <SfIconChevronLeft
-                                            className={classNames('text-neutral-500', {
+                                            className={classNames('text-black w-8 h-8', {
                                             'rotate-90': isAccordionOpen(id),
                                             '-rotate-90': !isAccordionOpen(id),
                                             })}
@@ -271,28 +279,34 @@ const Product = () => {
                                     onToggle={handleToggleAccordion(id)}
                                     open={isAccordionOpen(id)}
                                 >
-                                    <div className={classNames('pb-4 border-b text-base')}>
+                                    <div className={classNames('p-4 pt-0 border-b text-base')}>
                                         {details}
                                     </div>
                                 </SfAccordionItem>
                                 ))}
                             </>
                         ) : (
-                            <div className='flex flex-col gap-y-2 mt-4'>
+                            <div className='flex flex-col gap-y-2 my-4'>
                                 <Skeleton className='h-6 w-full'/>
                                 <Skeleton className='h-6 w-full'/>
                                 <Skeleton className='h-6 w-full'/>
                             </div>
                         )}
+                        <div className='w-full flex justify-center h-10 items-center mt-6'>
+                            <button className='flex items-center gap-x-2 text-base font-medium'>
+                                <Icons.messageQuestionCircle />
+                                ขอความช่วยเหลือ
+                            </button>
+                        </div>
                     </div>
                 </section>
             </main>
         
-            {products !== undefined && products?.length > 0 ? (
+            {products?.length > 0 ? (
                 <section className='pt-20'>
                 <h1 className='mb-8 text-primary text-center text-xl font-bold'>สินค้าที่คุณอาจสนใจ</h1>
                 <div
-                    className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center"
+                    className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 place-items-center"
                     >
 
                         {console.log(products)}
@@ -311,28 +325,16 @@ const Product = () => {
                                 salesPrice={product?.formatted_mrp}
                                 isGift={product?.item_group === "Gift" || product?.item_group === "Gift and Cards"}
                             />
-                        ))}
+                        )).slice(0,4)}
                 </div>
             </section>
             ) : (
-                <div className='flex flex-col gap-y-2 mt-20'>
-                <div className='grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center w-full h-full gap-3'>
-                    <Skeleton className='h-full w-full aspect-[3/4]'/>
-                    <Skeleton className='h-full w-full aspect-[3/4]'/>
-                    <Skeleton className='h-full w-full aspect-[3/4]'/>
-                    <Skeleton className='h-full w-full aspect-[3/4]'/>
-                </div>
-                <div className='grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center w-full h-full gap-3'>
-                    <Skeleton className='h-4 w-full'/>
-                    <Skeleton className='h-4 w-full'/>
-                    <Skeleton className='h-4 w-full'/>
-                    <Skeleton className='h-4 w-full'/>
-                </div>
-                <div className='grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center w-full h-full gap-3'>
-                    <Skeleton className='h-4 w-full'/>
-                    <Skeleton className='h-4 w-full'/>
-                    <Skeleton className='h-4 w-full'/>
-                    <Skeleton className='h-4 w-full'/>
+            <div className='flex flex-col gap-y-2 mt-20'>
+                <div className='grid grid-cols-1 gap-[14px] sm:grid-cols-2 lg:grid-cols-4 place-items-center w-full h-full'>
+                    <Skeleton className='h-full w-full aspect-square'/>
+                    <Skeleton className='h-full w-full aspect-square'/>
+                    <Skeleton className='h-full w-full aspect-square'/>
+                    <Skeleton className='h-full w-full aspect-square'/>
                 </div>
             </div>
             )}

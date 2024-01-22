@@ -36,7 +36,7 @@ const Layer = () => {
   }, [navigate]);
   return (
     <>
-      <NavHeader />
+      {window.location.pathname.includes('/checkout') || window.location.pathname.includes('/thankyou') ? null : <NavHeader />}
         <Outlet />
         <Wish/>
       <Cart />

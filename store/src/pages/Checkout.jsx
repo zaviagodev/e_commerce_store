@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { SfCheckbox, SfButton, SfIconCheckCircle, SfIconClose, SfLink, SfInput, SfLoaderCircular, SfIconArrowBack, SfIconExpandMore, SfIconExpandLess, SfDrawer } from '@storefront-ui/react';
+import { SfCheckbox, SfButton, SfIconCheckCircle, SfIconClose, SfLink, SfInput, SfLoaderCircular, SfIconArrowBack, SfIconExpandMore, SfIconExpandLess, SfDrawer, SfIconArrowForward } from '@storefront-ui/react';
 import { CSSTransition } from 'react-transition-group';
 import { useCart } from '../hooks/useCart';
 import PaymentMethods from '../components/PaymentMethods';
@@ -15,6 +15,10 @@ import { getToken } from '../utils/helper';
 import { SfRadio, SfListItem } from '@storefront-ui/react';
 import AddressForm from '../components/forms/AddressForm';
 import { Skeleton } from '../components/Skeleton';
+import { useSetting } from '../hooks/useWebsiteSettings';
+import defaultLogo from '../assets/defaultBrandIcon.svg'
+import { Icons } from '../components/icons';
+import classNames from 'classnames'
 
 export default function Checkout(){
     const errorTimer = useRef(0);
@@ -30,6 +34,9 @@ export default function Checkout(){
     const [randomKey, setrandomKey] = useState(0)
     const [showOrderSum, setShowOrderSum] = useState(true)
     const [moreAddresses, setMoreAddresses] = useState(false)
+    const [morePayments, setMorePayments] = useState(false)
+
+    const {appName, appLogo,hideLogin, hideCheckout, navbarSearch, topBarItems, hideWish, isLoading} = useSetting()
 
     const {call : CheckPromoCode, loading, error : codeError, result : codeResult, reset, isCompleted : PromoCompleted } = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_coupon_code');
     const {call : ApplyDeliveryFee, loading : deliveryLoading, result : deliveryResult, error : deliveryError} = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_shipping_rule');
@@ -158,9 +165,9 @@ export default function Checkout(){
     const CouponAlert = () => {
         return (
             <>
-                {/* {positiveAlert && (<p className="text-xs">Your promo code has been added.</p>)} */}
-                {/* {informationAlert && (<p className="text-xs">Your promo code has been removed.</p>)} */}
-                {errorAlert && (<p className="text-xs text-negative-600">{errorAlert}</p>)}
+                {/* {positiveAlert && (<p className="text-sm">Your promo code has been added.</p>)} */}
+                {/* {informationAlert && (<p className="text-sm">Your promo code has been removed.</p>)} */}
+                {errorAlert && (<p className="text-sm text-negative-600">{errorAlert}</p>)}
             </>
         )
     }
@@ -177,54 +184,70 @@ export default function Checkout(){
             <label className="w-full">
                 {addressList?.message?.length > 0 ? (<div className='flex items-center justify-between mb-4'>
                     <legend className="font-bold text-neutral-900 text-base">New address</legend>
-                    <a className='text-sm hover:underline cursor-pointer inline-block font-medium' onClick={() => setAddNewAddress(false)}>Cancel</a>
+                    <a className='text-base hover:underline cursor-pointer inline-block font-medium' onClick={() => setAddNewAddress(false)}>Cancel</a>
                 </div>) : null}
                 <AddressForm onFormSubmit={() => UpdateAddresses() }/>
             </label>
         )
     }
 
+    const handleAddNewAddress = () => {
+        setAddNewAddress(true);
+        setMoreAddresses(false)
+    }
+
     return (
         <main className='main-section-small'>
-            <div className='flex items-center gap-x-2 mb-8'>
-                <div onClick={() => navigate(-1)} className='cursor-pointer'>
-                    <SfIconArrowBack className='text-primary'/>
-                </div>
-                <h1 className='text-primary text-2xl font-bold'>Checkout</h1>
-            </div>
-            <div className='grid grid-cols-1 lg:grid-cols-2 justify-center lg:gap-x-[100px]'>
-            <div className='w-full mb-8 lg:mb-0'>
-                    <div className="flex justify-between items-center pb-6 lg:pb-0 border-b lg:border-0">
-                        <p className="typography-headline-4 font-medium md:typography-headline-3">Order Summary</p>
+            <div className='grid grid-cols-1 lg:grid-cols-2 justify-center gap-x-10'>
+                <div className='w-full py-5 pr-10'>
+                    <div className='flex items-center gap-x-4 mb-16 h-10'>
+                        <div onClick={() => navigate(-1)} className='cursor-pointer'>
+                            <Icons.flipBackward color='#A9A9A9'/>
+                        </div>
+                        {appLogo === null ? (
+                            <Skeleton className='h-8 w-[120px]'/>
+                        ) : (
+                            <picture>
+                            <source srcSet={appLogo ? `${import.meta.env.VITE_ERP_URL ?? ''}${appLogo}` : defaultLogo} media="(min-width: 768px)" />
+                            <img
+                                src={appLogo ? `${import.meta.env.VITE_ERP_URL ?? ''}${appLogo}` : defaultLogo}
+                                alt="Sf Logo"
+                                // className='max-h-8'
+                            />
+                            </picture>
+                        )}
+                    </div>
+                    <div className="flex justify-between items-center pb-6 lg:pb-0 border-b lg:border-0 lg:pl-5">
+                        <p className="font-medium text-sm text-secgray">ยอดรวมทั้งหมด</p>
                         <div className='flex items-center gap-x-2'>
-                            <h1 className='typography-headline-4 font-bold md:typography-headline-3 lg:hidden'>{deliveryLoading || !getTotal() ? <Skeleton className='h-4 w-[200px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total? `฿ ${deliveryResult?.message?.doc?.grand_total + getTotal()}` : `฿ ${getTotal()}` : `฿ ${codeResult?.message?.doc?.grand_total}`}</h1>
-                            <p className="typography-text-base text-maingray">(Items: {cartCount})</p>
+                            <h1 className='font-bold lg:hidden text-sm'>{deliveryLoading || !getTotal() ? <Skeleton className='h-4 w-[200px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total? `฿ ${deliveryResult?.message?.doc?.grand_total + getTotal()}` : `฿ ${getTotal()}` : `฿ ${codeResult?.message?.doc?.grand_total}`}</h1>
+                            <p className="text-secgray text-sm">{cartCount} ชิ้น</p>
                             <span onClick={() => setShowOrderSum(!showOrderSum)} className='lg:hidden cursor-pointer'>
                                 {showOrderSum ? <SfIconExpandLess /> : <SfIconExpandMore />}
                             </span>
                         </div>
                     </div>
-                    <div className={`${showOrderSum ? 'block' : 'hidden'} lg:!block`}>
-                        <h1 className='text-[40px] font-bold pt-3 hidden lg:block'>{deliveryLoading || !getTotal() ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total? `฿ ${deliveryResult?.message?.doc?.grand_total + getTotal()}` : `฿ ${getTotal()}` : `฿ ${codeResult?.message?.doc?.grand_total}`}</h1>
-                        <div className="flex flex-col typography-text-base pt-10 pb-6">
+                    <div className={`${showOrderSum ? 'block' : 'hidden'} lg:!block lg:px-5`}>
+                        <h1 className='text-[56px] font-bold pt-6 hidden lg:block leading-5'>{deliveryLoading || !getTotal() ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total? `฿ ${deliveryResult?.message?.doc?.grand_total + getTotal()}` : `฿ ${getTotal()}` : `฿ ${codeResult?.message?.doc?.grand_total}`}</h1>
+                        <div className="flex flex-col typography-text-basesm pt-16 pb-6">
                             {cartCount > 0 ? (
-                                <ul className='flex flex-col gap-y-2'>
+                                <ul className='flex flex-col gap-y-4'>
                                     {Object.entries(cart).map(([itemCode]) => {
                                         const product = getByItemCode(itemCode)
                                         return (
-                                        <li key={itemCode} className="flex pb-6">
-                                            <div className="h-32 w-24 flex-shrink-0 overflow-hidden border border-gray-200">
-                                                <img src={product?.website_image} alt={product?.item_name} className="h-full w-full object-cover object-center" />
+                                        <li key={itemCode} className="flex pb-5">
+                                            <div className="h-[53px] w-[53px] flex-shrink-0 overflow-hidden">
+                                                <img src={`${import.meta.env.VITE_ERP_URL || ""}${product?.website_image}`} alt={product?.item_name} className="h-full w-full object-cover object-center" />
                                             </div>
 
                                             <div className="ml-4 flex flex-1 flex-col">
-                                                <div className="flex justify-between text-sm text-gray-900 font-medium">
+                                                <div className="flex justify-between text-basesm text-gray-900 font-medium">
                                                     <h3 className='text-texttag pr-8'>{product?.web_item_name}</h3>
                                                     <p className='whitespace-pre'>{product?.formatted_price}</p>
                                                 </div>
 
-                                                <div className="flex justify-between text-sm text-maingray font-medium">
-                                                    {cart[itemCode]} {cart[itemCode] === 1 ? 'item' : 'items'}
+                                                <div className="flex justify-between text-basesm text-maingray font-medium">
+                                                    {cart[itemCode]} ชิ้น
                                                 </div>
                                             </div>
                                         </li>
@@ -234,14 +257,14 @@ export default function Checkout(){
                             ) : (
                                 <div className='flex justify-between mb-4'>
                                     <div className='flex gap-x-2'>
-                                        <Skeleton className='h-32 w-24'/>
-                                        <Skeleton className='h-4 w-[200px]'/>
+                                        <Skeleton className='h-[53px] w-[53px]'/>
+                                        <Skeleton className='h-4 w-[100px]'/>
                                     </div>
                                     <Skeleton className='h-4 w-[100px]'/>
                                 </div>
                             )}
                             {deliveryLoading || !getTotal() ? (
-                                <div className='flex justify-between lg:ml-28 pt-3 border-t'>
+                                <div className='flex justify-between lg:ml-[69px] pt-3 border-t'>
                                     <div className="flex flex-col gap-y-6 grow pr-2">
                                         <Skeleton className='h-4 w-[100px]'/>
                                         <Skeleton className='h-4 w-[100px]'/>
@@ -254,34 +277,33 @@ export default function Checkout(){
                                     </div>
                                 </div>
                             ) : (
-                                <div className='flex justify-between lg:ml-28 pt-3 border-t'>
+                                <div className='flex justify-between lg:ml-[69px] pt-3 border-t'>
                                     <div className="flex flex-col grow pr-2">
-                                        <p className='font-medium text-sm'>Items Subtotal</p>
-                                        <p className="my-6 font-medium text-sm">Delivery</p>
-                                        <p className='text-maingray text-sm'>Estimated Sales Tax</p>
+                                        <p className='text-basesm'>ยอดรวมย่อย</p>
+                                        <p className="my-4 text-maingray text-basesm">ค่าจัดส่ง</p>
+                                        <p className='text-maingray text-basesm'>ภาษีสินค้า (7%)</p>
                                     </div>
                                     <div className="flex flex-col text-right">
-                                        <p className='font-medium text-sm'>{deliveryResult?.message?.doc?.total ? `฿${deliveryResult?.message?.doc?.total}` : `฿${getTotal()}`}</p>
-                                        <p className="my-6 text-sm">
+                                        <p className='text-basesm'>{deliveryResult?.message?.doc?.total ? `฿${deliveryResult?.message?.doc?.total}` : `฿${getTotal()}`}</p>
+                                        <p className="my-4 text-basesm text-maingray">
                                             {deliveryResult?.message?.doc?.total_taxes_and_charges ? `฿${deliveryResult?.message?.doc?.total_taxes_and_charges}` : "฿0"}
                                         </p>
-                                        <p></p>
+                                        <p className='text-maingray text-basesm'></p>
                                     </div>
                                 </div>
                             )}
-
                     </div>
-                        <div className='lg:ml-28'>
+                        <div className='lg:ml-[69px]'>
                             {!loading ? (codeResult ? (
                                 <div className='flex flex-col gap-y-2'>
                                     <div className="flex items-center justify-between">
-                                        <div className='bg-neutral-100 rounded-md p-[10px] flex items-center gap-x-2 text-sm'>
+                                        <div className='bg-neutral-100 rounded-md p-[10px] flex items-center gap-x-2 text-base'>
                                             <p>{codeResult.message.coupon_code.toUpperCase()}</p>
                                             <SfButton size="sm" variant="tertiary" className='!p-0' onClick={removePromoCode}>
                                                 <SfIconClose size='sm' className='text-maingray'/>
                                             </SfButton>
                                         </div>
-                                        <p className='text-sm'>{codeResult.message.coupon_code.toUpperCase()}</p>
+                                        <p className='text-basesm'>{codeResult.message.coupon_code.toUpperCase()}</p>
                                     </div>
                                     <CouponAlert />
                                 </div>
@@ -295,30 +317,30 @@ export default function Checkout(){
                                             onChange={(event) => setInputValue(event.target.value)}
                                             onBlur={() => inputValue === "" && setAddPromo(false)}
                                             onKeyDown={e => e.key === 'Escape' && setAddPromo(false)}
-                                            className='text-sm'
+                                            className='text-basesm'
                                         />
-                                        <SfButton type="submit" className='btn-primary text-sm'>
+                                        <SfButton type="submit" className='btn-primary text-basesm'>
                                             Apply
                                         </SfButton>
                                     </div>
                                     <CouponAlert />
                                 </form>
                             ) : (
-                                <a className='text-secondary hover:underline cursor-pointer inline-block font-medium text-sm' onClick={() => setAddPromo(true)}>Add promo code</a>
+                                <a className='text-secondary hover:underline cursor-pointer inline-block font-medium text-basesm' onClick={() => setAddPromo(true)}>ใส่คูปองส่วนลด</a>
                             )) : <Skeleton className='h-6 w-[100px]'/>} 
-                            {/*<p className="px-3 py-1.5 bg-secondary-100 text-secondary-700 typography-text-sm rounded-lg text-center mb-4">
+                            {/*<p className="px-3 py-1.5 bg-secondary-100 text-secondary-700 typography-text-base rounded-lg text-center mb-4">
                                 You are saving ${Math.abs(orderDetails.savings).toFixed(2)} on your order today!
                             </p>*/ }
                             </div>
                             {deliveryLoading || !getTotal() ? (
-                                <div className="flex justify-between typography-headline-4 md:typography-headline-3 py-6 lg:pt-6 lg:ml-28 border-y lg:border-b-0 mt-6 font-medium">
+                                <div className="flex justify-between typography-headline-4 md:typography-headline-3 py-4 lg:pt-4 lg:ml-[69px] border-y lg:border-b-0 mt-4 font-medium">
                                     <Skeleton className='h-4 w-[100px]'/>
                                     <Skeleton className='h-4 w-[100px]'/>
                                 </div>
                             ) : (
-                                <div className="flex justify-between typography-headline-4 md:typography-headline-3 py-6 lg:pt-6 lg:ml-28 border-y lg:border-b-0 mt-6 font-medium">
-                                    <p className='text-sm'>Total</p>
-                                    <p>{typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total? `฿ ${deliveryResult?.message?.doc?.grand_total + getTotal()}` : `฿ ${getTotal()}` : `฿ ${codeResult?.message?.doc?.grand_total}`}</p>
+                                <div className="flex justify-between typography-headline-4 md:typography-headline-3 py-4 lg:pt-4 lg:ml-[69px] border-y lg:border-b-0 mt-4 font-medium">
+                                    <p className='text-basesm'>ยอดชำระเงินทั้งหมด</p>
+                                    <p className='text-basesm'>{typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total? `฿ ${deliveryResult?.message?.doc?.grand_total + getTotal()}` : `฿ ${getTotal()}` : `฿ ${codeResult?.message?.doc?.grand_total}`}</p>
                                 </div>
                             )}
                         {/* <SfInput
@@ -331,36 +353,44 @@ export default function Checkout(){
                         /> */}
                     </div>
                 </div>
-                <form className="w-full flex flex-col gap-8 text-neutral-900">
+                <form className="w-full flex flex-col gap-10 text-neutral-900 p-[60px] pt-[7.75em] min-h-screen checkout-shadow">
                     {cartContents.hasNormalItem ? (
                         <>
                             {addressList?.message?.length > 0 ? (
                                 <>
                                     <div className='w-full flex flex-col gap-y-2'>
                                         <label className="w-full">
-                                            <legend className="mb-8 font-bold text-neutral-900 text-lg">Billing and shipping address</legend>
+                                            <legend className="mb-8 font-bold text-darkgray text-base">ข้อมูลการจัดส่ง</legend>
                                             <div className='flex flex-col gap-y-2'>
-                                                <h2 className="font-medium text-sm text-neutral-900">Address <span className='text-red-500'>*</span></h2>
-                                                {(formik.values.billing_address && !addNewAddress) && (
-                                                <div className='border rounded-lg p-3 mb-1'>
-                                                    {addressList?.message?.filter(address => address.name === formik.values.billing_address).map(a => (
-                                                        <div className='flex flex-col'>
-                                                            <h2 className='font-semibold text-base mb-2'>{a.address_title}</h2>
-                                                            <p className='text-sm'>{a.city}</p>
-                                                            <p className='text-sm'>{a.state}</p>
-                                                            <p className='text-sm'>{a.country}</p>
+                                                <h2 className="font-medium text-basesm text-secgray">ที่อยู่*</h2>
+                                                <div className='border rounded-lg bg-neutral-50 overflow-hidden'>
+                                                    <a className='p-6 flex items-center justify-between w-full cursor-pointer' onClick={() => setMoreAddresses(true)}>
+                                                        <div className='flex items-center gap-x-2'>
+                                                            <Icons.marketPin04 color='#666666'/>
+                                                            <span className='text-basesm font-medium text-darkgray'>เพิ่ม / เลือกที่อยู่การจัดส่ง</span>
                                                         </div>
-                                                    ))}
+                                                        <SfIconArrowForward />
+                                                    </a>
+                                                    {(formik.values.billing_address && !addNewAddress) && (
+                                                        <>
+                                                            <div className='p-6 pt-0'>
+                                                                {addressList?.message?.filter(address => address.name === formik.values.billing_address).map(a => (
+                                                                    <div className='flex flex-col'>
+                                                                        <h2 className='font-semibold text-base mb-2'>{a.address_title}</h2>
+                                                                        <p className='text-base'>{a.city}</p>
+                                                                        <p className='text-base'>{a.state}</p>
+                                                                        <p className='text-base'>{a.country}</p>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                            <div className='h-3 w-full post-gradient'/>
+                                                        </>
+                                                    )}
                                                 </div>
-                                                )}
                                             </div>
                                         </label>
-                                        <div className='flex items-center gap-x-4 w-full'>
-                                            <SfButton className='btn-secondary w-full text-sm' variant='tertiary' onClick={() => setMoreAddresses(true)}>See more addresses</SfButton>
-                                            <SfButton className='btn-secondary w-full text-sm' variant='tertiary' onClick={() => setAddNewAddress(true)}>Add a new address</SfButton>
-                                        </div>
                                     </div>
-                                    <MoreAddresses isOpen={moreAddresses} setIsOpen={setMoreAddresses}>
+                                    <AddressDrawer isOpen={moreAddresses} setIsOpen={setMoreAddresses} title='เลือกที่อยู่'>
                                         <AddressOptions
                                             onChange={value => formik.setFieldValue('billing_address', value)}
                                             value={formik.values.billing_address}
@@ -368,16 +398,12 @@ export default function Checkout(){
                                             randomKey={randomKey}
                                             onClick={() => {setMoreAddresses(false);setAddNewAddress(false)}}
                                         />
-                                    </MoreAddresses>
+                                        <SfButton className='btn-primary w-full text-base mt-9 h-[50px]' variant='tertiary' onClick={handleAddNewAddress}>เพิ่มที่อยู่ใหม่</SfButton>
+                                    </AddressDrawer>
                                 </>
-                            ) : (
-                            <div className='border p-3 rounded-lg'>
-                                <NewAddressForm />
-                            </div>)}
+                            ) : <NewAddressForm />}
                             {addNewAddress && (
-                                <div className='border p-3 rounded-lg'>
-                                    <NewAddressForm />
-                                </div>
+                                <NewAddressForm />
                             )}
                             {/* <label className="w-full flex items-center gap-2">
                                 <SfCheckbox
@@ -396,8 +422,25 @@ export default function Checkout(){
                                 <AddressForm onSuccess={() => setrandomKey(randomKey + 1)}/>
                             )} */}
                                 {!shippingRuleLoading ?
-                                (<label className='w-full'>
-                                    <legend className="mb-2 font-medium text-sm text-neutral-900">Shipping methods <span className='text-red-500'>*</span></legend>
+                                (<>
+                                <label className='w-full'>
+                                    <legend className="mb-2 font-medium text-basesm text-secgray">ตัวเลือกการจัดส่ง</legend>
+                                    <div className='border rounded-lg bg-neutral-50 overflow-hidden'>
+                                        <a className='p-6 flex items-center justify-between w-full cursor-pointer' onClick={() => setMorePayments(true)}>
+                                            <div className='flex items-center gap-x-2'>
+                                                <Icons.truck01 color='#595959'/>
+                                                <span className='text-basesm font-medium text-darkgray'>เลือกวิธีการจัดส่งที่ต้องการ</span>
+                                            </div>
+                                            <SfIconArrowForward />
+                                        </a>
+                                        {checkedState && (
+                                            <div className='p-6 pt-0'>
+                                                <h2 className='font-semibold text-base'>{checkedState}</h2>
+                                            </div>
+                                        )}
+                                    </div>
+                                </label>
+                                <AddressDrawer isOpen={morePayments} setIsOpen={setMorePayments} title='เลือกการจัดส่ง'>
                                     <div className='flex flex-col gap-y-3 font-medium'>
                                         { shippingRules.map(({ name, shipping_amount }) => (
                                             <SfListItem
@@ -409,25 +452,26 @@ export default function Checkout(){
                                                 name="delivery-options"
                                                 value={name}
                                                 Checked={checkedState == name}
-                                                className='checked:bg-black !border border-primary flex'
+                                                className='checked:bg-black !border border-primary flex hidden'
                                                 onChange={() => {
                                                     setCheckedState(name);
                                                     ApplyDeliveryFee({'shipping_rule' : name })
                                                 }}
                                                 />
                                             }
-                                            slotSuffix={<span className="text-gray-900">฿{shipping_amount}</span>}
-                                            className="w-full border rounded-lg border-neutral-200 !px-3 text-sm"
+                                            slotSuffix={<span className="text-gray-900 text-basesm">฿{shipping_amount}</span>}
+                                            className={classNames('w-full !gap-0 border rounded-lg border-neutral-200 !px-4 text-basesm bg-neutral-50', {'outline outline-[1px]': checkedState == name})}
                                             >
                                             {name}
                                             </SfListItem>
                                         )) }
                                     </div>
-                                </label>
+                                </AddressDrawer>
+                                </>
                                 ) : <SfLoaderCircular/>}
                                 {cartContents.hasGiftItem && (
                                     <label className="w-full">
-                                        <span className="pb-1 text-sm font-medium text-neutral-900 font-body">Select Branch for Redemption</span>
+                                        <span className="pb-1 text-base font-medium text-neutral-900 font-body">Select Branch for Redemption</span>
                                         <BranchSelect
                                             name="branch"
                                             onChange={formik.handleChange}
@@ -438,12 +482,11 @@ export default function Checkout(){
                                 )}
                             <PaymentMethods onChange={value => formik.setFieldValue('payment_method', value)} value={formik.values.payment_method} error={formik.errors.payment_method} />
                             <div className='w-full'>
-                                <SfButton size="lg" className="w-full bg-btn-primary text-btn-primary-foreground text-sm" onClick={formik.handleSubmit}>
-                                    Place Order
+                                <SfButton size="lg" className="w-full btn-primary text-base h-[50px] rounded-lg" onClick={formik.handleSubmit}>
+                                    ชำระเงิน
                                 </SfButton>
-                                <div className="typography-text-sm mt-3 text-sm text-primary">
-                                    By placing my order, you agree to our <SfLink href="#" className='text-[#006AFF] no-underline'>Terms and Conditions</SfLink> and our{' '}
-                                    <SfLink href="#" className='text-[#006AFF] no-underline'>Privacy Policy.</SfLink>
+                                <div className="mt-3 text-sm text-secgray">
+                                    เมื่อคลิก 'ชำระเงิน' คุณยินยอมให้ทำการชำระเงินตาม <SfLink href="#" className='text-secondary no-underline'>นโยบายความเป็นส่วนตัว</SfLink> และ<SfLink href="#" className='text-secondary no-underline'>เงื่อนไขการให้บริการของทางร้าน</SfLink>
                                 </div>
                             </div>
                         </>
@@ -464,7 +507,7 @@ export default function Checkout(){
     );
 }
 
-const MoreAddresses = ({isOpen, setIsOpen, children}) => {
+const AddressDrawer = ({isOpen, setIsOpen, children, title}) => {
     const nodeRef = useRef(null);
     const drawerRef = useRef(null);
 
@@ -487,22 +530,20 @@ const MoreAddresses = ({isOpen, setIsOpen, children}) => {
                 placement='right'
                 open
                 onClose={() => setIsOpen(false)}
-                className="bg-neutral-50 z-99 md:w-[375px] w-full box-border"
+                className="bg-neutral-50 z-99 md:w-[386px] w-full box-border"
             >
                 <div className="flex h-full flex-col overflow-y-auto bg-white shadow-xl">
                     <div className="flex-1 overflow-y-auto">
-                        <div className="grid grid-cols-3 p-4 border-b">
+                        <div className="flex items-center gap-x-[10px] p-4 border-b">
                             <div className="flex h-7 items-center">
                                 <button onClick={() => setIsOpen(false)} type="button" className="-m-2 p-2 text-gray-400 hover:text-gray-500">
                                     <span className="sr-only">Close panel</span>
-                                    <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
+                                    <Icons.flipBackward />
                                 </button>
                             </div>
-                            <h2 className="text-lg font-medium text-gray-900 text-center whitespace-pre" id="slide-over-title">My Addresses</h2>
+                            <h2 className="text-base font-medium text-gray-900 text-center whitespace-pre" id="slide-over-title">{title}</h2>
                         </div>
-                        <div className="flow-root p-4">
+                        <div className="flow-root p-6">
                             {children}
                         </div>
                     </div>
@@ -532,13 +573,13 @@ function AddressOptions({
             <div className="grid grid-cols-1 gap-3">
                 {data?.message?.map(({ name: nameVal, address_title, address_line2 = null, city, state, country }) => (
                     <label key={nameVal} className="relative xs:w-full md:w-auto" onClick={() => handleSelect(nameVal)}>
-                        <div className={`cursor-pointer rounded-lg -outline-offset-2 hover:border-primary-200 hover:bg-primary-100 peer-focus:border-primary-200 peer-focus:bg-primary-100 ${value == nameVal ? "border-primary-300 bg-primary-100 outline outline-2 outline-primary-700" : ""}`}>
-                            <AddressCard title={address_title} addressLine2={address_line2} city={city} state={state === "Select One" ? null : state} country={country} />
+                        <div className={`cursor-pointer rounded-lg -outline-offset-2 hover:border-primary-200 hover:bg-primary-100 peer-focus:border-primary-200 peer-focus:bg-primary-100 bg-neutral-50`}>
+                            <AddressCard title={address_title} addressLine2={address_line2} city={city} state={state === "Select One" ? null : state} country={country} active={value === nameVal}/>
                         </div>
                     </label>
                 )).slice(0, limit || data?.message?.length)}
             </div>
-            {error && <p className="text-negative-600 mt-3 text-sm font-medium">Please select an address</p>}
+            {error && <p className="text-negative-600 mt-3 text-base font-medium">Please select an address</p>}
         </>
     );
 }

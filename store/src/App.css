@@ -49,17 +49,25 @@
   font-family:'DB Helvethaica X', sans-serif !important;
 }
 
+::-webkit-scrollbar {
+  display:none;
+}
+
 .shadow-main {
   box-shadow:0 5px 15px #00000012;
+}
+
+.checkout-shadow {
+  box-shadow: -17px 4px 28.8px 0px rgba(0, 0, 0, 0.03)
 }
 
 @layer base {
   :root {
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
-    --primary: #323334;
-    --secondary: #7869E3;
-    --text-tag: #000000;
+    --primary: #000000; /* #323334 */
+    --secondary: #4176FF;
+    --text-tag: #111111;
     --button-primary: #000000;
     --button-primary-foreground: #FFFFFF;
     --button-primary-hover: #393939;
@@ -99,11 +107,15 @@
 } */
 
 .main-section {
-  @apply max-w-[1536px] m-auto p-10
+  @apply max-w-[1400px] m-auto px-10 py-[50px] box-content
+}
+
+.main-section-single-product {
+  @apply max-w-[1218px] m-auto px-10 py-[50px] box-content
 }
 
 .main-section-small {
-  @apply max-w-[1200px] m-auto p-10
+  @apply max-w-[1113px] m-auto px-10 box-content
 }
 
 .primary-heading {
@@ -142,11 +154,11 @@
 }
 
 .product-title {
-  @apply overflow-hidden text-ellipsis pr-3 font-medium
+  @apply overflow-x-clip text-ellipsis pr-3 font-medium whitespace-pre
 }
 
 .product-desc {
-  @apply text-sm font-medium overflow-hidden text-ellipsis pr-3
+  @apply text-sm font-medium overflow-x-clip text-ellipsis pr-3 whitespace-pre
 }
 
 .product-price {
@@ -155,6 +167,34 @@
 
 .product_card:hover .product-title, .product_card:hover .product-desc, .product_card:hover .product-price {
   @apply text-black
+}
+
+.product_card:hover .product-price {
+  @apply font-medium
+}
+
+.post-gradient {
+  background: linear-gradient(45deg, 
+rgba(50,50,102,1) 0% 5%, 
+rgba(255,255,255,1) 5% 10%, 
+rgba(229,30,38,1) 10% 15%, 
+rgba(255,255,255,1) 15% 20%, 
+rgba(50,50,102,1) 20% 25%, 
+rgba(255,255,255,1) 25% 30%, 
+rgba(229,30,38,1) 30% 35%, 
+rgba(255,255,255,1) 35% 40%, 
+rgba(50,50,102,1) 40% 45%,
+rgba(255,255,255,1) 45% 50%, 
+rgba(229,30,38,1) 50% 55%, 
+rgba(255,255,255,1) 55% 60%, 
+rgba(50,50,102,1) 60% 65%, 
+rgba(255,255,255,1) 65% 70%, 
+rgba(229,30,38,1) 70% 75%, 
+rgba(255,255,255,1) 75% 80%, 
+rgba(50,50,102,1) 80% 85%, 
+rgba(255,255,255,1) 85% 90%,
+rgba(229,30,38,1) 90% 95%,
+rgba(255,255,255,1) 95% 100%)
 }
 
 @keyframes expand_search_bar {
