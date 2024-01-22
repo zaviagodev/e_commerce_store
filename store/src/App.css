@@ -53,6 +53,7 @@
   }
 
   * {
+    scroll-behavior: smooth;
     @apply font-dbx
   }
 

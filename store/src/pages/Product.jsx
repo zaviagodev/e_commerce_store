@@ -111,6 +111,8 @@ const Product = () => {
         }
       };
 
+    const imageRef = useRef(null)
+
     return (
         <main className='main-section-single-product'>
             <main className="flex flex-col lg:flex-row gap-[33px]"> {/* grid grid-cols-1 lg:grid-cols-2 */}
@@ -125,6 +127,7 @@ const Product = () => {
                     >
                         {product?.slider_images?.map((image, index) => (
                             <img
+                                onClick={() => {imageRef.current?.scrollIntoView({ behavior: 'smooth' });console.log(imageRef.current?.id)}}
                                 src={`${import.meta.env.VITE_ERP_URL ?? ''}${image}`}
                                 className="h-[134px] w-[134px] min-w-[134px] object-cover"
                                 aria-label={image}
@@ -155,11 +158,13 @@ const Product = () => {
 
                         {product?.slider_images && product.slider_images.map((image, index) => (
                             <img
+                                ref={imageRef}
                                 key={index}
                                 src={`${import.meta.env.VITE_ERP_URL ?? ''}${image}`}
                                 className="object-cover w-[500px] h-auto aspect-square"
                                 aria-label={image}
                                 alt={image}
+                                id={`img-product-${index}`}
                             />
                         ))}
                     </SfScrollable>
