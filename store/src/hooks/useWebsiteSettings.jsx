@@ -13,6 +13,7 @@ export const SettingProvider = ({ children }) => {
     const [navbarSearch, setNavbarSearch] = useState(false);
     const [showLanguagePicker, setShowLanguagePicker] = useState(false);
     const [hideFooterSignup, setHideFooterSignup] = useState(true);
+    const [defaultTaxe, setDefaultTaxe] = useState(null); 
     const [hideWish, setHideWish] = useState(true);
     const [footerItems, setFooterItems] = useState([]);
     const [topBarItems, setTopBarItems] = useState([]);
@@ -76,6 +77,7 @@ export const SettingProvider = ({ children }) => {
             setButtonLabel(data.message.button_label);
             setButtonLink(data.message.button_link);
             setTopBarItems(buildTopBarItems([...data.message.top_bar_items].sort((a, b) => a.idx - b.idx)));
+            setDefaultTaxe(data.message.default_taxe);
             document.title = data.message.app_name;
         }
     })
@@ -96,6 +98,7 @@ export const SettingProvider = ({ children }) => {
         hideWish,
         isLoading,
         buttonLabel,
+        defaultTaxe,
         buttonLink,
         mutate,
     }}>

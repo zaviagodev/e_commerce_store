@@ -42,7 +42,7 @@ import { Icons } from './icons';
   const navigate = useNavigate();
   const { cartCount, setIsOpen, loading:cartLoading } = useCart();
   const { WishCount,setIsOpen : setWishOpen } = useWish();
-  const { user } = useUser();
+  const { user,logout } = useUser();
 
     const [menu ,setMenu] = useState('Menu')
     const [group, setGroup] = useState(null)
@@ -64,6 +64,10 @@ import { Icons } from './icons';
         navigate('/login');
       }
   }
+
+  
+
+
 
   const [actionItems, setActionItems] = useState([
     {
@@ -401,6 +405,7 @@ import { Icons } from './icons';
           </nav>
 
             <nav className="flex-1 flex justify-end lg:order-last lg:ml-4">
+
               <div className="flex flex-row flex-nowrap gap-x-2 items-center">
                 {actionItems.map((actionItem) => 
                   {return actionItem.show && <SfButton
@@ -414,6 +419,22 @@ import { Icons } from './icons';
                     >
                         {actionItem.ariaLabel === 'Cart' && (
                           <SfBadge content={cartCount} className='!text-black !text-[14px] !bg-gray-300 w-4 h-4 flex items-center justify-center !p-0'/>
+
+                                )}
+                                {actionItem.ariaLabel === 'Search' && (
+                                    <SearchWithIcon className="flex" /> 
+                                )}
+                                {actionItem.ariaLabel === 'Wishlist' && (
+                                    <SfBadge content={WishCount} className='!text-black !text-[14px] !bg-[#FF8C8C] w-4 h-4 flex items-center justify-center !p-0'/>
+                                )}
+                                {actionItem.role === 'login' && (
+                                    <div className='flex items-center gap-x-[10px] border-r-2 pr-6'>
+                                      <p className="inline-flex whitespace-nowrap text-basesm font-bold" onClick={handlLoginClick}>{user?.name ?? 'Login'}</p>
+                                      {user?.name && <Icons.login onClick={logout} className='w-[22px] h-[22px]'/>}
+                                    </div>
+                                )}
+                            </SfButton>}
+
                         )}
                         {actionItem.ariaLabel === 'Search' && (
                           <SearchWithIcon className="flex" /> 

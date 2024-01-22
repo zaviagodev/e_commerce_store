@@ -219,7 +219,8 @@ export default function Checkout(){
                     <div className="flex justify-between items-center pb-6 lg:pb-0 border-b lg:border-0 lg:pl-5">
                         <p className="font-medium text-sm text-secgray">ยอดรวมทั้งหมด</p>
                         <div className='flex items-center gap-x-2'>
-                            <h1 className='font-bold lg:hidden text-sm'>{deliveryLoading ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? `฿ ${codeResult?.message?.doc?.grand_total}` :`฿ ${deliveryResult?.message?.doc?.grand_total }`  }</h1>
+
+                            <h1 className='font-bold lg:hidden text-sm'>{deliveryLoading  ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? `฿ ${codeResult?.message?.doc?.grand_total}` :`฿ ${deliveryResult?.message?.doc?.grand_total }`  }</h1>
                             <p className="text-secgray text-sm">{cartCount} ชิ้น</p>
                             <span onClick={() => setShowOrderSum(!showOrderSum)} className='lg:hidden cursor-pointer'>
                                 {showOrderSum ? <SfIconExpandLess /> : <SfIconExpandMore />}
@@ -280,7 +281,14 @@ export default function Checkout(){
                                     <div className="flex flex-col grow pr-2">
                                         <p className='text-basesm'>ยอดรวมย่อย</p>
                                         <p className="my-4 text-maingray text-basesm">ค่าจัดส่ง</p>
-                                        <p className='text-maingray text-basesm'>ภาษีสินค้า{defaultTaxe}</p>
+                                        <p className='text-maingray text-basesm'>
+                                        ภาษีสินค้า
+                                        {`(${
+                                            defaultTaxe?.rate !== 0 ? defaultTaxe?.rate+'%' : ''
+                                        } + ${
+                                            defaultTaxe?.amout !== 0 ? defaultTaxe?.amout+'฿' : ''
+                                        })`}
+                                        </p>
                                     </div>
                                     <div className="flex flex-col text-right">
                                         <p className='text-basesm'>{deliveryResult?.message?.doc?.total ? `฿${deliveryResult?.message?.doc?.total}` : `฿${getTotal()}`}</p>

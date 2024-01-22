@@ -75,7 +75,6 @@ const Home = () => {
                             <div
                                 className="grid grid-cols-1 gap-[14px] sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center"
                                 >
-                                    {console.log(settingPage.default_product_image)}
                                     {products.filter((product) => idFromUrl === 'all items' || idFromUrl === product.item_group).sort(sortOptions.find(option => option.state === true).onChange).map((product) => (
                                         <ProductCard
                                             key={product.item_code}
