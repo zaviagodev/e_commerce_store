@@ -10,12 +10,8 @@ const countries = ['Thailand', 'Pakistan', 'Germany', 'Great Britain', 'Poland',
 // const states = ['Sindh', 'Punjab', 'Balochistan', 'KPK', 'Florida', 'New York', 'Texas', 'Frankfurt', 'Berlin'];
 const states = ['กรุงเทพมหานคร', 'สมุทรปราการ', 'สมุทรสาคร', 'ปทุมธานี', 'นครปฐม', 'นนทบุรี', 'ฉะเชิงเทรา', 'พระนครศรีอยุธยา', 'สมุทรสงคราม' ,'ชลบุรี','ระยอง','ตราด','จันทบุรี','ปราจีนบุรี','เพชรบุรี','ราชบุรี']
 
-const AddressForm = ({
-    onSuccess = () => { },
-}) => {
-
+const AddressForm = ({ onFormSubmit }) => {
     const { call, isCompleted } = useFrappePostCall('headless_e_commerce.api.add_address')
-
     const formik = useFormik({
         initialValues: {
             address_title: "",
@@ -31,18 +27,21 @@ const AddressForm = ({
         },
         validationSchema: addressSchema,
         validateOnChange: false,
-        onSubmit: call
+       
     });
 
-    useEffect(() => {
-        if (isCompleted) {
-            onSuccess();
-            formik.resetForm();
+    const CreateNewAddress = () => {
+        
+        formik.validateForm()
+        if(!formik.isValid){
+            call(formik.values).then((data) => {
+                onFormSubmit(data);
+            });
         }
-    }, [isCompleted])
+    }
 
     return (
-        <form className="max-w-[950px] flex gap-3 flex-wrap text-neutral-900" onSubmit={formik.handleSubmit}>
+        <form className="max-w-[950px] flex gap-3 flex-wrap text-neutral-900" >
             {/* <h2 className="w-full typography-headline-4 md:typography-headline-3 font-bold">Billing address</h2> */}
             <div className="w-full flex-grow flex flex-col gap-0.5">
                 <label>
@@ -141,7 +140,8 @@ const AddressForm = ({
                 {/* <SfButton type="reset" variant='tertiary' className="w-full md:w-auto btn-secondary text-sm" onClick={formik.handleReset}>
                     Clear all
                 </SfButton> */}
-                <SfButton type='submit' className="w-full h-[50px] btn-primary text-base">บันทึกที่อยู่</SfButton>
+
+                <SfButton  className="w-full h-[50px] btn-primary text-base" onClick={() => CreateNewAddress()}>บันทึกที่อยู่</SfButton>
             </div>
         </form>
     )

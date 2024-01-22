@@ -27,12 +27,13 @@ import MyAddresses from "./pages/MyAddresses";
 const Layer = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    if(window.location.pathname == "/store/")
-    {
-      navigate("/home/all items")
+    const currentPath = window.location.pathname;
+    const formattedPath = currentPath.replace(/\/+$/, '');
+    if (formattedPath === '/store') {
+      navigate('/home/all items');
     }
-
-  }, [])
+  
+  }, [navigate]);
   return (
     <>
       {window.location.pathname.includes('/checkout') || window.location.pathname.includes('/thankyou') ? null : <NavHeader />}

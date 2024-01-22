@@ -10,6 +10,8 @@ import * as Yup from 'yup';
 export default function Login() {
     const { login, register } = useUser();
     const [loginState, setLoginState] = useState(true);
+    const [apiResponse, setapiResponse] = useState('');
+
     const navigate = useNavigate();
     const {
         currentUser,
@@ -18,15 +20,10 @@ export default function Login() {
 
     const getValidationSchema = () => {
         let schema = {
-            usr: Yup.string()
-            .min(3, 'Must be 3 characters or more')
-            .max(40, 'Must be 40 characters or less')
-            .email('Invalid email address')
-            .required('Required'),
-        pwd: Yup.string()
-            .min(4, 'Must be 4 characters or more')
-            .max(20, 'Must be 20 characters or less')
-            .required('Required'),
+            pwd: Yup.string()
+                .min(4, 'Must be 4 characters or more')
+                .max(20, 'Must be 20 characters or less')
+                .required('Required'),
         };
         if (!loginState) {
             schema['email'] = Yup.string().email('Invalid email address').required('Required');
@@ -37,26 +34,34 @@ export default function Login() {
 
     const formik = useFormik({
         initialValues: {
-            usr: 'Administrator',
+            usr: '',
             email: '',
-            pwd: 'toor',
+            pwd: '',
             pwd_confirm: ''
         },
         validationSchema: getValidationSchema(),
         onSubmit: (values) => {
             if (loginState == false) {
-                 register(values.usr,values.email , values.pwd).then((data) => {
-                    if(data.message == 'Logged In')
-                    {
-                        navigate("/home/all items")
+                 register(values.email,values.pwd).then((data) => {
+
+                    if(data.message.message == 'Logged In'){
+                        setLoginState(true);
+                        setapiResponse('Registered successfully, Please Login');
+                        //navigate("/home/all items")
                     }
+                    else{
+                        setapiResponse(data.message[1]);
+                    }
+                    
                 })
 
             }else{
                  login(values.usr, values.pwd ).then((data) => {
-                    if(data.message == 'Logged In')
-                    {
+                    if(data.message == 'No App'){
                         navigate("/home/all items")
+                    }
+                    else{
+                        setapiResponse(data.message);
                     }
                 });
             }
@@ -67,34 +72,46 @@ export default function Login() {
         if (getToken() || currentUser) {
             navigate("/home/all items");
         }
-        if(loginState || !loginState){
-            formik.validateForm();
-        }
-    }, [ currentUser,  loginState ])
+        formik.validateForm();
+    }, [ currentUser,  loginState,formik.errors ])
 
     const handleLoginState = () => {
         setLoginState(!loginState);
+        setapiResponse('');
     }
 
     return (
         <main className='main-section'>
         <form className="flex gap-4 flex-wrap text-neutral-900 text-start text-big" onSubmit={formik.handleSubmit}>
             <h2 className="mb-4 primary-heading text-primary text-center w-full">{loginState ? 'Sign in' : 'Register'}</h2>
-            <label className="w-full flex flex-col gap-0.5">
-                <span className="typography-text-sm  font-medium">Email</span>
-                <SfInput name="usr" autoComplete="usr" required onChange={formik.handleChange} value={formik.values.usr} />
-                <p className='text-negative-800 text-sm'>{formik.errors.usr}</p>
-            </label>
-            {loginState == false &&  <label className="w-full flex flex-col gap-0.5">
+
+            <h2 className="mb-4 primary-heading text-primary text-center w-full"> {apiResponse}</h2>
+           
+            
+            
+            {loginState == true && 
+                <label className="w-full flex flex-col gap-0.5">
+                    <span className="typography-text-sm  font-medium">Email</span>
+                    <SfInput name="usr" autoComplete="usr" required onChange={formik.handleChange} value={formik.values.usr} />
+                    <p className='text-negative-800 text-sm'>{formik.errors.usr}</p>
+                </label>
+            }
+            
+            
+            {loginState == false && 
+             <label className="w-full flex flex-col gap-0.5">
                 <span className="typography-text-sm  font-medium">Email</span>
                 <SfInput name="email" autoComplete="email" required onChange={formik.handleChange} value={formik.values.email} />
                 <p className='text-negative-800 text-sm'>{formik.errors.email}</p>
             </label>}
+
+
             <label className="w-full flex flex-col gap-0.5 flex flex-col gap-0.5">
                 <span className="typography-text-sm font-medium">Password</span>
                 <SfInput name="pwd" type='password' autoComplete="given-password" required onChange={formik.handleChange} value={formik.values.pwd} />
                 <p className='text-negative-800 text-sm'>{formik.errors.pwd}</p>
             </label>
+
             {loginState == false && 
             <label className="w-full flex flex-col gap-0.5 flex flex-col gap-0.5">
                 <span className="typography-text-sm font-medium">Confirm password</span>
