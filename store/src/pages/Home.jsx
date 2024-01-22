@@ -56,7 +56,6 @@ const Home = () => {
                 ): (
                     <Skeleton className='h-10 w-[200px] mx-auto mb-[53px]'/>
                 )}
-
                     {products.length > 0 ? (
                         <div>
                             <div className='flex items-center justify-between mb-4'>

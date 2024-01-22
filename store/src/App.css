@@ -3,52 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family:graphikTH;
-  src: url('../src/fonts/graphikTH/GraphikTH-Bold-2_1.woff');
-  font-weight:700
-}
-
-@font-face {
-  font-family:graphikTH;
-  src: url('../src/fonts/graphikTH/graphikth-medium-1_1.woff');
-  font-weight:500
-}
-
-@font-face {
-  font-family:graphikTH;
-  src: url('../src/fonts/graphikTH/graphikth-regular-2_1.woff');
-  font-weight:400
-}
-
-@font-face {
-  font-family:graphikTH;
-  src: url('../src/fonts/graphikTH/GraphikThai-Semibold-Web-1_1.woff');
-  font-weight:600
-}
-
-@font-face {
-  font-family:'DB Helvethaica X';
-  src: url('../src/fonts/DB Helvethaica X/DB Helvethaica X Bd v3.2.ttf');
-  font-weight:700
-}
-
-@font-face {
-  font-family:'DB Helvethaica X';
-  src: url('../src/fonts/DB Helvethaica X/DB Helvethaica X Med v3.2.ttf');
-  font-weight:500
-}
-
-@font-face {
-  font-family:'DB Helvethaica X';
-  src: url('../src/fonts/DB Helvethaica X/DB Helvethaica X v3.2.ttf');
-  font-weight:400
-}
-
-* {
-  font-family:'DB Helvethaica X', sans-serif !important;
-}
-
 ::-webkit-scrollbar {
   display:none;
 }
@@ -62,6 +16,46 @@
 }
 
 @layer base {
+  @font-face {
+    font-family:graphikTH;
+    src: url('../src/fonts/graphikTH/GraphikTH-Bold-2_1.woff');
+    font-weight:700
+  }
+  @font-face {
+    font-family:graphikTH;
+    src: url('../src/fonts/graphikTH/graphikth-medium-1_1.woff');
+    font-weight:500
+  }
+  @font-face {
+    font-family:graphikTH;
+    src: url('../src/fonts/graphikTH/graphikth-regular-2_1.woff');
+    font-weight:400
+  }
+  @font-face {
+    font-family:graphikTH;
+    src: url('../src/fonts/graphikTH/GraphikThai-Semibold-Web-1_1.woff');
+    font-weight:600
+  }
+  @font-face {
+    font-family:'DB Helvethaica X';
+    src: url('../src/fonts/DB Helvethaica X/DB Helvethaica X Bd v3.2.ttf');
+    font-weight:700
+  }
+  @font-face {
+    font-family:'DB Helvethaica X';
+    src: url('../src/fonts/DB Helvethaica X/DB Helvethaica X Med v3.2.ttf');
+    font-weight:500
+  }
+  @font-face {
+    font-family:'DB Helvethaica X';
+    src: url('../src/fonts/DB Helvethaica X/DB Helvethaica X v3.2.ttf');
+    font-weight:400
+  }
+
+  * {
+    @apply font-dbx
+  }
+
   :root {
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
