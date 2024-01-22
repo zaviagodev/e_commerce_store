@@ -428,33 +428,18 @@ import { Icons } from './icons';
                                     <SfBadge content={WishCount} className='!text-black !text-[14px] !bg-[#FF8C8C] w-4 h-4 flex items-center justify-center !p-0'/>
                                 )}
                                 {actionItem.role === 'login' && (
-                                    <div className='flex items-center gap-x-[10px] border-r-2 pr-6'>
-                                      <p className="inline-flex whitespace-nowrap text-basesm font-bold" onClick={handlLoginClick}>{user?.name ?? 'Login'}</p>
-                                      {user?.name && <Icons.login onClick={logout} className='w-[22px] h-[22px]'/>}
-                                    </div>
+                                  <>
+                                    {typeof user?.name !== 'undefined' ? (
+                                      <div className='flex items-center gap-x-[10px] border-r-2 pr-6'>
+                                        <p className="inline-flex whitespace-nowrap text-basesm font-bold" onClick={handlLoginClick}>{user?.name ?? 'Login'}</p>
+                                        {user?.name && <Icons.login onClick={logout} className='w-[22px] h-[22px]'/>}
+                                      </div>
+                                    ) : (
+                                      <Skeleton className='h-6 w-[100px]'/>
+                                    )}
+                                  </>
                                 )}
                             </SfButton>}
-
-                        )}
-                        {actionItem.ariaLabel === 'Search' && (
-                          <SearchWithIcon className="flex" /> 
-                        )}
-                        {actionItem.ariaLabel === 'Wishlist' && (
-                          <SfBadge content={WishCount} className='!text-black !text-[14px] !bg-[#FF8C8C] w-4 h-4 flex items-center justify-center !p-0'/>
-                        )}
-                        {actionItem.role === 'login' && (
-                          <>
-                            {typeof user?.name !== 'undefined' ? (
-                              <div className='flex items-center gap-x-[10px] border-r-2 pr-6'>
-                                <p className="inline-flex whitespace-nowrap text-basesm font-bold" onClick={handlLoginClick}>{user?.name ?? 'Login'}</p>
-                                {user?.name && <Icons.login className='w-[22px] h-[22px]'/>}
-                              </div>
-                            ) : (
-                              <Skeleton className='h-6 w-[100px]'/>
-                            )}
-                          </>
-                        )}
-                    </SfButton>}
                   )}
               </div>
             </nav>
