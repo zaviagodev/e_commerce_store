@@ -92,6 +92,10 @@ const Home = () => {
                         </div>
                     ) : (
                         <div className='flex flex-col gap-y-2'>
+                            <div className='flex justify-between mb-4'>
+                                <Skeleton className='h-9 w-[100px]'/>
+                                <Skeleton className='h-9 w-[100px]'/>
+                            </div>
                             <div className='grid grid-cols-1 gap-[14px] sm:grid-cols-2 lg:grid-cols-4 place-items-center w-full h-full'>
                                 <Skeleton className='h-full w-full aspect-square'/>
                                 <Skeleton className='h-full w-full aspect-square'/>

@@ -113,13 +113,20 @@ const Product = () => {
 
     const imageRef = useRef(null)
 
+    const scrollToImage = (index) => {
+        const targetImage = document.getElementById(`img-product-${index}`)
+        if (targetImage){
+            targetImage.scrollIntoView({behavior: 'smooth'})
+        }
+    }
+
     return (
         <main className='main-section-single-product'>
             <main className="flex flex-col lg:flex-row gap-[33px]"> {/* grid grid-cols-1 lg:grid-cols-2 */}
                 {product?.website_image?.length > 0 ? (
                 <div className="relative flex w-full gap-x-4">
                     <SfScrollable
-                        className="relative [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] !gap-y-4"
+                        className="relative [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] !gap-y-4 sticky top-4"
                         direction="vertical"
                         buttonsPlacement="none"
                         drag={{ containerWidth: true }}
@@ -127,13 +134,12 @@ const Product = () => {
                     >
                         {product?.slider_images?.map((image, index) => (
                             <img
-                                onClick={() => {imageRef.current?.scrollIntoView({ behavior: 'smooth' });console.log(imageRef.current?.id)}}
+                                onClick={() => scrollToImage(index)}
                                 src={`${import.meta.env.VITE_ERP_URL ?? ''}${image}`}
                                 className="h-[134px] w-[134px] min-w-[134px] object-cover"
                                 aria-label={image}
                                 alt={image}
-                                id={`img-product-${index}`}
-                                key={`img-product-${index}`}
+                                key={index}
                             />
                         ))}
                     </SfScrollable>
@@ -159,7 +165,7 @@ const Product = () => {
                         {product?.slider_images && product.slider_images.map((image, index) => (
                             <img
                                 ref={imageRef}
-                                key={index}
+                                key={`img-product-${index}`}
                                 src={`${import.meta.env.VITE_ERP_URL ?? ''}${image}`}
                                 className="object-cover w-[500px] h-auto aspect-square"
                                 aria-label={image}
@@ -171,14 +177,19 @@ const Product = () => {
                 </div>
                 ) : (<Skeleton className='aspect-square w-full h-full'/>)}
 
-                <section className="w-full px-10 py-[30px] lg:max-w-[536px]">
+                <section className="w-full px-10 py-[30px] lg:max-w-[536px] h-full sticky top-0">
                     <div className='flex flex-col gap-y-[14px]'>
                         {product !== undefined ? (
                         <>
                             <h2 className='text-secgray text-sm font-medium leading-[9px]'>หมวดหมู่สินค้า</h2>
-                            <h1 className="font-bold text-texttag text-lg">{product?.item_name}</h1>
+                            <h1 className="font-bold text-texttag text-lg leading-8">{product?.web_item_name}</h1>
                         </>
-                        ) : (<Skeleton className='h-4 w-[300px]'/>)}
+                        ) : (
+                            <>
+                                <Skeleton className='h-4 w-[300px]'/>
+                                <Skeleton className='h-4 w-full'/>
+                            </>
+                        )}
                         {product !== undefined ? (
                             <span className='flex flex-row items-center justify-start gap-2 mb-4'>
                                 <strong className={`block typography-headline-3 text-base ${product?.formatted_mrp ? 'text-destructive' : 'text-primary'}`}>{product?.formatted_price}</strong>
@@ -192,9 +203,10 @@ const Product = () => {
                     ) : (<Skeleton className='h-10 w-[300px] mt-2 mb-[60px]'/>)}
 
                     <div className="pb-6 border-gray-200 border-b">
-                        {product !== undefined ? (<div className="items-start flex flex-col gap-y-[14px]">
+                        <div className="items-start flex flex-col gap-y-[14px]">
                             {!hideCheckout && <div className="flex flex-col items-stretch xs:items-center xs:inline-flex">
-                                <div className="flex bg-[#F3F3F3] rounded-xl items-center">
+                                {product !== undefined ? (
+                                    <div className="flex bg-[#F3F3F3] rounded-xl items-center">
                                     <SfButton
                                         type="button"
                                         variant="tertiary"
@@ -231,39 +243,42 @@ const Product = () => {
                                         <Icons.plus color='#979797'/>
                                     </SfButton>
                                 </div>
+                                ) : (
+                                    <Skeleton className='h-[50px] w-[111px]'/>
+                                )}
                             </div>}
-                            <p className='text-basesm'>รับ Cashback สูงถึง ฿ 105 เมื่อเป็นสมาชิก</p>
+                            {product !== undefined ? <p className='text-basesm'>รับ Cashback สูงถึง ฿ 105 เมื่อเป็นสมาชิก</p> : <Skeleton className='h-5 w-3/4'/>}
                             <div className='flex items-center gap-x-[10px] w-full'>
                                 {product !== undefined || loading ? (                                
                                     <>
                                         <SfButton disabled={loading || !product?.in_stock}  onClick={handleClickCart} type="button" size="lg" className="w-full btn-primary flex items-center gap-x-[10px] rounded-xl h-[50px]">
-                                            <Icons.shoppingBag01 color='white' className='w-[22px] h-[22px]'/>
+                                            <Icons.shoppingBag01 color={loading || !product?.in_stock ? '#a1a1aa' : 'white'} className='w-[22px] h-[22px]'/>
                                             {product?.in_stock ? buttonLabel : 'Sold out'}
                                         </SfButton>
+                                        {!hideWish && <SfButton
+                                            onClick={handleWish} 
+                                            type="button"
+                                            variant="tertiary"
+                                            size="sm"
+                                            square
+                                            className="bg-white z-50 border-2 border-black p-[10px] rounded-xl w-[57px] min-w-[57px] h-[50px]"
+                                            aria-label="Add to wishlist"
+                                        >
+                                            {Wish[product?.item_code] == 1 ? (
+                                                <Icons.heart className='w-6 h-6' fill='black'/>
+                                            ) : (
+                                                <Icons.heart className='w-6 h-6' />
+                                            )}
+                                        </SfButton>}
                                     </>
                                 ) : (
+                                    <>
                                     <Skeleton className='h-[50px] w-full'/>
+                                    <Skeleton className='h-[50px] w-[57px]'/>
+                                    </>
                                 )}
-
-                                {!hideWish && <SfButton
-                                    onClick={handleWish} 
-                                    type="button"
-                                    variant="tertiary"
-                                    size="sm"
-                                    square
-                                    className="bg-white z-50 border-2 border-black p-[10px] rounded-xl w-[57px] min-w-[57px] h-[50px]"
-                                    aria-label="Add to wishlist"
-                                >
-                                    {Wish[product?.item_code] == 1 ? (
-                                        <Icons.heart className='w-6 h-6' fill='black'/>
-                                    ) : (
-                                        <Icons.heart className='w-6 h-6' />
-                                    )}
-                                </SfButton>}
                             </div>
-                        </div>) : (
-                            <Skeleton className='h-12 w-full'/>
-                        )}
+                        </div>
                     </div>
                     <div>
                         {product !== undefined ? (
@@ -317,8 +332,6 @@ const Product = () => {
                 <div
                     className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 place-items-center"
                     >
-
-         
                         {products
                         .filter((productz) => productz?.item_group === product?.item_group)
                         .slice(0, 4)
