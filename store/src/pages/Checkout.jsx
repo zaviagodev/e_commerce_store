@@ -462,7 +462,7 @@ export default function Checkout(){
                                                 className='checked:bg-black !border border-primary flex hidden'
                                                 onChange={() => {
                                                     setCheckedState(name);
-                                                    formik.setFieldValue('shipping_method', value);
+                                                    formik.setFieldValue('shipping_method', name);
                                                     ApplyDeliveryFee({'shipping_rule' : name })
                                                 }}
                                                 />
