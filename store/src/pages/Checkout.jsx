@@ -200,35 +200,17 @@ export default function Checkout(){
         <main className='main-section-small'>
             <div className='grid grid-cols-1 lg:grid-cols-2 justify-center gap-x-10'>
                 <div className='w-full py-5 pr-10'>
-                    <div className='flex items-center gap-x-4 mb-16 h-10'>
-                        <div onClick={() => navigate(-1)} className='cursor-pointer'>
-                            <Icons.flipBackward color='#A9A9A9'/>
-                        </div>
-                        {appLogo === null ? (
-                            <Skeleton className='h-8 w-[120px]'/>
-                        ) : (
-                            <picture>
-                            <source srcSet={appLogo ? `${import.meta.env.VITE_ERP_URL ?? ''}${appLogo}` : defaultLogo} media="(min-width: 768px)" />
-                            <img
-                                src={appLogo ? `${import.meta.env.VITE_ERP_URL ?? ''}${appLogo}` : defaultLogo}
-                                alt="Sf Logo"
-                                className='max-h-10'
-                            />
-                            </picture>
-                        )}
-                    </div>
-                    <div className="flex justify-between items-center pb-6 lg:pb-0 border-b lg:border-0 lg:pl-5">
-                        <p className="font-medium text-sm text-secgray">ยอดรวมทั้งหมด</p>
-                        <div className='flex items-center gap-x-2'>
-                            <h1 className='font-bold lg:hidden text-sm'>{deliveryLoading  ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? `฿ ${codeResult?.message?.doc?.grand_total}` :`฿ ${deliveryResult?.message?.doc?.grand_total }`  }</h1>
-                            <p className="text-secgray text-sm">{cartCount} ชิ้น</p>
-                            <span onClick={() => setShowOrderSum(!showOrderSum)} className='lg:hidden cursor-pointer'>
-                                {showOrderSum ? <SfIconExpandLess /> : <SfIconExpandMore />}
-                            </span>
-                        </div>
-                    </div>
+              
+                
+
+                
                     <div className={`${showOrderSum ? 'block' : 'hidden'} lg:!block lg:px-5`}>
-                        <h1 className='text-[56px] font-bold pt-6 hidden lg:block leading-5'>{deliveryLoading  ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total}` : 'Change address' : `฿ ${codeResult?.message?.doc?.grand_total}`  }</h1>
+                        <h1 className='text-[56px] font-bold pt-6 hidden lg:block leading-5'>{deliveryLoading  ? <Skeleton className='h-8 w-[100px]'/> : `฿ ${deliveryResult?.message?.doc?.base_grand_total}` }</h1>
+                       {/*
+                        <h1 className='text-[56px] font-bold pt-6 hidden lg:block leading-5'>{deliveryLoading  ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? `฿ ${codeResult?.message?.doc?.base_grand_total}` :`฿ ${deliveryResult?.message?.doc?.base_grand_total }`  }</h1>
+                        */} 
+                        
+                        
                         <div className="flex flex-col typography-text-basesm pt-16 pb-6">
                             {cartCount > 0 ? (
                                 <ul className='flex flex-col gap-y-4'>
@@ -285,10 +267,8 @@ export default function Checkout(){
                                         ภาษีสินค้า
                                         {`(${
                                             defaultTaxe?.rate !== 0 ? defaultTaxe?.rate+'%' : ''
-                                        } ${
-                                            defaultTaxe?.rate !== 0 && defaultTaxe?.amout !== 0 ? '+' : ''
-                                        } ${
-                                            defaultTaxe?.amout !== 0 ? +defaultTaxe?.amout+'฿' : ''
+                                        } + ${
+                                            defaultTaxe?.amout !== 0 ? defaultTaxe?.amout+'฿' : ''
                                         })`}
                                         </p>
                                     </div>
@@ -349,7 +329,7 @@ export default function Checkout(){
                             ) : (
                                 <div className="flex justify-between typography-headline-4 md:typography-headline-3 py-4 lg:pt-4 lg:ml-[69px] border-y lg:border-b-0 mt-4 font-medium">
                                     <p className='text-basesm'>ยอดชำระเงินทั้งหมด</p>
-                                    <p className='text-basesm'>{typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total}` : 'Your address is not supported' : `฿ ${codeResult?.message?.doc?.grand_total}`}</p>
+                                    <p className='text-basesm'>{typeof codeResult?.message?.doc?.grand_total == 'undefined' ? `฿ ${deliveryResult?.message?.doc?.grand_total}` : `฿ ${codeResult?.message?.doc?.grand_total}`}</p>
                                 </div>
                             )}
                         {/* <SfInput
