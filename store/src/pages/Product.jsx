@@ -119,7 +119,7 @@ const Product = () => {
                 {product?.website_image?.length > 0 ? (
                 <div className="relative flex w-full gap-x-4">
                     <SfScrollable
-                        className="relative [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] !gap-y-4"
+                        className="relative [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] !gap-y-4 sticky top-4"
                         direction="vertical"
                         buttonsPlacement="none"
                         drag={{ containerWidth: true }}
@@ -127,13 +127,12 @@ const Product = () => {
                     >
                         {product?.slider_images?.map((image, index) => (
                             <img
-                                onClick={() => {imageRef.current?.scrollIntoView({ behavior: 'smooth' });console.log(imageRef.current?.id)}}
+                                onClick={() => imageRef.current?.scrollIntoView({ behavior: 'smooth' })}
                                 src={`${import.meta.env.VITE_ERP_URL ?? ''}${image}`}
                                 className="h-[134px] w-[134px] min-w-[134px] object-cover"
                                 aria-label={image}
                                 alt={image}
-                                id={`img-product-${index}`}
-                                key={`img-product-${index}`}
+                                key={index}
                             />
                         ))}
                     </SfScrollable>
@@ -159,7 +158,7 @@ const Product = () => {
                         {product?.slider_images && product.slider_images.map((image, index) => (
                             <img
                                 ref={imageRef}
-                                key={index}
+                                key={`img-product-${index}`}
                                 src={`${import.meta.env.VITE_ERP_URL ?? ''}${image}`}
                                 className="object-cover w-[500px] h-auto aspect-square"
                                 aria-label={image}
@@ -176,7 +175,7 @@ const Product = () => {
                         {product !== undefined ? (
                         <>
                             <h2 className='text-secgray text-sm font-medium leading-[9px]'>หมวดหมู่สินค้า</h2>
-                            <h1 className="font-bold text-texttag text-lg">{product?.item_name}</h1>
+                            <h1 className="font-bold text-texttag text-lg leading-8">{product?.item_name}</h1>
                         </>
                         ) : (<Skeleton className='h-4 w-[300px]'/>)}
                         {product !== undefined ? (
@@ -237,7 +236,7 @@ const Product = () => {
                                 {product !== undefined || loading ? (                                
                                     <>
                                         <SfButton disabled={loading || !product?.in_stock}  onClick={handleClickCart} type="button" size="lg" className="w-full btn-primary flex items-center gap-x-[10px] rounded-xl h-[50px]">
-                                            <Icons.shoppingBag01 color='white' className='w-[22px] h-[22px]'/>
+                                            <Icons.shoppingBag01 color={loading || !product?.in_stock ? '#a1a1aa' : 'white'} className='w-[22px] h-[22px]'/>
                                             {product?.in_stock ? buttonLabel : 'Sold out'}
                                         </SfButton>
                                     </>
@@ -317,8 +316,6 @@ const Product = () => {
                 <div
                     className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 place-items-center"
                     >
-
-         
                         {products
                         .filter((productz) => productz?.item_group === product?.item_group)
                         .slice(0, 4)

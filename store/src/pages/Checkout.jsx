@@ -104,7 +104,7 @@ export default function Checkout(){
     }, [ user?.name]);
 
     const { getByItemCode } = useProducts()
-    const { cart, cartCount, getTotal, resetCart } = useCart();
+    const { cart, cartCount, getTotal, resetCart, loading:cartLoading } = useCart();
 
     const cartContents = useMemo(() => {
         return Object.entries(cart).reduce((acc, [item_code]) => {
@@ -216,54 +216,65 @@ export default function Checkout(){
                             </picture>
                         )}
                     </div>
-                    <div className="flex justify-between items-center pb-6 lg:pb-0 border-b lg:border-0 lg:pl-5">
+                    {!deliveryLoading ? (
+                        <div className="flex justify-between items-center pb-6 lg:pb-0 border-b lg:border-0 lg:pl-5">
                         <p className="font-medium text-sm text-secgray">ยอดรวมทั้งหมด</p>
                         <div className='flex items-center gap-x-2'>
 
-                            <h1 className='font-bold lg:hidden text-sm'>{deliveryLoading  ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? `฿ ${codeResult?.message?.doc?.grand_total}` :`฿ ${deliveryResult?.message?.doc?.grand_total }`  }</h1>
+                            <h1 className='font-bold lg:hidden text-sm'>{deliveryLoading ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? `฿ ${codeResult?.message?.doc?.grand_total || 0}` : `฿ ${deliveryResult?.message?.doc?.grand_total || 0}`  }</h1>
                             <p className="text-secgray text-sm">{cartCount} ชิ้น</p>
                             <span onClick={() => setShowOrderSum(!showOrderSum)} className='lg:hidden cursor-pointer'>
                                 {showOrderSum ? <SfIconExpandLess /> : <SfIconExpandMore />}
                             </span>
                         </div>
                     </div>
+                    ) : (
+                        <div className='flex justify-between lg:pl-5'>
+                            <Skeleton className='h-4 w-[100px]'/>
+                            <Skeleton className='h-4 w-[100px]'/>
+                        </div>
+                    )}
                     <div className={`${showOrderSum ? 'block' : 'hidden'} lg:!block lg:px-5`}>
-                        <h1 className='text-[56px] font-bold pt-6 hidden lg:block leading-5'>{deliveryLoading  ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? `฿ ${codeResult?.message?.doc?.grand_total}` :`฿ ${deliveryResult?.message?.doc?.grand_total }`  }</h1>
+                        <h1 className='text-[56px] font-bold pt-6 hidden lg:block leading-5'>{deliveryLoading ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? `฿ ${codeResult?.message?.doc?.grand_total || 0}` :`฿ ${deliveryResult?.message?.doc?.grand_total || 0}`  }</h1>
                         <div className="flex flex-col typography-text-basesm pt-16 pb-6">
-                            {cartCount > 0 ? (
-                                <ul className='flex flex-col gap-y-4'>
-                                    {Object.entries(cart).map(([itemCode]) => {
-                                        const product = getByItemCode(itemCode)
-                                        return (
-                                        <li key={itemCode} className="flex pb-5">
-                                            <div className="h-[53px] w-[53px] flex-shrink-0 overflow-hidden">
-                                                <img src={`${import.meta.env.VITE_ERP_URL || ""}${product?.website_image}`} alt={product?.item_name} className="h-full w-full object-cover object-center" />
-                                            </div>
-
-                                            <div className="ml-4 flex flex-1 flex-col">
-                                                <div className="flex justify-between text-basesm text-gray-900 font-medium">
-                                                    <h3 className='text-texttag pr-8'>{product?.web_item_name}</h3>
-                                                    <p className='whitespace-pre'>{product?.formatted_price}</p>
+                        {cartCount > 0 && (
+                            <ul className='flex flex-col gap-y-4'>
+                                {Object.entries(cart).map(([itemCode]) => {
+                                    const product = getByItemCode(itemCode)
+                                    return (
+                                    <>
+                                        {product ? (
+                                            <li key={itemCode} className="flex pb-5">
+                                                <div className="h-[53px] w-[53px] flex-shrink-0 overflow-hidden">
+                                                    <img src={`${import.meta.env.VITE_ERP_URL || ""}${product?.website_image}`} alt={product?.item_name} className="h-full w-full object-cover object-center" />
                                                 </div>
 
-                                                <div className="flex justify-between text-basesm text-maingray font-medium">
-                                                    {cart[itemCode]} ชิ้น
+                                                <div className="ml-4 flex flex-1 flex-col">
+                                                    <div className="flex justify-between text-basesm text-gray-900 font-medium">
+                                                        <h3 className='text-texttag pr-8'>{product?.web_item_name}</h3>
+                                                        <p className='whitespace-pre'>{product?.formatted_price}</p>
+                                                    </div>
+
+                                                    <div className="flex justify-between text-basesm text-maingray font-medium">
+                                                        {cart[itemCode]} ชิ้น
+                                                    </div>
                                                 </div>
+                                            </li>
+                                        ) : (
+                                            <div className='flex justify-between mb-4'>
+                                                <div className='flex gap-x-2'>
+                                                    <Skeleton className='h-[53px] w-[53px]'/>
+                                                    <Skeleton className='h-4 w-[100px]'/>
+                                                </div>
+                                                <Skeleton className='h-4 w-[100px]'/>
                                             </div>
-                                        </li>
-                                        )
-                                    })}
-                                </ul>
-                            ) : (
-                                <div className='flex justify-between mb-4'>
-                                    <div className='flex gap-x-2'>
-                                        <Skeleton className='h-[53px] w-[53px]'/>
-                                        <Skeleton className='h-4 w-[100px]'/>
-                                    </div>
-                                    <Skeleton className='h-4 w-[100px]'/>
-                                </div>
-                            )}
-                            {deliveryLoading  ? (
+                                        )}
+                                    </>
+                                    )
+                                })}
+                            </ul>
+                        )}
+                            {deliveryLoading ? (
                                 <div className='flex justify-between lg:ml-[69px] pt-3 border-t'>
                                     <div className="flex flex-col gap-y-6 grow pr-2">
                                         <Skeleton className='h-4 w-[100px]'/>
@@ -283,15 +294,17 @@ export default function Checkout(){
                                         <p className="my-4 text-maingray text-basesm">ค่าจัดส่ง</p>
                                         <p className='text-maingray text-basesm'>
                                         ภาษีสินค้า
-                                        {`(${
-                                            defaultTaxe?.rate !== 0 ? defaultTaxe?.rate+'%' : ''
-                                        } + ${
-                                            defaultTaxe?.amout !== 0 ? defaultTaxe?.amout+'฿' : ''
-                                        })`}
+                                        {defaultTaxe && (
+                                            <>{`(${
+                                                defaultTaxe?.rate !== 0 ? defaultTaxe?.rate+'%' : ''
+                                            } + ${
+                                                defaultTaxe?.amout !== 0 ? defaultTaxe?.amout+'฿' : ''
+                                            })`}</>
+                                        )}
                                         </p>
                                     </div>
                                     <div className="flex flex-col text-right">
-                                        <p className='text-basesm'>{deliveryResult?.message?.doc?.total ? `฿${deliveryResult?.message?.doc?.total}` : `฿${getTotal()}`}</p>
+                                        <p className='text-basesm'>{deliveryResult?.message?.doc?.total ? `฿${deliveryResult?.message?.doc?.total || 0}` : `฿${getTotal()}`}</p>
                                         <p className="my-4 text-basesm text-maingray">
                                             {deliveryResult?.message?.doc?.total_taxes_and_charges ? `฿${deliveryResult?.message?.doc?.total_taxes_and_charges}` : "฿0"}
                                         </p>
@@ -301,7 +314,7 @@ export default function Checkout(){
                             )}
                     </div>
                         <div className='lg:ml-[69px]'>
-                            {!loading ? (codeResult ? (
+                            {!deliveryLoading ? (codeResult ? (
                                 <div className='flex flex-col gap-y-2'>
                                     <div className="flex items-center justify-between">
                                         <div className='bg-neutral-100 rounded-md p-[10px] flex items-center gap-x-2 text-base'>
@@ -347,7 +360,7 @@ export default function Checkout(){
                             ) : (
                                 <div className="flex justify-between typography-headline-4 md:typography-headline-3 py-4 lg:pt-4 lg:ml-[69px] border-y lg:border-b-0 mt-4 font-medium">
                                     <p className='text-basesm'>ยอดชำระเงินทั้งหมด</p>
-                                    <p className='text-basesm'>{typeof codeResult?.message?.doc?.grand_total == 'undefined' ? `฿ ${deliveryResult?.message?.doc?.grand_total}` : `฿ ${codeResult?.message?.doc?.grand_total}`}</p>
+                                    <p className='text-basesm'>{typeof codeResult?.message?.doc?.grand_total == 'undefined' ? `฿ ${deliveryResult?.message?.doc?.grand_total || 0}` : `฿ ${codeResult?.message?.doc?.grand_total || 0}`}</p>
                                 </div>
                             )}
                         {/* <SfInput
@@ -363,52 +376,61 @@ export default function Checkout(){
                 <form className="w-full flex flex-col gap-10 text-neutral-900 p-[60px] pt-[7.75em] min-h-screen checkout-shadow">
                     {cartContents.hasNormalItem ? (
                         <>
-                            {addressList?.message?.length > 0 ? (
-                                <>
-                                    <div className='w-full flex flex-col gap-y-2'>
-                                        <label className="w-full">
-                                            <legend className="mb-8 font-bold text-darkgray text-base">ข้อมูลการจัดส่ง</legend>
-                                            <div className='flex flex-col gap-y-2'>
-                                                <h2 className="font-medium text-basesm text-secgray">ที่อยู่*</h2>
-                                                <div className='border rounded-lg bg-neutral-50 overflow-hidden'>
-                                                    <a className='p-6 flex items-center justify-between w-full cursor-pointer' onClick={() => setMoreAddresses(true)}>
-                                                        <div className='flex items-center gap-x-2'>
-                                                            <Icons.marketPin04 color='#666666'/>
-                                                            <span className='text-basesm font-medium text-darkgray'>เพิ่ม / เลือกที่อยู่การจัดส่ง</span>
-                                                        </div>
-                                                        <SfIconArrowForward />
-                                                    </a>
-                                                    {(formik.values.billing_address && !addNewAddress) && (
-                                                        <>
-                                                            <div className='p-6 pt-0'>
-                                                                {addressList?.message?.filter(address => address.name === formik.values.billing_address).map(a => (
-                                                                    <div className='flex flex-col'>
-                                                                        <h2 className='font-semibold text-base mb-2'>{a.address_title}</h2>
-                                                                        <p className='text-base'>{a.city}</p>
-                                                                        <p className='text-base'>{a.state}</p>
-                                                                        <p className='text-base'>{a.country}</p>
-                                                                    </div>
-                                                                ))}
+                            {addressList ? (
+                                <>{addressList?.message?.length > 0 ? (
+                                    <>
+                                        <div className='w-full flex flex-col gap-y-2'>
+                                            <label className="w-full">
+                                                <legend className="mb-8 font-bold text-darkgray text-base">ข้อมูลการจัดส่ง</legend>
+                                                <div className='flex flex-col gap-y-2'>
+                                                    <h2 className="font-medium text-basesm text-secgray">ที่อยู่*</h2>
+                                                    <div className='border rounded-lg bg-neutral-50 overflow-hidden'>
+                                                        <a className='p-6 flex items-center justify-between w-full cursor-pointer' onClick={() => setMoreAddresses(true)}>
+                                                            <div className='flex items-center gap-x-2'>
+                                                                <Icons.marketPin04 color='#666666'/>
+                                                                <span className='text-basesm font-medium text-darkgray'>เพิ่ม / เลือกที่อยู่การจัดส่ง</span>
                                                             </div>
-                                                            <div className='h-3 w-full post-gradient'/>
-                                                        </>
-                                                    )}
+                                                            <SfIconArrowForward />
+                                                        </a>
+                                                        {(formik.values.billing_address && !addNewAddress) && (
+                                                            <>
+                                                                <div className='p-6 pt-0'>
+                                                                    {addressList?.message?.filter(address => address.name === formik.values.billing_address).map(a => (
+                                                                        <div className='flex flex-col'>
+                                                                            <h2 className='font-semibold text-base mb-2'>{a.address_title}</h2>
+                                                                            <p className='text-base'>{a.city}</p>
+                                                                            <p className='text-base'>{a.state}</p>
+                                                                            <p className='text-base'>{a.country}</p>
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                                <div className='h-3 w-full post-gradient'/>
+                                                            </>
+                                                        )}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </label>
-                                    </div>
-                                    <AddressDrawer isOpen={moreAddresses} setIsOpen={setMoreAddresses} title='เลือกที่อยู่'>
-                                        <AddressOptions
-                                            onChange={value => {formik.setFieldValue('billing_address', value); }}
-                                            value={formik.values.billing_address}
-                                            error={formik.errors.billing_address}
-                                            randomKey={randomKey}
-                                            onClick={() => {setMoreAddresses(false);setAddNewAddress(false)}}
-                                        />
-                                        <SfButton className='btn-primary w-full text-base mt-9 h-[50px]' variant='tertiary' onClick={handleAddNewAddress}>เพิ่มที่อยู่ใหม่</SfButton>
-                                    </AddressDrawer>
-                                </>
-                            ) : <NewAddressForm />}
+                                            </label>
+                                        </div>
+                                        <AddressDrawer isOpen={moreAddresses} setIsOpen={setMoreAddresses} title='เลือกที่อยู่'>
+                                            <AddressOptions
+                                                onChange={value => {formik.setFieldValue('billing_address', value); }}
+                                                value={formik.values.billing_address}
+                                                error={formik.errors.billing_address}
+                                                randomKey={randomKey}
+                                                onClick={() => {setMoreAddresses(false);setAddNewAddress(false)}}
+                                            />
+                                            <SfButton className='btn-primary w-full text-base mt-9 h-[50px]' variant='tertiary' onClick={handleAddNewAddress}>เพิ่มที่อยู่ใหม่</SfButton>
+                                        </AddressDrawer>
+                                    </>
+                                ) : <NewAddressForm />}</>
+                            ) : (
+                                <div className='flex flex-col gap-y-2'>
+                                    <Skeleton className='h-6 w-full'/>
+                                    <Skeleton className='h-6 w-full'/>
+                                    <Skeleton className='h-6 w-full'/>
+                                </div>
+                            )}
+
                             {addNewAddress && (
                                 <NewAddressForm />
                             )}
@@ -475,7 +497,11 @@ export default function Checkout(){
                                     </div>
                                 </AddressDrawer>
                                 </>
-                                ) : <SfLoaderCircular/>}
+                                ) : <div className='flex flex-col gap-y-2'>
+                                    <Skeleton className='h-6 w-full'/>
+                                    <Skeleton className='h-6 w-full'/>
+                                    <Skeleton className='h-6 w-full'/>
+                                </div>}
                                 {cartContents.hasGiftItem && (
                                     <label className="w-full">
                                         <span className="pb-1 text-base font-medium text-neutral-900 font-body">Select Branch for Redemption</span>
@@ -487,15 +513,24 @@ export default function Checkout(){
                                         />
                                     </label>
                                 )}
-                            <PaymentMethods onChange={value => formik.setFieldValue('payment_method', value)} value={formik.values.payment_method} error={formik.errors.payment_method} />
-                            <div className='w-full'>
-                                <SfButton size="lg" className="w-full btn-primary text-base h-[50px] rounded-lg" onClick={formik.handleSubmit}>
-                                    ชำระเงิน
-                                </SfButton>
-                                <div className="mt-3 text-sm text-secgray">
-                                    เมื่อคลิก 'ชำระเงิน' คุณยินยอมให้ทำการชำระเงินตาม <SfLink href="#" className='text-secondary no-underline'>นโยบายความเป็นส่วนตัว</SfLink> และ<SfLink href="#" className='text-secondary no-underline'>เงื่อนไขการให้บริการของทางร้าน</SfLink>
+                            {!shippingRuleLoading && addressList ? (
+                                <>
+                                    <PaymentMethods onChange={value => formik.setFieldValue('payment_method', value)} value={formik.values.payment_method} error={formik.errors.payment_method} />
+                                    <div className='w-full'>
+                                        <SfButton size="lg" className="w-full btn-primary text-base h-[50px] rounded-lg" onClick={formik.handleSubmit}>
+                                            ชำระเงิน
+                                        </SfButton>
+                                        <div className="mt-3 text-sm text-secgray">
+                                            เมื่อคลิก 'ชำระเงิน' คุณยินยอมให้ทำการชำระเงินตาม <SfLink href="#" className='text-secondary no-underline'>นโยบายความเป็นส่วนตัว</SfLink> และ<SfLink href="#" className='text-secondary no-underline'>เงื่อนไขการให้บริการของทางร้าน</SfLink>
+                                        </div>
+                                    </div>
+                                </>
+                            ) : (
+                                <div className='flex flex-col gap-y-2'>
+                                    <Skeleton className='h-[50px] w-full'/>
+                                    <Skeleton className='h-4 w-full'/>
                                 </div>
-                            </div>
+                            )}
                         </>
                     ) : (
                         <div className='flex flex-col gap-y-8'>

@@ -65,10 +65,6 @@ import { Icons } from './icons';
       }
   }
 
-  
-
-
-
   const [actionItems, setActionItems] = useState([
     {
       icon: <></>,
@@ -392,49 +388,51 @@ import { Icons } from './icons';
           </Link>
           <nav>
             <ul className='flex flex-row gap-4 items-center justify-center font-bold'>
-              {topBarItems.map((item) => {
-                if (item.is_product_list) return productList(item.label)
-                else return recursiveBuild(item)
-              })}
+              {!isLoading ? (
+                <>{topBarItems.map((item) => {
+                  if (item.is_product_list) return productList(item.label)
+                  else return recursiveBuild(item)
+                })}</>
+              ) : (
+                <Skeleton className='h-8 w-[200px]'/>
+              )}
             </ul>
           </nav>
 
             <nav className="flex-1 flex justify-end lg:order-last lg:ml-4">
 
               <div className="flex flex-row flex-nowrap gap-x-2 items-center">
-                {actionItems.map((actionItem) => 
-                  {return actionItem.show && <SfButton
-                        key={actionItem.ariaLabel}
-                        className="relative rounded-md text-black hover:bg-primary-100 active:bg-primary-200 hover:text-primary-600 active:text-primary-700"
-                        aria-label={actionItem.ariaLabel}
-                        variant="tertiary"
-                        square
-                        slotPrefix={actionItem.icon}
-                        onClick={actionItem.onClick}
-                    >
-                        {actionItem.ariaLabel === 'Cart' && (
-                          <SfBadge content={cartCount} className='!text-black !text-[14px] !bg-gray-300 w-4 h-4 flex items-center justify-center !p-0'/>
-                        )}
-                        {actionItem.ariaLabel === 'Search' && (
-                          <SearchWithIcon className="flex" /> 
-                        )}
-                        {actionItem.ariaLabel === 'Wishlist' && (
-                          <SfBadge content={WishCount} className='!text-black !text-[14px] !bg-[#FF8C8C] w-4 h-4 flex items-center justify-center !p-0'/>
-                        )}
-                        {actionItem.role === 'login' && (
-                          <>
-                            {typeof user?.name !== 'undefined' ? (
-                              <div className='flex items-center gap-x-[10px] border-r-2 pr-6'>
-                                <p className="inline-flex whitespace-nowrap text-basesm font-bold" onClick={handlLoginClick}>{user?.name ?? 'Login'}</p>
-                                {user?.name && <Icons.login className='w-[22px] h-[22px]'/>}
-                              </div>
-                            ) : (
-                              <Skeleton className='h-6 w-[100px]'/>
-                            )}
-                          </>
-                        )}
-                    </SfButton>}
-                  )}
+                {!isLoading ? (
+                  <>{actionItems.map((actionItem) => 
+                    {return actionItem.show && <SfButton
+                          key={actionItem.ariaLabel}
+                          className="relative rounded-md text-black hover:bg-primary-100 active:bg-primary-200 hover:text-primary-600 active:text-primary-700"
+                          aria-label={actionItem.ariaLabel}
+                          variant="tertiary"
+                          square
+                          slotPrefix={actionItem.icon}
+                          onClick={actionItem.onClick}
+                      >
+                          {actionItem.ariaLabel === 'Cart' && (
+                            <SfBadge content={cartCount} className='!text-black !text-[14px] !bg-gray-300 w-4 h-4 flex items-center justify-center !p-0'/>
+                          )}
+                          {actionItem.ariaLabel === 'Search' && (
+                            <SearchWithIcon className="flex" /> 
+                          )}
+                          {actionItem.ariaLabel === 'Wishlist' && (
+                            <SfBadge content={WishCount} className='!text-black !text-[14px] !bg-[#FF8C8C] w-4 h-4 flex items-center justify-center !p-0'/>
+                          )}
+                          {actionItem.role === 'login' && (
+                            <div className='flex items-center gap-x-[10px] border-r-2 pr-6'>
+                              <p className="inline-flex whitespace-nowrap text-basesm font-bold" onClick={handlLoginClick}>{user?.name ?? 'Login'}</p>
+                              {user?.name && <Icons.login className='w-[22px] h-[22px]'/>}
+                            </div>
+                          )}
+                      </SfButton>}
+                    )}</>
+                ) : (
+                  <Skeleton className='h-8 w-[200px]'/>
+                )}
               </div>
             </nav>
           </div>
