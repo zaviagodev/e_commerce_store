@@ -32,15 +32,16 @@ const AddressForm = ({ onFormSubmit }) => {
     });
 
     const CreateNewAddress = (e) => {
+        console.log(e);
         e.preventDefault()
         setIsSaving(true)
         formik.validateForm()
-        if(!formik.isValid){
+        //if(!formik.isValid){
             call(formik.values).then((data) => {
                 onFormSubmit(data);
                 setIsSaving(false)
             });
-        }
+        //}
     }
 
     return (

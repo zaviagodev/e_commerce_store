@@ -7,6 +7,11 @@ import { SfIconAdd } from '@storefront-ui/react'
 const MyAddresses = () => {
   const [addNewAddress, setAddNewAddress] = useState(false)
   const [randomKey, setrandomKey] = useState(0)
+  const UpdateAddresses = () => {
+    setAddNewAddress(false);
+    setrandomKey(randomKey + 1);
+    setMoreAddresses(true);
+}
 
   return (
     <MyAccountSection>
@@ -18,7 +23,7 @@ const MyAddresses = () => {
               <h2 className="font-bold text-neutral-900 text-base">New address</h2>
               <a className='text-sm hover:underline cursor-pointer inline-block font-medium' onClick={() => setAddNewAddress(false)}>Cancel</a>
             </div>
-            <AddressForm onSuccess={() => setrandomKey(randomKey + 1)} />
+            <AddressForm onFormSubmit={() => UpdateAddresses() } />
           </div>
         ) : (
           <div className='border p-3 flex gap-x-2 items-center cursor-pointer rounded-lg mb-3 text-sm font-medium' onClick={() => setAddNewAddress(true)}>
