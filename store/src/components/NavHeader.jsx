@@ -66,6 +66,7 @@ import { Icons } from './icons';
   }
 
   const  handleLogout = () => {
+    console.log('logout');
     logout();
   }
   
