@@ -55,6 +55,12 @@ export default function Checkout(){
             };
             deleteCouponAsync();
             ApplyDeliveryFee({'shipping_rule' : shippingRules[0].name })
+
+            formik.setFieldValue('billing_address', addressList.message[0].name);
+
+            //console.log(addressList.message[0]);
+            
+
             setCheckedState(shippingRules[0].name);
             formik.setFieldValue('shipping_method', shippingRules[0].name) 
         }
