@@ -425,7 +425,7 @@ import { Icons } from './icons';
                           {actionItem.role === 'login' && (
                             <div className='flex items-center gap-x-[10px] border-r-2 pr-6'>
                               <p className="inline-flex whitespace-nowrap text-basesm font-bold" onClick={handlLoginClick}>{user?.name ?? 'Login'}</p>
-                              {user?.name && <Icons.login className='w-[22px] h-[22px]'/>}
+                              {user?.name && <Icons.login onClick={logout} className='w-[22px] h-[22px]'/>}
                             </div>
                           )}
                       </SfButton>}

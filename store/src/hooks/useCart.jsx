@@ -31,14 +31,31 @@ export const CartProvider = ({ children }) => {
     const { getByItemCode } = useProducts()
 
     useEffect(() => {
+        const synchronizeCart = async () => {
+            const fetchedCart = await getProductsCodeInCart();
+        
+            // Create a new cart object
+            let newCart = {};
+        
+            // For each item in the local cart, if it's in the fetched cart, keep it
+            for (let id in cart) {
+              if (fetchedCart.includes(id)) {
+
+                newCart[id] = cart[id];
+              }
+            }
+        
+            // Set the local cart to the new cart
+            localStorage.setItem('cart', JSON.stringify(newCart))
+            setCart(newCart);
+          };
         // get cart state from local storage
         if(products.length == 0) return
         if(!result && !loading )
         {
             if(!verifyCart(cart) && error?.httpStatus !== 403 )
             {
-                resetBackEndCart()
-                updateCart(cart)
+                synchronizeCart();
             }
         }
     }, [products])

@@ -55,9 +55,13 @@ export default function Checkout(){
             };
             deleteCouponAsync();
             ApplyDeliveryFee({'shipping_rule' : shippingRules[0].name })
-            setCheckedState(shippingRules[0].name)
+
+            formik.setFieldValue('billing_address', addressList?.message[0]?.name);
+
+            setCheckedState(shippingRules[0].name);
+            formik.setFieldValue('shipping_method', shippingRules[0].name) 
         }
-    }, [deliveryResult, deliveryError, shippingRuleLoading, shippingRules])
+    }, [deliveryResult, deliveryError, shippingRuleLoading, shippingRules,addressList])
 
     useEffect(() => {
         clearTimeout(errorTimer.current);
@@ -95,7 +99,7 @@ export default function Checkout(){
         CheckPromoCode({"applied_code" : inputValue, "applied_referral_sales_partner" : false}) // change refereer here when we have it
       };
 
-    const { user } = useUser();
+    const { user } =  useUser();
     const navigate = useNavigate();
     useEffect(() => {
       if (!getToken() && !user?.name) {
@@ -198,6 +202,7 @@ export default function Checkout(){
         <main className='main-section-small'>
             <div className='grid grid-cols-1 lg:grid-cols-2 justify-center gap-x-10'>
                 <div className='w-full py-5 pr-10'>
+
                     <div className='flex items-center gap-x-4 mb-16 h-10'>
                         <div onClick={() => navigate(-1)} className='cursor-pointer'>
                             <Icons.flipBackward color='#A9A9A9'/>
@@ -485,6 +490,7 @@ export default function Checkout(){
                                                 className='checked:bg-black !border border-primary flex hidden'
                                                 onChange={() => {
                                                     setCheckedState(name);
+                                                    formik.setFieldValue('shipping_method', name);
                                                     ApplyDeliveryFee({'shipping_rule' : name })
                                                 }}
                                                 />
