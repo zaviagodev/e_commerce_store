@@ -178,7 +178,7 @@ const Product = () => {
                 ) : (<Skeleton className='aspect-square w-full h-full'/>)}
 
                 <section className="w-full px-10 py-[30px] lg:max-w-[536px] h-full sticky top-0">
-                    <div className='flex flex-col gap-y-[14px]'>
+                    <div className='flex flex-col gap-y-[10px]'>
                         {product !== undefined ? (
                         <>
                             <h2 className='text-secgray text-sm font-medium leading-[9px]'>หมวดหมู่สินค้า</h2>
@@ -191,8 +191,8 @@ const Product = () => {
                             </>
                         )}
                         {product !== undefined ? (
-                            <span className='flex flex-row items-center justify-start gap-2 mb-4'>
-                                <strong className={`block typography-headline-3 text-base ${product?.formatted_mrp ? 'text-destructive' : 'text-primary'}`}>{product?.formatted_price}</strong>
+                            <span className='flex flex-row items-center justify-start gap-2 mb-3'>
+                                <span className={`block typography-headline-3 font-medium text-base ${product?.formatted_mrp ? 'text-destructive' : 'text-primary'}`}>{product?.formatted_price}</span>
                                 {product?.formatted_mrp && <span className="block text-maingray typography-headline-3 line-through font-medium text-base">{product?.formatted_mrp}</span>}
                             </span>
                         ) : (<Skeleton className='h-4 w-[100px] mt-2'/>)}
@@ -327,8 +327,8 @@ const Product = () => {
             </main>
         
             {products?.length > 0 ? (
-                <section className='pt-20'>
-                <h1 className='mb-8 text-primary text-center text-xl font-bold'>สินค้าที่คุณอาจสนใจ</h1>
+                <section className='pt-[140px]'>
+                <h1 className='mb-8 text-primary text-xl font-medium'>สินค้าที่คุณอาจสนใจ</h1>
                 <div
                     className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 place-items-center"
                     >
@@ -351,7 +351,7 @@ const Product = () => {
                 </div>
             </section>
             ) : (
-            <div className='flex flex-col gap-y-2 mt-20'>
+            <div className='flex flex-col gap-y-2 mt-[140px]'>
                 <div className='grid grid-cols-1 gap-[14px] sm:grid-cols-2 lg:grid-cols-4 place-items-center w-full h-full'>
                     <Skeleton className='h-full w-full aspect-square'/>
                     <Skeleton className='h-full w-full aspect-square'/>

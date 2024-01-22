@@ -168,6 +168,10 @@
   @apply font-medium
 }
 
+.atc_btn_image,.atc_btn_image:hover {
+  box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.03);
+}
+
 .post-gradient {
   background: linear-gradient(45deg, 
 rgba(50,50,102,1) 0% 5%, 
