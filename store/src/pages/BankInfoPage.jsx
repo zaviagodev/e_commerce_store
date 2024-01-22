@@ -15,8 +15,6 @@ const BankInfoPage = () => {
       { title:'Total', info:`฿${searchParams.get("amount")}`}
     ]
 
-    console.log(appLogo)
-
     return (
         <div className='pt-10 w-full'>
             <div className='max-w-[549px] mx-auto flex flex-col gap-y-9 p-8 border border-neutral-50 rounded-[30px]'>
@@ -26,7 +24,7 @@ const BankInfoPage = () => {
                     <img
                         src={appLogo ? `${import.meta.env.VITE_ERP_URL ?? ''}${appLogo}` : defaultLogo}
                         alt="Sf Logo"
-                        // className='max-h-8'
+                        className='max-h-10'
                     />
                     </picture>
                 </div>

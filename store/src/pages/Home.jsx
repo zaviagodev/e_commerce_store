@@ -51,7 +51,12 @@ const Home = () => {
     return (
         <>
             <main className='main-section'>
-              <h1 className="mb-[53px] text-primary text-center text-xl font-medium">{idFromUrl}</h1>
+                {products.length > 0 ? (
+                    <h1 className="mb-[53px] text-primary text-center text-xl font-medium">{idFromUrl}</h1>
+                ): (
+                    <Skeleton className='h-10 w-[200px] mx-auto mb-[53px]'/>
+                )}
+
                     {products.length > 0 ? (
                         <div>
                             <div className='flex items-center justify-between mb-4'>
