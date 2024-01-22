@@ -280,7 +280,14 @@ export default function Checkout(){
                                     <div className="flex flex-col grow pr-2">
                                         <p className='text-basesm'>ยอดรวมย่อย</p>
                                         <p className="my-4 text-maingray text-basesm">ค่าจัดส่ง</p>
-                                        <p className='text-maingray text-basesm'>ภาษีสินค้า{defaultTaxe}</p>
+                                        <p className='text-maingray text-basesm'>
+                                        ภาษีสินค้า
+                                        {`(${
+                                            defaultTaxe?.rate !== 0 ? defaultTaxe?.rate+'%' : ''
+                                        } + ${
+                                            defaultTaxe?.amout !== 0 ? defaultTaxe?.amout+'฿' : ''
+                                        })`}
+                                        </p>
                                     </div>
                                     <div className="flex flex-col text-right">
                                         <p className='text-basesm'>{deliveryResult?.message?.doc?.total ? `฿${deliveryResult?.message?.doc?.total}` : `฿${getTotal()}`}</p>

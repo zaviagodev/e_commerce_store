@@ -17,6 +17,10 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}', './node_modules/@storefront-ui/react/**/*.{js,mjs}'],
   theme: {
     extend: {
+      fontFamily: {
+        'graphikTH': ['graphikTH', 'sans-serif'],
+        'db-helvethaica-x': ['DB Helvethaica X', 'sans-serif']
+      },
       height: {
         15: '3.75rem'
       },
