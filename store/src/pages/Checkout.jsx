@@ -177,7 +177,6 @@ export default function Checkout(){
         setMoreAddresses(true);
     }
 
-
     const NewAddressForm = () => {
         return (
             <label className="w-full">
@@ -424,10 +423,12 @@ export default function Checkout(){
                                     </>
                                 ) : <NewAddressForm />}</>
                             ) : (
-                                <div className='flex flex-col gap-y-2'>
-                                    <Skeleton className='h-6 w-full'/>
-                                    <Skeleton className='h-6 w-full'/>
-                                    <Skeleton className='h-6 w-full'/>
+                                <div>
+                                    <Skeleton className='h-5 w-[100px] mb-8'/>
+                                    <div className='flex flex-col gap-y-2'>
+                                        <Skeleton className='h-5 w-[60px]'/>
+                                        <Skeleton className='h-[72px] w-full'/>
+                                    </div>
                                 </div>
                             )}
 
@@ -497,11 +498,12 @@ export default function Checkout(){
                                     </div>
                                 </AddressDrawer>
                                 </>
-                                ) : <div className='flex flex-col gap-y-2'>
-                                    <Skeleton className='h-6 w-full'/>
-                                    <Skeleton className='h-6 w-full'/>
-                                    <Skeleton className='h-6 w-full'/>
-                                </div>}
+                                ) : (
+                                    <div className='flex flex-col gap-y-2'>
+                                        <Skeleton className='h-5 w-[100px]'/>
+                                        <Skeleton className='h-[118px] w-full'/>
+                                    </div>
+                                )}
                                 {cartContents.hasGiftItem && (
                                     <label className="w-full">
                                         <span className="pb-1 text-base font-medium text-neutral-900 font-body">Select Branch for Redemption</span>
@@ -526,9 +528,18 @@ export default function Checkout(){
                                     </div>
                                 </>
                             ) : (
-                                <div className='flex flex-col gap-y-2'>
-                                    <Skeleton className='h-[50px] w-full'/>
-                                    <Skeleton className='h-4 w-full'/>
+                                <div>
+                                    <div className='flex flex-col gap-y-2 mb-10'>
+                                        <Skeleton className='h-5 w-[100px]'/>
+                                        <div className='flex gap-x-4'>
+                                            <Skeleton className='h-[58px] w-full'/>
+                                            <Skeleton className='h-[58px] w-full'/>
+                                        </div>
+                                    </div>
+                                    <div className='flex flex-col gap-y-2'>
+                                        <Skeleton className='h-[50px] w-full'/>
+                                        <Skeleton className='h-4 w-full'/>
+                                    </div>
                                 </div>
                             )}
                         </>
