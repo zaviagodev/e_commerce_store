@@ -42,7 +42,7 @@ import { Icons } from './icons';
   const navigate = useNavigate();
   const { cartCount, setIsOpen } = useCart();
   const { WishCount,setIsOpen : setWishOpen } = useWish();
-  const { user } = useUser();
+  const { user,logout } = useUser();
 
     const [menu ,setMenu] = useState('Menu')
     const [group, setGroup] = useState(null)
@@ -64,6 +64,14 @@ import { Icons } from './icons';
         navigate('/login');
       }
   }
+
+  const  handleLogout = () => {
+    console.log('logout');
+    logout();
+  }
+  
+
+
 
   const [actionItems, setActionItems] = useState([
     {
@@ -420,7 +428,7 @@ import { Icons } from './icons';
                                 {actionItem.role === 'login' && (
                                     <div className='flex items-center gap-x-[10px] border-r-2 pr-6'>
                                       <p className="inline-flex whitespace-nowrap text-basesm font-bold" onClick={handlLoginClick}>{user?.name ?? 'Login'}</p>
-                                      {user?.name && <Icons.login className='w-[22px] h-[22px]'/>}
+                                      {user?.name && <Icons.login onClick={handleLogout} className='w-[22px] h-[22px]'/>}
                                     </div>
                                 )}
                             </SfButton>}
