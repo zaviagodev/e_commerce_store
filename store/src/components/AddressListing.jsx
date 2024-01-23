@@ -13,10 +13,11 @@ const AddressListing = ({ randomKey = 0 }) => {
                     <AddressCard
                         title={address.address_title}
                         addressLine1={address.address_line1}
-                        addressLine2={address.address_line2}
                         city={address.city}
                         state={address.state === "Select One" ? null : address.state}
+                        postcode={address.pincode}
                         country={address.country}
+                        phone={address.phone}
                     />
                     {/* <div className='absolute top-0 left-0 flex gap-1 px-1 py-1'>
                         <SfBadge
