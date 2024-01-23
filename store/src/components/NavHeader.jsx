@@ -381,7 +381,7 @@ import { Icons } from './icons';
                 <img
                     src={appLogo ? `${import.meta.env.VITE_ERP_URL ?? ''}${appLogo}` : defaultLogo}
                     alt="Sf Logo"
-                    className='max-h-10'
+                    className='max-h-[43px]'
                 />
                 </picture>
             )}

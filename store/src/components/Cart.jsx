@@ -108,10 +108,12 @@ const Cart = () => {
                             </div>
                         </div>
                         {isLoading ? (
-                            <div className='flex flex-col gap-y-2 p-6'>
-                                <Skeleton className='h-6 w-full'/>
-                                <Skeleton className='h-6 w-full'/>
-                                <Skeleton className='h-6 w-full'/>
+                            <div className='flex gap-x-2 p-6'>
+                                <Skeleton className='h-[90px] min-w-[90px]'/>
+                                <div className='flex justify-between w-full'>
+                                    <Skeleton className='h-4 w-[100px]'/>
+                                    <Skeleton className='h-4 w-10'/>
+                                </div>
                             </div>
                         ) : (
                             <>

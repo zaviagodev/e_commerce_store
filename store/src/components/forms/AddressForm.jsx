@@ -80,7 +80,7 @@ const AddressForm = ({ onFormSubmit }) => {
                         onChange={formik.handleChange}
                         value={formik.values.address_line1}
                         invalid={formik.errors.address_line1}
-                        placeholder='ที่อยู่ 1 *'
+                        placeholder='บ้านเลขที่ , ซอย , หมู่ , ถนน , แขวง/ตำบล *'
                         disabled={isSaving}
                     />
                 </label>

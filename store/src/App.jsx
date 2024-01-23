@@ -23,7 +23,6 @@ import Wish from "./components/Wish";
 import { SettingProvider } from "./hooks/useWebsiteSettings";
 import MyAddresses from "./pages/MyAddresses";
 
-
 const Layer = () => {
   const navigate = useNavigate();
   useEffect(() => {

@@ -47,11 +47,15 @@ export default {
       gridTemplateColumns: {
         auto: 'auto auto auto'
       },
+      boxShadow: {
+        custom: '0px 3px 5px 0px rgba(0, 0, 0, 0.03)'
+      },
       colors: {
         maingray: '#858585',
         secgray: '#979797',
         darkgray: '#595959',
         lightgray: '#F3F3F3',
+        linkblack: '#111111',
         primary: 'var(--primary)',
         secondary: 'var(--secondary)',
         texttag: 'var(--text-tag)',
