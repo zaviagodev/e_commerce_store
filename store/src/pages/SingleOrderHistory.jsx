@@ -12,7 +12,7 @@ import { Skeleton } from "../components/Skeleton";
 function SingleorderHistory() {
     const id = useParams().id;
     const {getOrderByOrderCode, Order} = useOrder();
-    const {getByItemCode, products} = useProducts();
+    const {getByItemCode, products, settingPage} = useProducts();
     const [loading, setLoading] = useState(true)
     const [order, setOrder] = useState({})
     const [itemsList, setItemsList] = useState([])
@@ -23,7 +23,7 @@ function SingleorderHistory() {
         {title:'Order Status:',value:order.status},
         {title:'Order Total:',value:`฿${order.base_total}`},
         {title:'Order Date:',value:`${new Date(order.creation).getDate()} ${month[new Date(order.creation).getMonth()]}, ${new Date(order.creation).getHours()}:${new Date(order.creation).getMinutes() < 10 ? '0' + new Date(order.creation).getMinutes(): new Date(order.creation).getMinutes()}`},
-        {title:'Shipping Phone:',value:order.custom_phone_number}
+        // {title:'Shipping Phone:',value:order.custom_phone_number}
     ]
 
     /* 
@@ -40,7 +40,7 @@ function SingleorderHistory() {
     const PurchasedList = ({name, company, status, creation, image, price}) => {
         return (
           <div className="w-full flex gap-x-4">
-              {image ? <img src={image} className="w-24 h-32"/> : <SfThumbnail size="lg" className="bg-gray-100 h-32 w-24"/>}
+              {image ? <img src={image} className="w-24 h-24"/> : <SfThumbnail size="lg" className="bg-gray-100 h-24 w-24"/>}
               <div className="flex flex-col gap-y-1 w-full">
                 <div className="flex items-center justify-between">
                   <h2 className="font-medium text-sm">{name}</h2>
@@ -66,6 +66,8 @@ function SingleorderHistory() {
             setAdress(order.address_display.split('<br>'))
         }
     }, [Order, products,order])
+
+    console.log(itemsList.length)
 
     return (  
         <MyAccountSection>
@@ -107,18 +109,18 @@ function SingleorderHistory() {
                 <div className="flex flex-col gap-y-4">
                     <h2 className="text-base font-bold text-primary">Purchased items</h2>
                     <div className="grid grid-cols-1 gap-4 place-items-center">
-                        {!loading ? itemsList.map(product => (
-                            <PurchasedList name={product.web_item_name} image={product.website_image ? product.website_image : "https://storage.googleapis.com/sfui_docs_artifacts_bucket_public/production/sneakers.png"} price={product.formatted_price}/>
-                        )): (itemsList.map(p => (
+                        {itemsList.length > 0 ? itemsList.map(product => (
+                            <PurchasedList name={product.web_item_name} image={product.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`} price={product.formatted_price}/>
+                        )): itemsList.map(p => (
                                 <div className='flex justify-between w-full'>
                                     <div className='flex gap-x-2'>
-                                    <Skeleton className='h-32 w-24'/>
+                                    <Skeleton className='h-24 w-24'/>
                                     <Skeleton className='h-4 w-[200px]'/>
                                     </div>
                                     <Skeleton className='h-4 w-16'/>
                                 </div>
                             ))
-                        )}
+                        }
                     </div>
                 </div>
                 <div className="flex justify-center gap-x-2">
