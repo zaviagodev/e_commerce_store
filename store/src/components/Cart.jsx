@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom';
 import { Icons } from './icons';
 import { Skeleton } from './Skeleton';
+import { useFrappePostCall } from 'frappe-react-sdk';
 
 const Cart = () => {
     const { cart, cartCount, addToCart, removeFromCart, getTotal, isOpen, setIsOpen, loading } = useCart()
@@ -16,6 +17,7 @@ const Cart = () => {
     const drawerRef = useRef(null);
     const { getByItemCode, isLoading } = useProducts()
     const navigate = useNavigate()
+    const { call, isCompleted } = useFrappePostCall('webshop.webshop.api.update_cart')
 
     // Ajouter un état pour l'intervalle
     const [intervalId, setIntervalId] = useState(null);
@@ -65,6 +67,12 @@ const Cart = () => {
     const stopIncreasing = () => {
         clearInterval(intervalId);
         setIntervalId(null);
+    };
+
+    const handlecheckout = () => {
+        call({"cart":cart}).then(() => {
+            navigate("/checkout");
+        });
     };
 
     
@@ -232,7 +240,7 @@ const Cart = () => {
                                 <p>฿ {getTotal()}</p>
                             </div>
                             <div className='flex flex-col gap-y-4'>
-                                <SfButton className="w-full btn-primary h-[50px] flex items-center gap-x-[10px] rounded-xl" disabled={cartCount == 0} onClick={() => { setIsOpen(false); navigate("/checkout"); }}>
+                                <SfButton className="w-full btn-primary h-[50px] flex items-center gap-x-[10px] rounded-xl" disabled={cartCount == 0} onClick={() => { setIsOpen(false);handlecheckout(); }}>
                                     ชำระเงิน
                                     <Icons.shoppingBag01 color='white' className='w-[22px] h-[22px]'/>
                                 </SfButton>  
