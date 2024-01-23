@@ -51,7 +51,7 @@ export default function Checkout(){
     })
 
 
-    const { isLoading:checkoutinfo } = useFrappeGetCall('webshop.webshop.shopping_cart.cart.get_cart_quotation', undefined, `checkout-${randomKey}`,{
+    const { isLoading:checkoutinfo, mutate :updatecartinfo } = useFrappeGetCall('webshop.webshop.shopping_cart.cart.get_cart_quotation', undefined, `checkout-${randomKey}`,{
         onSuccess: (data) => setGetcheckout(data.message)
     })
 
@@ -457,7 +457,7 @@ export default function Checkout(){
                                                 onChange={(value) => {
                                                     formik.setFieldValue('billing_address', value); 
                                                     ApplyAddress({'address_name' : value,'address_type' : 'billing' });
-                                                    reset();
+                                                    updatecartinfo();
                                                 }}
                                                 value={formik.values.billing_address}
                                                 error={formik.errors.billing_address}
