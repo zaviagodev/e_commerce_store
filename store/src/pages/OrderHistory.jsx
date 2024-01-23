@@ -79,12 +79,12 @@ function OrderHistory() {
                       </tr>
                     </thead>
                     <tbody>
-                      {filteredData.slice(0, selectedShow).map(({name, status, base_total, company, items, creation}) => (
+                      {filteredData.slice(0, selectedShow).map(({name, status, grand_total, company, items, creation}) => (
                         <tr className="border-b">
                           <td className="py-6 text-sm w-1/3">{name}-{}{company}</td>
                           <td className="py-6 text-sm w-1/6">{`${new Date(creation).getDate()} ${month[new Date(creation).getMonth()]}, ${new Date(creation).getHours()}:${new Date(creation).getMinutes() < 10 ? '0' + new Date(creation).getMinutes(): new Date(creation).getMinutes() }`}</td>
                           <td className="py-6 text-sm w-1/6">{status}</td>
-                          <td className="py-6 text-sm w-1/6">฿{base_total}</td>
+                          <td className="py-6 text-sm w-1/6">฿{grand_total}</td>
                           <td className="py-6 text-sm text-right w-1/6">
                             <Link to={`/order-history/${name}`} className=''>View Details</Link>
                           </td>
