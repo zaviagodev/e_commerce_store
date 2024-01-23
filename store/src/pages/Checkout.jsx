@@ -35,14 +35,26 @@ export default function Checkout(){
     const [showOrderSum, setShowOrderSum] = useState(true)
     const [moreAddresses, setMoreAddresses] = useState(false)
     const [morePayments, setMorePayments] = useState(false)
+    const [getcheckout, setGetcheckout] = useState([])
 
     const {appName, appLogo,defaultTaxe ,hideLogin, hideCheckout, navbarSearch, topBarItems, hideWish, isLoading} = useSetting()
     const {call : CheckPromoCode, loading, error : codeError, result : codeResult, reset, isCompleted : PromoCompleted } = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_coupon_code');
     const {call : ApplyDeliveryFee, loading : deliveryLoading, result : deliveryResult, error : deliveryError} = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_shipping_rule');
+
+
     const {isLoading : shippingRuleLoading, } = useFrappeGetCall('webshop.webshop.api.get_shipping_methods',undefined, `shippingRules`, {
         isOnline: () => shippingRules.length === 0,
         onSuccess: (data) => setShippingRules(data.message)
     })
+
+
+    const { isLoading:checkoutinfo } = useFrappeGetCall('webshop.webshop.shopping_cart.cart.get_cart_quotation', undefined, `checkout-${randomKey}`,{
+        isOnline: () => getcheckout.length === 0,
+        onSuccess: (data) => setGetcheckout(data.message)
+    })
+
+
+
     const {call : deleteCoupon, loading : deleteLoading, result : deleteResult, error : deleteError} = useFrappePostCall('webshop.webshop.shopping_cart.cart.remove_coupon_code');
 
     const { data:addressList } = useFrappeGetCall('headless_e_commerce.api.get_addresses', null, `addresses-${randomKey}`)
@@ -50,6 +62,8 @@ export default function Checkout(){
 
     useEffect(() => {
         if (!deliveryResult && !deliveryError && !shippingRuleLoading && shippingRules.length > 0 && checkedState == '') {
+
+
             const deleteCouponAsync = async () => {
                 await deleteCoupon();
             };
@@ -61,7 +75,7 @@ export default function Checkout(){
             setCheckedState(shippingRules[0].name);
             formik.setFieldValue('shipping_method', shippingRules[0].name) 
         }
-    }, [deliveryResult, deliveryError, shippingRuleLoading, shippingRules,addressList])
+    }, [deliveryResult, deliveryError, shippingRuleLoading, shippingRules,addressList,checkoutinfo])
 
     useEffect(() => {
         clearTimeout(errorTimer.current);
@@ -225,7 +239,9 @@ export default function Checkout(){
                         <p className="font-medium text-sm text-secgray">ยอดรวมทั้งหมด</p>
                         <div className='flex items-center gap-x-2'>
 
-                            <h1 className='font-bold lg:hidden text-sm'>{deliveryLoading ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? `฿ ${codeResult?.message?.doc?.grand_total || 0}` : `฿ ${deliveryResult?.message?.doc?.grand_total || 0}`  }</h1>
+                            <h1 className='font-bold lg:hidden text-sm'>{`฿ ${getcheckout?.doc?.base_grand_total}`}</h1>
+
+
                             <p className="text-secgray text-sm">{cartCount} ชิ้น</p>
                             <span onClick={() => setShowOrderSum(!showOrderSum)} className='lg:hidden cursor-pointer'>
                                 {showOrderSum ? <SfIconExpandLess /> : <SfIconExpandMore />}
@@ -239,7 +255,12 @@ export default function Checkout(){
                         </div>
                     )}
                     <div className={`${showOrderSum ? 'block' : 'hidden'} lg:!block lg:px-5`}>
-                        <h1 className='text-[56px] font-bold pt-6 hidden lg:block leading-5'>{deliveryLoading ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? `฿ ${codeResult?.message?.doc?.grand_total || 0}` :`฿ ${deliveryResult?.message?.doc?.grand_total || 0}`  }</h1>
+                        
+                        <h1 className='font-bold lg:hidden text-sm'>{getcheckout?.doc?.base_grand_total}</h1>
+
+                        <h1 className='text-[56px] font-bold pt-6 hidden lg:block leading-5'>{deliveryLoading ? <Skeleton className='h-8 w-[100px]'/> : `฿ ${getcheckout?.doc?.base_grand_total}`}</h1>
+
+
                         <div className="flex flex-col typography-text-basesm pt-16 pb-6">
                         {cartCount > 0 && (
                             <ul className='flex flex-col gap-y-4'>
