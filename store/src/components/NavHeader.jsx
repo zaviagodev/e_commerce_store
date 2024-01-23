@@ -229,7 +229,7 @@ import { Icons } from './icons';
                       className="grid grid-cols-1 lg:gap-x-6 lg:grid-cols-4 bg-white shadow-lg p-0 max-h-screen overflow-y-auto lg:!absolute lg:!top-[57px] max-w-[376px] lg:max-w-full lg:p-6 mr-[50px] lg:mr-0 z-99"
                     >
                       <div className="sticky top-0 flex items-center justify-between p-2 bg-primary lg:hidden">
-                        <div className="flex items-center font-bold text-black typography-text-lg">{menu}</div>
+                        <div className="flex items-center font-bold text-white typography-text-lg">{menu}</div>
                         <SfButton
                           square
                           variant="tertiary"
@@ -256,7 +256,7 @@ import { Icons } from './icons';
                             onClick={()=>{setMenu(item.label)}}
                             className='justify-start w-full'
                           >
-                            {item.name}
+                            {item.label}
                           </SfButton>
                         )) :
                         <button onClick={() => {setMenu('Menu'), setNavGroup(null)}} className='flex flex-row gap-2 items-center justify-start p-2'><SfIconArrowBack/>Back</button>
@@ -289,14 +289,14 @@ import { Icons } from './icons';
                                       role="none"
                                       className="py-4 md:py-1.5 rounded-lg active:font-bold text-base"
                                     >
-                                      {item.name}
+                                      {item.label}
                                     </SfListItem>
                                     </li> 
                                     {item.children.length > 0 && <SfIconExpandMore className="inline-flex m-2 -rotate-90 absolute right-0" />}
                                 </SfButton> 
                             ))
                         }
-                        </> : topBarItems.find(item => item.name === menu).children.map((item) =>  
+                        </> : topBarItems.find(item => item.label === menu).children?.map((item) =>  
                               <li> 
                                 <SfButton
                                   onClick={() => 
