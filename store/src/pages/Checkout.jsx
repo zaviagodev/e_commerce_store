@@ -49,7 +49,6 @@ export default function Checkout(){
 
 
     const { isLoading:checkoutinfo } = useFrappeGetCall('webshop.webshop.shopping_cart.cart.get_cart_quotation', undefined, `checkout-${randomKey}`,{
-        isOnline: () => getcheckout.length === 0,
         onSuccess: (data) => setGetcheckout(data.message)
     })
 
@@ -61,9 +60,14 @@ export default function Checkout(){
     const [addNewAddress, setAddNewAddress] = useState(false);
 
     useEffect(() => {
+
+        console.log(checkoutinfo);
+
+
         if (!deliveryResult && !deliveryError && !shippingRuleLoading && shippingRules.length > 0 && checkedState == '') {
 
 
+           
             const deleteCouponAsync = async () => {
                 await deleteCoupon();
             };
@@ -258,7 +262,18 @@ export default function Checkout(){
                         
                         <h1 className='font-bold lg:hidden text-sm'>{getcheckout?.doc?.base_grand_total}</h1>
 
-                        <h1 className='text-[56px] font-bold pt-6 hidden lg:block leading-5'>{deliveryLoading ? <Skeleton className='h-8 w-[100px]'/> : `฿ ${getcheckout?.doc?.base_grand_total}`}</h1>
+                        <h1 className='text-[56px] font-bold pt-6 hidden lg:block leading-5'>
+                        {deliveryLoading ? (
+                            <Skeleton className='h-8 w-[100px]' />
+                        ) : (
+                            typeof codeResult?.message?.doc?.grand_total === 'undefined' &&
+                            typeof deliveryResult?.message?.doc?.grand_total === 'undefined' ? (
+                            `฿ ${getcheckout?.doc?.base_grand_total || 0}`
+                            ) : (
+                            `฿ ${codeResult?.message?.doc?.grand_total || deliveryResult?.message?.doc?.grand_total || 0}`
+                            )
+                        )}
+                        </h1>
 
 
                         <div className="flex flex-col typography-text-basesm pt-16 pb-6">
