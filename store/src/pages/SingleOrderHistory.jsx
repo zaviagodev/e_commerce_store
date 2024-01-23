@@ -21,7 +21,7 @@ function SingleorderHistory() {
     const orderDetails = [
         {title:'Order ID:',value:order.name},
         {title:'Order Status:',value:order.status},
-        {title:'Order Total:',value:`฿${order.base_total}`},
+        {title:'Order Total:',value:`฿${order.grand_total}`},
         {title:'Order Date:',value:`${new Date(order.creation).getDate()} ${month[new Date(order.creation).getMonth()]}, ${new Date(order.creation).getHours()}:${new Date(order.creation).getMinutes() < 10 ? '0' + new Date(order.creation).getMinutes(): new Date(order.creation).getMinutes()}`},
         // {title:'Shipping Phone:',value:order.custom_phone_number}
     ]
