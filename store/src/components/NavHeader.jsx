@@ -388,7 +388,7 @@ import { Icons } from './icons';
           </Link>
           <nav>
             <ul className='flex flex-row gap-4 items-center justify-center font-bold'>
-              {!isLoading && topBarItems ? (
+              {!isLoading ? (
                 <>{topBarItems.map((item) => {
                   if (item.is_product_list) return productList(item.label)
                   else return recursiveBuild(item)
@@ -402,7 +402,7 @@ import { Icons } from './icons';
             <nav className="flex-1 flex justify-end lg:order-last lg:ml-4">
 
               <div className="flex flex-row flex-nowrap gap-x-2 items-center">
-                {!isLoading && actionItems ? (
+                {!isLoading ? (
                   <>{actionItems.map((actionItem) => 
                     {return actionItem.show && <SfButton
                           key={actionItem.ariaLabel}
