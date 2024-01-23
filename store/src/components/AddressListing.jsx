@@ -18,7 +18,7 @@ const AddressListing = ({ randomKey = 0 }) => {
                         state={address.state === "Select One" ? null : address.state}
                         country={address.country}
                     />
-                    <div className='absolute top-0 left-0 flex gap-1 px-1 py-1'>
+                    {/* <div className='absolute top-0 left-0 flex gap-1 px-1 py-1'>
                         <SfBadge
                             content="Billing"
                             placement='top-left'
@@ -41,7 +41,7 @@ const AddressListing = ({ randomKey = 0 }) => {
                                 display: address.is_shipping_address ? 'block' : 'none',
                             }}
                         />
-                    </div>
+                    </div> */}
                 </div>
             ))}
         </div >

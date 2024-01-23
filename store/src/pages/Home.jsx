@@ -10,8 +10,10 @@ import { Icons } from '../components/icons'
 
 const Home = () => {
     const { updateCurrentUser } = useFrappeAuth();
-    const { products, mainGroup,settingPage } = useProducts()
+    const { products, mainGroup, settingPage } = useProducts()
     const navigate = useNavigate();
+
+    console.log(settingPage)
 
     const idFromUrl = useParams().itemsgroup;
 

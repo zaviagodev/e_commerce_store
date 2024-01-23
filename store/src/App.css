@@ -39,17 +39,20 @@
   @font-face {
     font-family:'DB Helvethaica X';
     src: url('../src/fonts/DB Helvethaica X/DB Helvethaica X Bd v3.2.ttf');
-    font-weight:700
+    font-weight:700;
+    font-display:block;
   }
   @font-face {
     font-family:'DB Helvethaica X';
     src: url('../src/fonts/DB Helvethaica X/DB Helvethaica X Med v3.2.ttf');
-    font-weight:500
+    font-weight:500;
+    font-display:block;
   }
   @font-face {
     font-family:'DB Helvethaica X';
     src: url('../src/fonts/DB Helvethaica X/DB Helvethaica X v3.2.ttf');
-    font-weight:400
+    font-weight:400;
+    font-display:block;
   }
 
   * {
@@ -166,6 +169,10 @@
 
 .product_card:hover .product-price {
   @apply font-medium
+}
+
+.atc_btn_image,.atc_btn_image:hover {
+  box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.03);
 }
 
 .post-gradient {

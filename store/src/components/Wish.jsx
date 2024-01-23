@@ -76,15 +76,15 @@ const Wish = () => {
                                                             </Link>
                                                         </div>
 
-                                                        <div className="ml-4 flex flex-1 flex-col justify-between">
-                                                            <div className="flex justify-between text-base font-medium text-gray-900">
-                                                                <h3 className='text-texttag hover:underline'>
+                                                        <div className="ml-[10px] flex flex-1 flex-col justify-between">
+                                                            <div className="flex justify-between text-gray-900">
+                                                                <h3 className='text-texttag hover:underline text-[20px] leading-5 font-medium'>
                                                                     <Link to={`/products/${product?.name}`} >{product?.web_item_name}</Link>
                                                                 </h3>
-                                                                <p className="ml-4 whitespace-pre">{product?.formatted_price}</p>
+                                                                <p className="ml-4 whitespace-pre text-[20px] font-bold leading-5">{product?.formatted_price}</p>
                                                             </div>
 
-                                                            <div className="flex text-base">
+                                                            <div className="flex text-base justify-end">
                                                                 <button onClick={() => removeFromWish(itemCode)} type="button" className="font-medium text-secondary">
                                                                     <Icons.trash01 color='#979797' className='w-5 h-5'/>
                                                                 </button>
