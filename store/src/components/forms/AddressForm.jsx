@@ -9,7 +9,7 @@ import { Skeleton } from '../Skeleton';
 // or use an up-to-date country list like: https://www.npmjs.com/package/country-list
 const countries = ['Thailand', 'Pakistan', 'Germany', 'Great Britain', 'Poland', 'United States of America'];
 // const states = ['Sindh', 'Punjab', 'Balochistan', 'KPK', 'Florida', 'New York', 'Texas', 'Frankfurt', 'Berlin'];
-const states = ['กรุงเทพมหานคร', 'สมุทรปราการ', 'สมุทรสาคร', 'ปทุมธานี', 'นครปฐม', 'นนทบุรี', 'ฉะเชิงเทรา', 'พระนครศรีอยุธยา', 'สมุทรสงคราม' ,'ชลบุรี','ระยอง','ตราด','จันทบุรี','ปราจีนบุรี','เพชรบุรี','ราชบุรี']
+const states = ['กรุงเทพมหานคร','กระบี่','กาญจนบุรี','กำแพงเพชร','ขอนแก่น','จันทบุรี','ฉะเชิงเทรา', 'นครปฐม', 'นครพนม', 'นนทบุรี', 'ปทุมธานี', 'พระนครศรีอยุธยา' ,'ชลบุรี','ตราด','ปราจีนบุรี','เพชรบุรี','ราชบุรี','ระยอง','สมุทรปราการ','สมุทรสาคร','สมุทรสงคราม', 'อุดรธานี', 'หนองคาย', 'หนองบัวลำภู', 'อุบลราชธานี', 'อุทัยธานี', 'อ่างทอง']
 
 const AddressForm = ({ onFormSubmit }) => {
     const { call, isCompleted } = useFrappePostCall('headless_e_commerce.api.add_address')
@@ -108,24 +108,26 @@ const AddressForm = ({ onFormSubmit }) => {
                     <strong className="typography-error-sm text-negative-700 font-medium">{formik.errors.country}</strong>
                 )}
             </div>
-            <label className="w-full md:w-auto flex flex-col gap-0.5 flex-grow">
-                {/* <span className="text-sm font-medium mb-2 block">State</span> */}
-                <SfSelect name="state" className='text-basesm h-[50px] !ring-lightgray font-medium text-darkgray' disabled={isSaving} wrapperClassName='!bg-neutral-50' placeholder="จังหวัด" onChange={formik.handleChange} value={formik.values.state}>
-                    {states.map((stateName) => (
-                        <option key={stateName} value={stateName}>{stateName}</option>
-                    ))}
-                </SfSelect>
-            </label>
+
+            <div className="w-full flex flex-col gap-0.5">
+                <label>
+                    {/* <span className="text-sm font-medium mb-2 block">City <span className='text-red-500'>*</span></span> */}
+                    <SfInput name="city" className='text-basesm bg-neutral-50 font-medium text-darkgray' disabled={isSaving} wrapperClassName='!bg-neutral-50 !ring-lightgray h-[50px]' placeholder="เขต / อำเภอ" onChange={formik.handleChange} value={formik.values.city} invalid={formik.errors.city} />
+                </label>
+                {formik.errors.city && (
+                    <strong className="typography-error-sm text-negative-700 font-medium">{formik.errors.city}</strong>
+                )}
+            </div>
+
             <div className='w-full flex flex-col gap-3 md:flex-row md:justify-between'>
-                <div className="w-full flex flex-col gap-0.5">
-                    <label>
-                        {/* <span className="text-sm font-medium mb-2 block">City <span className='text-red-500'>*</span></span> */}
-                        <SfInput name="city" className='text-basesm bg-neutral-50 font-medium text-darkgray' disabled={isSaving} wrapperClassName='!bg-neutral-50 !ring-lightgray h-[50px]' placeholder="เมือง" onChange={formik.handleChange} value={formik.values.city} invalid={formik.errors.city} />
-                    </label>
-                    {formik.errors.city && (
-                        <strong className="typography-error-sm text-negative-700 font-medium">{formik.errors.city}</strong>
-                    )}
-                </div>
+                <label className="w-full flex flex-col gap-0.5 flex-grow">
+                    {/* <span className="text-sm font-medium mb-2 block">State</span> */}
+                    <SfSelect name="state" className='text-basesm h-[50px] !ring-lightgray font-medium text-darkgray' disabled={isSaving} wrapperClassName='!bg-neutral-50' placeholder="จังหวัด" onChange={formik.handleChange} value={formik.values.state}>
+                        {states.map((stateName) => (
+                            <option key={stateName} value={stateName}>{stateName}</option>
+                        ))}
+                    </SfSelect>
+                </label>
                 <div className="w-full flex flex-col gap-0.5">
                     <label>
                         {/* <span className="text-sm font-medium mb-2 block">Postal code</span> */}

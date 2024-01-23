@@ -17,6 +17,24 @@
 
 @layer base {
   @font-face {
+    font-family:'DB Helvethaica X';
+    src: url('../src/fonts/DB Helvethaica X/DB Helvethaica X Bd v3.2.ttf') format('truetype');
+    font-weight:700;
+    font-display:swap;
+  }
+  @font-face {
+    font-family:'DB Helvethaica X';
+    src: url('../src/fonts/DB Helvethaica X/DB Helvethaica X Med v3.2.ttf') format('truetype');
+    font-weight:500;
+    font-display:swap;
+  }
+  @font-face {
+    font-family:'DB Helvethaica X';
+    src: url('../src/fonts/DB Helvethaica X/DB Helvethaica X v3.2.ttf') format('truetype');
+    font-weight:400;
+    font-display:swap;
+  }
+  @font-face {
     font-family:graphikTH;
     src: url('../src/fonts/graphikTH/GraphikTH-Bold-2_1.woff');
     font-weight:700
@@ -35,21 +53,6 @@
     font-family:graphikTH;
     src: url('../src/fonts/graphikTH/GraphikThai-Semibold-Web-1_1.woff');
     font-weight:600
-  }
-  @font-face {
-    font-family:'DB Helvethaica X';
-    src: url('../src/fonts/DB Helvethaica X/DB Helvethaica X Bd v3.2.ttf');
-    font-weight:700
-  }
-  @font-face {
-    font-family:'DB Helvethaica X';
-    src: url('../src/fonts/DB Helvethaica X/DB Helvethaica X Med v3.2.ttf');
-    font-weight:500
-  }
-  @font-face {
-    font-family:'DB Helvethaica X';
-    src: url('../src/fonts/DB Helvethaica X/DB Helvethaica X v3.2.ttf');
-    font-weight:400
   }
 
   * {
@@ -166,6 +169,10 @@
 
 .product_card:hover .product-price {
   @apply font-medium
+}
+
+.atc_btn_image,.atc_btn_image:hover {
+  box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.03);
 }
 
 .post-gradient {

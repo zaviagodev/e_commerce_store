@@ -123,18 +123,24 @@ const Product = () => {
     return (
         <main className='main-section-single-product'>
             <main className="flex flex-col lg:flex-row gap-[33px]"> {/* grid grid-cols-1 lg:grid-cols-2 */}
-                {product?.website_image?.length > 0 ? (
+                {product?.website_image?.length > 0 || settingPage.default_product_image ? (
                 <div className="relative flex w-full gap-x-4">
                     <SfScrollable
-                        className="relative [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] !gap-y-4 sticky top-4"
+                        className="relative [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] !gap-y-4 sticky top-4 cursor-pointer"
                         direction="vertical"
                         buttonsPlacement="none"
-                        drag={{ containerWidth: true }}
                         ref={thumbsRef}
                     >
+                        <img
+                            onClick={() => scrollToImage(0)}
+                            src={product?.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`}
+                            className="h-[134px] w-[134px] min-w-[134px] object-cover"
+                            aria-label={product?.website_image}
+                            alt={product?.website_image}
+                        />
                         {product?.slider_images?.map((image, index) => (
                             <img
-                                onClick={() => scrollToImage(index)}
+                                onClick={() => scrollToImage(index + 1)}
                                 src={`${import.meta.env.VITE_ERP_URL ?? ''}${image}`}
                                 className="h-[134px] w-[134px] min-w-[134px] object-cover"
                                 aria-label={image}
@@ -147,7 +153,6 @@ const Product = () => {
                         className="relative [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
                         direction="vertical"
                         buttonsPlacement="none"
-                        drag={{ containerWidth: true }}
                     >
                         {product?.discount ? (
                             <div className="absolute inline-flex items-center justify-center text-sm font-medium text-muted bg-destructive py-1 px-2 top-2 left-2 rounded-md">
@@ -156,29 +161,38 @@ const Product = () => {
                             </div>
                         ) : null}
                         <img
-                            src={product.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`}
+                            src={product?.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`}
                             className="object-cover w-[500px] h-auto aspect-square"
                             aria-label={product?.website_image}
                             alt={product?.website_image}
+                            id={`img-product-0`}
                         />
 
                         {product?.slider_images && product.slider_images.map((image, index) => (
                             <img
                                 ref={imageRef}
-                                key={`img-product-${index}`}
+                                key={`img-product-${index + 1}`}
                                 src={`${import.meta.env.VITE_ERP_URL ?? ''}${image}`}
                                 className="object-cover w-[500px] h-auto aspect-square"
                                 aria-label={image}
                                 alt={image}
-                                id={`img-product-${index}`}
+                                id={`img-product-${index + 1}`}
                             />
                         ))}
                     </SfScrollable>
                 </div>
-                ) : (<Skeleton className='aspect-square w-full h-full'/>)}
+                ) : (
+                    <div className='flex gap-4'>
+                        <div className='flex flex-col gap-y-4'>
+                            <Skeleton className='aspect-square w-[134px] h-[134px]'/>
+                            <Skeleton className='aspect-square w-[134px] h-[134px]'/>
+                        </div>
+                        <Skeleton className='aspect-square w-[500px] h-[500px]'/>
+                    </div>
+                )}
 
                 <section className="w-full px-10 py-[30px] lg:max-w-[536px] h-full sticky top-0">
-                    <div className='flex flex-col gap-y-[14px]'>
+                    <div className='flex flex-col gap-y-[10px]'>
                         {product !== undefined ? (
                         <>
                             <h2 className='text-secgray text-sm font-medium leading-[9px]'>หมวดหมู่สินค้า</h2>
@@ -191,8 +205,8 @@ const Product = () => {
                             </>
                         )}
                         {product !== undefined ? (
-                            <span className='flex flex-row items-center justify-start gap-2 mb-4'>
-                                <strong className={`block typography-headline-3 text-base ${product?.formatted_mrp ? 'text-destructive' : 'text-primary'}`}>{product?.formatted_price}</strong>
+                            <span className='flex flex-row items-center justify-start gap-2 mb-3'>
+                                <span className={`block typography-headline-3 font-medium text-base ${product?.formatted_mrp ? 'text-destructive' : 'text-primary'}`}>{product?.formatted_price}</span>
                                 {product?.formatted_mrp && <span className="block text-maingray typography-headline-3 line-through font-medium text-base">{product?.formatted_mrp}</span>}
                             </span>
                         ) : (<Skeleton className='h-4 w-[100px] mt-2'/>)}
@@ -274,7 +288,7 @@ const Product = () => {
                                 ) : (
                                     <>
                                     <Skeleton className='h-[50px] w-full'/>
-                                    <Skeleton className='h-[50px] w-[57px]'/>
+                                    <Skeleton className='h-[50px] min-w-[57px]'/>
                                     </>
                                 )}
                             </div>
@@ -327,8 +341,8 @@ const Product = () => {
             </main>
         
             {products?.length > 0 ? (
-                <section className='pt-20'>
-                <h1 className='mb-8 text-primary text-center text-xl font-bold'>สินค้าที่คุณอาจสนใจ</h1>
+                <section className='pt-[140px]'>
+                <h1 className='mb-8 text-primary text-xl font-medium'>สินค้าที่คุณอาจสนใจ</h1>
                 <div
                     className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 place-items-center"
                     >
@@ -343,7 +357,7 @@ const Product = () => {
                                 description={product.short_description}
                                 itemCode={product.item_code}
                                 price={product.formatted_price}
-                                thumbnail={`${import.meta.env.VITE_ERP_URL ?? ''}${product.website_image}`}
+                                thumbnail={product.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`}
                                 salesPrice={product?.formatted_mrp}
                                 isGift={product?.item_group === "Gift" || product?.item_group === "Gift and Cards"}
                             />
@@ -351,7 +365,7 @@ const Product = () => {
                 </div>
             </section>
             ) : (
-            <div className='flex flex-col gap-y-2 mt-20'>
+            <div className='flex flex-col gap-y-2 mt-[140px]'>
                 <div className='grid grid-cols-1 gap-[14px] sm:grid-cols-2 lg:grid-cols-4 place-items-center w-full h-full'>
                     <Skeleton className='h-full w-full aspect-square'/>
                     <Skeleton className='h-full w-full aspect-square'/>

@@ -31,7 +31,8 @@ export const SettingProvider = ({ children }) => {
 
       const recursiveSearch = ( item, itemsParam) => {
         for (let i = 0; i < itemsParam.length; i++) {
-            if (itemsParam[i].label === item.parent_label) {
+            console.log(itemsParam[i], item) 
+            if (itemsParam[i].name === item.parent_label) {
                 itemsParam[i].children.push(item)
             }
             if (itemsParam[i].children && itemsParam[i].children.length > 0) {
@@ -48,13 +49,16 @@ export const SettingProvider = ({ children }) => {
         
         const itemsCopy = JSON.parse(JSON.stringify(items))
         items.forEach((item) => {
-            if( item.hasOwnProperty('parent_label'))
+            if(item.parent_label !== null )
             {
+                if(item.parent_label == '')return
+                console.log(item)
                 recursiveSearch(item, itemsCopy)
-                const index = itemsCopy.findIndex(copyItem => copyItem.label === item.label)
+                const index = itemsCopy.findIndex(copyItem => copyItem.name === item.name)
                 if (index !== -1) {
                     itemsCopy.splice(index, 1);  // Supprime l'élément item de items
                  }
+                console.log(itemsCopy)
             }
         })
         return itemsCopy;

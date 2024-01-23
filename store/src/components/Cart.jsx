@@ -147,11 +147,11 @@ const Cart = () => {
 
                                                         <div className="ml-[10px] flex flex-1 flex-col justify-between">
                                                             <div>
-                                                                <div className="flex justify-between text-base font-medium text-gray-900">
-                                                                    <h3 className='text-texttag hover:underline text-sm'>
+                                                                <div className="flex justify-between text-gray-900">
+                                                                    <h3 className='text-texttag hover:underline text-[20px] leading-5 font-medium'>
                                                                         <Link to={`/products/${product?.name}`} >{product?.web_item_name}</Link>
                                                                     </h3>
-                                                                    <p className="ml-4 whitespace-pre text-basesm font-bold">{product?.formatted_price}</p>
+                                                                    <p className="ml-4 whitespace-pre text-[20px] font-bold leading-5">{product?.formatted_price}</p>
                                                                 </div>
                                                                 {/* <p className="mt-1 text-base text-gray-500">{product?.short_description}</p> */}
                                                             </div>
