@@ -198,8 +198,6 @@ export default function Checkout(){
         setMoreAddresses(false)
     }
 
-    console.log(shippingRules)
-
     return (
         <main className='main-section-small'>
             <div className='grid grid-cols-1 lg:grid-cols-2 justify-center gap-x-10'>
