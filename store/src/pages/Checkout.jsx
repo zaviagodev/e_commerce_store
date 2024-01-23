@@ -40,7 +40,10 @@ export default function Checkout(){
     const {appName, appLogo,defaultTaxe ,hideLogin, hideCheckout, navbarSearch, topBarItems, hideWish, isLoading} = useSetting()
     const {call : CheckPromoCode, loading, error : codeError, result : codeResult, reset, isCompleted : PromoCompleted } = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_coupon_code');
     const {call : ApplyDeliveryFee, loading : deliveryLoading, result : deliveryResult, error : deliveryError} = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_shipping_rule');
+    const {call : ApplyAddress, loading : addressLoading, result : addressResult, error : addressError} = useFrappePostCall('webshop.webshop.shopping_cart.cart.update_cart_address');
 
+
+    
 
     const {isLoading : shippingRuleLoading, } = useFrappeGetCall('webshop.webshop.api.get_shipping_methods',undefined, `shippingRules`, {
         isOnline: () => shippingRules.length === 0,
@@ -60,8 +63,6 @@ export default function Checkout(){
     const [addNewAddress, setAddNewAddress] = useState(false);
 
     useEffect(() => {
-
-        console.log(checkoutinfo);
 
 
         if (!deliveryResult && !deliveryError && !shippingRuleLoading && shippingRules.length > 0 && checkedState == '') {
@@ -453,7 +454,11 @@ export default function Checkout(){
                                         </div>
                                         <AddressDrawer isOpen={moreAddresses} setIsOpen={setMoreAddresses} title='เลือกที่อยู่'>
                                             <AddressOptions
-                                                onChange={value => {formik.setFieldValue('billing_address', value); }}
+                                                onChange={(value) => {
+                                                    formik.setFieldValue('billing_address', value); 
+                                                    ApplyAddress({'address_name' : value,'address_type' : 'billing' });
+                                                    reset();
+                                                }}
                                                 value={formik.values.billing_address}
                                                 error={formik.errors.billing_address}
                                                 randomKey={randomKey}
