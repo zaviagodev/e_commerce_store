@@ -4,9 +4,10 @@ import classNames from 'classnames';
 
 export default function Pagination({data, pageSize}) {
   const { totalPages, pages, selectedPage, startPage, endPage, next, prev, setPage, maxVisiblePages } = usePagination({
-    totalItems: 100, // data.length
-    currentPage: 1,
+    totalItems: 150, // data.length
+    currentPage: 2,
     pageSize: 10, // pageSize
+    maxPages: 1,
   });
 
   return (

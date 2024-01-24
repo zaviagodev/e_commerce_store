@@ -35,40 +35,21 @@ export default function Checkout(){
     const [showOrderSum, setShowOrderSum] = useState(true)
     const [moreAddresses, setMoreAddresses] = useState(false)
     const [morePayments, setMorePayments] = useState(false)
-    const [getcheckout, setGetcheckout] = useState([])
 
     const {appName, appLogo,defaultTaxe } = useSetting()
     const {call : CheckPromoCode, loading, error : codeError, result : codeResult, reset, isCompleted : PromoCompleted } = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_coupon_code');
     const {call : ApplyDeliveryFee, loading : deliveryLoading, result : deliveryResult, error : deliveryError} = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_shipping_rule');
-    const {call : ApplyAddress, loading : addressLoading, result : addressResult, error : addressError} = useFrappePostCall('webshop.webshop.shopping_cart.cart.update_cart_address');
-
-
-    
-
     const {isLoading : shippingRuleLoading, } = useFrappeGetCall('webshop.webshop.api.get_shipping_methods',undefined, `shippingRules`, {
         isOnline: () => shippingRules.length === 0,
         onSuccess: (data) => setShippingRules(data.message)
     })
-
-
-    const { isLoading:checkoutinfo, mutate :updatecartinfo } = useFrappeGetCall('webshop.webshop.shopping_cart.cart.get_cart_quotation', undefined, `checkout-${randomKey}`,{
-        onSuccess: (data) => setGetcheckout(data.message)
-    })
-
-
-
     const {call : deleteCoupon, loading : deleteLoading, result : deleteResult, error : deleteError} = useFrappePostCall('webshop.webshop.shopping_cart.cart.remove_coupon_code');
 
     const { data:addressList } = useFrappeGetCall('headless_e_commerce.api.get_addresses', null, `addresses-${randomKey}`)
     const [addNewAddress, setAddNewAddress] = useState(false);
 
     useEffect(() => {
-
-
         if (!deliveryResult && !deliveryError && !shippingRuleLoading && shippingRules.length > 0 && checkedState == '') {
-
-
-           
             const deleteCouponAsync = async () => {
                 await deleteCoupon();
             };
@@ -80,7 +61,7 @@ export default function Checkout(){
             setCheckedState(shippingRules[0].name);
             formik.setFieldValue('shipping_method', shippingRules[0].name) 
         }
-    }, [deliveryResult, deliveryError, shippingRuleLoading, shippingRules,addressList,checkoutinfo])
+    }, [deliveryResult, deliveryError, shippingRuleLoading, shippingRules,addressList])
 
     useEffect(() => {
         clearTimeout(errorTimer.current);
@@ -342,7 +323,7 @@ export default function Checkout(){
             <div className='grid grid-cols-1 lg:grid-cols-2 justify-center gap-x-10'>
                 <div className='w-full lg:py-5 lg:pr-[43px]'>
 
-                    <div className='flex items-center gap-x-4 lg:mb-16 h-10'>
+                    <div className='flex items-center gap-x-4 lg:mb-16 h-[52px] lg:h-10 px-3 py-[14px] border-b lg:border-0'>
                         <div onClick={() => navigate(-1)} className='cursor-pointer'>
                             <Icons.flipBackward color='#A9A9A9'/>
                         </div>
@@ -359,56 +340,27 @@ export default function Checkout(){
                             </picture>
                         )}
                     </div>
-                    <div className="flex justify-center lg:justify-between items-center lg:pl-[21px]">
-                        <p className="text-sm text-secgray leading-[9px]">ยอดรวมทั้งหมด</p>
-                        {isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : <p className="text-secgray text-sm font-medium leading-[9px] ml-1">{cartCount} ชิ้น</p>}
-                    </div>
-                    <div className={`p-4 lg:pl-[21px] lg:pr-[19px]`}>
-                        <h1 className='text-[56px] font-bold pt-[26px] leading-5 text-center lg:text-left'>{isProductLoading ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total.toLocaleString()}` : 'Change address' : `฿ ${codeResult?.message?.doc?.grand_total.toLocaleString()}` }</h1>
-                        <div className='hidden lg:block'>
-                            <ProductLists />
-                            <CheckoutDetails />
+                    <div className='pt-[43px] lg:pt-0'>
+                        <div className="flex justify-center lg:justify-between items-center lg:pl-[21px]">
+                            <p className="text-sm text-secgray leading-[9px]">ยอดรวมทั้งหมด</p>
+                            {isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : <p className="text-secgray text-sm font-medium leading-[9px] ml-1">{cartCount} ชิ้น</p>}
                         </div>
-                    )}
-                    <div className={`${showOrderSum ? 'block' : 'hidden'} lg:!block lg:px-5`}>
-                        
-                        <h1 className='font-bold lg:hidden text-sm'>{getcheckout?.doc?.base_grand_total}</h1>
+                        <div className={`px-4 lg:pl-[21px] lg:pr-[19px]`}>
+                            <h1 className='text-[56px] font-bold pt-[26px] leading-5 text-center lg:text-left'>{isProductLoading ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total.toLocaleString()}` : 'Change address' : `฿ ${codeResult?.message?.doc?.grand_total.toLocaleString()}` }</h1>
+                            <div className='hidden lg:block'>
+                                <ProductLists />
+                                <CheckoutDetails />
+                            </div>
 
-                        <h1 className='text-[56px] font-bold pt-6 hidden lg:block leading-5'>
-                        {deliveryLoading ? (
-                            <Skeleton className='h-8 w-[100px]' />
-                        ) : (
-                            typeof codeResult?.message?.doc?.grand_total === 'undefined' &&
-                            typeof deliveryResult?.message?.doc?.grand_total === 'undefined' ? (
-                            `฿ ${getcheckout?.doc?.base_grand_total || 0}`
-                            ) : (
-                            `฿ ${codeResult?.message?.doc?.grand_total || deliveryResult?.message?.doc?.grand_total || 0}`
-                            )
-                        )}
-                        </h1>
-
-
-                        <div className="flex flex-col typography-text-basesm pt-16 pb-6">
-                        {cartCount > 0 && (
-                            <ul className='flex flex-col gap-y-4'>
-                                {Object.entries(cart).map(([itemCode]) => {
-                                    const product = getByItemCode(itemCode)
-                                    return (
-                                    <>
-                                        {product ? (
-                                            <li key={itemCode} className="flex pb-5">
-                                                <div className="h-[53px] w-[53px] flex-shrink-0 overflow-hidden">
-                                                    <img src={`${import.meta.env.VITE_ERP_URL || ""}${product?.website_image}`} alt={product?.item_name} className="h-full w-full object-cover object-center" />
-                                                </div>
-
-                        {/* <SfInput
-                            placeholder='Enter loyalty points to redeem'
-                            slotSuffix={<strong className='w-16'>of {user?.loyalty_points}</strong>}
-                            maxLength={user?.loyalty_points?.toString().length}
-                            name="loyalty_points"
-                            value={formik.values.loyalty_points}
-                            onChange={formik.handleChange}
-                        /> */}
+                            {/* <SfInput
+                                placeholder='Enter loyalty points to redeem'
+                                slotSuffix={<strong className='w-16'>of {user?.loyalty_points}</strong>}
+                                maxLength={user?.loyalty_points?.toString().length}
+                                name="loyalty_points"
+                                value={formik.values.loyalty_points}
+                                onChange={formik.handleChange}
+                            /> */}
+                        </div>
                     </div>
                 </div>
                 <form className="w-full flex flex-col gap-10 text-neutral-900 p-4 lg:p-[60px] lg:pt-[7.75em] min-h-screen lg:shadow-checkout">
@@ -419,10 +371,10 @@ export default function Checkout(){
                                     <>
                                         <div className='w-full flex flex-col gap-y-2'>
                                             <label className="w-full">
-                                                <legend className="font-bold text-darkgray text-base">ข้อมูลการจัดส่ง*</legend>
+                                                <legend className="font-bold text-darkgray text-base hidden lg:block">ข้อมูลการจัดส่ง*</legend>
                                                 {!addNewAddress ? (
                                                     <div className='flex flex-col gap-y-2 mt-8'>
-                                                        <h2 className="font-medium text-basesm text-secgray">ที่อยู่*</h2>
+                                                        <h2 className="font-medium text-basesm text-secgray hidden lg:block">ที่อยู่*</h2>
                                                         <div className='border border-lightgray rounded-xl bg-neutral-50 overflow-hidden'>
                                                             <a className='p-6 flex items-center justify-between w-full cursor-pointer' onClick={() => setMoreAddresses(true)}>
                                                                 <div className='flex items-center gap-x-2'>
@@ -454,11 +406,7 @@ export default function Checkout(){
                                         </div>
                                         <AddressDrawer isOpen={moreAddresses} setIsOpen={setMoreAddresses} title='เลือกที่อยู่'>
                                             <AddressOptions
-                                                onChange={(value) => {
-                                                    formik.setFieldValue('billing_address', value); 
-                                                    ApplyAddress({'address_name' : value,'address_type' : 'billing' });
-                                                    updatecartinfo();
-                                                }}
+                                                onChange={value => {formik.setFieldValue('billing_address', value); }}
                                                 value={formik.values.billing_address}
                                                 error={formik.errors.billing_address}
                                                 randomKey={randomKey}
