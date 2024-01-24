@@ -10,11 +10,11 @@ export const ProductsProvider = ({ children }) => {
     const [mainGroup, setMainGroup] = useState([])
     const [settingPage, setsettingPage] = useState([])
     const [totalitems, settotalitems] = useState(0)
-
+    const [pageno, setpageno] = useState(0)
 
     const {mutate : mutateItemsList, error : itemListError, isLoading} = useFrappeGetCall('webshop.webshop.api.get_product_filter_data', {
         name: newP,
-        query_args: { "field_filters": {}, "attribute_filters": {}, "item_group": null, "start": null, "from_filters": false }
+        query_args: { "field_filters": {}, "attribute_filters": {}, "item_group": null, "start": pageno, "from_filters": false }
     }, `products-${newP}`, {
         isOnline: () => products.length === 0,
         onSuccess: (data) => {
@@ -87,6 +87,7 @@ export const ProductsProvider = ({ children }) => {
             mainGroup,
             settingPage,
             totalitems,
+            setpageno,
             getItemByCategorie,
             getProductsCodeInCart
             }}>

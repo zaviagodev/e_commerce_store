@@ -11,7 +11,7 @@ import Pagination from '../components/Pagination';
 
 const Home = () => {
     const { updateCurrentUser } = useFrappeAuth();
-    const { products, mainGroup, settingPage,totalitems } = useProducts()
+    const { products, mainGroup, settingPage,totalitems,setpageno,mutateItemsList } = useProducts()
     const navigate = useNavigate();
     const idFromUrl = useParams().itemsgroup;
 
@@ -89,7 +89,15 @@ const Home = () => {
                                         />
                                     ))}
                             </div>
-                            <Pagination data={products} pageSize={10} />
+                                <Pagination 
+                                    total={totalitems} 
+                                    perpage={settingPage.products_per_page} 
+                                    indexproducts={(a) => {
+                                        setpageno(a);
+                                        mutateItemsList();
+                                    }}
+                                />
+
                         </div>
                     ) : (
                         <div className='flex flex-col gap-y-2'>
