@@ -29,7 +29,7 @@ function OrderHistory() {
             </tr>
             </thead>
             <tbody>
-            {!loading ? Order.slice(0, 3).map(({name, status, base_total, company, items, creation}) => {
+            {!loading ? Order.slice(0, 3).map(({name, status, grand_total, company, items, creation}) => {
                 return (
                     // <div key={name} className="grid grid-cols-4 w-full">
                     //   <div className="grid grid-cols-5 col-span-3 gap-x-2">
@@ -46,7 +46,7 @@ function OrderHistory() {
                         <td>{name}-{}{company}</td>
                         <td>{`${new Date(creation).getDate()} ${month[new Date(creation).getMonth()]}, ${new Date(creation).getHours()}:${new Date(creation).getMinutes() < 10 ? '0' + new Date(creation).getMinutes(): new Date(creation).getMinutes() }  `}</td>
                         <td>{status}</td>
-                        <td>฿{base_total}</td>
+                        <td>฿{grand_total}</td>
                         <td>
                         <Link>View Details</Link>
                         </td>
