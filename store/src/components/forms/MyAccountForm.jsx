@@ -1,7 +1,12 @@
 import { useFormik } from "formik";
 import { SfInput, SfButton } from "@storefront-ui/react";
+import { useUser } from '.././hooks/useUser';
+
+
 
 export default function MyAccountForm(onSuccess = () => { },){
+  const { user, logout } = useUser();
+
   const formik = useFormik({
     initialValues: {
       first_name: "",
