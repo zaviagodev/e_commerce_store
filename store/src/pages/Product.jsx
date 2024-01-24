@@ -347,21 +347,23 @@ const Product = () => {
                     className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 place-items-center"
                     >
                         {products
-                        .filter((productz) => productz?.item_group === product?.item_group)
-                        .slice(0, 4)
-                        .map((product) => (
-                            <ProductCard
-                                key={product.item_code}
-                                title={product.web_item_name}
-                                productId={product.name}
-                                description={product.short_description}
-                                itemCode={product.item_code}
-                                price={product.formatted_price}
-                                thumbnail={product.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`}
-                                salesPrice={product?.formatted_mrp}
-                                isGift={product?.item_group === "Gift" || product?.item_group === "Gift and Cards"}
-                            />
-                        )).slice(0,4)}
+                            .filter((productz) => productz?.item_group === product?.item_group)
+                            .filter((productz) => productz?.item_code  != product?.item_code )
+                            .slice(0, 4)
+                            .map((product) => (
+                                <ProductCard
+                                    key={product.item_code}
+                                    title={product.web_item_name}
+                                    productId={product.name}
+                                    description={product.short_description}
+                                    itemCode={product.item_code}
+                                    price={product.formatted_price}
+                                    thumbnail={product.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`}
+                                    salesPrice={product?.formatted_mrp}
+                                    isGift={product?.item_group === "Gift" || product?.item_group === "Gift and Cards"}
+                                />
+                            )).slice(0,4)
+                        }
                 </div>
             </section>
             ) : (
