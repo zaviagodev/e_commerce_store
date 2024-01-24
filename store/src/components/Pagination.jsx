@@ -9,9 +9,10 @@ const Pagination = ({ total,perpage,indexproducts }) => {
 
   useEffect(() => {
     const newStartIndex = (currentPage - 1) * itemsPerPage;
-    setStartIndex(newStartIndex);
+    setStartIndex(newStartIndex >= 0 ? newStartIndex : 0);
     indexproducts(newStartIndex);
-  }, [currentPage]);
+    console.log(newStartIndex);
+  }, [currentPage, itemsPerPage, indexproducts]);
 
   const totalPages = Math.ceil(total / itemsPerPage);
 

@@ -15,7 +15,7 @@ export const ProductsProvider = ({ children }) => {
     const {mutate : mutateItemsList, error : itemListError, isLoading} = useFrappeGetCall('webshop.webshop.api.get_product_filter_data', {
         name: newP,
         query_args: { "field_filters": {}, "attribute_filters": {}, "item_group": null, "start": pageno, "from_filters": false }
-    }, `products-${newP}`, {
+    }, `products-${pageno}`, {
         isOnline: () => products.length === 0,
         onSuccess: (data) => {
             setProducts(data.message.items);

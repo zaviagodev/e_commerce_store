@@ -94,7 +94,6 @@ const Home = () => {
                                     perpage={settingPage.products_per_page} 
                                     indexproducts={(a) => {
                                         setpageno(a);
-                                        mutateItemsList();
                                     }}
                                 />
 
