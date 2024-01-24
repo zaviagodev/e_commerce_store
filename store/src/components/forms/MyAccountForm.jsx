@@ -12,7 +12,6 @@ export default function MyAccountForm(onSuccess = () => { },){
       first_name: user?.user?.first_name || "",
       last_name: user?.user?.last_name || "",
       email: user?.user?.email || "",
-      phone: user?.user?.phone || "",
     },
     // validationSchema: addressSchema,
     // validateOnChange: false,
@@ -22,14 +21,14 @@ export default function MyAccountForm(onSuccess = () => { },){
   console.log("Formik Values:", formik.values);
 
   return (
-    <form className="max-w-[950px] flex gap-x-4 gap-y-8 flex-wrap text-neutral-900" onSubmit={formik.handleSubmit}>
-    {/* <h2 className="w-full typography-headline-4 md:typography-headline-3 font-bold">Billing address</h2> */}
+    <form className="max-w-[950px] flex gap-x-4 gap-y-3 flex-wrap text-neutral-900" onSubmit={formik.handleSubmit}>
+    <h2 className="w-full font-bold text-basesm">ข้อมูลส่วนตัว</h2>
     <div className='w-full'>
       <label>
-          <span className="text-sm font-medium mb-2 block">First name <span className='text-red-500'>*</span></span>
           <SfInput
               name="first_name"
-              className="mt-0.5 text-sm"
+              className="text-basesm bg-neutral-50 font-medium text-darkgray"
+              wrapperClassName='!bg-neutral-50 !ring-lightgray h-[50px] px-6 rounded-xl'
               onChange={formik.handleChange}
               value={formik.values.first_name}
               invalid={formik.errors.first_name}
@@ -42,10 +41,10 @@ export default function MyAccountForm(onSuccess = () => { },){
 
     <div className='w-full'>
       <label>
-          <span className="text-sm font-medium mb-2 block">Last name <span className='text-red-500'>*</span></span>
           <SfInput
               name="last_name"
-              className="mt-0.5 text-sm"
+              className="text-basesm bg-neutral-50 font-medium text-darkgray"
+              wrapperClassName='!bg-neutral-50 !ring-lightgray h-[50px] px-6 rounded-xl'
               onChange={formik.handleChange}
               value={formik.values.last_name}
               invalid={formik.errors.last_name}
@@ -58,10 +57,10 @@ export default function MyAccountForm(onSuccess = () => { },){
     
     <div className='w-full'>
       <label>
-          <span className="text-sm font-medium mb-2 block">Email <span className='text-red-500'>*</span></span>
           <SfInput
               name="email"
-              className="mt-0.5 text-sm"
+              className="text-basesm bg-neutral-50 font-medium text-darkgray"
+              wrapperClassName='!bg-neutral-50 !ring-lightgray h-[50px] px-6 rounded-xl'
               onChange={formik.handleChange}
               readOnly
               value={formik.values.email}
@@ -73,24 +72,8 @@ export default function MyAccountForm(onSuccess = () => { },){
         )}
     </div>
 
-    <div className='w-full'>
-      <label>
-          <span className="text-sm font-medium mb-2 block">Phone <span className='text-red-500'>*</span></span>
-          <SfInput
-              name="phone"
-              className="mt-0.5 text-sm"
-              onChange={formik.handleChange}
-              value={formik.values.phone}
-              invalid={formik.errors.phone}
-          />
-        </label>
-        {formik.errors.phone && (
-            <strong className="typography-error-sm text-negative-700 font-medium">Phone is required</strong>
-        )}
-    </div>
-
-    <div className="w-full flex gap-4 mt-4 md:mt-0 md:justify-start">
-        <SfButton type='submit' className="w-full md:w-auto btn-primary text-sm">Update profile</SfButton>
+    <div className="w-full">
+        <SfButton type='submit' className="w-full btn-primary text-base h-[50px] rounded-xl mt-3">อัพเดทข้อมูล</SfButton>
     </div>
 </form>
   )

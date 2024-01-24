@@ -8,17 +8,6 @@ import { clamp } from '@storefront-ui/shared';
 import classNames from 'classnames'
 import {
     SfButton,
-    SfLink,
-    SfIconShoppingCart,
-    SfIconSell,
-    SfIconPackage,
-    SfIconRemove,
-    SfIconAdd,
-    SfIconWarehouse,
-    SfIconSafetyCheck,
-    SfIconShoppingCartCheckout,
-    SfIconFavoriteFilled,
-    SfIconFavorite,
     SfIconChevronLeft
 } from '@storefront-ui/react';
 import { useParams } from 'react-router-dom';
@@ -28,7 +17,7 @@ import { useSetting } from '../hooks/useWebsiteSettings';
 import { useNavigate } from 'react-router-dom';
 import { useWish } from '../hooks/useWishe';
 import ProductCard from '../components/ProductCard';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Skeleton } from '../components/Skeleton';
 import { Icons } from '../components/icons';
 
@@ -122,11 +111,11 @@ const Product = () => {
 
     return (
         <main className='main-section-single-product'>
-            <main className="flex flex-col lg:flex-row gap-[33px]"> {/* grid grid-cols-1 lg:grid-cols-2 */}
+            <main className="flex flex-col lg:flex-row gap-[18px] lg:gap-[33px]"> {/* grid grid-cols-1 lg:grid-cols-2 */}
                 {product?.website_image?.length > 0 || settingPage.default_product_image ? (
-                <div className="relative flex w-full gap-x-4">
+                <div className="relative flex w-full lg:gap-x-4">
                     <SfScrollable
-                        className="relative [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] !gap-y-4 sticky top-4 cursor-pointer"
+                        className="hidden lg:flex relative !gap-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] lg:!gap-y-4 sticky top-4 cursor-pointer"
                         direction="vertical"
                         buttonsPlacement="none"
                         ref={thumbsRef}
@@ -150,12 +139,13 @@ const Product = () => {
                         ))}
                     </SfScrollable>
                     <SfScrollable
-                        className="relative [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+                        className="relative [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] !flex-row lg:!flex-col overflow-auto px-4 lg:px-0"
                         direction="vertical"
                         buttonsPlacement="none"
+                        draggable={true}
                     >
                         {product?.discount ? (
-                            <div className="absolute inline-flex items-center justify-center text-sm font-medium text-white bg-red-500 py-1 px-2 top-2 left-2 rounded-xl">
+                            <div className="absolute inline-flex items-center justify-center text-sm font-medium text-white bg-red-500 py-1 px-2 top-2 left-6 lg:left-2 rounded-xl">
                                 <Icons.tag01 className='mr-1.5'/>
                                 {product?.discount}
                             </div>
@@ -182,8 +172,8 @@ const Product = () => {
                     </SfScrollable>
                 </div>
                 ) : (
-                    <div className='flex gap-4'>
-                        <div className='flex flex-col gap-y-4'>
+                    <div className='flex gap-4 px-4 lg:px-0'>
+                        <div className='hidden lg:flex flex-col gap-y-4'>
                             <Skeleton className='aspect-square w-[134px] h-[134px]'/>
                             <Skeleton className='aspect-square w-[134px] h-[134px]'/>
                         </div>
@@ -191,8 +181,8 @@ const Product = () => {
                     </div>
                 )}
 
-                <section className="w-full px-10 py-[30px] lg:max-w-[536px] h-full sticky top-0">
-                    <div className='flex flex-col gap-y-[10px]'>
+                <section className="w-full px-4 lg:px-10 lg:py-[30px] lg:max-w-[536px] h-full sticky top-0 z-10">
+                    <div className='flex flex-col gap-y-4 lg:gap-y-[10px]'>
                         {product !== undefined ? (
                         <>
                             <h2 className='text-secgray text-sm font-medium leading-[9px]'>หมวดหมู่สินค้า</h2>
@@ -206,8 +196,8 @@ const Product = () => {
                         )}
                         {product !== undefined ? (
                             <span className='flex flex-row items-center justify-start gap-2 mb-3'>
-                                <span className={`block typography-headline-3 font-medium text-base ${product?.formatted_mrp ? 'text-red-500' : 'text-primary'}`}>{product?.formatted_price}</span>
-                                {product?.formatted_mrp && <span className="block text-maingray typography-headline-3 line-through font-medium text-base">{product?.formatted_mrp}</span>}
+                                <span className={`block typography-headline-3 font-bold text-base ${product?.formatted_mrp ? 'text-red-500' : 'text-primary'}`}>{product?.formatted_price}</span>
+                                {product?.formatted_mrp && <span className="block text-maingray typography-headline-3 line-through font-normal text-base">{product?.formatted_mrp}</span>}
                             </span>
                         ) : (<Skeleton className='h-4 w-[100px] mt-2'/>)}
                     </div>
@@ -218,59 +208,63 @@ const Product = () => {
 
                     <div className="pb-6 border-gray-200 border-b">
                         <div className="items-start flex flex-col gap-y-[14px]">
-                            {!hideCheckout && <div className="flex flex-col items-stretch xs:items-center xs:inline-flex">
+                            {!hideCheckout && <div className="flex flex-col items-stretch xs:items-center xs:inline-flex w-full">
                                 {product !== undefined ? (
-                                    <div className="flex bg-[#F3F3F3] rounded-xl items-center">
-                                    <SfButton
-                                        type="button"
-                                        variant="tertiary"
-                                        square
-                                        className="rounded-r-none p-4 text-secgray"
-                                        disabled={value <= min || !product?.in_stock}
-                                        aria-controls={inputId}
-                                        aria-label="Decrease value"
-                                        onClick={() => dec()}
-                                    >
-                                        <Icons.minus color='#979797'/>
-                                    </SfButton>
-                                    <input
-                                        id={inputId}
-                                        type="number"
-                                        role="spinbutton"
-                                        className="text-secgray grow appearance-none text-base w-6 h-[50px] text-center bg-transparent outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-inner-spin-button]:display-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-outer-spin-button]:display-none [&::-webkit-outer-spin-button]:m-0 [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none disabled:placeholder-disabled-900 focus-visible:outline focus-visible:outline-offset focus-visible:rounded-sm"
-                                        min={min}
-                                        max={max}
-                                        value={value}
-                                        onChange={handleOnChange}
-                                        disabled={!product?.in_stock}
-                                    />
-                                    <SfButton
-                                        type="button"
-                                        variant="tertiary"
-                                        square
-                                        className="rounded-l-none p-4 text-secgray"
-                                        disabled={value >= max || !product?.in_stock}
-                                        aria-controls={inputId}
-                                        aria-label="Increase value"
-                                        onClick={() => inc()}
-                                    >
-                                        <Icons.plus color='#979797'/>
-                                    </SfButton>
-                                </div>
+                                    <div className='flex items-center justify-between lg:justify-start w-full'>
+                                        <p className='lg:hidden text-basesm text-maingray'>จำนวน</p>
+                                        <div className="flex bg-[#F3F3F3] rounded-xl items-center">
+                                            <SfButton
+                                                type="button"
+                                                variant="tertiary"
+                                                square
+                                                className="rounded-r-none p-4 text-secgray"
+                                                disabled={value <= min || !product?.in_stock}
+                                                aria-controls={inputId}
+                                                aria-label="Decrease value"
+                                                onClick={() => dec()}
+                                            >
+                                                <Icons.minus color='#979797'/>
+                                            </SfButton>
+                                            <input
+                                                id={inputId}
+                                                type="number"
+                                                role="spinbutton"
+                                                className="text-secgray grow appearance-none text-base w-6 h-[50px] text-center bg-transparent outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-inner-spin-button]:display-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-outer-spin-button]:display-none [&::-webkit-outer-spin-button]:m-0 [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none disabled:placeholder-disabled-900 focus-visible:outline focus-visible:outline-offset focus-visible:rounded-sm"
+                                                min={min}
+                                                max={max}
+                                                value={value}
+                                                onChange={handleOnChange}
+                                                disabled={!product?.in_stock}
+                                            />
+                                            <SfButton
+                                                type="button"
+                                                variant="tertiary"
+                                                square
+                                                className="rounded-l-none p-4 text-secgray"
+                                                disabled={value >= max || !product?.in_stock}
+                                                aria-controls={inputId}
+                                                aria-label="Increase value"
+                                                onClick={() => inc()}
+                                            >
+                                                <Icons.plus color='#979797'/>
+                                            </SfButton>
+                                        </div>
+                                    </div>
                                 ) : (
                                     <Skeleton className='h-[50px] w-[111px]'/>
                                 )}
-                            </div>}
-                            {product !== undefined ? <p className='text-basesm'>รับ Cashback สูงถึง ฿ 105 เมื่อเป็นสมาชิก</p> : <Skeleton className='h-5 w-3/4'/>}
-                            <div className='flex items-center gap-x-[10px] w-full'>
-                                {product !== undefined || loading ? (                                
+                            </div>}                  
+                            <div className='fixed bottom-0 left-0 bg-white lg:bg-inherit p-4 lg:p-0 lg:static flex lg:flex-col w-full gap-y-[14px] flex-col-reverse z-10'>
+                                {product !== undefined || loading ? (
                                     <>
+                                    <p className='text-basesm text-center lg:text-left'>รับ Cashback สูงถึง ฿ 105 เมื่อเป็นสมาชิก</p>                           
+                                    <div className='flex items-center gap-x-[10px] w-full'>
                                         <SfButton disabled={loading || !product?.in_stock}  onClick={handleClickCart} type="button" size="lg" className="w-full btn-primary flex items-center gap-x-[10px] rounded-xl h-[50px]">
                                             <Icons.shoppingBag01 color={loading || !product?.in_stock ? '#a1a1aa' : 'white'} className='w-[22px] h-[22px]'/>
                                             {product?.in_stock ? buttonLabel : 'Sold out'}
                                         </SfButton>
                                         {!hideWish && <SfButton
-                                            onClick={handleWish} 
+                                            onClick={handleWish}
                                             type="button"
                                             variant="tertiary"
                                             size="sm"
@@ -284,6 +278,7 @@ const Product = () => {
                                                 <Icons.heart className='w-6 h-6' />
                                             )}
                                         </SfButton>}
+                                    </div>
                                     </>
                                 ) : (
                                     <>
@@ -340,11 +335,11 @@ const Product = () => {
                 </section>
             </main>
         
-            {products?.length > 0 ? (
-                <section className='pt-[140px]'>
-                <h1 className='mb-8 text-primary text-xl font-medium'>สินค้าที่คุณอาจสนใจ</h1>
+            {products.filter((productz) => productz?.item_group === product?.item_group).filter((productz) => productz?.item_code  != product?.item_code).length > 0 ? (
+                <section className='px-4 lg:p-0 pt-[38px] lg:pt-[140px]'>
+                <h1 className='mb-8 text-primary text-base lg:text-xl font-medium'>สินค้าที่คุณอาจสนใจ</h1>
                 <div
-                    className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 place-items-center"
+                    className="grid gap-[14px] grid-cols-2 lg:grid-cols-4 place-items-center"
                     >
                         {products
                             .filter((productz) => productz?.item_group === product?.item_group)
@@ -367,8 +362,8 @@ const Product = () => {
                 </div>
             </section>
             ) : (
-            <div className='flex flex-col gap-y-2 mt-[140px]'>
-                <div className='grid grid-cols-1 gap-[14px] sm:grid-cols-2 lg:grid-cols-4 place-items-center w-full h-full'>
+            <div className='flex flex-col gap-y-2 m-4 lg:m-0 lg:mt-[140px]'>
+                <div className='grid gap-[14px] grid-cols-2 lg:grid-cols-4 place-items-center w-full h-full'>
                     <Skeleton className='h-full w-full aspect-square'/>
                     <Skeleton className='h-full w-full aspect-square'/>
                     <Skeleton className='h-full w-full aspect-square'/>

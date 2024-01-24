@@ -73,7 +73,7 @@ const Home = () => {
                                 </div>
                             </div>
                             <div
-                                className="grid grid-cols-1 gap-[14px] sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center"
+                                className="grid gap-[14px] grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center"
                                 >
                                     {products.filter((product) => idFromUrl === 'all items' || idFromUrl === product.item_group).sort(sortOptions.find(option => option.state === true).onChange).map((product) => (
                                         <ProductCard
@@ -104,7 +104,7 @@ const Home = () => {
                                 <Skeleton className='h-9 w-[100px]'/>
                                 <Skeleton className='h-9 w-[100px]'/>
                             </div>
-                            <div className='grid grid-cols-1 gap-[14px] sm:grid-cols-2 lg:grid-cols-4 place-items-center w-full h-full'>
+                            <div className='grid gap-[14px] grid-cols-2 lg:grid-cols-4 place-items-center w-full h-full'>
                                 <Skeleton className='h-full w-full aspect-square'/>
                                 <Skeleton className='h-full w-full aspect-square'/>
                                 <Skeleton className='h-full w-full aspect-square'/>

@@ -83,12 +83,10 @@ export default function Login() {
     return (
         <main className='main-section'>
         <form className="flex gap-4 flex-wrap text-neutral-900 text-start text-big" onSubmit={formik.handleSubmit}>
-            <h2 className="mb-4 primary-heading text-primary text-center w-full">{loginState ? 'Sign in' : 'Register'}</h2>
+            <h2 className="mb-[53px] text-primary text-center text-xl font-medium">{loginState ? 'ลงชื่อเข้าใช้งาน' : 'ลงทะเบียน'}</h2>
 
             <h2 className="mb-4 primary-heading text-primary text-center w-full"> {apiResponse}</h2>
-           
-            
-            
+
             {loginState == true && 
                 <label className="w-full flex flex-col gap-0.5">
                     <span className="typography-text-sm  font-medium">Email</span>
