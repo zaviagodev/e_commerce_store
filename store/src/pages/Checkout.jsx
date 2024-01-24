@@ -19,6 +19,7 @@ import defaultLogo from '../assets/defaultBrandIcon.svg'
 import { Icons } from '../components/icons';
 import classNames from 'classnames'
 import AddressDrawer from '../components/drawers/AddressDrawer';
+import MobileCheckoutDrawer from '../components/drawers/MobileCheckoutDrawer';
 
 export default function Checkout(){
     const errorTimer = useRef(0);
@@ -32,7 +33,7 @@ export default function Checkout(){
     const [checkedState, setCheckedState] = useState('');
     const [shippingRules, setShippingRules] = useState([]);
     const [randomKey, setrandomKey] = useState(0)
-    const [showOrderSum, setShowOrderSum] = useState(true)
+    const [showOrders, setShowOrders] = useState(true)
     const [moreAddresses, setMoreAddresses] = useState(false)
     const [morePayments, setMorePayments] = useState(false)
 
@@ -200,7 +201,7 @@ export default function Checkout(){
 
     const ProductLists = () => {
         return (
-            <div className="flex flex-col typography-text-basesm pt-[71px] pb-4">
+            <div className="flex flex-col text-basesm overflow-scroll h-[50vh] lg:h-full lg:pt-[71px] pb-4">
                 {cartCount > 0 && (
                     <ul className='flex flex-col gap-y-4'>
                         {Object.entries(cart).map(([itemCode]) => {
@@ -242,7 +243,55 @@ export default function Checkout(){
         )
     }
 
-    const CheckoutDetails = () => {
+    const CouponForm = () => {
+        return (
+        <div>
+            {!isProductLoading ? (codeResult ? (
+                <div className='flex flex-col gap-y-2 py-[5px] mt-[17px]'>
+                    <div className="flex items-center justify-between">
+                        <div className='bg-neutral-100 rounded-xl px-3 py-[10px] flex items-center gap-x-2 text-[20px] text-secgray leading-[10px] font-medium'>
+                            <div className='flex items-center gap-x-[5px]'>
+                                <Icons.ticket01 color="#979797" />
+                                <p>{codeResult.message.coupon_code.toUpperCase()}</p>
+                            </div>
+                            <SfButton size="sm" variant="tertiary" className='!p-0' onClick={removePromoCode}>
+                                <Icons.x color="#979797"/>
+                            </SfButton>
+                        </div>
+                        <p className='text-basesm'>{codeResult.message.coupon_code.toUpperCase()}</p>
+                    </div>
+                    <CouponAlert />
+                </div>
+            ) : addPromo ? (
+                <form className="flex flex-col gap-y-2 py-[5px] mt-[17px]" onSubmit={checkPromoCode}>
+                    <div className='flex gap-x-[10px]'>
+                        <SfInput
+                            value={inputValue}
+                            placeholder="ใส่คูปองส่วนลด"
+                            wrapperClassName={`grow rounded-xl focus-within:ring-0 focus-within:outline-none ${errorAlert ? 'border border-red-500/50' : ''}`}
+                            onChange={(event) => setInputValue(event.target.value)}
+                            onBlur={() => inputValue === "" && setAddPromo(false)}
+                            onKeyDown={e => e.key === 'Escape' && setAddPromo(false)}
+                            className='text-basesm'
+                            autoFocus={true}
+                        />
+                        <SfButton className='btn-primary text-basesm rounded-xl' onClick={checkPromoCode}>
+                            ใช้งาน
+                        </SfButton>
+                    </div>
+                    <CouponAlert />
+                </form>
+            ) : (
+                <a className='text-secondary hover:underline cursor-pointer inline-block font-medium text-basesm mt-[33px] mb-[17px] leading-[10px]' onClick={setAddPromo}>ใส่คูปองส่วนลด</a>
+            )) : <Skeleton className='h-6 w-[100px]'/>} 
+            {/*<p className="px-3 py-1.5 bg-secondary-100 text-secondary-700 typography-text-base rounded-xl text-center mb-4">
+                You are saving ${Math.abs(orderDetails.savings).toFixed(2)} on your order today!
+            </p>*/ }
+        </div>
+        )
+    }
+
+    const CheckoutDetails = ({addCoupon}) => {
         return (
             <div className='lg:ml-[98px]'>
             <div className='flex justify-between pt-[21px] border-t'>
@@ -268,48 +317,7 @@ export default function Checkout(){
                     <p className='text-maingray text-basesm leading-[10px]'>-</p>
                 </div>
             </div>
-            <div>
-            {!isProductLoading ? (codeResult ? (
-                <div className='flex flex-col gap-y-2 my-[5px]'>
-                    <div className="flex items-center justify-between">
-                        <div className='bg-neutral-100 rounded-xl px-3 py-[10px] flex items-center gap-x-2 text-[20px] text-secgray leading-[10px] font-medium'>
-                            <div className='flex items-center gap-x-[5px]'>
-                                <Icons.ticket01 color="#979797" />
-                                <p>{codeResult.message.coupon_code.toUpperCase()}</p>
-                            </div>
-                            <SfButton size="sm" variant="tertiary" className='!p-0' onClick={removePromoCode}>
-                                <Icons.x color="#979797"/>
-                            </SfButton>
-                        </div>
-                        <p className='text-basesm'>{codeResult.message.coupon_code.toUpperCase()}</p>
-                    </div>
-                    <CouponAlert />
-                </div>
-            ) : addPromo ? (
-                <form className="flex flex-col gap-y-2 py-[5px]" onSubmit={checkPromoCode}>
-                    <div className='flex gap-x-[10px]'>
-                        <SfInput
-                            value={inputValue}
-                            placeholder="ใส่คูปองส่วนลด"
-                            wrapperClassName={`grow rounded-xl ${errorAlert ? 'border border-red-500/50' : ''}`}
-                            onChange={(event) => setInputValue(event.target.value)}
-                            onBlur={() => inputValue === "" && setAddPromo(false)}
-                            onKeyDown={e => e.key === 'Escape' && setAddPromo(false)}
-                            className='text-basesm'
-                        />
-                        <SfButton type="submit" className='btn-primary text-basesm rounded-xl'>
-                            ใช้งาน
-                        </SfButton>
-                    </div>
-                    <CouponAlert />
-                </form>
-            ) : (
-                <a className='text-secondary hover:underline cursor-pointer inline-block font-medium text-basesm pt-[22px] pb-[17px] leading-[10px]' onClick={() => setAddPromo(true)}>ใส่คูปองส่วนลด</a>
-            )) : <Skeleton className='h-6 w-[100px]'/>} 
-            {/*<p className="px-3 py-1.5 bg-secondary-100 text-secondary-700 typography-text-base rounded-xl text-center mb-4">
-                You are saving ${Math.abs(orderDetails.savings).toFixed(2)} on your order today!
-            </p>*/ }
-            </div>
+            {addCoupon}
             <div className="flex justify-between typography-headline-4 md:typography-headline-3 py-4 lg:pt-4 border-t mt-4 font-medium">
                 <p className='text-basesm leading-[10px] tracking-[-0.4px]'>ยอดชำระเงินทั้งหมด</p>
                 <p className='text-basesm leading-[10px]'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total.toLocaleString()}` : 'Your address is not supported' : `฿ ${codeResult?.message?.doc?.grand_total.toLocaleString()}`}</p>
@@ -322,34 +330,55 @@ export default function Checkout(){
         <main className='main-section-small'>
             <div className='grid grid-cols-1 lg:grid-cols-2 justify-center gap-x-10'>
                 <div className='w-full lg:py-5 lg:pr-[43px]'>
-
-                    <div className='flex items-center gap-x-4 lg:mb-16 h-[52px] lg:h-10 px-3 py-[14px] border-b lg:border-0'>
-                        <div onClick={() => navigate(-1)} className='cursor-pointer'>
-                            <Icons.flipBackward color='#A9A9A9'/>
+                    <div className='flex items-center justify-between lg:mb-16 h-[52px] lg:h-10 p-4 border-b lg:border-0'>
+                        <div className='flex items-center gap-x-4'>
+                            <div onClick={() => navigate(-1)} className='cursor-pointer'>
+                                <Icons.flipBackward color='#A9A9A9'/>
+                            </div>
+                            {appLogo === null ? (
+                                <Skeleton className='h-8 w-[120px]'/>
+                            ) : (
+                                <picture>
+                                <source srcSet={appLogo ? `${import.meta.env.VITE_ERP_URL ?? ''}${appLogo}` : defaultLogo} media="(min-width: 768px)" />
+                                <img
+                                    src={appLogo ? `${import.meta.env.VITE_ERP_URL ?? ''}${appLogo}` : defaultLogo}
+                                    alt="Sf Logo"
+                                    className='max-h-10'
+                                />
+                                </picture>
+                            )}
                         </div>
-                        {appLogo === null ? (
-                            <Skeleton className='h-8 w-[120px]'/>
-                        ) : (
-                            <picture>
-                            <source srcSet={appLogo ? `${import.meta.env.VITE_ERP_URL ?? ''}${appLogo}` : defaultLogo} media="(min-width: 768px)" />
-                            <img
-                                src={appLogo ? `${import.meta.env.VITE_ERP_URL ?? ''}${appLogo}` : defaultLogo}
-                                alt="Sf Logo"
-                                className='max-h-[43px]'
-                            />
-                            </picture>
-                        )}
+                        <div className='lg:hidden'>
+                            <a className='text-basesm text-secgray cursor-pointer' onClick={() => setShowOrders(true)}>ข้อมูลตะกร้า</a>
+
+                            <MobileCheckoutDrawer isOpen={showOrders} setIsOpen={setShowOrders} title='ทำการสั่งซื้อ'>
+                                <ProductLists />
+                                <CheckoutDetails />
+                            </MobileCheckoutDrawer>
+                        </div>
                     </div>
                     <div className='pt-[43px] lg:pt-0'>
-                        <div className="flex justify-center lg:justify-between items-center lg:pl-[21px]">
-                            <p className="text-sm text-secgray leading-[9px]">ยอดรวมทั้งหมด</p>
-                            {isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : <p className="text-secgray text-sm font-medium leading-[9px] ml-1">{cartCount} ชิ้น</p>}
+                        <div className="flex flex-col items-center lg:pl-[21px]">
+                            {Object.entries(cart).map(([itemCode]) => {
+                                const product = getByItemCode(itemCode)
+                                return (
+                                    <>{!isProductLoading ? (
+                                        <img onClick={() => setShowOrders(true)} src={product?.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`} className="h-[120px] w-[120px] object-cover object-center rounded-[5px] mb-4 lg:hidden"/>
+                                    ) : (
+                                        <Skeleton className='h-[120px] w-[120px] mb-4 lg:hidden'/>
+                                    )}</>
+                                )
+                            }).slice(0, 1)}
+                            <div className='flex items-center justify-center lg:justify-between w-full'>
+                                <p className="text-sm text-secgray leading-[9px]">ยอดรวมทั้งหมด</p>
+                                {isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : <p className="text-secgray text-sm font-medium leading-[9px] ml-1">{cartCount} ชิ้น</p>}
+                            </div>
                         </div>
                         <div className={`px-4 lg:pl-[21px] lg:pr-[19px]`}>
                             <h1 className='text-[56px] font-bold pt-[26px] leading-5 text-center lg:text-left'>{isProductLoading ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total.toLocaleString()}` : 'Change address' : `฿ ${codeResult?.message?.doc?.grand_total.toLocaleString()}` }</h1>
                             <div className='hidden lg:block'>
                                 <ProductLists />
-                                <CheckoutDetails />
+                                <CheckoutDetails addCoupon={<CouponForm />}/>
                             </div>
 
                             {/* <SfInput
@@ -523,10 +552,10 @@ export default function Checkout(){
                                 <>
                                     <PaymentMethods onChange={value => formik.setFieldValue('payment_method', value)} value={formik.values.payment_method} error={formik.errors.payment_method} />
                                     <div className='lg:hidden'>
-                                        <CheckoutDetails />
+                                        <CheckoutDetails addCoupon={<CouponForm />}/>
                                     </div>
-                                    <div className='w-full'>
-                                        <SfButton size="lg" className="w-full btn-primary text-base h-[50px] rounded-xl" onClick={formik.handleSubmit} disabled={formik.values.billing_address === "" || undefined || formik.values.payment_method === "" || undefined || checkedState === "" || undefined}>
+                                    <div className='w-full pt-[11px] lg:pt-0'>
+                                        <SfButton size="lg" className="w-full btn-primary text-base h-[50px] rounded-xl" onClick={formik.handleSubmit} disabled={formik.values.billing_address === undefined || formik.values.payment_method === undefined || checkedState === "" || undefined}>
                                             ชำระเงิน
                                         </SfButton>
                                         <div className="mt-3 text-sm text-secgray">
