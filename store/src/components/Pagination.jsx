@@ -2,11 +2,11 @@ import { Fragment } from 'react';
 import { SfButton, SfIconChevronLeft, SfIconChevronRight, usePagination } from '@storefront-ui/react';
 import classNames from 'classnames';
 
-export function Showcase() {
+export default function Pagination({data, pageSize}) {
   const { totalPages, pages, selectedPage, startPage, endPage, next, prev, setPage, maxVisiblePages } = usePagination({
-    totalItems: 150,
+    totalItems: 150, // data.length
     currentPage: 2,
-    pageSize: 10,
+    pageSize: 10, // pageSize
     maxPages: 1,
   });
 
@@ -60,7 +60,7 @@ export function Showcase() {
             </div>
           </li>
         )}
-        {pages.map((page: number) => (
+        {pages.map((page) => (
           <Fragment key={page}>
             {maxVisiblePages === 1 && selectedPage === totalPages && (
               <li>

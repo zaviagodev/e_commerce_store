@@ -49,12 +49,13 @@ const Wish = () => {
                             </div>
                             <h2 className="text-basesm font-semibold text-gray-900 text-center whitespace-pre col-span-2 leading-[11px]" id="slide-over-title">รายการสินค้าที่สนใจของฉัน</h2>
                         </div>
-
                         {isLoading ? (
-                            <div className='flex flex-col gap-y-2 p-6'>
-                                <Skeleton className='h-6 w-full'/>
-                                <Skeleton className='h-6 w-full'/>
-                                <Skeleton className='h-6 w-full'/>
+                            <div className='flex gap-x-2 p-6'>
+                                <Skeleton className='h-[90px] min-w-[90px]'/>
+                                <div className='flex justify-between w-full'>
+                                    <Skeleton className='h-4 w-[100px]'/>
+                                    <Skeleton className='h-4 w-10'/>
+                                </div>
                             </div>
                         ) : (
                             <>
@@ -227,7 +228,6 @@ const Wish = () => {
     //         </div>
     //     </aside>
     // )
-
 }
 
 export default Wish

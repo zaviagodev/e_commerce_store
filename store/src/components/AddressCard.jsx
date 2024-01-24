@@ -3,7 +3,7 @@ export const AddressCard = (props) => {
         <div className="flex flex-wrap gap-4 lg:gap-6 lg:flex-nowrap">
             <div
                 key={props.title}
-                className="w-full relative border border-neutral-200 rounded-lg hover:shadow-xl overflow-hidden"
+                className="w-full relative border border-neutral-100 rounded-xl hover:shadow-custom overflow-hidden"
             >
                 <div className="flex flex-col items-start p-6 grow">
                     {
@@ -15,7 +15,7 @@ export const AddressCard = (props) => {
                         )
                     }
                 </div>
-                {props.active ? <div className='h-3 w-full post-gradient'/> : null}
+                {props.active ? <div className='h-[9px] w-full post-gradient'/> : null}
             </div>
         </div>
     )

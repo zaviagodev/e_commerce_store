@@ -3,7 +3,6 @@ import { SfInput, SfButton } from "@storefront-ui/react";
 import { useUser } from '../../hooks/useUser';
 import { useFrappePostCall } from 'frappe-react-sdk';
 
-
 export default function MyAccountForm(onSuccess = () => { },){
   const { user, logout } = useUser();
   const { call, isCompleted } = useFrappePostCall('webshop.webshop.api.update_profile')
