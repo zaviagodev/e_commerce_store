@@ -1,23 +1,26 @@
 import { useFormik } from "formik";
 import { SfInput, SfButton } from "@storefront-ui/react";
 import { useUser } from '../../hooks/useUser';
-
+import { useFrappePostCall } from 'frappe-react-sdk';
 
 
 export default function MyAccountForm(onSuccess = () => { },){
   const { user, logout } = useUser();
-
+  const { call, isCompleted } = useFrappePostCall('webshop.webshop.api.update_profile')
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      first_name: "",
-      last_name: "",
-      email: "",
-      phone: "",
+      first_name: user?.user?.first_name || "",
+      last_name: user?.user?.last_name || "",
+      email: user?.user?.email || "",
+      phone: user?.user?.phone || "",
     },
     // validationSchema: addressSchema,
     // validateOnChange: false,
-    // onSubmit: call
+    onSubmit: call
   });
+
+  console.log("Formik Values:", formik.values);
 
   return (
     <form className="max-w-[950px] flex gap-x-4 gap-y-8 flex-wrap text-neutral-900" onSubmit={formik.handleSubmit}>
@@ -61,6 +64,7 @@ export default function MyAccountForm(onSuccess = () => { },){
               name="email"
               className="mt-0.5 text-sm"
               onChange={formik.handleChange}
+              readOnly
               value={formik.values.email}
               invalid={formik.errors.email}
           />
