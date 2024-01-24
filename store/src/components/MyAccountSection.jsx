@@ -18,11 +18,13 @@ const MyAccountSection = ({children}) => {
       <div className='grid grid-cols-1 lg:grid-cols-3 gap-12'>
         <div className='lg:col-span-1 flex flex-col w-[150px] mx-auto'>
           <div className='flex flex-col gap-y-4 items-center mx-auto'>
+            {console.log(user.user.user_image)}
             <img
               className="rounded-full bg-neutral-100 group-hover:shadow-xl group-active:shadow-none"
-              src="https://storage.googleapis.com/sfui_docs_artifacts_bucket_public/production/men_category.png"
+              src={user.user.user_image ? `${import.meta.env.VITE_ERP_URL || ""}${user.user.user_image}` : "https://storage.googleapis.com/sfui_docs_artifacts_bucket_public/production/men_category.png"}
               width="80"
               height="80"
+              alt="User Image"
             />
             <p className="font-semibold text-sm">{currentUser}</p>
           </div>

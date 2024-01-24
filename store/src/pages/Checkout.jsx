@@ -35,21 +35,40 @@ export default function Checkout(){
     const [showOrderSum, setShowOrderSum] = useState(true)
     const [moreAddresses, setMoreAddresses] = useState(false)
     const [morePayments, setMorePayments] = useState(false)
+    const [getcheckout, setGetcheckout] = useState([])
 
     const {appName, appLogo,defaultTaxe } = useSetting()
     const {call : CheckPromoCode, loading, error : codeError, result : codeResult, reset, isCompleted : PromoCompleted } = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_coupon_code');
     const {call : ApplyDeliveryFee, loading : deliveryLoading, result : deliveryResult, error : deliveryError} = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_shipping_rule');
+    const {call : ApplyAddress, loading : addressLoading, result : addressResult, error : addressError} = useFrappePostCall('webshop.webshop.shopping_cart.cart.update_cart_address');
+
+
+    
+
     const {isLoading : shippingRuleLoading, } = useFrappeGetCall('webshop.webshop.api.get_shipping_methods',undefined, `shippingRules`, {
         isOnline: () => shippingRules.length === 0,
         onSuccess: (data) => setShippingRules(data.message)
     })
+
+
+    const { isLoading:checkoutinfo, mutate :updatecartinfo } = useFrappeGetCall('webshop.webshop.shopping_cart.cart.get_cart_quotation', undefined, `checkout-${randomKey}`,{
+        onSuccess: (data) => setGetcheckout(data.message)
+    })
+
+
+
     const {call : deleteCoupon, loading : deleteLoading, result : deleteResult, error : deleteError} = useFrappePostCall('webshop.webshop.shopping_cart.cart.remove_coupon_code');
 
     const { data:addressList } = useFrappeGetCall('headless_e_commerce.api.get_addresses', null, `addresses-${randomKey}`)
     const [addNewAddress, setAddNewAddress] = useState(false);
 
     useEffect(() => {
+
+
         if (!deliveryResult && !deliveryError && !shippingRuleLoading && shippingRules.length > 0 && checkedState == '') {
+
+
+           
             const deleteCouponAsync = async () => {
                 await deleteCoupon();
             };
@@ -61,7 +80,7 @@ export default function Checkout(){
             setCheckedState(shippingRules[0].name);
             formik.setFieldValue('shipping_method', shippingRules[0].name) 
         }
-    }, [deliveryResult, deliveryError, shippingRuleLoading, shippingRules,addressList])
+    }, [deliveryResult, deliveryError, shippingRuleLoading, shippingRules,addressList,checkoutinfo])
 
     useEffect(() => {
         clearTimeout(errorTimer.current);
@@ -350,6 +369,37 @@ export default function Checkout(){
                             <ProductLists />
                             <CheckoutDetails />
                         </div>
+                    )}
+                    <div className={`${showOrderSum ? 'block' : 'hidden'} lg:!block lg:px-5`}>
+                        
+                        <h1 className='font-bold lg:hidden text-sm'>{getcheckout?.doc?.base_grand_total}</h1>
+
+                        <h1 className='text-[56px] font-bold pt-6 hidden lg:block leading-5'>
+                        {deliveryLoading ? (
+                            <Skeleton className='h-8 w-[100px]' />
+                        ) : (
+                            typeof codeResult?.message?.doc?.grand_total === 'undefined' &&
+                            typeof deliveryResult?.message?.doc?.grand_total === 'undefined' ? (
+                            `฿ ${getcheckout?.doc?.base_grand_total || 0}`
+                            ) : (
+                            `฿ ${codeResult?.message?.doc?.grand_total || deliveryResult?.message?.doc?.grand_total || 0}`
+                            )
+                        )}
+                        </h1>
+
+
+                        <div className="flex flex-col typography-text-basesm pt-16 pb-6">
+                        {cartCount > 0 && (
+                            <ul className='flex flex-col gap-y-4'>
+                                {Object.entries(cart).map(([itemCode]) => {
+                                    const product = getByItemCode(itemCode)
+                                    return (
+                                    <>
+                                        {product ? (
+                                            <li key={itemCode} className="flex pb-5">
+                                                <div className="h-[53px] w-[53px] flex-shrink-0 overflow-hidden">
+                                                    <img src={`${import.meta.env.VITE_ERP_URL || ""}${product?.website_image}`} alt={product?.item_name} className="h-full w-full object-cover object-center" />
+                                                </div>
 
                         {/* <SfInput
                             placeholder='Enter loyalty points to redeem'
@@ -404,7 +454,11 @@ export default function Checkout(){
                                         </div>
                                         <AddressDrawer isOpen={moreAddresses} setIsOpen={setMoreAddresses} title='เลือกที่อยู่'>
                                             <AddressOptions
-                                                onChange={value => {formik.setFieldValue('billing_address', value); }}
+                                                onChange={(value) => {
+                                                    formik.setFieldValue('billing_address', value); 
+                                                    ApplyAddress({'address_name' : value,'address_type' : 'billing' });
+                                                    updatecartinfo();
+                                                }}
                                                 value={formik.values.billing_address}
                                                 error={formik.errors.billing_address}
                                                 randomKey={randomKey}
