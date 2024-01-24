@@ -10,11 +10,8 @@ import { Icons } from '../components/icons'
 
 const Home = () => {
     const { updateCurrentUser } = useFrappeAuth();
-    const { products, mainGroup, settingPage } = useProducts()
+    const { products, mainGroup, settingPage,totalitems } = useProducts()
     const navigate = useNavigate();
-
-    console.log(settingPage)
-
     const idFromUrl = useParams().itemsgroup;
 
     useEffect(() => {
@@ -61,7 +58,7 @@ const Home = () => {
                     {products.length > 0 ? (
                         <div>
                             <div className='flex items-center justify-between mb-4'>
-                                <h3 className='font-medium text-base'>สินค้าทั้งหมด <span className='font-normal text-maingray inline-block ml-1'> ({products.length} ไอเทม)</span></h3>
+                                <h3 className='font-medium text-base'>สินค้าทั้งหมด <span className='font-normal text-maingray inline-block ml-1'> ({totalitems} ไอเทม)</span></h3>
                                 <div className='flex items-center gap-x-[22px]'>
                                     <h3 className='font-medium flex items-center gap-x-[9px] text-base'>
                                         <Icons.filterLines className='w-[22px] h-[22px]'/>
