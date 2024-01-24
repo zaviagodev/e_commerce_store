@@ -155,8 +155,8 @@ const Product = () => {
                         buttonsPlacement="none"
                     >
                         {product?.discount ? (
-                            <div className="absolute inline-flex items-center justify-center text-sm font-medium text-muted bg-destructive py-1 px-2 top-2 left-2 rounded-md">
-                                <SfIconSell size="sm" className="mr-1.5" />
+                            <div className="absolute inline-flex items-center justify-center text-sm font-medium text-white bg-red-500 py-1 px-2 top-2 left-2 rounded-xl">
+                                <Icons.tag01 className='mr-1.5'/>
                                 {product?.discount}
                             </div>
                         ) : null}
@@ -206,7 +206,7 @@ const Product = () => {
                         )}
                         {product !== undefined ? (
                             <span className='flex flex-row items-center justify-start gap-2 mb-3'>
-                                <span className={`block typography-headline-3 font-medium text-base ${product?.formatted_mrp ? 'text-destructive' : 'text-primary'}`}>{product?.formatted_price}</span>
+                                <span className={`block typography-headline-3 font-medium text-base ${product?.formatted_mrp ? 'text-red-500' : 'text-primary'}`}>{product?.formatted_price}</span>
                                 {product?.formatted_mrp && <span className="block text-maingray typography-headline-3 line-through font-medium text-base">{product?.formatted_mrp}</span>}
                             </span>
                         ) : (<Skeleton className='h-4 w-[100px] mt-2'/>)}

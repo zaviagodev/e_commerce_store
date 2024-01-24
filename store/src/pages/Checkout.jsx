@@ -1,6 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { SfCheckbox, SfButton, SfIconCheckCircle, SfIconClose, SfLink, SfInput, SfLoaderCircular, SfIconArrowBack, SfIconExpandMore, SfIconExpandLess, SfDrawer, SfIconArrowForward } from '@storefront-ui/react';
-import { CSSTransition } from 'react-transition-group';
 import { useCart } from '../hooks/useCart';
 import PaymentMethods from '../components/PaymentMethods';
 import AddressCard from '../components/AddressCard';
@@ -19,6 +18,7 @@ import { useSetting } from '../hooks/useWebsiteSettings';
 import defaultLogo from '../assets/defaultBrandIcon.svg'
 import { Icons } from '../components/icons';
 import classNames from 'classnames'
+import AddressDrawer from '../components/drawers/AddressDrawer';
 
 export default function Checkout(){
     const errorTimer = useRef(0);
@@ -139,7 +139,7 @@ export default function Checkout(){
             use_different_shipping: false,
             loyalty_points: 0,
             items: cart,
-            payment_method: 'bank-transfer',
+            payment_method: '',
             branch: '',
         },
         validationSchema: orderSchema,
@@ -186,7 +186,7 @@ export default function Checkout(){
             <label className="w-full">
                 {addressList?.message?.length > 0 ? (<div className='flex items-center justify-between mb-4'>
                     <legend className="font-medium text-basesm text-secgray">เพิ่มที่อยู่ใหม่</legend>
-                    <a className='text-sm text-darkgray hover:underline cursor-pointer inline-block font-medium' onClick={() => setAddNewAddress(false)}>ยกเลิก</a>
+                    <a className='text-[16px] text-darkgray hover:underline cursor-pointer inline-block font-medium' onClick={() => setAddNewAddress(false)}>ยกเลิก</a>
                 </div>) : null}
                 <AddressForm onFormSubmit={() => UpdateAddresses() }/>
             </label>
@@ -198,12 +198,132 @@ export default function Checkout(){
         setMoreAddresses(false)
     }
 
+    const ProductLists = () => {
+        return (
+            <div className="flex flex-col typography-text-basesm pt-[71px] pb-4">
+                {cartCount > 0 && (
+                    <ul className='flex flex-col gap-y-4'>
+                        {Object.entries(cart).map(([itemCode]) => {
+                            const product = getByItemCode(itemCode);
+                            return (
+                            <>
+                                {!isProductLoading ? (
+                                    <li key={itemCode} className="flex pb-5">
+                                        <div className="h-[53px] w-[53px] flex-shrink-0 overflow-hidden">
+                                            <img src={product?.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`} className="h-full w-full object-cover object-center"/>
+                                        </div>
+
+                                        <div className="ml-[10px] flex flex-1 flex-col gap-y-0.5">
+                                            <div className="flex justify-between text-gray-900">
+                                                <h3 className='text-darkgray pr-8 text-basesm'>{product?.web_item_name}</h3>
+                                                <p className='whitespace-pre font-bold text-[20px] leading-5'>{product?.formatted_price.toLocaleString()}</p>
+                                            </div>
+
+                                            <div className="flex justify-between text-basesm text-black font-bold">
+                                                {cart[itemCode]} ชิ้น
+                                            </div>
+                                        </div>
+                                    </li>
+                                ) : (
+                                    <div className='flex justify-between mb-4'>
+                                        <div className='flex gap-x-2'>
+                                            <Skeleton className='h-[53px] w-[53px]'/>
+                                            <Skeleton className='h-4 w-[100px]'/>
+                                        </div>
+                                        <Skeleton className='h-4 w-[100px]'/>
+                                    </div>
+                                )}
+                            </>
+                            )
+                        })}
+                    </ul>
+                )}
+            </div>
+        )
+    }
+
+    const CheckoutDetails = () => {
+        return (
+            <div className='lg:ml-[98px]'>
+            <div className='flex justify-between pt-[21px] border-t'>
+                <div className="flex flex-col pr-2 gap-y-[21px]">
+                    <p className='text-[20px] leading-[10px]'>ยอดรวมย่อย</p>
+                    <p className="text-maingray text-[20px] leading-[10px]">ค่าจัดส่ง</p>
+                    <p className='text-maingray text-[20px] leading-[10px]'>
+                    ภาษีสินค้า
+                    {defaultTaxe && ` (${
+                        defaultTaxe?.rate !== 0 ? defaultTaxe?.rate+'%' : ''
+                    }${
+                        defaultTaxe?.rate !== 0 && defaultTaxe?.amout !== 0 ? ' + ' : ''
+                    }${
+                        defaultTaxe?.amout !== 0 ? +defaultTaxe?.amout + '฿' : ''
+                    })`}
+                    </p>
+                </div>
+                <div className="flex flex-col text-right gap-y-[21px]">
+                    <p className='text-basesm font-bold leading-[10px]'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total ? `฿${deliveryResult?.message?.doc?.total.toLocaleString()}` : `฿${getTotal().toLocaleString()}`}</p>
+                    <p className="text-basesm text-maingray font-bold leading-[10px]">
+                        {isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total_taxes_and_charges ? `฿${deliveryResult?.message?.doc?.total_taxes_and_charges.toLocaleString()}` : "฿0"}
+                    </p>
+                    <p className='text-maingray text-basesm leading-[10px]'>-</p>
+                </div>
+            </div>
+            <div>
+            {!isProductLoading ? (codeResult ? (
+                <div className='flex flex-col gap-y-2 my-[5px]'>
+                    <div className="flex items-center justify-between">
+                        <div className='bg-neutral-100 rounded-xl px-3 py-[10px] flex items-center gap-x-2 text-[20px] text-secgray leading-[10px] font-medium'>
+                            <div className='flex items-center gap-x-[5px]'>
+                                <Icons.ticket01 color="#979797" />
+                                <p>{codeResult.message.coupon_code.toUpperCase()}</p>
+                            </div>
+                            <SfButton size="sm" variant="tertiary" className='!p-0' onClick={removePromoCode}>
+                                <Icons.x color="#979797"/>
+                            </SfButton>
+                        </div>
+                        <p className='text-basesm'>{codeResult.message.coupon_code.toUpperCase()}</p>
+                    </div>
+                    <CouponAlert />
+                </div>
+            ) : addPromo ? (
+                <form className="flex flex-col gap-y-2 py-[5px]" onSubmit={checkPromoCode}>
+                    <div className='flex gap-x-[10px]'>
+                        <SfInput
+                            value={inputValue}
+                            placeholder="ใส่คูปองส่วนลด"
+                            wrapperClassName={`grow rounded-xl ${errorAlert ? 'border border-red-500/50' : ''}`}
+                            onChange={(event) => setInputValue(event.target.value)}
+                            onBlur={() => inputValue === "" && setAddPromo(false)}
+                            onKeyDown={e => e.key === 'Escape' && setAddPromo(false)}
+                            className='text-basesm'
+                        />
+                        <SfButton type="submit" className='btn-primary text-basesm rounded-xl'>
+                            ใช้งาน
+                        </SfButton>
+                    </div>
+                    <CouponAlert />
+                </form>
+            ) : (
+                <a className='text-secondary hover:underline cursor-pointer inline-block font-medium text-basesm pt-[22px] pb-[17px] leading-[10px]' onClick={() => setAddPromo(true)}>ใส่คูปองส่วนลด</a>
+            )) : <Skeleton className='h-6 w-[100px]'/>} 
+            {/*<p className="px-3 py-1.5 bg-secondary-100 text-secondary-700 typography-text-base rounded-xl text-center mb-4">
+                You are saving ${Math.abs(orderDetails.savings).toFixed(2)} on your order today!
+            </p>*/ }
+            </div>
+            <div className="flex justify-between typography-headline-4 md:typography-headline-3 py-4 lg:pt-4 border-t mt-4 font-medium">
+                <p className='text-basesm leading-[10px] tracking-[-0.4px]'>ยอดชำระเงินทั้งหมด</p>
+                <p className='text-basesm leading-[10px]'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total.toLocaleString()}` : 'Your address is not supported' : `฿ ${codeResult?.message?.doc?.grand_total.toLocaleString()}`}</p>
+            </div>
+        </div>
+        )
+    }
+
     return (
         <main className='main-section-small'>
             <div className='grid grid-cols-1 lg:grid-cols-2 justify-center gap-x-10'>
-                <div className='w-full py-5 pr-[43px]'>
+                <div className='w-full lg:py-5 lg:pr-[43px]'>
 
-                    <div className='flex items-center gap-x-4 mb-16 h-10'>
+                    <div className='flex items-center gap-x-4 lg:mb-16 h-10'>
                         <div onClick={() => navigate(-1)} className='cursor-pointer'>
                             <Icons.flipBackward color='#A9A9A9'/>
                         </div>
@@ -220,127 +340,17 @@ export default function Checkout(){
                             </picture>
                         )}
                     </div>
-                    <div className="flex justify-between items-center pb-6 lg:pb-0 border-b lg:border-0 lg:pl-[21px]">
+                    <div className="flex justify-center lg:justify-between items-center lg:pl-[21px]">
                         <p className="text-sm text-secgray leading-[9px]">ยอดรวมทั้งหมด</p>
-                        <div className='flex items-center gap-x-2'>
-
-                            <h1 className='font-bold lg:hidden text-sm leading-[9px]'>{isProductLoading ? <Skeleton className='h-6 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? `฿ ${codeResult?.message?.doc?.grand_total.toLocaleString()}` : `฿ ${deliveryResult?.message?.doc?.grand_total.toLocaleString()}`  }</h1>
-                            {isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : <p className="text-secgray text-sm font-medium">{cartCount} ชิ้น</p>}
-                            <span onClick={() => setShowOrderSum(!showOrderSum)} className='lg:hidden cursor-pointer'>
-                                {showOrderSum ? <SfIconExpandLess /> : <SfIconExpandMore />}
-                            </span>
-                        </div>
+                        {isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : <p className="text-secgray text-sm font-medium leading-[9px] ml-1">{cartCount} ชิ้น</p>}
                     </div>
-                    <div className={`${showOrderSum ? 'block' : 'hidden'} lg:!block lg:pl-[21px] lg:pr-[19px]`}>
-                        <h1 className='text-[56px] font-bold pt-[26px] hidden lg:block leading-5'>{isProductLoading ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total.toLocaleString()}` : 'Change address' : `฿ ${codeResult?.message?.doc?.grand_total.toLocaleString()}` }</h1>
-                        <div className="flex flex-col typography-text-basesm pt-[71px] pb-4">
-                        {cartCount > 0 && (
-                            <ul className='flex flex-col gap-y-4'>
-                                {Object.entries(cart).map(([itemCode]) => {
-                                    const product = getByItemCode(itemCode);
-                                    return (
-                                    <>
-                                        {!isProductLoading ? (
-                                            <li key={itemCode} className="flex pb-5">
-                                                <div className="h-[53px] w-[53px] flex-shrink-0 overflow-hidden">
-                                                    <img src={product?.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`} className="h-full w-full object-cover object-center"/>
-                                                </div>
-
-                                                <div className="ml-[10px] flex flex-1 flex-col gap-y-0.5">
-                                                    <div className="flex justify-between text-gray-900">
-                                                        <h3 className='text-darkgray pr-8 text-basesm'>{product?.web_item_name}</h3>
-                                                        <p className='whitespace-pre font-bold text-[20px] leading-5'>{product?.formatted_price.toLocaleString()}</p>
-                                                    </div>
-
-                                                    <div className="flex justify-between text-basesm text-black font-bold">
-                                                        {cart[itemCode]} ชิ้น
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        ) : (
-                                            <div className='flex justify-between mb-4'>
-                                                <div className='flex gap-x-2'>
-                                                    <Skeleton className='h-[53px] w-[53px]'/>
-                                                    <Skeleton className='h-4 w-[100px]'/>
-                                                </div>
-                                                <Skeleton className='h-4 w-[100px]'/>
-                                            </div>
-                                        )}
-                                    </>
-                                    )
-                                })}
-                            </ul>
-                        )}
-                        <div className='flex justify-between lg:ml-[98px] pt-[21px] border-t'>
-                            <div className="flex flex-col pr-2 gap-y-[21px]">
-                                <p className='text-[20px] leading-[10px]'>ยอดรวมย่อย</p>
-                                <p className="text-maingray text-[20px] leading-[10px]">ค่าจัดส่ง</p>
-                                <p className='text-maingray text-[20px] leading-[10px]'>
-                                ภาษีสินค้า
-                                {defaultTaxe && ` (${
-                                    defaultTaxe?.rate !== 0 ? defaultTaxe?.rate+'%' : ''
-                                }${
-                                    defaultTaxe?.rate !== 0 && defaultTaxe?.amout !== 0 ? ' + ' : ''
-                                }${
-                                    defaultTaxe?.amout !== 0 ? +defaultTaxe?.amout + '฿' : ''
-                                })`}
-                                </p>
-                            </div>
-                            <div className="flex flex-col text-right gap-y-[21px]">
-                                <p className='text-basesm font-bold leading-[10px]'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total ? `฿${deliveryResult?.message?.doc?.total.toLocaleString()}` : `฿${getTotal().toLocaleString()}`}</p>
-                                <p className="text-basesm text-maingray font-bold leading-[10px]">
-                                    {isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total_taxes_and_charges ? `฿${deliveryResult?.message?.doc?.total_taxes_and_charges.toLocaleString()}` : "฿0"}
-                                </p>
-                                <p className='text-maingray text-basesm leading-[10px]'>-</p>
-                            </div>
+                    <div className={`p-4 lg:pl-[21px] lg:pr-[19px]`}>
+                        <h1 className='text-[56px] font-bold pt-[26px] leading-5 text-center lg:text-left'>{isProductLoading ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total.toLocaleString()}` : 'Change address' : `฿ ${codeResult?.message?.doc?.grand_total.toLocaleString()}` }</h1>
+                        <div className='hidden lg:block'>
+                            <ProductLists />
+                            <CheckoutDetails />
                         </div>
-                    </div>
-                        <div className='lg:ml-[98px]'>
-                            {!isProductLoading ? (codeResult ? (
-                                <div className='flex flex-col gap-y-2 my-[5px]'>
-                                    <div className="flex items-center justify-between">
-                                        <div className='bg-neutral-100 rounded-xl px-3 py-[10px] flex items-center gap-x-2 text-[20px] text-secgray leading-[10px] font-medium'>
-                                            <div className='flex items-center gap-x-[5px]'>
-                                                <Icons.ticket01 color="#979797" />
-                                                <p>{codeResult.message.coupon_code.toUpperCase()}</p>
-                                            </div>
-                                            <SfButton size="sm" variant="tertiary" className='!p-0' onClick={removePromoCode}>
-                                                <Icons.x color="#979797"/>
-                                            </SfButton>
-                                        </div>
-                                        <p className='text-basesm'>{codeResult.message.coupon_code.toUpperCase()}</p>
-                                    </div>
-                                    <CouponAlert />
-                                </div>
-                            ) : addPromo ? (
-                                <form className="flex flex-col gap-y-2 py-[5px]" onSubmit={checkPromoCode}>
-                                    <div className='flex gap-x-[10px]'>
-                                        <SfInput
-                                            value={inputValue}
-                                            placeholder="ใส่คูปองส่วนลด"
-                                            wrapperClassName={`grow rounded-xl ${errorAlert ? 'border border-red-500/50' : ''}`}
-                                            onChange={(event) => setInputValue(event.target.value)}
-                                            onBlur={() => inputValue === "" && setAddPromo(false)}
-                                            onKeyDown={e => e.key === 'Escape' && setAddPromo(false)}
-                                            className='text-basesm'
-                                        />
-                                        <SfButton type="submit" className='btn-primary text-basesm rounded-xl'>
-                                            ใช้งาน
-                                        </SfButton>
-                                    </div>
-                                    <CouponAlert />
-                                </form>
-                            ) : (
-                                <a className='text-secondary hover:underline cursor-pointer inline-block font-medium text-basesm pt-[22px] pb-[17px] leading-[10px]' onClick={() => setAddPromo(true)}>ใส่คูปองส่วนลด</a>
-                            )) : <Skeleton className='h-6 w-[100px]'/>} 
-                            {/*<p className="px-3 py-1.5 bg-secondary-100 text-secondary-700 typography-text-base rounded-xl text-center mb-4">
-                                You are saving ${Math.abs(orderDetails.savings).toFixed(2)} on your order today!
-                            </p>*/ }
-                            </div>
-                            <div className="flex justify-between typography-headline-4 md:typography-headline-3 py-4 lg:pt-4 lg:ml-[98px] border-y lg:border-b-0 mt-4 font-medium">
-                                <p className='text-basesm leading-[10px] tracking-[-0.4px]'>ยอดชำระเงินทั้งหมด</p>
-                                <p className='text-basesm leading-[10px]'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total.toLocaleString()}` : 'Your address is not supported' : `฿ ${codeResult?.message?.doc?.grand_total.toLocaleString()}`}</p>
-                            </div>
+
                         {/* <SfInput
                             placeholder='Enter loyalty points to redeem'
                             slotSuffix={<strong className='w-16'>of {user?.loyalty_points}</strong>}
@@ -351,7 +361,7 @@ export default function Checkout(){
                         /> */}
                     </div>
                 </div>
-                <form className="w-full flex flex-col gap-10 text-neutral-900 p-[60px] pt-[7.75em] min-h-screen checkout-shadow">
+                <form className="w-full flex flex-col gap-10 text-neutral-900 p-4 lg:p-[60px] lg:pt-[7.75em] min-h-screen lg:shadow-checkout">
                     {cartContents.hasNormalItem ? (
                         <>
                             {addressList ? (
@@ -359,7 +369,7 @@ export default function Checkout(){
                                     <>
                                         <div className='w-full flex flex-col gap-y-2'>
                                             <label className="w-full">
-                                                <legend className="font-bold text-darkgray text-base">ข้อมูลการจัดส่ง</legend>
+                                                <legend className="font-bold text-darkgray text-base">ข้อมูลการจัดส่ง*</legend>
                                                 {!addNewAddress ? (
                                                     <div className='flex flex-col gap-y-2 mt-8'>
                                                         <h2 className="font-medium text-basesm text-secgray">ที่อยู่*</h2>
@@ -401,7 +411,7 @@ export default function Checkout(){
                                                 onClick={() => {setMoreAddresses(false);setAddNewAddress(false)}}
                                             />
                                             <div className='fixed bottom-0 shadow-main p-6 left-0 w-full bg-white'>
-                                                <SfButton className='btn-primary w-full text-base h-[50px]' variant='tertiary' onClick={handleAddNewAddress}>เพิ่มที่อยู่ใหม่</SfButton>
+                                                <SfButton className='btn-primary w-full text-base h-[50px] rounded-xl' variant='tertiary' onClick={handleAddNewAddress}>เพิ่มที่อยู่ใหม่</SfButton>
                                             </div>
                                         </AddressDrawer>
                                     </>
@@ -510,8 +520,11 @@ export default function Checkout(){
                             {!shippingRuleLoading && addressList ? (
                                 <>
                                     <PaymentMethods onChange={value => formik.setFieldValue('payment_method', value)} value={formik.values.payment_method} error={formik.errors.payment_method} />
+                                    <div className='lg:hidden'>
+                                        <CheckoutDetails />
+                                    </div>
                                     <div className='w-full'>
-                                        <SfButton size="lg" className="w-full btn-primary text-base h-[50px] rounded-xl" onClick={formik.handleSubmit}>
+                                        <SfButton size="lg" className="w-full btn-primary text-base h-[50px] rounded-xl" onClick={formik.handleSubmit} disabled={formik.values.billing_address === "" || undefined || formik.values.payment_method === "" || undefined || checkedState === "" || undefined}>
                                             ชำระเงิน
                                         </SfButton>
                                         <div className="mt-3 text-sm text-secgray">
@@ -555,51 +568,6 @@ export default function Checkout(){
                 </form>
             </div>
         </main>
-    );
-}
-
-const AddressDrawer = ({isOpen, setIsOpen, children, title}) => {
-    const nodeRef = useRef(null);
-    const drawerRef = useRef(null);
-    return (
-        <CSSTransition
-            ref={nodeRef}
-            in={isOpen}
-            timeout={500}
-            unmountOnExit
-            classNames={{
-                enter: 'translate-x-full',
-                enterActive: 'translate-x-0',
-                enterDone: 'translate-x-0 transition duration-500 ease-in-out',
-                exitDone: 'translate-x-0',
-                exitActive: 'translate-x-full transition duration-500 ease-in-out',
-            }}
-        >
-            <SfDrawer
-                ref={drawerRef}
-                placement='right'
-                open
-                onClose={() => setIsOpen(false)}
-                className="bg-neutral-50 z-99 md:w-[386px] w-full box-border"
-            >
-                <div className="flex h-full flex-col overflow-y-auto bg-white shadow-xl">
-                    <div className="flex-1 overflow-y-auto">
-                        <div className="flex items-center gap-x-[10px] p-4 border-b">
-                            <div className="flex h-7 items-center">
-                                <button onClick={() => setIsOpen(false)} type="button" className="-m-2 p-2 text-gray-400 hover:text-gray-500">
-                                    <span className="sr-only">Close panel</span>
-                                    <Icons.flipBackward />
-                                </button>
-                            </div>
-                            <h2 className="text-base font-medium text-gray-900 text-center whitespace-pre" id="slide-over-title">{title}</h2>
-                        </div>
-                        <div className="flow-root p-6 mb-24">
-                            {children}
-                        </div>
-                    </div>
-                </div>
-            </SfDrawer>
-        </CSSTransition>
     );
 }
 

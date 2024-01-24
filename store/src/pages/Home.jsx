@@ -6,6 +6,7 @@ import { SfButton, SfIconTune, SfLoaderCircular, SfSelect } from '@storefront-ui
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Skeleton } from '../components/Skeleton';
 import { Icons } from '../components/icons'
+import Pagination from '../components/Pagination';
 
 
 const Home = () => {
@@ -91,6 +92,7 @@ const Home = () => {
                                         />
                                     ))}
                             </div>
+                            <Pagination data={products} pageSize={10} />
                         </div>
                     ) : (
                         <div className='flex flex-col gap-y-2'>

@@ -10,7 +10,7 @@ const paymentMethods = [
     {
         label: 'บัตรเครดิต / เดบิต',
         value: 'บัตรเครดิต / เดบิต',
-        logo: qrmock, 
+        logo: qrmock,
     }
 ];
 

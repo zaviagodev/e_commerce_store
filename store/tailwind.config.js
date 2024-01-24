@@ -48,7 +48,8 @@ export default {
         auto: 'auto auto auto'
       },
       boxShadow: {
-        custom: '0px 3px 5px 0px rgba(0, 0, 0, 0.03)'
+        custom: '0px 3px 5px 0px rgba(0, 0, 0, 0.03)',
+        checkout: '-17px 4px 28.8px 0px rgba(0, 0, 0, 0.03)'
       },
       colors: {
         maingray: '#858585',
