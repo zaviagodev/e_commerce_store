@@ -20,7 +20,7 @@ export const ProductsProvider = ({ children }) => {
         onSuccess: (data) => {
             setProducts(data.message.items);
             setsettingPage(data.message.settings);
-            settotalitems(data.message.items_count);
+            settotalitems(data.message.total_items);
         }
         
     })
