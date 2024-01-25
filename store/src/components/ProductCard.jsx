@@ -41,7 +41,7 @@ const ProductCard = ({
                     <Link to={`/products/${productId}`}>
 
                     {loaded ? null : (
-                        <Skeleton className='h-10 w-[200px] mx-auto mb-[53px]'/>
+                        <Skeleton className='h-full w-full aspect-square'/>
                     )}
                     <img
                         style={loaded ? {} : { display: 'none' }}
