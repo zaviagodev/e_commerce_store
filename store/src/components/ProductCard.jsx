@@ -61,7 +61,7 @@ const ProductCard = ({
                         )}
                     </Link>
                     <div className='p-2 w-full absolute bottom-0 add_to_cart'>
-                        <SfButton disabled={loading} className='btn-secondary w-full h-10 py-3 !text-base shadow-custom' type="button" size="sm" onClick={(e) => {
+                        <SfButton disabled={loading} className='btn-secondary w-full h-10 py-3 font-semibold shadow-custom !text-base' type="button" size="sm" onClick={(e) => {
                             e.preventDefault();
                             addToCart(itemCode, cart[itemCode] ? cart[itemCode] + 1 : 1);
                             setIsOpen(true)
@@ -71,7 +71,7 @@ const ProductCard = ({
                     </div>
                 </div>
                 <div className="py-6 flex flex-col justify-between">
-                    <div className='flex flex-col gap-y-6'>
+                    <div className='flex flex-col gap-y-4'>
                         <SfLink href="#" className="text-texttag text-base leading-[9px] no-underline font-medium relative">
                             <p className='product-title text-maingray'>{title}</p>
                             {isGift && <span className="text-primary">- Gift</span>}

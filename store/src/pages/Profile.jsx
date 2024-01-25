@@ -5,7 +5,7 @@ import MyAccountForm from '../components/forms/MyAccountForm'
 const Profile = () => {
   return (
     <MyAccountSection>
-      <h1 className='font-medium text-baselg text-darkgray'>รายละเอียดบัญชี</h1>
+      <h1 className='font-semibold text-darkgray'>รายละเอียดบัญชี</h1>
       <MyAccountForm />
     </MyAccountSection>
   )
