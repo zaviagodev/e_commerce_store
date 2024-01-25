@@ -41,7 +41,9 @@ const ProductCard = ({
                     <Link to={`/products/${productId}`}>
 
                     {loaded ? null : (
-                        <Skeleton className='h-full w-full aspect-square'/>
+                         <div className='grid gap-[14px] grid-cols-1 lg:grid-cols-1 place-items-center w-full h-full'>
+                            <Skeleton className='h-full w-full aspect-square'/>
+                        </div>
                     )}
                     <img
                         style={loaded ? {} : { display: 'none' }}
