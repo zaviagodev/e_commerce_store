@@ -31,29 +31,45 @@
     font-display:swap;
   }
   @font-face {
-    font-family:graphikTH;
-    src: url('../src/fonts/graphikTH/GraphikTH-Bold-2_1.woff');
-    font-weight:700
+    font-family:'SF Pro Text';
+    src: url('../src/fonts/SF Pro/SFProTHDisplay_light.woff2');
+    font-weight:300;
+    font-display:swap
   }
   @font-face {
-    font-family:graphikTH;
-    src: url('../src/fonts/graphikTH/graphikth-medium-1_1.woff');
-    font-weight:500
+    font-family:'SF Pro Text';
+    src: url('../src/fonts/SF Pro/sf-pro-text_light.woff2');
+    font-weight:300;
+    font-display:swap
   }
   @font-face {
-    font-family:graphikTH;
-    src: url('../src/fonts/graphikTH/graphikth-regular-2_1.woff');
-    font-weight:400
+    font-family:'SF Pro Text';
+    src: url('../src/fonts/SF Pro/SFProTHDisplay_regular.woff2');
+    font-weight:400;
+    font-display:swap
   }
   @font-face {
-    font-family:graphikTH;
-    src: url('../src/fonts/graphikTH/GraphikThai-Semibold-Web-1_1.woff');
-    font-weight:600
+    font-family:'SF Pro Text';
+    src: url('../src/fonts/SF Pro/sf-pro-text_regular.woff2');
+    font-weight:400;
+    font-display:swap
+  }
+  @font-face {
+    font-family:'SF Pro Text';
+    src: url('../src/fonts/SF Pro/SFProTHDisplay_semibold.woff2');
+    font-weight:600;
+    font-display:swap
+  }
+  @font-face {
+    font-family:'SF Pro Text';
+    src: url('../src/fonts/SF Pro/sf-pro-text_semibold.woff2');
+    font-weight:600;
+    font-display:swap
   }
 
   * {
     scroll-behavior: smooth;
-    @apply font-dbx
+    @apply font-sfpro
   }
 
   :root {
@@ -121,7 +137,7 @@
 }
 
 .btn-primary {
-  @apply text-btn-primary-foreground bg-btn-primary
+  @apply text-btn-primary-foreground bg-btn-primary font-semibold
 }
 
 .btn-primary:hover {
@@ -129,7 +145,7 @@
 }
 
 .btn-secondary {
-  @apply text-btn-secondary-foreground bg-btn-secondary
+  @apply text-btn-secondary-foreground bg-btn-secondary font-semibold
 }
 /* 
 .btn-secondary:hover {
@@ -152,11 +168,11 @@
 }
 
 .product-title {
-  @apply overflow-x-clip text-ellipsis pr-3 font-medium whitespace-pre
+  @apply overflow-x-clip text-ellipsis pr-3 font-semibold whitespace-pre
 }
 
 .product-desc {
-  @apply text-sm font-medium overflow-x-clip text-ellipsis pr-3 whitespace-pre
+  @apply text-sm font-semibold overflow-x-clip text-ellipsis pr-3 whitespace-pre
 }
 
 .product-price {
@@ -168,7 +184,7 @@
 }
 
 .product_card:hover .product-price {
-  @apply font-medium
+  @apply font-semibold
 }
 
 .post-gradient {

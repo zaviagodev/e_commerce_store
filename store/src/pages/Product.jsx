@@ -182,11 +182,11 @@ const Product = () => {
                 )}
 
                 <section className="w-full px-4 lg:px-10 lg:py-[30px] lg:max-w-[536px] h-full sticky top-0 z-10">
-                    <div className='flex flex-col gap-y-4 lg:gap-y-[10px]'>
+                    <div className='flex flex-col gap-y-3 lg:gap-y-[10px]'>
                         {product !== undefined ? (
                         <>
-                            <h2 className='text-secgray text-sm font-medium leading-[9px]'>หมวดหมู่สินค้า</h2>
-                            <h1 className="font-bold text-texttag text-lg leading-8">{product?.web_item_name}</h1>
+                            <h2 className='text-secgray text-sm'>หมวดหมู่สินค้า</h2>
+                            <h1 className="font-semibold text-texttag text-[22px]">{product?.web_item_name}</h1>
                         </>
                         ) : (
                             <>
@@ -203,7 +203,7 @@ const Product = () => {
                     </div>
 
                     {product !== undefined ? (
-                        <div className='text-[20px] leading-6 pb-[60px] font-medium' dangerouslySetInnerHTML={{ __html: product?.short_description }} />
+                        <div className='text-base leading-6 pb-[60px] font-normal' dangerouslySetInnerHTML={{ __html: product?.short_description }} />
                     ) : (<Skeleton className='h-10 w-[300px] mt-2 mb-[60px]'/>)}
 
                     <div className="pb-6 border-gray-200 border-b">
@@ -211,7 +211,7 @@ const Product = () => {
                             {!hideCheckout && <div className="flex flex-col items-stretch xs:items-center xs:inline-flex w-full">
                                 {product !== undefined ? (
                                     <div className='flex items-center justify-between lg:justify-start w-full'>
-                                        <p className='lg:hidden text-basesm text-maingray'>จำนวน</p>
+                                        <p className='lg:hidden  text-maingray'>จำนวน</p>
                                         <div className="flex bg-[#F3F3F3] rounded-xl items-center">
                                             <SfButton
                                                 type="button"
@@ -257,7 +257,7 @@ const Product = () => {
                             <div className='fixed bottom-0 left-0 bg-white lg:bg-inherit p-4 lg:p-0 lg:static flex lg:flex-col w-full gap-y-[14px] flex-col-reverse z-10'>
                                 {product !== undefined || loading ? (
                                     <>
-                                    <p className='text-basesm text-center lg:text-left'>รับ Cashback สูงถึง ฿ 105 เมื่อเป็นสมาชิก</p>                           
+                                    <p className=' text-center lg:text-left'>รับ Cashback สูงถึง ฿ 105 เมื่อเป็นสมาชิก</p>                           
                                     <div className='flex items-center gap-x-[10px] w-full'>
                                         <SfButton disabled={loading || !product?.in_stock}  onClick={handleClickCart} type="button" size="lg" className="w-full btn-primary flex items-center gap-x-[10px] rounded-xl h-[50px]">
                                             <Icons.shoppingBag01 color={loading || !product?.in_stock ? '#a1a1aa' : 'white'} className='w-[22px] h-[22px]'/>
@@ -298,7 +298,7 @@ const Product = () => {
                                         <SfAccordionItem 
                                             key={id} 
                                             summary={<div className={classNames('flex items-center justify-between p-4 pr-2', {'border-b': !isAccordionOpen(id)})}>
-                                                <h2 className='font-medium text-base'>{summary}</h2>
+                                                <h2 className='font-semibold text-base'>{summary}</h2>
                                                 <SfIconChevronLeft
                                                     className={classNames('text-black w-8 h-8', {
                                                     'rotate-90': isAccordionOpen(id),
@@ -318,7 +318,7 @@ const Product = () => {
                                 ))}
 
                             <div className='w-full flex justify-center h-10 items-center mt-6'>
-                                <button className='flex items-center gap-x-2 text-base font-medium'>
+                                <button className='flex items-center gap-x-2 text-base font-semibold'>
                                     <Icons.messageQuestionCircle />
                                     ขอความช่วยเหลือ
                                 </button>
@@ -337,7 +337,7 @@ const Product = () => {
         
             {products.filter((productz) => productz?.item_group === product?.item_group).filter((productz) => productz?.item_code  != product?.item_code).length > 0 ? (
                 <section className='px-4 lg:p-0 pt-[38px] lg:pt-[140px]'>
-                <h1 className='mb-8 text-primary text-base lg:text-xl font-medium'>สินค้าที่คุณอาจสนใจ</h1>
+                <h1 className='mb-8 text-primary text-base lg:text-3xl font-semibold'>สินค้าที่คุณอาจสนใจ</h1>
                 <div
                     className="grid gap-[14px] grid-cols-2 lg:grid-cols-4 place-items-center"
                     >

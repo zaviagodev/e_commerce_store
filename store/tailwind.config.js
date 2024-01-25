@@ -18,7 +18,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        dbx: ['DB Helvethaica X', 'sans-serif']
+        sfpro: ['SF Pro Text', 'sans-serif']
       },
       height: {
         15: '3.75rem'
@@ -36,16 +36,16 @@ export default {
         60: 60,
         99: 99
       },
-      fontSize: {
-        DEFAULT: ['23px', '20px'],
-        sm: ['19px', '20px'],
-        sml: ['20px', '20px'],
-        basesm: ['21px', '20px'],
-        base: ['23px', '20px'],
-        baselg: ['24px', '20px'],
-        lg: ['34px', '20px'],
-        xl: ['50px', '27px']
-      },
+      // fontSize: {
+      //   DEFAULT: ['23px', '20px'],
+      //   sm: ['19px', '20px'],
+      //   sml: ['20px', '20px'],
+      //   basesm: ['21px', '20px'],
+      //   base: ['23px', '20px'],
+      //   baselg: ['24px', '20px'],
+      //   lg: ['34px', '20px'],
+      //   xl: ['50px', '27px']
+      // },
       gridTemplateColumns: {
         auto: 'auto auto auto'
       },

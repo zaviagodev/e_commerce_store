@@ -4,27 +4,38 @@ import ProductCard from "../components/ProductCard";
 import { useEffect, useState } from "react";
 import { SfButton, SfLoaderCircular } from "@storefront-ui/react";
 import { useProducts } from "../hooks/useProducts";
+import { useCart } from "../hooks/useCart";
 import { month } from "../data/month";
 import AddressCard from "../components/AddressCard";
 import MyAccountSection from "../components/MyAccountSection";
 import { Skeleton } from "../components/Skeleton";
+import { useSetting } from "../hooks/useWebsiteSettings";
+import { useFrappePostCall } from "frappe-react-sdk";
+import { Icons } from "../components/icons";
 
 function SingleorderHistory() {
     const id = useParams().id;
     const {getOrderByOrderCode, Order} = useOrder();
-    const {getByItemCode, products, settingPage} = useProducts();
+    const {defaultTaxe} = useSetting()
+    const {getByItemCode, products, settingPage, isLoading:isProductLoading} = useProducts();
+    const { cart, cartCount, getTotal, resetCart, loading:cartLoading } = useCart();
     const [loading, setLoading] = useState(true)
     const [order, setOrder] = useState({})
     const [itemsList, setItemsList] = useState([])
     const [adressParts, setAdress] = useState([])
 
+    const {call : CheckPromoCode, error : codeError, result : codeResult, reset, isCompleted : PromoCompleted } = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_coupon_code');
+    const {call : ApplyDeliveryFee, loading : deliveryLoading, result : deliveryResult, error : deliveryError} = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_shipping_rule');
+
     const orderDetails = [
-        {title:'Order ID:',value:order.name},
-        {title:'Order Status:',value:order.status},
-        {title:'Order Total:',value:`฿${order.grand_total}`},
-        {title:'Order Date:',value:`${new Date(order.creation).getDate()} ${month[new Date(order.creation).getMonth()]}, ${new Date(order.creation).getHours()}:${new Date(order.creation).getMinutes() < 10 ? '0' + new Date(order.creation).getMinutes(): new Date(order.creation).getMinutes()}`},
+        {title:'เลขคำสั่งซื้อ',value:order.name},
+        {title:'ยอดรวมทั้งหมด',value:`฿${order.grand_total}`},
+        {title:'วันที่',value:`${new Date(order.creation).getDate()} ${month[new Date(order.creation).getMonth()]}, ${new Date(order.creation).getHours()}:${new Date(order.creation).getMinutes() < 10 ? '0' + new Date(order.creation).getMinutes(): new Date(order.creation).getMinutes()}`},
+        {title:'สถานะ',value:order.status}
         // {title:'Shipping Phone:',value:order.custom_phone_number}
     ]
+
+    console.log(Order)
 
     /* 
         key={product.item_code}
@@ -40,16 +51,50 @@ function SingleorderHistory() {
     const PurchasedList = ({name, company, status, creation, image, price}) => {
         return (
           <div className="w-full flex gap-x-4">
-              {image ? <img src={image} className="w-24 h-24"/> : <SfThumbnail size="lg" className="bg-gray-100 h-24 w-24"/>}
+              {image ? <img src={image} className="min-w-[96px] h-24 object-cover"/> : <SfThumbnail size="lg" className="bg-gray-100 h-24 min-w-[96px]"/>}
               <div className="flex flex-col gap-y-1 w-full">
                 <div className="flex items-center justify-between">
-                  <h2 className="font-medium text-sm">{name}</h2>
-                  <p className="text-sm font-medium">{price}</p>
+                  <h2 className="font-semibold">{name}</h2>
+                  <p className="font-semibold">{price}</p>
                 </div>
               </div>
           </div>
         )
       }
+
+      const CheckoutDetails = () => {
+        return (
+            <div className='lg:ml-[98px]'>
+            <div className='flex justify-between pt-[21px] border-t'>
+                <div className="flex flex-col pr-2 gap-y-[21px]">
+                    <p>ยอดรวมย่อย</p>
+                    <p className="text-maingray">ค่าจัดส่ง</p>
+                    <p className='text-maingray'>
+                    ภาษีสินค้า
+                    {defaultTaxe && ` (${
+                        defaultTaxe?.rate !== 0 ? defaultTaxe?.rate+'%' : ''
+                    }${
+                        defaultTaxe?.rate !== 0 && defaultTaxe?.amout !== 0 ? ' + ' : ''
+                    }${
+                        defaultTaxe?.amout !== 0 ? +defaultTaxe?.amout + '฿' : ''
+                    })`}
+                    </p>
+                </div>
+                <div className="flex flex-col text-right gap-y-[21px]">
+                    <p className=' font-bold leading-[10px]'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total ? `฿${deliveryResult?.message?.doc?.total.toLocaleString()}` : `฿${getTotal().toLocaleString()}`}</p>
+                    <p className=" text-maingray font-bold leading-[10px]">
+                        {isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total_taxes_and_charges ? `฿${deliveryResult?.message?.doc?.total_taxes_and_charges.toLocaleString()}` : "฿0"}
+                    </p>
+                    <p className='text-maingray  leading-[10px]'>-</p>
+                </div>
+            </div>
+            <div className="flex justify-between typography-headline-4 md:typography-headline-3 py-4 lg:pt-4 border-t mt-4 font-medium">
+                <p className=' leading-[10px] tracking-[-0.4px]'>ยอดชำระเงินทั้งหมด</p>
+                <p className=' leading-[10px]'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total.toLocaleString()}` : 'Your address is not supported' : `฿ ${codeResult?.message?.doc?.grand_total.toLocaleString()}`}</p>
+            </div>
+        </div>
+        )
+    }
 
     useEffect(() => {
         if(Order.length > 0){
@@ -75,7 +120,7 @@ function SingleorderHistory() {
         <MyAccountSection>
             <div className="flex flex-col gap-y-8">
                 <div className="flex flex-col gap-y-4">
-                    <h2 className="text-base font-bold text-primary">Order Details</h2>
+                    <h2 className='font-semibold text-darkgray'>รายละเอียดคำสั่งซื้อ</h2>
                     <div className="flex flex-col gap-y-2">
                         {!loading ? (
                             <>
@@ -99,7 +144,18 @@ function SingleorderHistory() {
                     </div>
                 </div>
                 <div className="flex flex-col gap-y-4">
-                    <h2 className="text-base font-bold text-primary">Shipping Details</h2>
+                    <h2 className='font-semibold text-darkgray'>วิธีการชำระเงิน</h2>
+                    <div className="flex items-center gap-3 lg:justify-between">
+                        <div className="border border-neutral-100 bg-neutral-50 rounded-xl h-[50px] w-full lg:w-1/2 px-4 flex items-center font-semibold">
+                            QR พร้อมเพย์
+                        </div>
+                        <SfButton className="btn-primary rounded-xl h-[50px] whitespace-pre" variant="tertiary">
+                            ชำระเงิน
+                        </SfButton>
+                    </div>
+                </div>
+                <div className="flex flex-col gap-y-4">
+                    <h2 className='font-semibold text-darkgray'>ที่อยู่จัดส่ง</h2>
                     <div className="flex flex-col gap-y-4">
                         {adressParts.length > 0 ? (
                             <AddressCard title={adressParts[0]} addressLine2={adressParts[1]}  city={adressParts[2]} state={adressParts[3]} country={adressParts[4]} />
@@ -109,7 +165,7 @@ function SingleorderHistory() {
                     </div>
                 </div>
                 <div className="flex flex-col gap-y-4">
-                    <h2 className="text-base font-bold text-primary">Purchased items</h2>
+                    <h2 className='font-semibold text-darkgray'>รายละเอียดสินค้า</h2>
                     <div className="grid grid-cols-1 gap-4 place-items-center">
                         {itemsList.length > 0 ? itemsList.map(product => (
                             <PurchasedList name={product.web_item_name} image={product.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`} price={product.formatted_price}/>
@@ -125,13 +181,16 @@ function SingleorderHistory() {
                         }
                     </div>
                 </div>
-                <div className="flex justify-center gap-x-2">
-                    <SfButton variant='tertiary' className="btn-primary">
-                        Contact us
-                    </SfButton>
-                    <SfButton variant='tertiary' className="btn-secondary">
-                        Cancel order
-                    </SfButton>
+                <CheckoutDetails />
+                <div className="flex justify-center gap-x-10">
+                    <button className='flex items-center gap-x-2 text-base font-medium'>
+                        <Icons.messageQuestionCircle />
+                        ขอความช่วยเหลือ
+                    </button>
+                    <button className='flex items-center gap-x-2 text-base font-medium'>
+                        <Icons.download01 />
+                        ดาวน์โหลดใบเสร็จ
+                    </button>
                 </div>
             </div>
         </MyAccountSection>

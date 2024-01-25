@@ -47,7 +47,7 @@ const Wish = () => {
                                     <Icons.flipBackward />
                                 </button>
                             </div>
-                            <h2 className="text-basesm font-semibold text-gray-900 text-center whitespace-pre col-span-2 leading-[11px]" id="slide-over-title">รายการสินค้าที่สนใจของฉัน</h2>
+                            <h2 className=" font-semibold text-gray-900 text-center whitespace-pre col-span-2 leading-[11px]" id="slide-over-title">รายการสินค้าที่สนใจของฉัน</h2>
                         </div>
                         {isLoading ? (
                             <div className='flex gap-x-2 p-6'>
@@ -79,14 +79,14 @@ const Wish = () => {
 
                                                         <div className="ml-[10px] flex flex-1 flex-col justify-between">
                                                             <div className="flex justify-between text-gray-900">
-                                                                <h3 className='text-texttag hover:underline text-[20px] leading-5 font-medium'>
+                                                                <h3 className='text-texttag hover:underline text-base font-normal'>
                                                                     <Link to={`/products/${product?.name}`} >{product?.web_item_name}</Link>
                                                                 </h3>
-                                                                <p className="ml-4 whitespace-pre text-[20px] font-bold leading-5">{product?.formatted_price}</p>
+                                                                <p className="ml-4 whitespace-pre text-base font-semibold">{product?.formatted_price}</p>
                                                             </div>
 
                                                             <div className="flex text-base justify-end">
-                                                                <button onClick={() => removeFromWish(itemCode)} type="button" className="font-medium text-secondary">
+                                                                <button onClick={() => removeFromWish(itemCode)} type="button" className="text-secondary">
                                                                     <Icons.trash01 color='#979797' className='w-5 h-5'/>
                                                                 </button>
                                                             </div>
@@ -99,10 +99,10 @@ const Wish = () => {
                                     </div>
                                 </div>) : (
                                     <div className="h-1/2 text-center flex flex-col gap-y-3 justify-end px-6">
-                                        <h1 className='font-bold text-lg'>Your wishlist is empty</h1>
-                                        <p className='text-base'>Start saving your preferred products by clicking the heart.</p>
+                                        <h1 className='font-bold text-lg'>ยังไม่มีรายการสินค้าที่สนใจ</h1>
+                                        <p className='text-base'>เริ่มบันทึกสินค้าที่สนใจโดยกดปุ่มหัวใจ</p>
                                         <Link to='/home/all%20items'>
-                                            <SfButton onClick={() => setIsOpen(false)} className='btn-primary'>Start shopping</SfButton>
+                                            <SfButton onClick={() => setIsOpen(false)} className='btn-primary font-semibold'>เริ่มเลือกสินค้า</SfButton>
                                         </Link>
                                     </div>
                                 )}

@@ -82,49 +82,76 @@ export default function Login() {
 
     return (
         <main className='main-section'>
-        <form className="flex gap-4 flex-wrap text-neutral-900 text-start text-big" onSubmit={formik.handleSubmit}>
-            <h2 className="mb-[53px] text-primary text-center text-xl font-medium">{loginState ? 'ลงชื่อเข้าใช้งาน' : 'ลงทะเบียน'}</h2>
+        <h2 className="mb-[85px] text-primary text-center text-4xl font-semibold">{loginState ? 'ลงชื่อเข้าใช้งาน' : 'ลงทะเบียน'}</h2>
+            <section className={`grid grid-cols-1 lg:grid-cols-2 gap-x-[70px] mx-auto ${!loginState ? 'w-[410px]' : ''}`}>
+            <form className="flex gap-4 flex-wrap text-neutral-900 text-start text-big" onSubmit={formik.handleSubmit}>
+                <h2 className="text-darkgray text-2xl font-semibold">{loginState ? 'ลงชื่อเข้าใช้งาน' : 'ลงทะเบียนสมาชิกใหม่'}</h2>
 
-            <h2 className="mb-4 primary-heading text-primary text-center w-full"> {apiResponse}</h2>
+                {apiResponse && <h2 className="mb-4 primary-heading text-primary text-center w-full">{apiResponse}</h2>}
 
-            {loginState == true && 
+                {loginState == true && 
+                    <label className="w-full flex flex-col gap-0.5">
+                        <SfInput name="usr" autoComplete="usr" required onChange={formik.handleChange} value={formik.values.usr} 
+                            wrapperClassName='!bg-neutral-50 !ring-lightgray h-[50px] px-6 rounded-xl'
+                            className=" bg-neutral-50 font-medium text-darkgray"
+                            placeholder='อีเมล'
+                        />
+                        <p className='text-negative-800 text-sm'>{formik.errors.usr}</p>
+                    </label>
+                }
+
+                {loginState == false && 
                 <label className="w-full flex flex-col gap-0.5">
-                    <span className="typography-text-sm  font-medium">Email</span>
-                    <SfInput name="usr" autoComplete="usr" required onChange={formik.handleChange} value={formik.values.usr} />
-                    <p className='text-negative-800 text-sm'>{formik.errors.usr}</p>
+                    <SfInput name="email" autoComplete="email" required onChange={formik.handleChange} value={formik.values.email} 
+                        wrapperClassName='!bg-neutral-50 !ring-lightgray h-[50px] px-6 rounded-xl'
+                        className=" bg-neutral-50 font-medium text-darkgray"
+                        placeholder='อีเมล'
+                    />
+                    <p className='text-negative-800 text-sm'>{formik.errors.email}</p>
+                </label>}
+
+                <label className="w-full flex flex-col gap-0.5 flex flex-col gap-0.5">
+                    <SfInput name="pwd" type='password' autoComplete="given-password" required onChange={formik.handleChange} value={formik.values.pwd} 
+                        wrapperClassName='!bg-neutral-50 !ring-lightgray h-[50px] px-6 rounded-xl'
+                        className=" bg-neutral-50 font-medium text-darkgray"
+                        placeholder="รหัสผ่าน"
+                    />
+                    <p className='text-negative-800 text-sm'>{formik.errors.pwd}</p>
                 </label>
-            }
-            
-            
-            {loginState == false && 
-             <label className="w-full flex flex-col gap-0.5">
-                <span className="typography-text-sm  font-medium">Email</span>
-                <SfInput name="email" autoComplete="email" required onChange={formik.handleChange} value={formik.values.email} />
-                <p className='text-negative-800 text-sm'>{formik.errors.email}</p>
-            </label>}
 
+                {loginState == false && 
+                <label className="w-full flex flex-col gap-0.5 flex flex-col gap-0.5">
+                    <SfInput name="pwd_confirm" type='password' autoComplete="given-password" required onChange={formik.handleChange} value={formik.values.pwd_confirm} 
+                        wrapperClassName='!bg-neutral-50 !ring-lightgray h-[50px] px-6 rounded-xl'
+                        className=" bg-neutral-50 font-medium text-darkgray"
+                        placeholder="ยืนยันรหัสผ่าน"
+                    />
+                    <p className='text-negative-800 text-sm'>{formik.errors.pwd_confirm}</p>
+                </label>
+                }
 
-            <label className="w-full flex flex-col gap-0.5 flex flex-col gap-0.5">
-                <span className="typography-text-sm font-medium">Password</span>
-                <SfInput name="pwd" type='password' autoComplete="given-password" required onChange={formik.handleChange} value={formik.values.pwd} />
-                <p className='text-negative-800 text-sm'>{formik.errors.pwd}</p>
-            </label>
-
-            {loginState == false && 
-            <label className="w-full flex flex-col gap-0.5 flex flex-col gap-0.5">
-                <span className="typography-text-sm font-medium">Confirm password</span>
-                <SfInput name="pwd_confirm" type='password' autoComplete="given-password" required onChange={formik.handleChange} value={formik.values.pwd_confirm} />
-                <p className='text-negative-800 text-sm'>{formik.errors.pwd_confirm}</p>
-             </label>
-            }
-
-            <div className="w-full flex gap-4 mt-4 md:mt-0">
-                <SfButton disabled={!formik.isValid} variant='tertiary' className="w-full btn-primary" type='submit'>{isLoading ? 'Loading...' : `${loginState ? 'login' : 'register'}`}</SfButton>
-            </div>
-            <div className='w-full flex items-center justify-center'>
-                {loginState ? <span >Don't have an account? : <a onClick={handleLoginState} href="#login">register</a></span> : <span >Already have an account? : <a onClick={handleLoginState} href="#register">login</a></span> }
-            </div>
-        </form>
+                <div className="w-full flex gap-4 mt-4 md:mt-0">
+                    <SfButton variant='tertiary' className={`btn-primary rounded-xl h-[50px] ${loginState === false ? 'w-full' : ''}`} type='submit'>{isLoading ? 'Loading...' : `${loginState ? 'เข้าสู่ระบบ' : 'ลงทะเบียน'}`}</SfButton>
+                </div>
+                {loginState === false && (
+                    <SfButton variant='tertiary' className='border border-neutral-100 bg-neutral-50 h-[50px] rounded-xl w-full text-black shadow-none font-semibold' onClick={handleLoginState}>
+                        เข้าสู่ระบบ
+                    </SfButton>
+                )}
+                {/* <div className='w-full flex items-center justify-center'>
+                    {loginState ? <span >Don't have an account? : <a onClick={handleLoginState} href="#login">register</a></span> : <span >Already have an account? : <a onClick={handleLoginState} href="#register">login</a></span> }
+                </div> */}
+            </form>
+            {loginState === true ? (
+                <div className='flex flex-col gap-y-5'>
+                    <h2 className="text-darkgray text-2xl font-semibold">ลูกค้าใหม่</h2>
+                    <p className='text-secgray'>ลงทะเบียนเพื่อเข้าถึง การสินค้าสุดพิเศษพร้อมกับสินค้ามาใหม่ เทรนด์ที่มาแรง ส่วนลดและโปรโมชั่นมากมายสำหรับสมาชิก</p>
+                    <SfButton className='w-fit mt-5 btn-primary h-[50px] rounded-xl' onClick={handleLoginState}>
+                        ลงทะเบียน
+                    </SfButton>
+                </div>
+            ) : null}
+            </section>
         </main>
     );
 }

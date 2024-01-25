@@ -141,7 +141,7 @@ import { Icons } from './icons';
                 as="div"
                 size="sm"
                 role="none"
-                className="text-basesm py-4 md:py-1.5 rounded-lg active:font-bold font-bold"
+                className=" py-4 md:py-1.5 rounded-lg active:font-bold font-bold"
               >
                 {item.name}
               </SfListItem>
@@ -155,7 +155,7 @@ import { Icons } from './icons';
       <div key={itemTop.name} className="pt-0">
         <h2
           role="presentation"
-          className="text-basesm font-bold text-neutral-900 whitespace-nowrap p-4 md:py-1.5"
+          className=" font-bold text-neutral-900 whitespace-nowrap p-4 md:py-1.5"
         >
           {itemTop.name}
         </h2>
@@ -174,7 +174,7 @@ import { Icons } from './icons';
                 as="div"
                 size="sm"
                 role="none"
-                className="py-4 md:py-1.5 rounded-lg active:font-bold text-basesm font-bold"
+                className="py-4 md:py-1.5 rounded-lg active:font-bold  font-bold"
               >
                 {itemTop.name}
               </SfListItem>
@@ -206,7 +206,7 @@ import { Icons } from './icons';
           onClick={toggle}
           square
         >
-        <span className="hidden lg:inline-flex whitespace-nowrap text-basesm font-bold">{name}</span>
+        <span className="hidden lg:inline-flex whitespace-nowrap  font-bold">{name}</span>
         </SfButton>
         <nav className='absolute top-0 right-0 w-full'>
           <ul>
@@ -341,7 +341,7 @@ import { Icons } from './icons';
         <li> 
           <SfButton
             key={item.label}
-            className="hidden md:flex text-black bg-transparent !font-bold hover:bg-white hover:text-black active:bg-white active:text-black !text-basesm"
+            className="hidden md:flex text-black bg-transparent !font-bold hover:bg-white hover:text-black active:bg-white active:text-black !"
             aria-label={item.label}
             variant="tertiary"
             square
@@ -414,17 +414,17 @@ import { Icons } from './icons';
                           onClick={actionItem.onClick}
                       >
                           {actionItem.ariaLabel === 'Cart' && (
-                            <SfBadge content={cartCount} className='!text-black !text-[14px] !bg-gray-300 w-4 h-4 flex items-center justify-center !p-0'/>
+                            <SfBadge content={cartCount} className='!text-black !text-xs !bg-gray-300 w-4 h-4 flex items-center justify-center !p-0'/>
                           )}
                           {actionItem.ariaLabel === 'Search' && (
                             <SearchWithIcon className="flex" /> 
                           )}
                           {actionItem.ariaLabel === 'Wishlist' && (
-                            <SfBadge content={WishCount} className='!text-black !text-[14px] !bg-[#FF8C8C] w-4 h-4 flex items-center justify-center !p-0'/>
+                            <SfBadge content={WishCount} className='!text-black !text-xs !bg-[#FF8C8C] w-4 h-4 flex items-center justify-center !p-0'/>
                           )}
                           {actionItem.role === 'login' && (
                             <div className='flex items-center gap-x-[10px] border-r-2 pr-6'>
-                              <p className="inline-flex whitespace-nowrap text-basesm font-bold" onClick={handlLoginClick}>{user?.name ?? 'Login'}</p>
+                              <p className="inline-flex whitespace-nowrap  font-bold" onClick={handlLoginClick}>{user?.name ?? 'Login'}</p>
                                 {user?.name && <Icons.login onClick={() => {
                                   logout();
                                   navigate(`/`);

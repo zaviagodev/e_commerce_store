@@ -51,16 +51,16 @@ export default function MyAccountForm(onSuccess = () => { },){
           height="60"
           alt="User Image"
         />
-        <label for='file-upload' className='text-darkgray text-[20px] font-medium cursor-pointer'>แก้ไขรูปโปรไฟล์</label>
+        <label for='file-upload' className='text-darkgray text-base cursor-pointer'>แก้ไขรูปโปรไฟล์</label>
         <input type='file' className='hidden' id='file-upload' onChange={handleChange}/>
       </div>
 
-      <h2 className="w-full font-medium text-basesm text-secgray">ข้อมูลส่วนตัว</h2>
+      <h2 className="w-full font-semibold text-secgray">ข้อมูลส่วนตัว</h2>
       <div className='w-full'>
         <label>
             <SfInput
               name="first_name"
-              className="text-basesm bg-neutral-50 font-medium text-darkgray"
+              className=" bg-neutral-50 font-medium text-darkgray"
               wrapperClassName='!bg-neutral-50 !ring-lightgray h-[50px] px-6 rounded-xl'
               onChange={formik.handleChange}
               value={formik.values.first_name}
@@ -77,7 +77,7 @@ export default function MyAccountForm(onSuccess = () => { },){
         <label>
             <SfInput
                 name="last_name"
-                className="text-basesm bg-neutral-50 font-medium text-darkgray"
+                className=" bg-neutral-50 font-medium text-darkgray"
                 wrapperClassName='!bg-neutral-50 !ring-lightgray h-[50px] px-6 rounded-xl'
                 onChange={formik.handleChange}
                 value={formik.values.last_name}
@@ -94,7 +94,7 @@ export default function MyAccountForm(onSuccess = () => { },){
         <label>
             <SfInput
                 name="email"
-                className="text-basesm bg-neutral-50 font-medium text-secgray"
+                className=" bg-neutral-50 font-medium text-secgray"
                 wrapperClassName='!bg-neutral-50 !ring-lightgray h-[50px] px-6 rounded-xl'
                 onChange={formik.handleChange}
                 readOnly
@@ -116,7 +116,7 @@ export default function MyAccountForm(onSuccess = () => { },){
         <Icons.checkCircle />
         <div className="flex flex-col gap-y-4">
           <h3 className="text-baselg leading-3 font-medium">อัพเดทข้อมูล</h3>
-          <p className="text-secgray text-basesm leading-[10px]">อัพเดทข้อมูลเรียบร้อยแล้ว</p>
+          <p className="text-secgray  leading-[10px]">อัพเดทข้อมูลเรียบร้อยแล้ว</p>
         </div>
       </div>
       <SfButton

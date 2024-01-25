@@ -186,8 +186,8 @@ export default function Checkout(){
         return (
             <label className="w-full">
                 {addressList?.message?.length > 0 ? (<div className='flex items-center justify-between mb-4'>
-                    <legend className="font-medium text-basesm text-secgray">เพิ่มที่อยู่ใหม่</legend>
-                    <a className='text-[16px] text-darkgray hover:underline cursor-pointer inline-block font-medium' onClick={() => setAddNewAddress(false)}>ยกเลิก</a>
+                    <legend className="font-semibold text-secgray">เพิ่มที่อยู่ใหม่</legend>
+                    <a className='text-darkgray hover:underline cursor-pointer inline-block' onClick={() => setAddNewAddress(false)}>ยกเลิก</a>
                 </div>) : null}
                 <AddressForm onFormSubmit={() => UpdateAddresses() }/>
             </label>
@@ -201,7 +201,7 @@ export default function Checkout(){
 
     const ProductLists = () => {
         return (
-            <div className="flex flex-col text-basesm overflow-scroll h-[50vh] lg:h-full lg:pt-[71px] pb-4">
+            <div className="flex flex-col overflow-scroll h-[50vh] lg:h-full lg:pt-[50px] pb-4">
                 {cartCount > 0 && (
                     <ul className='flex flex-col gap-y-4'>
                         {Object.entries(cart).map(([itemCode]) => {
@@ -216,11 +216,11 @@ export default function Checkout(){
 
                                         <div className="ml-[10px] flex flex-1 flex-col gap-y-0.5">
                                             <div className="flex justify-between text-gray-900">
-                                                <h3 className='text-darkgray pr-8 text-basesm'>{product?.web_item_name}</h3>
-                                                <p className='whitespace-pre font-bold text-[20px] leading-5'>{product?.formatted_price.toLocaleString()}</p>
+                                                <h3 className='text-darkgray pr-8'>{product?.web_item_name}</h3>
+                                                <p className='whitespace-pre font-bold text-base'>{product?.formatted_price.toLocaleString()}</p>
                                             </div>
 
-                                            <div className="flex justify-between text-basesm text-black font-bold">
+                                            <div className="flex justify-between text-black font-bold">
                                                 {cart[itemCode]} ชิ้น
                                             </div>
                                         </div>
@@ -249,7 +249,7 @@ export default function Checkout(){
             {!isProductLoading ? (codeResult ? (
                 <div className='flex flex-col gap-y-2 py-[5px] mt-[17px]'>
                     <div className="flex items-center justify-between">
-                        <div className='bg-neutral-100 rounded-xl px-3 py-[10px] flex items-center gap-x-2 text-[20px] text-secgray leading-[10px] font-medium'>
+                        <div className='bg-neutral-100 rounded-xl px-3 py-[10px] flex items-center gap-x-2 text-[20px] text-secgray leading-[10px]'>
                             <div className='flex items-center gap-x-[5px]'>
                                 <Icons.ticket01 color="#979797" />
                                 <p>{codeResult.message.coupon_code.toUpperCase()}</p>
@@ -258,7 +258,7 @@ export default function Checkout(){
                                 <Icons.x color="#979797"/>
                             </SfButton>
                         </div>
-                        <p className='text-basesm'>{codeResult.message.coupon_code.toUpperCase()}</p>
+                        <p className=''>{codeResult.message.coupon_code.toUpperCase()}</p>
                     </div>
                     <CouponAlert />
                 </div>
@@ -272,17 +272,17 @@ export default function Checkout(){
                             onChange={(event) => setInputValue(event.target.value)}
                             onBlur={() => inputValue === "" && setAddPromo(false)}
                             onKeyDown={e => e.key === 'Escape' && setAddPromo(false)}
-                            className='text-basesm'
+                            className=''
                             autoFocus={true}
                         />
-                        <SfButton className='btn-primary text-basesm rounded-xl' onClick={checkPromoCode}>
+                        <SfButton className='btn-primary rounded-xl' onClick={checkPromoCode}>
                             ใช้งาน
                         </SfButton>
                     </div>
                     <CouponAlert />
                 </form>
             ) : (
-                <a className='text-secondary hover:underline cursor-pointer inline-block font-medium text-basesm mt-[33px] mb-[17px] leading-[10px]' onClick={setAddPromo}>ใส่คูปองส่วนลด</a>
+                <a className='text-secondary hover:underline cursor-pointer inline-block mt-[33px] mb-[17px] leading-[10px]' onClick={setAddPromo}>ใส่คูปองส่วนลด</a>
             )) : <Skeleton className='h-6 w-[100px]'/>} 
             {/*<p className="px-3 py-1.5 bg-secondary-100 text-secondary-700 typography-text-base rounded-xl text-center mb-4">
                 You are saving ${Math.abs(orderDetails.savings).toFixed(2)} on your order today!
@@ -296,9 +296,9 @@ export default function Checkout(){
             <div className='lg:ml-[98px]'>
             <div className='flex justify-between pt-[21px] border-t'>
                 <div className="flex flex-col pr-2 gap-y-[21px]">
-                    <p className='text-[20px] leading-[10px]'>ยอดรวมย่อย</p>
-                    <p className="text-maingray text-[20px] leading-[10px]">ค่าจัดส่ง</p>
-                    <p className='text-maingray text-[20px] leading-[10px]'>
+                    <p>ยอดรวมย่อย</p>
+                    <p className="text-maingray">ค่าจัดส่ง</p>
+                    <p className='text-maingray'>
                     ภาษีสินค้า
                     {defaultTaxe && ` (${
                         defaultTaxe?.rate !== 0 ? defaultTaxe?.rate+'%' : ''
@@ -310,17 +310,17 @@ export default function Checkout(){
                     </p>
                 </div>
                 <div className="flex flex-col text-right gap-y-[21px]">
-                    <p className='text-basesm font-bold leading-[10px]'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total ? `฿${deliveryResult?.message?.doc?.total.toLocaleString()}` : `฿${getTotal().toLocaleString()}`}</p>
-                    <p className="text-basesm text-maingray font-bold leading-[10px]">
+                    <p className='font-semibold'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total ? `฿${deliveryResult?.message?.doc?.total.toLocaleString()}` : `฿${getTotal().toLocaleString()}`}</p>
+                    <p className="text-maingray font-semibold">
                         {isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total_taxes_and_charges ? `฿${deliveryResult?.message?.doc?.total_taxes_and_charges.toLocaleString()}` : "฿0"}
                     </p>
-                    <p className='text-maingray text-basesm leading-[10px]'>-</p>
+                    <p className='text-maingray  leading-[10px]'>-</p>
                 </div>
             </div>
             {addCoupon}
-            <div className="flex justify-between typography-headline-4 md:typography-headline-3 py-4 lg:pt-4 border-t mt-4 font-medium">
-                <p className='text-basesm leading-[10px] tracking-[-0.4px]'>ยอดชำระเงินทั้งหมด</p>
-                <p className='text-basesm leading-[10px]'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total.toLocaleString()}` : 'Your address is not supported' : `฿ ${codeResult?.message?.doc?.grand_total.toLocaleString()}`}</p>
+            <div className="flex justify-between typography-headline-4 md:typography-headline-3 py-4 lg:pt-4 border-t mt-4">
+                <p>ยอดชำระเงินทั้งหมด</p>
+                <p className='text-right'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total.toLocaleString()}` : 'Your address is not supported' : `฿ ${codeResult?.message?.doc?.grand_total.toLocaleString()}`}</p>
             </div>
         </div>
         )
@@ -349,7 +349,7 @@ export default function Checkout(){
                             )}
                         </div>
                         <div className='lg:hidden'>
-                            <a className='text-basesm text-secgray cursor-pointer' onClick={() => setShowOrders(true)}>ข้อมูลตะกร้า</a>
+                            <a className=' text-secgray cursor-pointer' onClick={() => setShowOrders(true)}>ข้อมูลตะกร้า</a>
 
                             <MobileCheckoutDrawer isOpen={showOrders} setIsOpen={setShowOrders} title='ทำการสั่งซื้อ'>
                                 <ProductLists />
@@ -371,11 +371,11 @@ export default function Checkout(){
                             }).slice(0, 1)}
                             <div className='flex items-center justify-center lg:justify-between w-full'>
                                 <p className="text-sm text-secgray leading-[9px]">ยอดรวมทั้งหมด</p>
-                                {isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : <p className="text-secgray text-sm font-medium leading-[9px] ml-1">{cartCount} ชิ้น</p>}
+                                {isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : <p className="text-secgray text-sm leading-[9px] ml-1">{cartCount} ชิ้น</p>}
                             </div>
                         </div>
                         <div className={`px-4 lg:pl-[21px] lg:pr-[19px]`}>
-                            <h1 className='text-[56px] font-bold pt-[26px] leading-5 text-center lg:text-left'>{isProductLoading ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total.toLocaleString()}` : 'Change address' : `฿ ${codeResult?.message?.doc?.grand_total.toLocaleString()}` }</h1>
+                            <h1 className='text-4xl font-bold pt-[26px] text-center lg:text-left'>{isProductLoading ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total.toLocaleString()}` : 'Change address' : `฿ ${codeResult?.message?.doc?.grand_total.toLocaleString()}` }</h1>
                             <div className='hidden lg:block'>
                                 <ProductLists />
                                 <CheckoutDetails addCoupon={<CouponForm />}/>
@@ -403,12 +403,12 @@ export default function Checkout(){
                                                 <legend className="font-bold text-darkgray text-base hidden lg:block">ข้อมูลการจัดส่ง*</legend>
                                                 {!addNewAddress ? (
                                                     <div className='flex flex-col gap-y-2 mt-8'>
-                                                        <h2 className="font-medium text-basesm text-secgray hidden lg:block">ที่อยู่*</h2>
+                                                        <h2 className="font-semibold text-secgray hidden lg:block">ที่อยู่*</h2>
                                                         <div className='border border-lightgray rounded-xl bg-neutral-50 overflow-hidden'>
                                                             <a className='p-6 flex items-center justify-between w-full cursor-pointer' onClick={() => setMoreAddresses(true)}>
                                                                 <div className='flex items-center gap-x-2'>
                                                                     <Icons.marketPin04 color='#666666' className='min-w-6'/>
-                                                                    <span className='text-basesm font-bold text-darkgray'>{formik.values.billing_address ? formik.values.billing_address : 'เพิ่ม / เลือกที่อยู่การจัดส่ง'}</span>
+                                                                    <span className=' font-bold text-darkgray'>{formik.values.billing_address ? formik.values.billing_address : 'เพิ่ม / เลือกที่อยู่การจัดส่ง'}</span>
                                                                 </div>
                                                                 <SfIconArrowForward />
                                                             </a>
@@ -418,10 +418,10 @@ export default function Checkout(){
                                                                         {addressList?.message?.filter(address => address.name === formik.values.billing_address).map(a => (
                                                                             <div className='flex flex-col gap-y-1'>
                                                                                 {/* <h2 className='font-semibold text-base mb-2'>{a.address_title}</h2> */}
-                                                                                <p className='text-basesm'>{a.phone}</p>
-                                                                                <p className='text-basesm'>{a.state}</p>
-                                                                                <p className='text-basesm'>{a.city}</p>
-                                                                                <p className='text-basesm'>{a.country}</p>
+                                                                                <p className=''>{a.phone}</p>
+                                                                                <p className=''>{a.state}</p>
+                                                                                <p className=''>{a.city}</p>
+                                                                                <p className=''>{a.country}</p>
                                                                             </div>
                                                                         ))}
                                                                     </div>
@@ -479,17 +479,17 @@ export default function Checkout(){
                                 {!shippingRuleLoading && addressList ?
                                 (<>
                                 <label className='w-full'>
-                                    <legend className="mb-2 font-medium text-basesm text-secgray">ตัวเลือกการจัดส่ง</legend>
+                                    <legend className="mb-2 font-semibold text-secgray">ตัวเลือกการจัดส่ง*</legend>
                                     <div className='border border-lightgray rounded-xl bg-neutral-50 overflow-hidden'>
                                         {shippingRules?.length > 0 ? (
                                             <a className='px-6 py-[18px] flex items-center justify-between w-full cursor-pointer' onClick={() => setMorePayments(true)}>
                                                 <div className='flex items-center justify-between w-full'>
                                                     <div className='flex items-center gap-x-2'>
                                                         <Icons.truck01 color='#595959'/>
-                                                        <span className='text-basesm font-bold text-darkgray'>{checkedState ? checkedState : 'หรือเลือกวิธีการจัดส่งที่ต้องการ'}</span>
+                                                        <span className=' font-bold text-darkgray'>{checkedState ? checkedState : 'หรือเลือกวิธีการจัดส่งที่ต้องการ'}</span>
                                                     </div>
                                                     <div className='flex items-center gap-x-2'>
-                                                        <span className='text-basesm font-bold text-darkgray'>{checkedState ? `฿${shippingRules?.find(rule => rule.name === checkedState).shipping_amount.toLocaleString()}` : null}</span>
+                                                        <span className=' font-bold text-darkgray'>{checkedState ? `฿${shippingRules?.find(rule => rule.name === checkedState).shipping_amount.toLocaleString()}` : null}</span>
                                                         <SfIconArrowForward />
                                                     </div>
                                                 </div>
@@ -497,13 +497,13 @@ export default function Checkout(){
                                         ) : (
                                             <div className='px-6 py-[18px] flex items-center gap-x-2'>
                                                 <Icons.truck01 color='#595959'/>
-                                                <span className='text-basesm font-medium text-secgray'>ไม่มีตัวเลือกในการจัดส่ง</span>
+                                                <span className='text-secgray'>ไม่มีตัวเลือกในการจัดส่ง</span>
                                             </div>
                                         )}
                                     </div>
                                 </label>
                                 <AddressDrawer isOpen={morePayments} setIsOpen={setMorePayments} title='เลือกการจัดส่ง'>
-                                    <div className='flex flex-col gap-y-3 font-medium'>
+                                    <div className='flex flex-col gap-y-3'>
                                         { shippingRules.map(({ name, shipping_amount }) => (
                                             <SfListItem
                                             as="label"
@@ -522,8 +522,8 @@ export default function Checkout(){
                                                 }}
                                                 />
                                             }
-                                            slotSuffix={<span className="text-gray-900 text-basesm font-bold">฿{shipping_amount.toLocaleString()}</span>}
-                                            className={classNames('w-full !gap-0 border rounded-xl border-neutral-100 !p-4 text-basesm bg-neutral-50 font-bold', {'outline outline-[1px]': checkedState == name})}
+                                            slotSuffix={<span className="text-gray-900  font-bold">฿{shipping_amount.toLocaleString()}</span>}
+                                            className={classNames('w-full !gap-0 border rounded-xl border-neutral-100 !p-4  bg-neutral-50 font-bold', {'outline outline-[1px]': checkedState == name})}
                                             >
                                             {name}
                                             </SfListItem>
@@ -539,7 +539,7 @@ export default function Checkout(){
                                 )}
                                 {cartContents.hasGiftItem && (
                                     <label className="w-full">
-                                        <span className="pb-1 text-base font-medium text-neutral-900 font-body">Select Branch for Redemption</span>
+                                        <span className="pb-1 text-base text-neutral-900 font-body">Select Branch for Redemption</span>
                                         <BranchSelect
                                             name="branch"
                                             onChange={formik.handleChange}
@@ -563,7 +563,7 @@ export default function Checkout(){
                                         </div>
                                     </div>
                                     <div className='w-full flex justify-center h-10 items-center'>
-                                        <button className='flex items-center gap-x-2 text-base font-medium'>
+                                        <button className='flex items-center gap-x-2 text-base font-semibold'>
                                             <Icons.messageQuestionCircle />
                                             ขอความช่วยเหลือ
                                         </button>
@@ -626,7 +626,7 @@ function AddressOptions({
                     </label>
                 )).slice(0, limit || data?.message?.length)}
             </div>
-            {error && <p className="text-red-500 mt-3 text-base font-medium">Please select an address</p>}
+            {error && <p className="text-red-500 mt-3 text-base">Please select an address</p>}
         </>
     );
 }

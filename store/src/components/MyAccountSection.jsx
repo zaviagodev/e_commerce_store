@@ -11,9 +11,9 @@ const MyAccountSection = ({children}) => {
   const location = useLocation()
   const [activeLink, setActiveLink] = useState(location.pathname)
   const menus = [
-    {title:'รายละเอียดบัญชี', link:'/profile', icon:<Icons.user01 color={activeLink == '/profile' ? '#111111' : '#595959'}/>},
-    {title:'ที่อยู่', link:'/my-addresses', icon:<Icons.marketPin04 className='w-5 h-5' color={activeLink == '/my-addresses' ? '#111111' : '#595959'}/>},
-    {title:'คำสั่งซื้อ', link:'/order-history', icon:<Icons.file06 color={activeLink == '/order-history' ? '#111111' : '#595959'}/>},
+    {title:'รายละเอียดบัญชี', link:'/profile', icon:<Icons.user01 color={activeLink.includes('/profile') ? '#111111' : '#595959'}/>},
+    {title:'ที่อยู่', link:'/my-addresses', icon:<Icons.marketPin04 className='w-5 h-5' color={activeLink.includes('/my-addresses') ? '#111111' : '#595959'}/>},
+    {title:'คำสั่งซื้อ', link:'/order-history', icon:<Icons.file06 color={activeLink.includes('/order-history') ? '#111111' : '#595959'}/>},
   ]
   
   return (
@@ -32,15 +32,15 @@ const MyAccountSection = ({children}) => {
           </div>
           <div className='flex flex-col mt-12'>
             {menus.map(menu => (
-              <Link to={menu.link} className={`text-basesm flex font-bold items-center gap-x-[10px] leading-[10px] h-[50px] hover:text-linkblack ${activeLink === menu.link ? 'text-linkblack' : 'text-darkgray'}`}>
+              <Link to={menu.link} className={` flex font-bold items-center gap-x-[10px] leading-[10px] h-[50px] hover:text-linkblack ${activeLink.includes(menu.link) ? 'text-linkblack' : 'text-darkgray'}`}>
                 {menu.icon}
                 {menu.title}
               </Link>
             ))}
           </div>
         </div>
-        <div className='lg:col-span-4 w-full mx-auto lg:p-[50px] lg:shadow-checkout lg:h-[calc(100vh_-_57px)] lg:overflow-auto'>
-          <div className={`w-full ${activeLink === '/order-history' ? 'lg:w-[720px]' : 'lg:w-[410px]'} mx-auto`}>
+        <div className='lg:col-span-4 w-full mx-auto lg:p-[50px] lg:shadow-checkout lg:h-[calc(100vh_-_57px)] lg:overflow-y-auto'>
+          <div className={`w-full ${activeLink.includes('/order-history') ? 'lg:w-[720px]' : 'lg:w-[410px]'} mx-auto`}>
             {children}
           </div>
         </div>

@@ -25,7 +25,7 @@ function OrderHistory() {
     const {Order} = useOrder();
     const [loading, setLoading] = useState(true)
     const [selectedStatus, setSelectedStatus] = useState('คำสั่งซื้อทั้งหมด')
-    const [statusOptions, setStatusOptions] = useState(['All'])
+    const [statusOptions, setStatusOptions] = useState(['คำสั่งซื้อทั้งหมด'])
     const showList = [5, 10, 20, 50, 100, 'All']
     const [selectedShow, setSelectedShow] = useState()
 
@@ -41,9 +41,23 @@ function OrderHistory() {
     ? Order
     : Order.filter(item => item.status === selectedStatus);
 
+    const handleStatusChange = (event) => {
+      const newSelectedStatus = event.target.value;
+      setSelectedStatus(newSelectedStatus);
+    };
+
     return (
         <MyAccountSection>
-            <h1 className='font-medium text-baselg text-darkgray mb-5'>คำสั่งซื้อ</h1>
+            <div className="mb-5 flex justify-between lg:block">
+              <h1 className='font-semibold text-baselg text-darkgray'>คำสั่งซื้อ</h1>
+              <div className="lg:hidden">
+                <SfSelect size='sm' className='!ring-0 !border-0 !pr-12 !bg-[#F3F3F3] !text-[#7A7A7A] !rounded-[9px] leading-6 text-[18px] font-bold' onChange={handleStatusChange} value={selectedStatus}>
+                  {statusOptions.map(option => (
+                    <option key={option} className={`w-full px-4 py-2 border-b-2 text-sm font-medium ${selectedStatus === option ? 'border-b-black' : 'border-b-white'}`}>{option}</option>
+                  ))}
+                </SfSelect>
+              </div>
+            </div>
             <div className="flex flex-col gap-y-10">
               <div className="hidden lg:flex border-b">
                 {statusOptions.map(option => (
@@ -56,25 +70,25 @@ function OrderHistory() {
                     <table className="w-full">
                       <tbody>
                         <tr>
-                          <td className="text-secgray text-sml">เลขคำสั่งซื้อ</td>
-                          <td className="text-[22px] text-black font-medium text-right">{name}-{}{company}</td>
+                          <td className="text-secgray">เลขคำสั่งซื้อ</td>
+                          <td className="text-black font-semibold text-right">{name}-{}{company}</td>
                         </tr>
                         <tr>
-                          <td className="text-secgray text-sml">วันที่</td>
-                          <td className="text-[22px] text-black font-medium text-right">{`${new Date(creation).getDate()} ${month[new Date(creation).getMonth()]}, ${new Date(creation).getHours()}:${new Date(creation).getMinutes() < 10 ? '0' + new Date(creation).getMinutes(): new Date(creation).getMinutes() }`}</td>
+                          <td className="text-secgray">วันที่</td>
+                          <td className="text-black font-semibold text-right">{`${new Date(creation).getDate()} ${month[new Date(creation).getMonth()]}, ${new Date(creation).getHours()}:${new Date(creation).getMinutes() < 10 ? '0' + new Date(creation).getMinutes(): new Date(creation).getMinutes() }`}</td>
                         </tr>
                         <tr>
-                          <td className="text-secgray text-sml">จำนวนสินค้า</td>
-                          <td className="text-[22px] text-black font-medium text-right">{items.length}</td>
+                          <td className="text-secgray">จำนวนสินค้า</td>
+                          <td className="text-black font-semibold text-right">{items.length}</td>
                         </tr>
                         <tr>
-                          <td className="text-secgray text-sml">ยอดรวมทั้งหมด</td>
-                          <td className="text-[22px] text-black font-medium text-right">฿{base_total.toLocaleString()}</td>
+                          <td className="text-secgray">ยอดรวมทั้งหมด</td>
+                          <td className="text-black font-semibold text-right">฿{base_total.toLocaleString()}</td>
                         </tr>
                       </tbody>
                     </table>
 
-                    <Link to={`/order-history/${name}`} className="w-full bg-neutral-50 border h-[50px] border-neutral-100 flex items-center justify-center gap-x-[6px] rounded-xl text-baselg font-medium">
+                    <Link to={`/order-history/${name}`} className="w-full bg-neutral-50 border h-[50px] border-neutral-100 flex items-center justify-center gap-x-[6px] rounded-xl text-baselg font-semibold">
                       <Icons.file06 />
                       รายละเอียด
                     </Link>
@@ -103,7 +117,7 @@ function OrderHistory() {
                               <td className="py-6 text-sml w-1/6">{items.length}</td>
                               <td className="py-6 text-sml w-1/6">฿{base_total.toLocaleString()}</td>
                               <td className="py-6 text-sml w-1/6">
-                                <Link to={`/order-history/${name}`} className='flex gap-x-[6px] items-center'>
+                                <Link to={`/order-history/${name}`} className='flex gap-x-[6px] items-center font-semibold'>
                                   <Icons.file06 className='w-[9px] h-[9px]'/>
                                   รายละเอียด
                                 </Link>
