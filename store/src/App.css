@@ -112,6 +112,10 @@
   @apply max-w-[1113px] m-auto lg:px-10 box-content
 }
 
+.main-section-my-account {
+  @apply max-w-[1480px] px-4 py-6 lg:py-0 lg:px-10 m-auto
+}
+
 .primary-heading {
   @apply text-2xl font-bold
 }

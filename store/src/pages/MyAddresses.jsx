@@ -3,6 +3,7 @@ import AddressForm from '../components/forms/AddressForm'
 import AddressListing from '../components/AddressListing'
 import MyAccountSection from '../components/MyAccountSection'
 import { SfIconAdd } from '@storefront-ui/react'
+import { Icons } from '../components/icons'
 
 const MyAddresses = () => {
   const [addNewAddress, setAddNewAddress] = useState(false)
@@ -15,25 +16,25 @@ const MyAddresses = () => {
 
   return (
     <MyAccountSection>
-      <h1 className='mb-10 primary-heading text-center text-primary'>My Addresses</h1>
-      <section className='w-3/4 mx-auto'>
-        {addNewAddress ? (
-          <div className='border p-6 rounded-lg mb-3'>
-            <div className='flex items-center justify-between mb-3'>
-              <h2 className="font-bold text-neutral-900 text-base">New address</h2>
-              <a className='text-sm hover:underline cursor-pointer inline-block font-medium' onClick={() => setAddNewAddress(false)}>Cancel</a>
-            </div>
-            <AddressForm onFormSubmit={() => UpdateAddresses() } />
+      <h1 className='font-medium text-baselg text-darkgray mb-10'>ที่อยู่</h1>
+      {addNewAddress ? (
+        <div className='mb-3'>
+          <div className='flex items-center justify-between mb-3'>
+            <h2 className="w-full font-medium text-basesm text-secgray">เพิ่มที่อยู่ใหม่</h2>
+            <a className='text-[16px] hover:underline cursor-pointer inline-block font-medium' onClick={() => setAddNewAddress(false)}>ยกเลิก</a>
           </div>
-        ) : (
-          <div className='border p-6 flex gap-x-2 items-center cursor-pointer rounded-lg mb-3 text-sm font-medium' onClick={() => setAddNewAddress(true)}>
-            <SfIconAdd />
-            <p>Add a New Address</p>
-          </div>
-        )}
+          <AddressForm onFormSubmit={() => UpdateAddresses() } />
+        </div>
+      ) : (
+        <div className='border border-lightgray bg-neutral-50 text-darkgray px-4 py-[18px] flex gap-x-[10px] items-center cursor-pointer rounded-xl text-basesm font-bold leading-[10px]' onClick={() => setAddNewAddress(true)}>
+          <Icons.plusCircle color='#595959'/>
+          เพิ่มที่อยู่ใหม่
+        </div>
+      )}
 
+      <div className='mt-10'>
         <AddressListing randomKey={randomKey} />
-      </section>
+      </div>
     </MyAccountSection>
   )
 }

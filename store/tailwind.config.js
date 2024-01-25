@@ -39,8 +39,10 @@ export default {
       fontSize: {
         DEFAULT: ['23px', '20px'],
         sm: ['19px', '20px'],
+        sml: ['20px', '20px'],
         basesm: ['21px', '20px'],
         base: ['23px', '20px'],
+        baselg: ['24px', '20px'],
         lg: ['34px', '20px'],
         xl: ['50px', '27px']
       },
@@ -49,7 +51,8 @@ export default {
       },
       boxShadow: {
         custom: '0px 3px 5px 0px rgba(0, 0, 0, 0.03)',
-        checkout: '-17px 4px 28.8px 0px rgba(0, 0, 0, 0.03)'
+        checkout: '-17px 4px 28.8px 0px rgba(0, 0, 0, 0.03)',
+        toast: '0px 4px 18.4px 0px rgba(0, 0, 0, 0.07)'
       },
       colors: {
         maingray: '#858585',

@@ -13,7 +13,7 @@ function OrderHistory() {
             setLoading(false)
         }
     }, [Order])
-    
+
     return ( 
         <div  className="flex flex-col gap-8 py-4 px-2">
         <h1 className="primary-heading">Recent Order History</h1>
