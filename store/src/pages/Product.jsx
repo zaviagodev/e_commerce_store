@@ -24,6 +24,13 @@ import { Icons } from '../components/icons';
 const Product = () => {
     const { id } = useParams();
     const idFromUrl = useParams().itemsgroup;
+    const [loaded, setLoaded] = useState([]);
+
+    const handleImageLoad = (index) => {
+        const updatedLoaded = [...loaded];
+        updatedLoaded[index] = true;
+        setLoaded(updatedLoaded);
+    };
 
 
     const [openedAccordion, setOpenedAccordion] = useState([]);

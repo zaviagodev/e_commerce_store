@@ -1,10 +1,13 @@
 import React from 'react'
+import { useState } from "react";
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom';
 import { SfButton, SfRating, SfCounter, SfLink, SfIconShoppingCart, SfIconFavorite, SfLoaderCircular, SfIconSell, SfIconFavoriteFilled } from '@storefront-ui/react';
 import { useCart } from '../hooks/useCart';
 import { useWish } from '../hooks/useWishe';
 import { useSetting } from '../hooks/useWebsiteSettings';
+import { Skeleton } from '../components/Skeleton';
+
 
 const ProductCard = ({
     title,
@@ -20,6 +23,7 @@ const ProductCard = ({
     const { Wish,addToWish, removeFromWish, setIsOpen:setWishOpen } = useWish()
     const { cart, addToCart, loading, setIsOpen } = useCart()
     const {hideCheckout, buttonLabel, buttonLink, hideWish} = useSetting();
+    const [loaded, setLoaded] = useState(false);
 
     const handleWish = (e) => {
         e.preventDefault();
@@ -35,11 +39,21 @@ const ProductCard = ({
             <div className="w-full h-full product_card">
                 <div className="relative">
                     <Link to={`/products/${productId}`}>
-                        <img
-                            src={thumbnail}
-                            alt={title}
-                            className="object-cover h-auto aspect-square w-full"
-                        />
+
+                    {loaded ? null : (
+                         <div className='grid gap-[14px] grid-cols-1 lg:grid-cols-1 place-items-center w-full h-full'>
+                            <Skeleton className='h-full w-full aspect-square'/>
+                        </div>
+                    )}
+                    <img
+                        style={loaded ? {} : { display: 'none' }}
+                        src={thumbnail}
+                        alt={title}
+                        className="object-cover h-auto aspect-square w-full"
+                        onLoad={() => setLoaded(true)}
+                    />
+
+                    
                         {discount && (
                             <div className="absolute inline-flex items-center justify-center text-sm font-medium text-white bg-destructive py-1 px-2 top-2 left-2 rounded-md">
                                 {discount}

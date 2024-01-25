@@ -12,8 +12,9 @@ import { Skeleton } from "../components/Skeleton";
 import { useSetting } from "../hooks/useWebsiteSettings";
 import { useFrappePostCall } from "frappe-react-sdk";
 import { Icons } from "../components/icons";
+import { useFrappeGetCall } from 'frappe-react-sdk';
 
-function SingleorderHistory() {
+function SingleorderHistory(randomKey = 0) {
     const id = useParams().id;
     const {getOrderByOrderCode, Order} = useOrder();
     const {defaultTaxe} = useSetting()
@@ -23,6 +24,8 @@ function SingleorderHistory() {
     const [order, setOrder] = useState({})
     const [itemsList, setItemsList] = useState([])
     const [adressParts, setAdress] = useState([])
+    const { data } = useFrappeGetCall('headless_e_commerce.api.get_addresses', null, `addresses`)
+
 
     const {call : CheckPromoCode, error : codeError, result : codeResult, reset, isCompleted : PromoCompleted } = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_coupon_code');
     const {call : ApplyDeliveryFee, loading : deliveryLoading, result : deliveryResult, error : deliveryError} = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_shipping_rule');
@@ -157,11 +160,28 @@ function SingleorderHistory() {
                 <div className="flex flex-col gap-y-4">
                     <h2 className='font-semibold text-darkgray'>ที่อยู่จัดส่ง</h2>
                     <div className="flex flex-col gap-y-4">
-                        {adressParts.length > 0 ? (
-                            <AddressCard title={adressParts[0]} addressLine2={adressParts[1]}  city={adressParts[2]} state={adressParts[3]} country={adressParts[4]} />
+
+
+
+                        {data?.message.length > 0 ? (
+                        data.message
+                            .filter((addressz) => addressz?.name === order.shipping_address_name)
+                            .map((address, index) => (
+                                <AddressCard
+                                    title={address.address_title}
+                                    addressLine1={address.address_line1}
+                                    city={address.city}
+                                    state={address.state === "Select One" ? null : address.state}
+                                    postcode={address.pincode}
+                                    country={address.country}
+                                    phone={address.phone}
+                                />
+                            ))
                         ) : (
-                            <Skeleton className='h-24 w-full'/>
-                        )}
+                        <Skeleton className='h-24 w-full' />
+                        )}   
+
+
                     </div>
                 </div>
                 <div className="flex flex-col gap-y-4">
