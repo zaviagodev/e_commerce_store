@@ -6,6 +6,7 @@ import AddressCard from './AddressCard';
 const AddressListing = ({ randomKey = 0 }) => {
     const { data } = useFrappeGetCall('headless_e_commerce.api.get_addresses', null, `addresses-${randomKey}`)
 
+    console.log(data)
     return (
         <div className="grid grid-cols-1 gap-3">
             {data?.message?.map((address, idx) => (
@@ -14,8 +15,7 @@ const AddressListing = ({ randomKey = 0 }) => {
                         title={address.address_title}
                         addressLine1={address.address_line1}
                         city={address.city}
-                        state={address.state === "Select One" ? null : address.state}
-                        postcode={address.pincode}
+                        state={address.state}
                         country={address.country}
                         phone={address.phone}
                     />
@@ -50,4 +50,3 @@ const AddressListing = ({ randomKey = 0 }) => {
 }
 
 export default AddressListing
-

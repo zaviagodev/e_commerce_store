@@ -62,7 +62,7 @@ export const Icons = {
     </svg>
   ),
   marketPin04: (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
       <path d="M5 14.2864C3.14864 15.1031 2 16.2412 2 17.5C2 19.9853 6.47715 22 12 22C17.5228 22 22 19.9853 22 17.5C22 16.2412 20.8514 15.1031 19 14.2864M18 8C18 12.0637 13.5 14 12 17C10.5 14 6 12.0637 6 8C6 4.68629 8.68629 2 12 2C15.3137 2 18 4.68629 18 8ZM13 8C13 8.55228 12.5523 9 12 9C11.4477 9 11 8.55228 11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8Z" stroke={props.color || "black"} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
   ),
@@ -89,6 +89,33 @@ export const Icons = {
       <defs>
         <clipPath id="clip0_1750_1409">
           <rect width="14" height="14" fill="white"/>
+        </clipPath>
+      </defs>
+    </svg>
+  ),
+  user01: (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" {...props}>
+      <path d="M16.6668 17.5C16.6668 16.337 16.6668 15.7555 16.5233 15.2824C16.2001 14.217 15.3664 13.3834 14.3011 13.0602C13.828 12.9167 13.2465 12.9167 12.0835 12.9167H7.91683C6.75386 12.9167 6.17237 12.9167 5.69921 13.0602C4.63388 13.3834 3.8002 14.217 3.47703 15.2824C3.3335 15.7555 3.3335 16.337 3.3335 17.5M13.7502 6.25C13.7502 8.32107 12.0712 10 10.0002 10C7.92909 10 6.25016 8.32107 6.25016 6.25C6.25016 4.17893 7.92909 2.5 10.0002 2.5C12.0712 2.5 13.7502 4.17893 13.7502 6.25Z" stroke={props.color || 'black'} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  ),
+  file06: (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" {...props}>
+      <path d="M11.6668 1.8916V5.33372C11.6668 5.80043 11.6668 6.03378 11.7577 6.21204C11.8376 6.36885 11.965 6.49633 12.1218 6.57622C12.3001 6.66705 12.5335 6.66705 13.0002 6.66705H16.4423M13.3335 10.8337H6.66683M13.3335 14.167H6.66683M8.3335 7.50033H6.66683M11.6668 1.66699H7.3335C5.93336 1.66699 5.2333 1.66699 4.69852 1.93948C4.22811 2.17916 3.84566 2.56161 3.60598 3.03202C3.3335 3.5668 3.3335 4.26686 3.3335 5.66699V14.3337C3.3335 15.7338 3.3335 16.4339 3.60598 16.9686C3.84566 17.439 4.22811 17.8215 4.69852 18.0612C5.2333 18.3337 5.93336 18.3337 7.3335 18.3337H12.6668C14.067 18.3337 14.767 18.3337 15.3018 18.0612C15.7722 17.8215 16.1547 17.439 16.3943 16.9686C16.6668 16.4339 16.6668 15.7338 16.6668 14.3337V6.66699L11.6668 1.66699Z" stroke={props.color || 'black'} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  ),
+  plusCircle: (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
+      <path d="M12 8V16M8 12H16M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke={props.color || "black"} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  ),
+  checkCircle: (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" {...props}>
+      <g clip-path="url(#clip0_1621_2281)">
+        <path d="M6.25033 10.0003L8.75033 12.5003L13.7503 7.50033M18.3337 10.0003C18.3337 14.6027 14.6027 18.3337 10.0003 18.3337C5.39795 18.3337 1.66699 14.6027 1.66699 10.0003C1.66699 5.39795 5.39795 1.66699 10.0003 1.66699C14.6027 1.66699 18.3337 5.39795 18.3337 10.0003Z" stroke={props.color || "black"} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+      <defs>
+        <clipPath id="clip0_1621_2281">
+          <rect width="20" height="20" fill="white"/>
         </clipPath>
       </defs>
     </svg>

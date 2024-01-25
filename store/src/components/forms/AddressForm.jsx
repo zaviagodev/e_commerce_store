@@ -32,7 +32,7 @@ const AddressForm = ({ onFormSubmit }) => {
     });
 
     const CreateNewAddress = (e) => {
-        console.log(e);
+        // console.log(e);
         e.preventDefault()
         setIsSaving(true)
         formik.validateForm()
@@ -98,7 +98,7 @@ const AddressForm = ({ onFormSubmit }) => {
             <div className="w-full flex flex-col gap-0.5 flex flex-col gap-0.5">
                 <label>
                     {/* <span className="text-sm font-medium mb-2 block">Country <span className='text-red-500'>*</span></span> */}
-                    <SfSelect name="country" className='text-basesm h-[50px] !ring-lightgray font-medium text-darkgray !px-6' disabled={isSaving} wrapperClassName='!bg-neutral-50 !rounded-xl' placeholder="ประเทศ" onChange={formik.handleChange} value={formik.values.country} invalid={formik.errors.country}>
+                    <SfSelect name="country" className='text-basesm h-[50px] !ring-lightgray font-medium text-darkgray !px-6 !rounded-xl' disabled={isSaving} wrapperClassName='!bg-neutral-50' placeholder="ประเทศ" onChange={formik.handleChange} value={formik.values.country} invalid={formik.errors.country}>
                         {countries.map((countryName) => (
                             <option key={countryName} value={countryName}>{countryName}</option>
                         ))}
@@ -122,7 +122,7 @@ const AddressForm = ({ onFormSubmit }) => {
             <div className='w-full flex flex-col gap-3 md:flex-row md:justify-between'>
                 <label className="w-full flex flex-col gap-0.5 flex-grow">
                     {/* <span className="text-sm font-medium mb-2 block">State</span> */}
-                    <SfSelect name="state" className='text-basesm h-[50px] !ring-lightgray font-medium text-darkgray !px-6' disabled={isSaving} wrapperClassName='!bg-neutral-50 !rounded-xl' placeholder="จังหวัด" onChange={formik.handleChange} value={formik.values.state}>
+                    <SfSelect name="state" className='text-basesm h-[50px] !ring-lightgray font-medium text-darkgray !px-6 !rounded-xl' disabled={isSaving} wrapperClassName='!bg-neutral-50' placeholder="จังหวัด" onChange={formik.handleChange} value={formik.values.state}>
                         {states.map((stateName) => (
                             <option key={stateName} value={stateName}>{stateName}</option>
                         ))}
