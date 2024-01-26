@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { Icons } from './icons';
 import { Skeleton } from './Skeleton';
 import { useFrappePostCall } from 'frappe-react-sdk';
+import { useFrappeAuth } from 'frappe-react-sdk';
 
 const Cart = () => {
     const { cart, cartCount, addToCart, removeFromCart, getTotal, isOpen, setIsOpen, loading } = useCart()
@@ -18,6 +19,7 @@ const Cart = () => {
     const { getByItemCode, isLoading } = useProducts()
     const navigate = useNavigate()
     const { call, isCompleted } = useFrappePostCall('webshop.webshop.api.update_cart')
+    const { currentUser } = useFrappeAuth();
 
     // Ajouter un état pour l'intervalle
     const [intervalId, setIntervalId] = useState(null);
@@ -70,12 +72,17 @@ const Cart = () => {
     };
 
     const handlecheckout = () => {
-        call({"cart":cart}).then(() => {
-            navigate("/checkout");
-        });
+        if(!currentUser){
+            navigate("/login");
+        }
+        else{
+            call({"cart":cart}).then(() => {
+                navigate("/checkout");
+            });
+        }
+        
     };
 
-    
     //useTrapFocus(drawerRef, { activeState: isOpen });
 
     return (
