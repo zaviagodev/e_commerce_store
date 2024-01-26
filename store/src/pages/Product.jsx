@@ -17,6 +17,7 @@ import { useSetting } from '../hooks/useWebsiteSettings';
 import { useNavigate } from 'react-router-dom';
 import { useWish } from '../hooks/useWishe';
 import ProductCard from '../components/ProductCard';
+import LoadingImg from '../components/LoadingImg';
 import { useState, useRef, useEffect } from 'react';
 import { Skeleton } from '../components/Skeleton';
 import { Icons } from '../components/icons';
@@ -135,13 +136,15 @@ const Product = () => {
                             alt={product?.website_image}
                         />
                         {product?.slider_images?.map((image, index) => (
-                            <img
-                                onClick={() => scrollToImage(index + 1)}
+                       
+                            <LoadingImg
+                                ref={imageRef}
+                                key={`img-product-${index + 1}`}
                                 src={`${import.meta.env.VITE_ERP_URL ?? ''}${image}`}
                                 className="h-[134px] w-[134px] min-w-[134px] object-cover"
                                 aria-label={image}
                                 alt={image}
-                                key={index}
+                                id={`img-product-${index + 1}`}
                             />
                         ))}
                     </SfScrollable>
@@ -166,7 +169,8 @@ const Product = () => {
                         />
 
                         {product?.slider_images && product.slider_images.map((image, index) => (
-                            <img
+                    
+                            <LoadingImg
                                 ref={imageRef}
                                 key={`img-product-${index + 1}`}
                                 src={`${import.meta.env.VITE_ERP_URL ?? ''}${image}`}
@@ -175,7 +179,19 @@ const Product = () => {
                                 alt={image}
                                 id={`img-product-${index + 1}`}
                             />
+
                         ))}
+
+
+
+
+
+
+
+
+
+
+                        
                     </SfScrollable>
                 </div>
                 ) : (
