@@ -71,25 +71,24 @@ const Cart = () => {
 
     const handlecheckout = () => {
         call({"cart":cart}).then(() => {
-            navigate("/checkout");
+            window.location.href = '/store/checkout'
         });
     };
 
-    
     //useTrapFocus(drawerRef, { activeState: isOpen });
 
     return (
         <CSSTransition
             ref={nodeRef}
             in={isOpen}
-            timeout={500}
+            timeout={200}
             unmountOnExit
             classNames={{
-                enter: 'translate-x-full',
-                enterActive: 'translate-x-0',
-                enterDone: 'translate-x-0 transition duration-500 ease-in-out',
-                exitDone: 'translate-x-0',
-                exitActive: 'translate-x-full transition duration-500 ease-in-out',
+                enter: 'opacity-0',
+                enterActive: 'opacity-1',
+                enterDone: 'opacity-1 transition duration-200 ease-in-out',
+                exitDone: 'opacity-1',
+                exitActive: 'opacity-0 transition duration-200 ease-in-out',
             }}
         >
             <SfDrawer
@@ -150,10 +149,10 @@ const Cart = () => {
                                                         <div className="ml-[10px] flex flex-1 flex-col justify-between">
                                                             <div>
                                                                 <div className="flex justify-between text-gray-900">
-                                                                    <h3 className='text-texttag hover:underline leading-5 font-medium'>
+                                                                    <h3 className='text-texttag hover:underline text-[13px] leading-[17px]'>
                                                                         <Link to={`/products/${product?.name}`} >{product?.web_item_name}</Link>
                                                                     </h3>
-                                                                    <p className="ml-4 whitespace-pre font-bold leading-5">{product?.formatted_price}</p>
+                                                                    <p className="ml-4 whitespace-pre text-sm font-semibold">{product?.formatted_price}</p>
                                                                 </div>
                                                                 {/* <p className="mt-1 text-base text-gray-500">{product?.short_description}</p> */}
                                                             </div>
@@ -238,10 +237,10 @@ const Cart = () => {
                             <>
                             <div className="flex justify-between font-semibold text-gray-900">
                                 <p>ยอดชำระ</p>
-                                <p>฿ {getTotal()}</p>
+                                <p>฿ {getTotal().toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</p>
                             </div>
                             <div className='flex flex-col gap-y-4'>
-                                <SfButton className="w-full btn-primary h-[50px] flex items-center gap-x-[10px] rounded-xl" disabled={cartCount == 0} onClick={() => { setIsOpen(false);handlecheckout(); }}>
+                                <SfButton className="w-full btn-primary h-[50px] flex items-center gap-x-[10px] rounded-xl" disabled={cartCount == 0 || loading} onClick={() => { setIsOpen(false);handlecheckout(); }}>
                                     ชำระเงิน
                                     <Icons.shoppingBag01 color='white' className='w-[22px] h-[22px]'/>
                                 </SfButton>  

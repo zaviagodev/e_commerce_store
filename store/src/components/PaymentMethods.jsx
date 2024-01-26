@@ -8,8 +8,8 @@ const paymentMethods = [
         logo: qrmock,
     },
     {
-        label: 'บัตรเครดิต / เดบิต',
-        value: 'บัตรเครดิต / เดบิต',
+        label: 'โอนเงินผ่านธนาคาร',
+        value: 'โอนเงินผ่านธนาคาร',
         logo: qrmock,
     }
 ];

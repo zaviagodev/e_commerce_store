@@ -10,14 +10,14 @@ export default function AddressDrawer({isOpen, setIsOpen, children, title}){
         <CSSTransition
             ref={nodeRef}
             in={isOpen}
-            timeout={500}
+            timeout={200}
             unmountOnExit
             classNames={{
-                enter: 'translate-x-full',
-                enterActive: 'translate-x-0',
-                enterDone: 'translate-x-0 transition duration-500 ease-in-out',
-                exitDone: 'translate-x-0',
-                exitActive: 'translate-x-full transition duration-500 ease-in-out',
+                enter: 'opacity-0',
+                enterActive: 'opacity-1',
+                enterDone: 'opacity-1 transition duration-200 ease-in-out',
+                exitDone: 'opacity-1',
+                exitActive: 'opacity-0 transition duration-200 ease-in-out',
             }}
         >
             <SfDrawer
@@ -36,7 +36,7 @@ export default function AddressDrawer({isOpen, setIsOpen, children, title}){
                                     <Icons.flipBackward />
                                 </button>
                             </div>
-                            <h2 className="text-base font-medium text-gray-900 text-center whitespace-pre" id="slide-over-title">{title}</h2>
+                            <h2 className="text-base font-semibold text-gray-900 text-center whitespace-pre" id="slide-over-title">{title}</h2>
                         </div>
                         <div className="flow-root p-6 mb-24">
                             {children}

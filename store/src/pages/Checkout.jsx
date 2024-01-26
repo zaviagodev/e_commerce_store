@@ -211,7 +211,7 @@ export default function Checkout(){
                                 {!isProductLoading ? (
                                     <li key={itemCode} className="flex pb-5">
                                         <div className="h-[53px] w-[53px] flex-shrink-0 overflow-hidden">
-                                            <img src={product?.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`} className="h-full w-full object-cover object-center"/>
+                                            <img src={product?.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`} className="h-full w-full object-cover object-center fade-in"/>
                                         </div>
 
                                         <div className="ml-[10px] flex flex-1 flex-col gap-y-0.5">
@@ -408,7 +408,7 @@ export default function Checkout(){
                                                             <a className='p-6 flex items-center justify-between w-full cursor-pointer' onClick={() => setMoreAddresses(true)}>
                                                                 <div className='flex items-center gap-x-2'>
                                                                     <Icons.marketPin04 color='#666666' className='min-w-6'/>
-                                                                    <span className=' font-bold text-darkgray'>{formik.values.billing_address ? formik.values.billing_address : 'เพิ่ม / เลือกที่อยู่การจัดส่ง'}</span>
+                                                                    <span className=' font-bold text-darkgray'>{formik.values.billing_address ? addressList?.message?.find(address => address.name === formik.values.billing_address).address_title : 'เพิ่ม / เลือกที่อยู่การจัดส่ง'}</span>
                                                                 </div>
                                                                 <SfIconArrowForward />
                                                             </a>
@@ -417,11 +417,12 @@ export default function Checkout(){
                                                                     <div className='p-6 pt-0'>
                                                                         {addressList?.message?.filter(address => address.name === formik.values.billing_address).map(a => (
                                                                             <div className='flex flex-col gap-y-1'>
-                                                                                {/* <h2 className='font-semibold text-base mb-2'>{a.address_title}</h2> */}
-                                                                                <p className=''>{a.phone}</p>
-                                                                                <p className=''>{a.state}</p>
-                                                                                <p className=''>{a.city}</p>
-                                                                                <p className=''>{a.country}</p>
+                                                                                <p>{a.address_line1}</p>
+                                                                                <p>{a.address_line2}</p>
+                                                                                <p>{a.city}</p>
+                                                                                <p>{a.state}</p>
+                                                                                <p>{a.country}</p>
+                                                                                <p>{a.phone}</p>
                                                                             </div>
                                                                         ))}
                                                                     </div>
@@ -441,7 +442,7 @@ export default function Checkout(){
                                                 randomKey={randomKey}
                                                 onClick={() => {setMoreAddresses(false);setAddNewAddress(false)}}
                                             />
-                                            <div className='fixed bottom-0 shadow-main p-6 left-0 w-full bg-white'>
+                                            <div className='fixed bottom-0 shadow-main p-6 right-0 w-full md:w-[386px] bg-white'>
                                                 <SfButton className='btn-primary w-full text-base h-[50px] rounded-xl' variant='tertiary' onClick={handleAddNewAddress}>เพิ่มที่อยู่ใหม่</SfButton>
                                             </div>
                                         </AddressDrawer>
@@ -618,10 +619,10 @@ function AddressOptions({
     return (
         <>
             <div className="grid grid-cols-1 gap-3">
-                {data?.message?.map(({ name: nameVal, address_title, address_line2 = null, city, state, country }) => (
+                {data?.message?.map(({ name: nameVal, address_title, address_line1 = null, address_line2 = null, city, state, country, phone }) => (
                     <label key={nameVal} className="relative xs:w-full md:w-auto" onClick={() => handleSelect(nameVal)}>
                         <div className={`cursor-pointer rounded-xl -outline-offset-2 hover:border-primary-200 hover:bg-primary-100 peer-focus:border-primary-200 peer-focus:bg-primary-100 bg-neutral-50`}>
-                            <AddressCard title={address_title} addressLine2={address_line2} city={city} state={state === "Select One" ? null : state} country={country} active={value === nameVal}/>
+                            <AddressCard title={address_title} addressLine1={address_line1} addressLine2={address_line2} city={city} state={state === "Select One" ? null : state} country={country} phone={phone} active={value === nameVal}/>
                         </div>
                     </label>
                 )).slice(0, limit || data?.message?.length)}

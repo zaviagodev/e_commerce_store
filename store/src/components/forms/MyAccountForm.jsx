@@ -60,8 +60,8 @@ export default function MyAccountForm(onSuccess = () => { },){
         <label>
             <SfInput
               name="first_name"
-              className=" bg-neutral-50 font-medium text-darkgray"
-              wrapperClassName='!bg-neutral-50 !ring-lightgray h-[50px] px-6 rounded-xl'
+              wrapperClassName={`!bg-neutral-50 ${formik.errors.first_name ? '!ring-red-500/50' : '!ring-lightgray'} h-[50px] px-6 rounded-xl`}
+              className={`bg-neutral-50 font-medium ${formik.errors.first_name ? 'text-red-500' : 'text-darkgray'} `}
               onChange={formik.handleChange}
               value={formik.values.first_name}
               invalid={formik.errors.first_name}
@@ -77,8 +77,8 @@ export default function MyAccountForm(onSuccess = () => { },){
         <label>
             <SfInput
                 name="last_name"
-                className=" bg-neutral-50 font-medium text-darkgray"
-                wrapperClassName='!bg-neutral-50 !ring-lightgray h-[50px] px-6 rounded-xl'
+                wrapperClassName={`!bg-neutral-50 ${formik.errors.last_name ? '!ring-red-500/50' : '!ring-lightgray'} h-[50px] px-6 rounded-xl`}
+                className={`bg-neutral-50 font-medium ${formik.errors.last_name ? 'text-red-500' : 'text-darkgray'} `}
                 onChange={formik.handleChange}
                 value={formik.values.last_name}
                 invalid={formik.errors.last_name}

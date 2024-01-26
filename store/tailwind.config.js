@@ -34,7 +34,8 @@ export default {
       },
       zIndex: {
         60: 60,
-        99: 99
+        99: 99,
+        100: 100
       },
       // fontSize: {
       //   DEFAULT: ['23px', '20px'],

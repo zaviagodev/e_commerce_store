@@ -46,6 +46,8 @@ function OrderHistory() {
       setSelectedStatus(newSelectedStatus);
     };
 
+    console.log(Order)
+
     return (
         <MyAccountSection>
             <div className="mb-5 flex justify-between lg:block">
@@ -75,7 +77,7 @@ function OrderHistory() {
                         </tr>
                         <tr>
                           <td className="text-secgray">วันที่</td>
-                          <td className="text-black font-semibold text-right">{`${new Date(creation).getDate()} ${month[new Date(creation).getMonth()]}, ${new Date(creation).getHours()}:${new Date(creation).getMinutes() < 10 ? '0' + new Date(creation).getMinutes(): new Date(creation).getMinutes() }`}</td>
+                          <td className="text-black font-semibold text-right">{`${new Date(creation).getDate()} ${month[new Date(creation).getMonth()]} ${new Date(creation).getFullYear()}`}</td>
                         </tr>
                         <tr>
                           <td className="text-secgray">จำนวนสินค้า</td>
@@ -88,7 +90,7 @@ function OrderHistory() {
                       </tbody>
                     </table>
 
-                    <Link to={`/order-history/${name}`} className="w-full bg-neutral-50 border h-[50px] border-neutral-100 flex items-center justify-center gap-x-[6px] rounded-xl text-baselg font-semibold">
+                    <Link to={`/order-history/${name}`} className="w-full h-[50px] btn-secondary flex items-center justify-center gap-x-[6px] font-semibold">
                       <Icons.file06 />
                       รายละเอียด
                     </Link>
@@ -102,23 +104,23 @@ function OrderHistory() {
                       <table className="text-left w-full">
                         <thead>
                           <tr className="border-b">
-                            <th className="py-6 text-sml w-1/3">เลขคำสั่งซื้อ</th>
-                            <th className="py-6 text-sml w-1/6">วันที่</th>
-                            <th className="py-6 text-sml w-1/6">จำนวนสินค้า</th>
-                            <th className="py-6 text-sml w-1/6">ยอดรวมทั้งหมด</th>
+                            <th className="py-6 text-sm w-1/3">เลขคำสั่งซื้อ</th>
+                            <th className="py-6 text-sm w-1/6">วันที่</th>
+                            <th className="py-6 text-sm w-1/6">จำนวนสินค้า</th>
+                            <th className="py-6 text-sm w-1/6">ยอดรวมทั้งหมด</th>
                             <th className="py-6 w-1/6"></th>
                           </tr>
                         </thead>
                         <tbody>
                           {filteredData.map(({name, status, base_total, company, items, creation}) => (
                             <tr className="border-b">
-                              <td className="py-6 text-sml w-1/3">{name}-{}{company}</td>
-                              <td className="py-6 text-sml w-1/6">{`${new Date(creation).getDate()} ${month[new Date(creation).getMonth()]}, ${new Date(creation).getHours()}:${new Date(creation).getMinutes() < 10 ? '0' + new Date(creation).getMinutes(): new Date(creation).getMinutes() }`}</td>
-                              <td className="py-6 text-sml w-1/6">{items.length}</td>
-                              <td className="py-6 text-sml w-1/6">฿{base_total.toLocaleString()}</td>
-                              <td className="py-6 text-sml w-1/6">
-                                <Link to={`/order-history/${name}`} className='flex gap-x-[6px] items-center font-semibold'>
-                                  <Icons.file06 className='w-[9px] h-[9px]'/>
+                              <td className="py-6 text-sm w-1/3">{name}-{}{company}</td>
+                              <td className="py-6 text-sm w-1/6">{`${new Date(creation).getDate()} ${month[new Date(creation).getMonth()]} ${new Date(creation).getFullYear()}`}</td>
+                              <td className="py-6 text-sm w-1/6">{items.length}</td>
+                              <td className="py-6 text-sm w-1/6">฿{base_total.toLocaleString()}</td>
+                              <td className="py-6 text-sm w-1/6">
+                                <Link to={`/order-history/${name}`} className='flex gap-x-[6px] items-center font-semibold text-sm'>
+                                  <Icons.file06 className='w-[14px] h-[14px]'/>
                                   รายละเอียด
                                 </Link>
                               </td>

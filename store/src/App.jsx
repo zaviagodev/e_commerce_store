@@ -22,6 +22,7 @@ import { WishProvider } from "./hooks/useWishe";
 import Wish from "./components/Wish";
 import { SettingProvider } from "./hooks/useWebsiteSettings";
 import MyAddresses from "./pages/MyAddresses";
+import NotFound from "./pages/404";
 
 const Layer = () => {
   const navigate = useNavigate();
@@ -46,6 +47,7 @@ const Layer = () => {
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layer/>}>
+      <Route path="*" element={<NotFound />}/>
       <Route path="order-history" element={<OrderHistory />} />
       <Route path="home/:itemsgroup" element={<Home />} />
       <Route path="products/:id" element={<Product />} />
