@@ -76,9 +76,8 @@ const Cart = () => {
             navigate("/login");
         }
         else{
-            call({"cart":cart}).then(() => {
-                navigate("/checkout");
-            });
+            call({"cart":cart});
+            navigate("/checkout");
         }
         
     };
