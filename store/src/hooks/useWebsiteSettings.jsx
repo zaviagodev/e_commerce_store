@@ -49,8 +49,7 @@ export const SettingProvider = ({ children }) => {
         
         const itemsCopy = JSON.parse(JSON.stringify(items))
         items.forEach((item) => {
-            if(item.parent_label !== null )
-            {
+            if(item.parent_label !== null ){
                 if(item.parent_label == '')return
                 // console.log(item)
                 recursiveSearch(item, itemsCopy)
@@ -61,7 +60,7 @@ export const SettingProvider = ({ children }) => {
                 // console.log(itemsCopy)
             }
         })
-        return itemsCopy;
+        return data;
     }
 
     const { mutate, isLoading } = useFrappeGetCall('headless_e_commerce.api.get_websiteSettings', undefined, undefined, {
@@ -80,6 +79,7 @@ export const SettingProvider = ({ children }) => {
             setFavicon(data.message.app_logo);
             setButtonLabel(data.message.button_label);
             setButtonLink(data.message.button_link);
+           // setTopBarItems(buildTopBarItems([...data.message.top_bar_items].sort((a, b) => a.idx - b.idx)));
             setTopBarItems(buildTopBarItems([...data.message.top_bar_items].sort((a, b) => a.idx - b.idx)));
             setDefaultTaxe(data.message.default_taxe);
             document.title = data.message.app_name;
