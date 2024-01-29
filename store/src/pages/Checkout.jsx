@@ -45,6 +45,10 @@ export default function Checkout(){
     })
     const {call : deleteCoupon, loading : deleteLoading, result : deleteResult, error : deleteError} = useFrappePostCall('webshop.webshop.shopping_cart.cart.remove_coupon_code');
 
+    const { call: updatecart, isCompleted: cartupdated  } = useFrappePostCall('webshop.webshop.api.update_cart');
+
+
+
     const { data:addressList } = useFrappeGetCall('headless_e_commerce.api.get_addresses', null, `addresses-${randomKey}`)
     const [addNewAddress, setAddNewAddress] = useState(false);
 
@@ -70,11 +74,17 @@ export default function Checkout(){
           clearTimeout(errorTimer.current);
         };
       }, [codeError]);
+      const { cart, cartCount, getTotal, resetCart } = useCart();
 
 
       useEffect(() => {
         ApplyDeliveryFee({'shipping_rule' : "" })
       }, [shippingRules]);
+
+      useEffect(() => {
+        updatecart({"cart":cart});
+      }, [cart]);
+      
 
       
 
@@ -115,7 +125,7 @@ export default function Checkout(){
     }, [ user?.name]);
 
     const { getByItemCode } = useProducts()
-    const { cart, cartCount, getTotal, resetCart } = useCart();
+    
 
     const cartContents = useMemo(() => {
         return Object.entries(cart).reduce((acc, [item_code]) => {

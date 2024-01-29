@@ -76,7 +76,7 @@ const Cart = () => {
             navigate("/login");
         }
         else{
-            call({"cart":cart});
+             //call({"cart":cart});
             navigate("/checkout");
         }
         
