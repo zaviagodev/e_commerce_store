@@ -32,13 +32,11 @@ function SingleorderHistory(randomKey = 0) {
 
     const orderDetails = [
         {title:'เลขคำสั่งซื้อ',value:order.name},
-        {title:'ยอดรวมทั้งหมด',value:`฿${order.grand_total}`},
-        {title:'วันที่',value:`${new Date(order.creation).getDate()} ${month[new Date(order.creation).getMonth()]}, ${new Date(order.creation).getHours()}:${new Date(order.creation).getMinutes() < 10 ? '0' + new Date(order.creation).getMinutes(): new Date(order.creation).getMinutes()}`},
+        {title:'ยอดรวมทั้งหมด',value:`฿${order.grand_total?.toLocaleString()}`},
+        {title:'วันที่',value:`${new Date(order.creation).getDate()} ${month[new Date(order.creation).getMonth()]} ${new Date(order.creation).getFullYear()}`},
         {title:'สถานะ',value:order.status}
         // {title:'Shipping Phone:',value:order.custom_phone_number}
     ]
-
-    console.log(Order)
 
     /* 
         key={product.item_code}
@@ -54,10 +52,10 @@ function SingleorderHistory(randomKey = 0) {
     const PurchasedList = ({name, company, status, creation, image, price}) => {
         return (
           <div className="w-full flex gap-x-4">
-              {image ? <img src={image} className="min-w-[96px] h-24 object-cover"/> : <SfThumbnail size="lg" className="bg-gray-100 h-24 min-w-[96px]"/>}
+              {image ? <img src={image} className="min-w-[96px] h-24 object-cover fade-in"/> : <SfThumbnail size="lg" className="bg-gray-100 h-24 min-w-[96px]"/>}
               <div className="flex flex-col gap-y-1 w-full">
-                <div className="flex items-center justify-between">
-                  <h2 className="font-semibold">{name}</h2>
+                <div className="flex items-center justify-between text-sm">
+                  <h2>{name}</h2>
                   <p className="font-semibold">{price}</p>
                 </div>
               </div>
@@ -84,16 +82,16 @@ function SingleorderHistory(randomKey = 0) {
                     </p>
                 </div>
                 <div className="flex flex-col text-right gap-y-[21px]">
-                    <p className=' font-bold leading-[10px]'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total ? `฿${deliveryResult?.message?.doc?.total.toLocaleString()}` : `฿${getTotal().toLocaleString()}`}</p>
-                    <p className=" text-maingray font-bold leading-[10px]">
+                    <p className='text-sm font-semibold'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total ? `฿${deliveryResult?.message?.doc?.total.toLocaleString()}` : `฿${getTotal().toLocaleString()}`}</p>
+                    <p className="text-maingray text-sm font-semibold">
                         {isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total_taxes_and_charges ? `฿${deliveryResult?.message?.doc?.total_taxes_and_charges.toLocaleString()}` : "฿0"}
                     </p>
-                    <p className='text-maingray  leading-[10px]'>-</p>
+                    <p className='text-sm text-maingray'>-</p>
                 </div>
             </div>
             <div className="flex justify-between typography-headline-4 md:typography-headline-3 py-4 lg:pt-4 border-t mt-4 font-medium">
-                <p className=' leading-[10px] tracking-[-0.4px]'>ยอดชำระเงินทั้งหมด</p>
-                <p className=' leading-[10px]'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total.toLocaleString()}` : 'Your address is not supported' : `฿ ${codeResult?.message?.doc?.grand_total.toLocaleString()}`}</p>
+                <p>ยอดชำระเงินทั้งหมด</p>
+                <p className="text-sm">{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total.toLocaleString()}` : 'Your address is not supported' : `฿ ${codeResult?.message?.doc?.grand_total.toLocaleString()}`}</p>
             </div>
         </div>
         )
@@ -129,8 +127,8 @@ function SingleorderHistory(randomKey = 0) {
                             <>
                                 {orderDetails.map(detail => (
                                     <div className="flex items-center justify-between">
-                                        <h3 className="font-medium text-sm">{detail.title}</h3>
-                                        <p className="text-sm">{detail.value ? detail.value : '-'}</p>
+                                        <h3 className="text-sm">{detail.title}</h3>
+                                        <p className="text-sm font-semibold">{detail.value ? detail.value : '-'}</p>
                                     </div>
                                 ))}
                             </>
@@ -161,8 +159,6 @@ function SingleorderHistory(randomKey = 0) {
                     <h2 className='font-semibold text-darkgray'>ที่อยู่จัดส่ง</h2>
                     <div className="flex flex-col gap-y-4">
 
-
-
                         {data?.message.length > 0 ? (
                         data.message
                             .filter((addressz) => addressz?.name === order.shipping_address_name)
@@ -180,8 +176,6 @@ function SingleorderHistory(randomKey = 0) {
                         ) : (
                         <Skeleton className='h-24 w-full' />
                         )}   
-
-
                     </div>
                 </div>
                 <div className="flex flex-col gap-y-4">
@@ -202,12 +196,12 @@ function SingleorderHistory(randomKey = 0) {
                     </div>
                 </div>
                 <CheckoutDetails />
-                <div className="flex justify-center gap-x-10">
-                    <button className='flex items-center gap-x-2 text-base font-medium'>
+                <div className="flex justify-center gap-x-10 mt-2">
+                    <button className='flex items-center gap-x-2 text-base font-semibold'>
                         <Icons.messageQuestionCircle />
                         ขอความช่วยเหลือ
                     </button>
-                    <button className='flex items-center gap-x-2 text-base font-medium'>
+                    <button className='flex items-center gap-x-2 text-base font-semibold'>
                         <Icons.download01 />
                         ดาวน์โหลดใบเสร็จ
                     </button>

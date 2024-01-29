@@ -13,24 +13,6 @@
 
 @layer base {
   @font-face {
-    font-family:'DB Helvethaica X';
-    src: url('../src/fonts/DB Helvethaica X/DB Helvethaica X Bd v3.2.ttf') format('truetype');
-    font-weight:700;
-    font-display:swap;
-  }
-  @font-face {
-    font-family:'DB Helvethaica X';
-    src: url('../src/fonts/DB Helvethaica X/DB Helvethaica X Med v3.2.ttf') format('truetype');
-    font-weight:500;
-    font-display:swap;
-  }
-  @font-face {
-    font-family:'DB Helvethaica X';
-    src: url('../src/fonts/DB Helvethaica X/DB Helvethaica X v3.2.ttf') format('truetype');
-    font-weight:400;
-    font-display:swap;
-  }
-  @font-face {
     font-family:'SF Pro Text';
     src: url('../src/fonts/SF Pro/SFProTHDisplay_light.woff2');
     font-weight:300;
@@ -128,6 +110,10 @@
   @apply max-w-[1113px] m-auto lg:px-10 box-content
 }
 
+.main-section-login {
+  @apply max-w-[1100px] m-auto p-4 lg:p-[60px] box-content
+}
+
 .main-section-my-account {
   @apply max-w-[1480px] px-4 py-6 lg:py-0 lg:px-10 m-auto
 }
@@ -137,7 +123,7 @@
 }
 
 .btn-primary {
-  @apply text-btn-primary-foreground bg-btn-primary font-semibold
+  @apply text-btn-primary-foreground bg-btn-primary font-semibold rounded-xl
 }
 
 .btn-primary:hover {
@@ -145,7 +131,7 @@
 }
 
 .btn-secondary {
-  @apply text-btn-secondary-foreground bg-btn-secondary font-semibold
+  @apply border border-neutral-100 bg-neutral-50 text-btn-secondary-foreground font-semibold rounded-xl /* text-btn-secondary-foreground bg-btn-secondary */
 }
 /* 
 .btn-secondary:hover {
@@ -167,6 +153,10 @@
   transition:opacity 200ms;
 }
 
+.fade-in {
+  animation:fadeIn 500ms forwards;
+}
+
 .product-title {
   @apply overflow-x-clip text-ellipsis pr-3 font-semibold whitespace-pre
 }
@@ -176,7 +166,7 @@
 }
 
 .product-price {
-  @apply font-normal
+  @apply font-normal text-base
 }
 
 .product_card:hover .product-title, .product_card:hover .product-desc, .product_card:hover .product-price {
@@ -185,6 +175,10 @@
 
 .product_card:hover .product-price {
   @apply font-semibold
+}
+
+.product_card:hover .product-sales-price {
+  @apply text-lg
 }
 
 .post-gradient {
@@ -235,4 +229,13 @@ li[data-list=bullet] > .ql-ui:before {
 }
 .ql-editor ol {
     padding-left: 1.5em;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity:0;
+  }
+  to {
+    opacity:1;
+  }
 }

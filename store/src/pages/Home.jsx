@@ -15,8 +15,6 @@ const Home = () => {
     const navigate = useNavigate();
     const idFromUrl = useParams().itemsgroup;
 
-    console.log(totalitems)
-
     useEffect(() => {
         updateCurrentUser();
     }, [updateCurrentUser]);

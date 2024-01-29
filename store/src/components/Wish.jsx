@@ -21,14 +21,14 @@ const Wish = () => {
         <CSSTransition
             ref={nodeRef}
             in={isOpen}
-            timeout={500}
+            timeout={200}
             unmountOnExit
             classNames={{
-                enter: 'translate-x-full',
-                enterActive: 'translate-x-0',
-                enterDone: 'translate-x-0 transition duration-500 ease-in-out',
-                exitDone: 'translate-x-0',
-                exitActive: 'translate-x-full transition duration-500 ease-in-out',
+                enter: 'opacity-0',
+                enterActive: 'opacity-1',
+                enterDone: 'opacity-1 transition duration-200 ease-in-out',
+                exitDone: 'opacity-1',
+                exitActive: 'opacity-0 transition duration-200 ease-in-out',
             }}
         >
             <SfDrawer
@@ -79,10 +79,10 @@ const Wish = () => {
 
                                                         <div className="ml-[10px] flex flex-1 flex-col justify-between">
                                                             <div className="flex justify-between text-gray-900">
-                                                                <h3 className='text-texttag hover:underline text-base font-normal'>
+                                                                <h3 className='text-texttag hover:underline text-[13px] leading-[17px] font-normal'>
                                                                     <Link to={`/products/${product?.name}`} >{product?.web_item_name}</Link>
                                                                 </h3>
-                                                                <p className="ml-4 whitespace-pre text-base font-semibold">{product?.formatted_price}</p>
+                                                                <p className="ml-4 whitespace-pre text-sm font-semibold">{product?.formatted_price}</p>
                                                             </div>
 
                                                             <div className="flex text-base justify-end">

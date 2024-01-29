@@ -14,6 +14,7 @@ const AddressListing = ({ randomKey = 0 }) => {
                     <AddressCard
                         title={address.address_title}
                         addressLine1={address.address_line1}
+                        addressLine2={address.address_line2}
                         city={address.city}
                         state={address.state}
                         country={address.country}
