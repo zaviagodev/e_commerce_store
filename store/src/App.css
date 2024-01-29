@@ -103,7 +103,7 @@
 }
 
 .main-section-single-product {
-  @apply max-w-[1218px] m-auto lg:px-10 py-4 lg:py-[50px] box-content
+  @apply max-w-[1218px] m-auto mb-[120px] lg:mb-0 lg:px-10 py-4 lg:py-[50px] box-content overflow-hidden lg:overflow-auto
 }
 
 .main-section-small {
@@ -238,4 +238,21 @@ li[data-list=bullet] > .ql-ui:before {
   to {
     opacity:1;
   }
+}
+
+/* Fix the background colour of autofill */
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  border:none !important;
+  -webkit-text-fill-color: inherit !important;
+  transition: background-color 5000s ease-in-out 0s;
 }

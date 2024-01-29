@@ -54,7 +54,7 @@ function OrderHistory() {
                 )}) : <SfLoaderCircular/>}
             </tbody>
         </table>
-            
+
         </div>
             <Link to='/order-history'><SfButton href="#"  variant="tertiary" className="btn-primary">View History</SfButton></Link>
         </div> 

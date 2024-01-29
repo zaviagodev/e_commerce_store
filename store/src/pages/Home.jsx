@@ -89,14 +89,13 @@ const Home = () => {
                                         />
                                     ))}
                             </div>
-                                <Pagination 
-                                    total={totalitems} 
-                                    perpage={settingPage.products_per_page} 
-                                    indexproducts={(a) => {
-                                        setpageno(a);
-                                    }}
-                                />
-
+                            <Pagination 
+                                total={totalitems} 
+                                perpage={settingPage.products_per_page} 
+                                indexproducts={(a) => {
+                                    setpageno(a);
+                                }}
+                            />
                         </div>
                     ) : (
                         <div className='flex flex-col gap-y-2'>

@@ -38,7 +38,7 @@ const ProductCard = ({
     return (
         <div className="w-full h-full product_card">
             <div className="relative">
-                <Link to={`/products/${productId}`}>
+                <Link to={`/products/${productId}`} onClick={() => window.scrollTo(0,0)}>
 
                 {loaded ? null : (
                         <div className='grid gap-[14px] grid-cols-1 lg:grid-cols-1 place-items-center w-full h-full'>

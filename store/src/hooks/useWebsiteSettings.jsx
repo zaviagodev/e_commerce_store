@@ -46,11 +46,11 @@ export const SettingProvider = ({ children }) => {
         items.forEach((item) => {
             item.children = []
         })
-        
         const itemsCopy = JSON.parse(JSON.stringify(items))
+
         items.forEach((item) => {
-            if(item.parent_label !== null ){
-                if(item.parent_label == '')return
+            if(item.parent_label !== null){
+                if(item.parent_label == '') return
                 // console.log(item)
                 recursiveSearch(item, itemsCopy)
                 const index = itemsCopy.findIndex(copyItem => copyItem.name === item.name)
@@ -60,7 +60,7 @@ export const SettingProvider = ({ children }) => {
                 // console.log(itemsCopy)
             }
         })
-        return data;
+        return items;
     }
 
     const { mutate, isLoading } = useFrappeGetCall('headless_e_commerce.api.get_websiteSettings', undefined, undefined, {

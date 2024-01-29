@@ -14,6 +14,8 @@ import {
     SfIconSearch,
     SfIconMenu,
     SfIconArrowBack,
+    SfIconChevronRight,
+    SfIconChevronLeft,
   } from '@storefront-ui/react';
 import defaultLogo from '../assets/defaultBrandIcon.svg'
 import { useCart } from '../hooks/useCart';
@@ -32,24 +34,27 @@ import SelectDropdownPreselected from './dropDown';
 
 import { findParentName } from '../utils/helper';
 import { Icons } from './icons';
+import MobileHeaderDrawer from './drawers/MobileHeaderDrawer';
 
  export default function BaseMegaMenu() {
 
-    const { close, toggle, isOpen } = useDisclosure();
-    const drawerRef = useRef(null);
-    const menuRef = useRef(null);
+  const { close, toggle, isOpen } = useDisclosure();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const drawerRef = useRef(null);
+  const menuRef = useRef(null);
 
   const navigate = useNavigate();
   const { cartCount, setIsOpen, loading:cartLoading } = useCart();
   const { WishCount,setIsOpen : setWishOpen } = useWish();
   const { user,logout } = useUser();
 
-    const [menu ,setMenu] = useState('Menu')
-    const [group, setGroup] = useState(null)
-    const [navGroup, setNavGroup] = useState(null)
+  const [menu ,setMenu] = useState('Menu')
+  const [group, setGroup] = useState(null)
+  const [navGroup, setNavGroup] = useState(null)
+  const [mobileMenuStep, setMobileMenuStep] = useState(0)
 
-    const {mainGroup} = useProducts()
-    
+  const {mainGroup} = useProducts()
+
   const product = useProducts()
 
   const {appName, appLogo,hideLogin, hideCheckout, navbarSearch, topBarItems, hideWish, isLoading} = useSetting()
@@ -103,7 +108,7 @@ import { Icons } from './icons';
   useEffect(() => {
     if(isLoading) return;
     setActionItems(prev => prev.map((item, index) => {
-      if ((index === 2 && !hideWish) || (index === 3 && !hideCheckout) || (index ==1 && navbarSearch) ) { // Original: (index === 2 && !hideWish) || (index === 1 && !hideCheckout)
+      if ((index === 2 && !hideWish) || (index === 3 && !hideCheckout) || (index ==1 && navbarSearch) ) {
         return { ...item, show: true };
       }
       if (index === 0 && !hideLogin  ) {
@@ -141,7 +146,7 @@ import { Icons } from './icons';
                 as="div"
                 size="sm"
                 role="none"
-                className=" py-4 md:py-1.5 rounded-lg active:font-bold font-bold"
+                className="py-4 md:py-1.5 rounded-lg active:font-semibold font-semibold"
               >
                 {item.name}
               </SfListItem>
@@ -155,11 +160,10 @@ import { Icons } from './icons';
       <div key={itemTop.name} className="pt-0">
         <h2
           role="presentation"
-          className=" font-bold text-neutral-900 whitespace-nowrap p-4 md:py-1.5"
+          className="font-semibold text-neutral-900 whitespace-nowrap p-0 lg:p-4 lg:mb-9"
         >
           {itemTop.name}
         </h2>
-        <hr className="mb-3.5" />
         <ul>
           {
             itemTop.children.length > 0 ? itemTop.children.map((child) => {
@@ -174,7 +178,7 @@ import { Icons } from './icons';
                 as="div"
                 size="sm"
                 role="none"
-                className="py-4 md:py-1.5 rounded-lg active:font-bold  font-bold"
+                className="py-4 md:py-1.5 rounded-lg active:font-semibold font-semibold text-[#909090]"
               >
                 {itemTop.name}
               </SfListItem>
@@ -190,27 +194,40 @@ import { Icons } from './icons';
     if(!url.startsWith('/')){  
       window.location.assign('https://' + url)
     }
-    else  {
+    else {
       navigate(`https://${url}`)
     };
+  }
+
+  const handleClickProduct = (label) => {
+    setMenu(label);
+    setMobileMenuStep(mobileMenuStep + 1)
+    toggle()
+  }
+
+  const handleMobileGoBack = () => {
+    if (mobileMenuStep == 0){setMenu('Menu')}
+    if (mobileMenuStep > 0){
+      setMobileMenuStep(mobileMenuStep - 1)
+    }
   }
 
     const productList = (name) => 
         <>
         <SfButton
-          className="hidden lg:flex text-black bg-transparent font-body hover:bg-white hover:text-black active:bg-white active:text-black gap-[2px]"
+          className="!p-0 lg:!p-2 flex w-full lg:w-fit justify-between text-black bg-transparent font-body hover:bg-white hover:text-black active:bg-white active:text-black gap-[2px]"
           aria-haspopup="true"
           aria-expanded={isOpen}
-          slotSuffix={<SfIconExpandMore className="hidden lg:inline-flex" />}
+          slotSuffix={<SfIconExpandMore className="inline-flex -rotate-90 lg:rotate-0" />}
           variant="tertiary"
-          onClick={toggle}
+          onClick={() => handleClickProduct(name)}
           square
         >
-        <span className="hidden lg:inline-flex whitespace-nowrap  font-bold">{name}</span>
+        <span className="inline-flex whitespace-nowrap font-semibold">{name}</span>
         </SfButton>
         <nav className='absolute top-0 right-0 w-full'>
           <ul>
-              <li role="none">
+              <li role="none" className='hidden lg:block'>
                   <CSSTransition
                     in={isOpen}
                     timeout={500}
@@ -226,10 +243,10 @@ import { Icons } from './icons';
                       open
                       disableClickAway
                       placement="top"
-                      className="grid grid-cols-1 lg:gap-x-6 lg:grid-cols-4 bg-white shadow-lg p-0 max-h-screen overflow-y-auto lg:!absolute lg:!top-[57px] max-w-[376px] lg:max-w-full lg:p-6 mr-[50px] lg:mr-0 z-99"
+                      className="grid grid-cols-1 lg:grid-cols-4 bg-white shadow-lg p-0 max-h-screen overflow-y-auto lg:!absolute lg:!top-[57px] max-w-[376px] lg:max-w-full lg:p-6 mr-[50px] lg:mr-0 z-99"
                     >
                       <div className="sticky top-0 flex items-center justify-between p-2 bg-primary lg:hidden">
-                        <div className="flex items-center font-bold text-white typography-text-lg">{menu}</div>
+                        <div className="flex items-center font-semibold text-white typography-text-lg">{menu}</div>
                         <SfButton
                           square
                           variant="tertiary"
@@ -240,32 +257,14 @@ import { Icons } from './icons';
                           <SfIconClose />
                         </SfButton>
                       </div>
-                      
-                          {mainGroup.map((item) => {
-                          return(
-                            <div className="lg:block hidden">
-                              {recursiveBuildPhone(item)}
-                            </div>
-                          )
-                          }
-                          )}
-                      <div className='flex lg:hidden flex-col gap-2'>
-                        {menu == 'Menu' ? topBarItems.map((item) => (
-                          <SfButton
-                            variant={'tertiary'}
-                            onClick={()=>{setMenu(item.label)}}
-                            className='justify-start w-full'
-                          >
-                            {item.label}
-                          </SfButton>
-                        )) :
-                        <button onClick={() => {setMenu('Menu'), setNavGroup(null)}} className='flex flex-row gap-2 items-center justify-start p-2'><SfIconArrowBack/>Back</button>
-                        }
-                      </div>
                       {menu == name  && (group  ? 
                         <SecondaryProdNav group={group} groups={mainGroup} setGroup={setGroup} /> 
                         : 
-                        mainGroup.map((item) => recursiveBuildPhone(item)))               
+                        mainGroup.map((item) => (
+                          <div className="lg:block hidden lg:border-r lg:px-6">
+                            {recursiveBuildPhone(item)}
+                          </div>
+                        )))               
                         }
                       {menu != 'Menu' && (navGroup ? 
                         <>
@@ -287,7 +286,7 @@ import { Icons } from './icons';
                                       as="div"
                                       size="sm"
                                       role="none"
-                                      className="py-4 md:py-1.5 rounded-lg active:font-bold text-base"
+                                      className="py-4 md:py-1.5 rounded-lg active:font-semibold text-base"
                                     >
                                       {item.label}
                                     </SfListItem>
@@ -325,7 +324,7 @@ import { Icons } from './icons';
                         variant="tertiary"
                         aria-label="Close navigation menu"
                         onClick={close}
-                        className="hidden md:block md:absolute md:right-0 hover:bg-white active:bg-white"
+                        className="block md:absolute md:right-0 hover:bg-white active:bg-white"
                       >
                         <SfIconClose />
                       </SfButton>
@@ -338,68 +337,120 @@ import { Icons } from './icons';
 
     function recursiveBuild (item){
       const button = 
-        <li> 
+        <li className='w-full lg:w-fit'> 
           <SfButton
             key={item.label}
-            className="hidden md:flex text-black bg-transparent !font-bold hover:bg-white hover:text-black active:bg-white active:text-black !"
+            className="!p-0 lg:!p-2 flex justify-between w-full lg:w-fit text-black bg-transparent !font-semibold hover:bg-white hover:text-black active:bg-white active:text-black"
             aria-label={item.label}
             variant="tertiary"
             square
             onClick={() => handleClick(item.url)}
-          >{item.label}</SfButton>
+          >
+            {item.label}
+            <SfIconChevronRight className='lg:hidden'/>
+          </SfButton>
         </li>
       if(item.children.length === 0) return button
       if(item.children.length > 0) return  <SelectDropdownPreselected dropdowndame={item.label}  options={item.children} />
-    } 
+    }
 
   return (
     <div className="w-full h-full">
-      {isOpen && <div className="fixed inset-0 bg-neutral-500 bg-opacity-50 transition-opacity z-60" />}
-      <header
-        ref={menuRef}
-        onClick={isOpen && toggle}
-        className="flex flex-wrap lg:flex-nowrap justify-center w-full py-2 lg:py-5 border-0 bg-white border-neutral-200 lg:relative z-99 h-[57px] border-b border-b-[#F4F4F4]"
-      >
-        <div className="flex items-center justify-start h-full max-w-[1400px] box-content w-full px-4 lg:px-10">
-          <SfButton
-            className="block lg:hidden text-black bg-transparent font-bold hover:bg-white hover:text-black active:bg-white active:text-black"
-            aria-haspopup="true"
-            aria-expanded={isOpen}
-            variant="tertiary"
-            onHover={toggle}
-            onClick={toggle}
-            square
-          >
-            <SfIconMenu className=" text-black" />
-          </SfButton>
-          <Link to="home/all items" className="flex mr-10 focus-visible:outline text-black focus-visible:outline-offset focus-visible:rounded-sm shrink-0">
-            {appLogo === null ? (
-                <Skeleton className='h-8 w-[120px]'/>
-            ) : (
-                <picture>
-                <source srcSet={appLogo ? `${import.meta.env.VITE_ERP_URL ?? ''}${appLogo}` : defaultLogo} media="(min-width: 768px)" />
-                <img
-                    src={appLogo ? `${import.meta.env.VITE_ERP_URL ?? ''}${appLogo}` : defaultLogo}
-                    alt="Sf Logo"
-                    className='max-h-[43px]'
-                />
-                </picture>
-            )}
-          </Link>
+      {isMobileMenuOpen && <div className="fixed inset-0 bg-neutral-500 bg-opacity-50 transition-opacity z-60" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}/>}
+      <MobileHeaderDrawer isOpen={isMobileMenuOpen} setIsOpen={setIsMobileMenuOpen}>
+        <section className='flex flex-col gap-y-9'>
+          {menu !== 'Menu' && mobileMenuStep > 0 ? (
+            <div className='flex items-center gap-x-[10px]'>
+              <SfIconChevronLeft onClick={handleMobileGoBack}/>
+              <p className="inline-flex whitespace-nowrap font-semibold">{menu}</p>
+            </div>
+          ) : (
+            <div className='flex items-center gap-x-[10px]' onClick={handlLoginClick}>
+              <p className="inline-flex whitespace-nowrap font-semibold">{user?.name ?? 'Login'}</p>
+            </div>
+          )}
           <nav>
-            <ul className='flex flex-row gap-4 items-center justify-center font-bold'>
+            <ul className='flex flex-col gap-4 font-semibold'>
               {!isLoading ? (
                 <>{topBarItems.map((item) => {
-                  if (item.is_product_list) return productList(item.label)
-                  else return recursiveBuild(item)
+                  if (mobileMenuStep > 0){
+                    if (item.is_product){
+                      return <>{mainGroup.map((item) => {
+                        return(
+                          <div className="lg:hidden">
+                            {recursiveBuildPhone(item)}
+                          </div>
+                        )}
+                      )}</>
+                    }
+                  } else {
+                    if (item.is_product) return productList(item.label)
+                    else return recursiveBuild(item)
+                  }
                 })}</>
               ) : (
                 <Skeleton className='h-8 w-[200px]'/>
               )}
             </ul>
           </nav>
+          {user?.name && 
+            <div className='flex items-center gap-x-[10px] font-semibold' onClick={() => {
+              logout();
+              navigate(`/`);
+            }}>
+            <Icons.login className='w-[22px] h-[22px]'/>
+              Logout
+            </div>
+          }
+        </section>
+      </MobileHeaderDrawer>
+      <header
+        ref={menuRef}
+        onClick={isOpen && toggle}
+        className="flex flex-wrap lg:flex-nowrap justify-center w-full py-2 lg:py-5 border-0 bg-white border-neutral-200 lg:relative z-99 h-[57px] border-b border-b-[#F4F4F4]"
+      >
+        <div className="grid grid-cols-3 lg:grid-cols-1 lg:flex items-center justify-between h-full max-w-[1400px] box-content w-full px-4 lg:px-10">
+          <SfButton
+            className="flex !justify-start lg:hidden text-black bg-transparent font-semibold hover:bg-white hover:text-black active:bg-white active:text-black"
+            aria-haspopup="true"
+            aria-expanded={isMobileMenuOpen}
+            variant="tertiary"
+            onHover={setIsMobileMenuOpen}
+            onClick={setIsMobileMenuOpen}
+            square
+          >
+            <SfIconMenu className=" text-black" />
+          </SfButton>
+          <div className='flex justify-center lg:justify-start lg:gap-x-10'>
+            <Link to="home/all items" className="flex focus-visible:outline text-black focus-visible:outline-offset focus-visible:rounded-sm shrink-0">
+              {appLogo === null ? (
+                  <Skeleton className='h-8 w-[120px]'/>
+              ) : (
+                  <picture>
+                  <source srcSet={appLogo ? `${import.meta.env.VITE_ERP_URL ?? ''}${appLogo}` : defaultLogo} media="(min-width: 768px)" />
+                  <img
+                      src={appLogo ? `${import.meta.env.VITE_ERP_URL ?? ''}${appLogo}` : defaultLogo}
+                      alt="Sf Logo"
+                      className='max-h-[43px]'
+                  />
+                  </picture>
+              )}
+            </Link>
+            <nav className='hidden lg:block'>
+              <ul className='flex flex-row gap-4 items-center justify-center font-semibold'>
+                {!isLoading ? (
+                  <>{topBarItems.map((item) => {
+                    if (item.is_product) return productList(item.label)
+                    else return recursiveBuild(item)
+                  })}</>
+                ) : (
+                  <Skeleton className='h-8 w-[200px]'/>
+                )}
+              </ul>
+            </nav>
+          </div>
 
-            <nav className="flex-1 flex justify-end lg:order-last lg:ml-4">
+            <nav className="flex justify-end lg:order-last lg:ml-4">
 
               <div className="flex flex-row flex-nowrap gap-x-2 items-center">
                 {!isLoading ? (
@@ -423,8 +474,8 @@ import { Icons } from './icons';
                             <SfBadge content={WishCount} className='!text-black !text-xs !bg-[#FF8C8C] w-4 h-4 flex items-center justify-center !p-0'/>
                           )}
                           {actionItem.role === 'login' && (
-                            <div className='flex items-center gap-x-[10px] border-r-2 pr-6'>
-                              <p className="inline-flex whitespace-nowrap  font-bold" onClick={handlLoginClick}>{user?.name ?? 'Login'}</p>
+                            <div className='hidden lg:flex items-center gap-x-[10px] border-r-2 pr-6'>
+                              <p className="inline-flex whitespace-nowrap  font-semibold" onClick={handlLoginClick}>{user?.name ?? 'Login'}</p>
                                 {user?.name && <Icons.login onClick={() => {
                                   logout();
                                   navigate(`/`);
@@ -470,7 +521,7 @@ import { Icons } from './icons';
                   as="div"
                   size="sm"
                   role="none"
-                  className="py-4 md:py-1.5 rounded-lg active:font-bold text-base"
+                  className="py-4 md:py-1.5 rounded-lg active:font-semibold text-base"
                 >
                   {item.name}
                 </SfListItem>
@@ -512,7 +563,7 @@ function SecondaryProdNav ({group, groups, setGroup}){
                   size="sm"
                   role="none"
                   href={`#${item.name}`}
-                  className="text-base py-4 md:py-1.5 rounded-lg active:font-bold"
+                  className="text-base py-4 md:py-1.5 rounded-lg active:font-semibold"
               >
                   {item.name}
               </SfListItem>
