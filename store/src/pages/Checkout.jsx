@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { SfCheckbox, SfButton, SfIconCheckCircle, SfIconClose, SfLink, SfInput, SfLoaderCircular, SfIconArrowBack, SfIconExpandMore, SfIconExpandLess, SfDrawer, SfIconArrowForward } from '@storefront-ui/react';
+import { CSSTransition } from 'react-transition-group';
 import { useCart } from '../hooks/useCart';
 import PaymentMethods from '../components/PaymentMethods';
 import AddressCard from '../components/AddressCard';
@@ -33,11 +34,11 @@ export default function Checkout(){
     const [checkedState, setCheckedState] = useState('');
     const [shippingRules, setShippingRules] = useState([]);
     const [randomKey, setrandomKey] = useState(0)
-    const [showOrders, setShowOrders] = useState(true)
+    const [showOrderSum, setShowOrderSum] = useState(true)
     const [moreAddresses, setMoreAddresses] = useState(false)
     const [morePayments, setMorePayments] = useState(false)
 
-    const {appName, appLogo,defaultTaxe } = useSetting()
+    const {appName, appLogo,defaultTaxe ,hideLogin, hideCheckout, navbarSearch, topBarItems, hideWish, isLoading} = useSetting()
     const {call : CheckPromoCode, loading, error : codeError, result : codeResult, reset, isCompleted : PromoCompleted } = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_coupon_code');
     const {call : ApplyDeliveryFee, loading : deliveryLoading, result : deliveryResult, error : deliveryError} = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_shipping_rule');
     const {isLoading : shippingRuleLoading, } = useFrappeGetCall('webshop.webshop.api.get_shipping_methods',undefined, `shippingRules`, {
@@ -45,6 +46,10 @@ export default function Checkout(){
         onSuccess: (data) => setShippingRules(data.message)
     })
     const {call : deleteCoupon, loading : deleteLoading, result : deleteResult, error : deleteError} = useFrappePostCall('webshop.webshop.shopping_cart.cart.remove_coupon_code');
+
+    const { call: updatecart, isCompleted: cartupdated  } = useFrappePostCall('webshop.webshop.api.update_cart');
+
+
 
     const { data:addressList } = useFrappeGetCall('headless_e_commerce.api.get_addresses', null, `addresses-${randomKey}`)
     const [addNewAddress, setAddNewAddress] = useState(false);
@@ -71,6 +76,19 @@ export default function Checkout(){
           clearTimeout(errorTimer.current);
         };
       }, [codeError]);
+      const { cart, cartCount, getTotal, resetCart } = useCart();
+
+
+      useEffect(() => {
+        ApplyDeliveryFee({'shipping_rule' : "" })
+      }, [shippingRules]);
+
+      useEffect(() => {
+        updatecart({"cart":cart});
+      }, [cart]);
+      
+
+      
 
       useEffect(() => {
         clearTimeout(positiveTimer.current);
@@ -108,8 +126,8 @@ export default function Checkout(){
       }
     }, [ user?.name]);
 
-    const { getByItemCode, isLoading:isProductLoading, settingPage } = useProducts()
-    const { cart, cartCount, getTotal, resetCart, loading:cartLoading } = useCart();
+    const { getByItemCode } = useProducts()
+    
 
     const cartContents = useMemo(() => {
         return Object.entries(cart).reduce((acc, [item_code]) => {
@@ -157,7 +175,7 @@ export default function Checkout(){
         if (isCompleted ) {
             if (result?.message?.name) {
                 resetCart();
-                navigate(`/thankyou?order_id=${result.message.name}&amount=${result.message.grand_total}`)
+                navigate(`/thankyou?order_id=${result.message.name}&amount=${result.message.grand_total}&payment_method=${result.message.custom_payment_method}`)
             }
         }
         if (error) { setErrorAlert(JSON.parse(JSON.parse(error?._server_messages)[0]).message) }
@@ -182,12 +200,13 @@ export default function Checkout(){
         setMoreAddresses(true);
     }
 
+
     const NewAddressForm = () => {
         return (
             <label className="w-full">
                 {addressList?.message?.length > 0 ? (<div className='flex items-center justify-between mb-4'>
-                    <legend className="font-semibold text-secgray">เพิ่มที่อยู่ใหม่</legend>
-                    <a className='text-darkgray hover:underline cursor-pointer inline-block' onClick={() => setAddNewAddress(false)}>ยกเลิก</a>
+                    <legend className="font-bold text-neutral-900 text-base">New address</legend>
+                    <a className='text-base hover:underline cursor-pointer inline-block font-medium' onClick={() => setAddNewAddress(false)}>Cancel</a>
                 </div>) : null}
                 <AddressForm onFormSubmit={() => UpdateAddresses() }/>
             </label>
