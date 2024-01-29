@@ -45,6 +45,7 @@ export default function Checkout(){
         onSuccess: (data) => setShippingRules(data.message)
     })
     const {call : deleteCoupon, loading : deleteLoading, result : deleteResult, error : deleteError} = useFrappePostCall('webshop.webshop.shopping_cart.cart.remove_coupon_code');
+    const { call: updatecart, isCompleted: cartupdated } = useFrappePostCall('webshop.webshop.api.update_cart');
 
     const { data:addressList } = useFrappeGetCall('headless_e_commerce.api.get_addresses', null, `addresses-${randomKey}`)
     const [addNewAddress, setAddNewAddress] = useState(false);
@@ -109,7 +110,11 @@ export default function Checkout(){
     }, [ user?.name]);
 
     const { getByItemCode, isLoading:isProductLoading, settingPage } = useProducts()
-    const { cart, cartCount, getTotal, resetCart, loading:cartLoading } = useCart();
+    const { cart, cartCount, getTotal, resetCart } = useCart();
+
+    useEffect(() => {
+        updatecart({"cart":cart});
+      }, [cart]);
 
     const cartContents = useMemo(() => {
         return Object.entries(cart).reduce((acc, [item_code]) => {
