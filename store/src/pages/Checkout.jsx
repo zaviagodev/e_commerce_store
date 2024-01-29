@@ -139,7 +139,7 @@ export default function Checkout(){
             use_different_shipping: false,
             loyalty_points: 0,
             items: cart,
-            payment_method: 'bank-transfer',
+            payment_method: '',
             branch: '',
         },
         validationSchema: orderSchema,
