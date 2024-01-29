@@ -60,7 +60,7 @@ export const SettingProvider = ({ children }) => {
                 // console.log(itemsCopy)
             }
         })
-        return data;
+        return itemsCopy;
     }
 
     const { mutate, isLoading } = useFrappeGetCall('headless_e_commerce.api.get_websiteSettings', undefined, undefined, {
