@@ -71,6 +71,13 @@ export default function Checkout(){
         };
       }, [codeError]);
 
+
+      useEffect(() => {
+        ApplyDeliveryFee({'shipping_rule' : "" })
+      }, [shippingRules]);
+
+      
+
       useEffect(() => {
         clearTimeout(positiveTimer.current);
         positiveTimer.current = window.setTimeout(() => setPositiveAlert(false), 5000);
