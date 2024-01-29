@@ -26,23 +26,19 @@ export default function Login() {
     } = useFrappeAuth();
 
     const getValidationSchema = () => {
-        let schema = {
-            pwd: Yup.string()
-                .min(4, 'Must be 4 characters or more')
-                .max(20, 'Must be 20 characters or less')
-                .required('Required'),
-            first_name: Yup.string()
-                .required('Required'),
-            last_name: Yup.string()
-                .required('Required'),
-            email: Yup.string()
-                .required('Required'),
-            usr: Yup.string()
-                .required('Required'),
-        };
-        if (!loginState) {
+        let schema = {};
+
+
+        if (loginState) {
+            schema['usr'] = Yup.string().equals([Yup.ref('usr')], 'enter username').required('Required');
+            schema['pwd'] = Yup.string().equals([Yup.ref('pwd')], 'Passwords must match').required('Required');
+        }
+        else{
+            schema['pwd'] = Yup.string().equals([Yup.ref('pwd')], 'Passwords must match').required('Required');
+            schema['first_name'] = Yup.string().equals([Yup.ref('first_name')], 'Passwords must match').required('Required');
+            schema['last_name'] = Yup.string().equals([Yup.ref('last_name')], 'Passwords must match').required('Required');
             schema['email'] = Yup.string().email('Invalid email address').required('Required');
-            schema['pwd_confirm'] = Yup.string().equals([Yup.ref('pwd')], 'Passwords must match').required('Required');
+            schema['usr'] = Yup.string().equals([Yup.ref('usr')], 'Passwords must match').required('Required');
         }
         return Yup.object().shape(schema);
     };
@@ -58,6 +54,9 @@ export default function Login() {
         },
         validationSchema: getValidationSchema(),
         onSubmit: (values) => {
+
+
+            
             if (loginState == false) {
                  register(values.email,values.pwd).then((data) => {
 
@@ -92,6 +91,7 @@ export default function Login() {
     }, [ currentUser,  loginState ])
 
     const handleLoginState = () => {
+        
         setLoginState(!loginState);
         setapiResponse('');
         setForgotPassword(false)
