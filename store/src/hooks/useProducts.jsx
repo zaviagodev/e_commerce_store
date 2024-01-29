@@ -17,7 +17,7 @@ export const ProductsProvider = ({ children }) => {
     const {mutate : mutateItemsList, error : itemListError, isLoading} = useFrappeGetCall('webshop.webshop.api.get_product_filter_data', {
         name: newP,
         query_args: { "field_filters": {}, "attribute_filters": {}, "item_group": null, "start": Math.max(0, (pageno - 1) * 8), "from_filters": false }
-    }, `products-${Math.max(0, (pageno - 1))}`, {
+    }, `products-${pageno}`, {
         isOnline: () => products.length === 0,
         onSuccess: (data) => {
 
@@ -26,10 +26,7 @@ export const ProductsProvider = ({ children }) => {
                 [Math.max(0, (pageno - 1))]: data.message.items
             }));
 
-            
             setProducts(data.message.items);
-
-
 
             setsettingPage(data.message.settings);
             settotalitems(data.message.total_items);

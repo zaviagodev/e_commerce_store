@@ -96,11 +96,11 @@ const Home = () => {
                                     perpage={settingPage.products_per_page} 
                                     indexproducts={(newPage) => {
 
-                                        
+                                        console.log(pageData[newPage[1]]);
+                                        console.log(pageData);
                                         console.log(newPage);
-
                                         
-                                        if (pageData[newPage[1]]) {
+                                        if (pageData[Math.max(0, newPage[1] - 1)]) {
                                             setProducts([pageData[Math.max(0, newPage[1] - 1)]]?.[0] || []);
                                             // console.log([newPage[1]]);
                                             // console.log([pageData]);
