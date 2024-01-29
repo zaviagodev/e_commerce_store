@@ -125,7 +125,6 @@ export default function Checkout(){
     useEffect(() => {
         updatecart({"cart":cart});
       }, [cart]);
-    const { getByItemCode } = useProducts()
 
     const cartContents = useMemo(() => {
         return Object.entries(cart).reduce((acc, [item_code]) => {
