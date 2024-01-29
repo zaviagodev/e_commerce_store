@@ -11,9 +11,10 @@ import Pagination from '../components/Pagination';
 
 const Home = () => {
     const { updateCurrentUser } = useFrappeAuth();
-    const { products, mainGroup, settingPage,totalitems,setpageno,mutateItemsList } = useProducts()
+    const { products, mainGroup, settingPage,totalitems,setpageno,mutateItemsList,pageData,setProducts} = useProducts()
     const navigate = useNavigate();
     const idFromUrl = useParams().itemsgroup;
+    const pageno = useParams().pageno;
 
     useEffect(() => {
         updateCurrentUser();
@@ -51,23 +52,23 @@ const Home = () => {
     return (
         <>
             <main className='main-section'>
-                {products.length > 0 ? (
-                    <h1 className="mb-[53px] text-primary text-center text-4xl font-semibold">{idFromUrl}</h1>
+                {products?.length > 0 ? (
+                    <h1 className="mb-[53px] text-primary text-center text-xl font-medium">{idFromUrl}</h1>
                 ): (
                     <Skeleton className='h-10 w-[200px] mx-auto mb-[53px]'/>
                 )}
-                    {products.length > 0 ? (
+                    {products?.length > 0 ? (
                         <div>
                             <div className='flex items-center justify-between mb-4'>
-                                <h3 className='font-semibold'>สินค้าทั้งหมด <span className='font-normal text-maingray inline-block'> ({totalitems} ไอเทม)</span></h3>
+                                <h3 className='font-medium text-base'>สินค้าทั้งหมด <span className='font-normal text-maingray inline-block ml-1'> ({totalitems} ไอเทม)</span></h3>
                                 <div className='flex items-center gap-x-[22px]'>
-                                    <h3 className='font-semibold flex items-center gap-x-[9px]'>
+                                    <h3 className='font-medium flex items-center gap-x-[9px] text-base'>
                                         <Icons.filterLines className='w-[22px] h-[22px]'/>
                                         เรียงตาม
                                     </h3>
-                                    <SfSelect size='sm' className='!ring-0 !border-0 !text-right !pr-12 !bg-[#F3F3F3] !text-[#7A7A7A] !rounded-[9px] leading-6 font-bold' onChange={handleSortOptions} value={sortOptions.find(option => option.state)?.title}>
+                                    <SfSelect size='sm' className='!ring-0 !border-0 !text-right !pr-12 !bg-[#F3F3F3] !text-[#7A7A7A] !rounded-[9px] leading-6 text-base font-bold' onChange={handleSortOptions} value={sortOptions.find(option => option.state)?.title}>
                                         {sortOptions.map((option, index) => (
-                                            <option value={option.title} key={index} className={`text-left ${option.state ? 'font-semibold' : 'font-normal'}`} selected={option.state ? true : false}>{option.title}</option>
+                                            <option value={option.title} key={index} className={`text-left ${option.state ? 'font-bold' : 'font-normal'}`} selected={option.state ? true : false}>{option.title}</option>
                                         ))}
                                     </SfSelect>
                                 </div>
@@ -75,7 +76,8 @@ const Home = () => {
                             <div
                                 className="grid gap-[14px] grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center"
                                 >
-                                    {products.filter((product) => idFromUrl === 'all items' || idFromUrl === product.item_group).sort(sortOptions.find(option => option.state === true).onChange).map((product) => (
+
+                                    {products?.filter((product) => idFromUrl === 'all items' || idFromUrl === product.item_group).sort(sortOptions.find(option => option.state === true).onChange).map((product) => (
                                         <ProductCard
                                             key={product.item_code}
                                             title={product.web_item_name}
@@ -92,8 +94,20 @@ const Home = () => {
                                 <Pagination 
                                     total={totalitems} 
                                     perpage={settingPage.products_per_page} 
-                                    indexproducts={(a) => {
-                                        setpageno(a);
+                                    indexproducts={(newPage) => {
+
+                                        
+                                        console.log(newPage);
+
+                                        
+                                        if (pageData[newPage[1]]) {
+                                            setProducts([pageData[Math.max(0, newPage[1] - 1)]]?.[0] || []);
+                                            // console.log([newPage[1]]);
+                                            // console.log([pageData]);
+                                        } else {
+                                            setpageno(newPage[1]);
+                                        }
+                                        
                                     }}
                                 />
 
