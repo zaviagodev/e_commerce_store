@@ -71,7 +71,7 @@ const BankInfoPage = () => {
       { title:'Total', info:`฿${searchParams.get("amount")}`}
     ]
     function handleChange(e){
-        console.log(e.currentTarget.files);
+        // console.log(e.currentTarget.files);
         formik.setFieldValue("file", e.currentTarget.files[0]);
         formik.setFieldValue('order_name', Order.name);
         formik.setFieldValue('payment_info', paymentinfo.key);
@@ -105,7 +105,7 @@ const BankInfoPage = () => {
                     <h1 className='text-lg text-center font-medium'>ใบเสร็จ บริษัท ซาเวียโก</h1>
                     <div className='flex flex-col gap-y-[14px]'>
 
-                        {console.log(Order.grand_total)}
+                        {/* {console.log(Order.grand_total)} */}
 
                     {payment_method == 1 && (
                         <>

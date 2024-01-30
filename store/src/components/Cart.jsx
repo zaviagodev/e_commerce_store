@@ -242,15 +242,15 @@ const Cart = () => {
                         {getTotal() ? (
                             <>
                             <div className="flex justify-between text-basesm font-semibold text-gray-900 leading-[10px]">
-                                <p>ยอดชำระ</p>
+                                <p>ราคาสินค้าทั้งหมด</p>
                                 <p>฿ {getTotal().toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</p>
                             </div>
                             <div className='flex flex-col gap-y-4'>
                                 <SfButton className="w-full btn-primary h-[50px] flex items-center gap-x-[10px] rounded-xl" disabled={cartCount == 0 || loading} onClick={() => { setIsOpen(false);handlecheckout(); }}>
                                     ชำระเงิน
-                                    <Icons.shoppingBag01 color='white' className='w-[22px] h-[22px]'/>
+                                    <Icons.shoppingBag01 color={loading ? '#a1a1aa' : 'white'} className='w-[22px] h-[22px]'/>
                                 </SfButton>  
-                                <p className="text-sm text-center text-gray-500">ค่าจัดส่งและภาษีคำนวณเมื่อชำระเงิน</p>
+                                <p className="text-sm text-center text-gray-500">ค่าจัดส่งและภาษีมูลค่าเพิ่ม (ถ้ามี) จะคำนวณเมื่อชำระเงิน</p>
                             </div>
                             </>
                         ) : (
