@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react'
+import React, {useEffect,useRef, useState} from 'react'
 import { SfButton, SfDrawer, useTrapFocus, SfIconAdd, SfIconRemove, SfLoaderCircular, SfSelect, SfIconFavorite } from '@storefront-ui/react'
 import { CSSTransition } from 'react-transition-group';
 import { useWish } from '../hooks/useWishe'
