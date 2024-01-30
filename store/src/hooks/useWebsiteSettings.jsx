@@ -1,3 +1,6 @@
+
+
+
 import { createContext, useContext, useState } from 'react';
 
 import { useFrappeGetCall } from 'frappe-react-sdk';
@@ -5,6 +8,7 @@ import { useFrappeGetCall } from 'frappe-react-sdk';
 const SettingContext = createContext(null);
 
 export const SettingProvider = ({ children }) => {
+
     const [appLogo, setAppLogo] = useState(null);
     const [appName, setAppName] = useState('Store');
     const [disableSignup, setDisableSignup] = useState(false);
@@ -13,26 +17,25 @@ export const SettingProvider = ({ children }) => {
     const [navbarSearch, setNavbarSearch] = useState(false);
     const [showLanguagePicker, setShowLanguagePicker] = useState(false);
     const [hideFooterSignup, setHideFooterSignup] = useState(true);
-    const [defaultTaxe, setDefaultTaxe] = useState(null); 
     const [hideWish, setHideWish] = useState(true);
     const [footerItems, setFooterItems] = useState([]);
     const [topBarItems, setTopBarItems] = useState([]);
     const [buttonLabel, setButtonLabel] = useState('Add to Cart');
     const [buttonLink, setButtonLink] = useState(null);
+    const [defaultTaxe, setDefaultTaxe] = useState(null); 
     var items = []
 
     const setFavicon = (iconUrl) => {
         const link = document.querySelector("link[rel*='icon']") || document.createElement('link');
         link.type = 'image/x-icon';
         link.rel = 'shortcut icon';
-        link.href = `${import.meta.env.VITE_ERP_URL ?? ''}${iconUrl}`;
+        link.href = `${import.meta.env.VITE_ERP_URL ?? ''}${iconUrl}`;;
         document.getElementsByTagName('head')[0].appendChild(link);
       }
 
       const recursiveSearch = ( item, itemsParam) => {
         for (let i = 0; i < itemsParam.length; i++) {
-            // console.log(itemsParam[i], item) 
-            if (itemsParam[i].name === item.parent_label) {
+            if (itemsParam[i].label === item.parent_label) {
                 itemsParam[i].children.push(item)
             }
             if (itemsParam[i].children && itemsParam[i].children.length > 0) {
@@ -41,27 +44,31 @@ export const SettingProvider = ({ children }) => {
         }
     };
 
+
+
+
+
     const buildTopBarItems = (data) => {
         items = data
         items.forEach((item) => {
             item.children = []
         })
+        
         const itemsCopy = JSON.parse(JSON.stringify(items))
-
         items.forEach((item) => {
-            if(item.parent_label !== null){
-                if(item.parent_label == '') return
-                // console.log(item)
+            if( item.hasOwnProperty('parent_label'))
+            {
                 recursiveSearch(item, itemsCopy)
-                const index = itemsCopy.findIndex(copyItem => copyItem.name === item.name)
+                const index = itemsCopy.findIndex(copyItem => copyItem.label === item.label)
                 if (index !== -1) {
                     itemsCopy.splice(index, 1);  // Supprime l'élément item de items
                  }
-                // console.log(itemsCopy)
             }
         })
-        return items;
+        return itemsCopy;
     }
+
+
 
     const { mutate, isLoading } = useFrappeGetCall('headless_e_commerce.api.get_websiteSettings', undefined, undefined, {
         isOnline: () => appName == 'Store',
@@ -79,7 +86,6 @@ export const SettingProvider = ({ children }) => {
             setFavicon(data.message.app_logo);
             setButtonLabel(data.message.button_label);
             setButtonLink(data.message.button_link);
-           // setTopBarItems(buildTopBarItems([...data.message.top_bar_items].sort((a, b) => a.idx - b.idx)));
             setTopBarItems(buildTopBarItems([...data.message.top_bar_items].sort((a, b) => a.idx - b.idx)));
             setDefaultTaxe(data.message.default_taxe);
             document.title = data.message.app_name;
@@ -99,10 +105,10 @@ export const SettingProvider = ({ children }) => {
         hideFooterSignup,
         footerItems,
         topBarItems,
+        defaultTaxe,
         hideWish,
         isLoading,
         buttonLabel,
-        defaultTaxe,
         buttonLink,
         mutate,
     }}>
@@ -111,3 +117,4 @@ export const SettingProvider = ({ children }) => {
 }
 
 export const useSetting = () => useContext(SettingContext);
+
