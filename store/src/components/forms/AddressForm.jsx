@@ -77,6 +77,19 @@ const AddressForm = ({ onFormSubmit }) => {
                     onChange={formik.handleChange} value={formik.values.phone} />
                 </label>
             </div>
+            <div className="w-full flex flex-col gap-0.5 flex flex-col gap-0.5">
+                <label>
+                    {/* <span className="text-sm font-medium mb-2 block">Country <span className='text-red-500'>*</span></span> */}
+                    <SfSelect name="country" className={`h-[50px] ${formik.errors.country ? '!ring-red-500/50 text-red-500' : '!ring-lightgray text-darkgray'} !px-6 !rounded-xl`} disabled={isSaving} wrapperClassName='!bg-neutral-50' placeholder="ประเทศ" onChange={formik.handleChange} value={formik.values.country} invalid={formik.errors.country}>
+                        {countries.map((countryName) => (
+                            <option key={countryName} value={countryName}>{countryName}</option>
+                        ))}
+                    </SfSelect>
+                </label>
+                {formik.errors.country && (
+                    <strong className="typography-error-sm text-negative-700 font-medium">{formik.errors.country}</strong>
+                )}
+            </div>
             <div className="w-full flex-grow flex flex-col gap-0.5">
                 <label>
                     {/* <span className="text-sm font-medium mb-2 block">Address line 1 <span className='text-red-500'>*</span></span> */}
@@ -103,19 +116,6 @@ const AddressForm = ({ onFormSubmit }) => {
                     className={`bg-neutral-50 font-medium ${formik.errors.address_line2 ? 'text-red-500' : 'text-darkgray'} `}
                     disabled={isSaving} onChange={formik.handleChange} value={formik.values.address_line2} />
                 </label>
-            </div>
-            <div className="w-full flex flex-col gap-0.5 flex flex-col gap-0.5">
-                <label>
-                    {/* <span className="text-sm font-medium mb-2 block">Country <span className='text-red-500'>*</span></span> */}
-                    <SfSelect name="country" className={`h-[50px] ${formik.errors.country ? '!ring-red-500/50 text-red-500' : '!ring-lightgray text-darkgray'} !px-6 !rounded-xl`} disabled={isSaving} wrapperClassName='!bg-neutral-50' placeholder="ประเทศ" onChange={formik.handleChange} value={formik.values.country} invalid={formik.errors.country}>
-                        {countries.map((countryName) => (
-                            <option key={countryName} value={countryName}>{countryName}</option>
-                        ))}
-                    </SfSelect>
-                </label>
-                {formik.errors.country && (
-                    <strong className="typography-error-sm text-negative-700 font-medium">{formik.errors.country}</strong>
-                )}
             </div>
 
             <div className="w-full flex flex-col gap-0.5">

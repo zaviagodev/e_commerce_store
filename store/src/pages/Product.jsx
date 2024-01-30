@@ -117,23 +117,26 @@ const Product = () => {
         }
     }
 
+    const filteredProducts = products.filter((productz) => productz?.item_group === product?.item_group).filter((productz) => productz?.item_code  != product?.item_code)
+
     return (
         <main className='main-section-single-product'>
             <main className="flex flex-col lg:flex-row gap-[18px] lg:gap-[33px]"> {/* grid grid-cols-1 lg:grid-cols-2 */}
                 {product?.website_image?.length > 0 || settingPage.default_product_image ? (
                 <div className="relative flex w-full lg:gap-x-4">
                     <SfScrollable
-                        className="hidden lg:flex relative !gap-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] lg:!gap-y-4 cursor-pointer sticky top-4"
+                        className="hidden lg:flex relative !gap-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] lg:!gap-y-4 cursor-pointer"
                         direction="vertical"
                         buttonsPlacement="none"
                         ref={thumbsRef}
                     >
-                        <img
-                            onClick={() => scrollToImage(0)}
+                        <LoadingImg
+                            ref={imageRef}
                             src={product?.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`}
                             className="h-[134px] w-[134px] min-w-[134px] object-cover fade-in"
                             aria-label={product?.website_image}
                             alt={product?.website_image}
+                            onClick={() => scrollToImage(0)}
                         />
                         {product?.slider_images?.map((image, index) => (
                             <LoadingImg
@@ -154,14 +157,15 @@ const Product = () => {
                         wrapperClassName='w-full !items-start lg:!items-center overflow-auto lg:overflow-visible'
                     >
                         {product?.discount ? (
-                            <div className="absolute inline-flex items-center justify-center text-sm font-medium text-white bg-red-500 py-1 px-2 top-2 left-6 lg:left-2 rounded-xl">
+                            <div className="absolute inline-flex items-center justify-center text-sm font-medium text-white bg-red-500 py-1 px-2 top-2 left-6 lg:left-2 rounded-xl z-9">
                                 <Icons.tag01 className='mr-1.5'/>
                                 {product?.discount}
                             </div>
                         ) : null}
-                        <img
+                        <LoadingImg
+                            ref={imageRef}
                             src={product?.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`}
-                            className="object-cover max-w-[500px] w-[500px] h-auto aspect-square fade-in"
+                            className="object-cover max-w-[500px] w-full h-auto aspect-square fade-in"
                             aria-label={product?.website_image}
                             alt={product?.website_image}
                             id={`img-product-0`}
@@ -206,18 +210,18 @@ const Product = () => {
                         {product !== undefined ? (
                             <span className='flex flex-row items-center justify-start gap-2 mb-3'>
                                 <span className={`block typography-headline-3 font-bold text-base ${product?.formatted_mrp ? 'text-red-500' : 'text-primary'}`}>{product?.formatted_price}</span>
-                                {product?.formatted_mrp && <span className="block text-maingray typography-headline-3 line-through font-normal text-base">{product?.formatted_mrp}</span>}
+                                {product?.formatted_mrp && <span className="block text-maingray typography-headline-3 line-through font-normal text-sm">{product?.formatted_mrp}</span>}
                             </span>
                         ) : (<Skeleton className='h-4 w-[100px] mt-2'/>)}
                     </div>
 
                     {product !== undefined ? (
-                        <div className='text-base leading-6 pb-[60px] font-normal' dangerouslySetInnerHTML={{ __html: product?.short_description }} />
+                        <div className='text-sm leading-6 pb-[60px] font-normal' dangerouslySetInnerHTML={{ __html: product?.short_description }} />
                     ) : (<Skeleton className='h-10 w-[300px] mt-2 mb-[60px]'/>)}
 
                     <div className="pb-6 border-gray-200 border-b">
                         <div className="items-start flex flex-col gap-y-[14px]">
-                            {!hideCheckout && <div className="flex flex-col items-stretch xs:items-center xs:inline-flex w-full">
+                            {!hideCheckout && <div className="flex flex-col items-stretch inline-flex w-full">
                                 {product !== undefined ? (
                                     <div className='flex items-center justify-between lg:justify-start w-full'>
                                         <p className='lg:hidden  text-maingray'>จำนวน</p>
@@ -266,7 +270,7 @@ const Product = () => {
                             <div className='fixed bottom-0 left-0 bg-white lg:bg-inherit p-4 lg:p-0 lg:static flex lg:flex-col w-full gap-y-[14px] flex-col-reverse z-10'>
                                 {product !== undefined || loading ? (
                                     <>
-                                    <p className=' text-center lg:text-left'>รับ Cashback สูงถึง ฿ 105 เมื่อเป็นสมาชิก</p>                           
+                                    <p className='text-[13px] text-center lg:text-left'>รับ Cashback สูงถึง ฿ 105 เมื่อเป็นสมาชิก</p>                           
                                     <div className='flex items-center gap-x-[10px] w-full'>
                                         <SfButton disabled={loading || !product?.in_stock}  onClick={handleClickCart} type="button" size="lg" className="w-full btn-primary flex items-center gap-x-[10px] rounded-xl h-[50px]">
                                             <Icons.shoppingBag01 color={loading || !product?.in_stock ? '#a1a1aa' : 'white'} className='w-[22px] h-[22px]'/>
@@ -292,7 +296,6 @@ const Product = () => {
                                 ) : (
                                     <>
                                     <Skeleton className='h-[50px] w-full'/>
-                                    <Skeleton className='h-[50px] min-w-[57px]'/>
                                     </>
                                 )}
                             </div>
@@ -343,13 +346,12 @@ const Product = () => {
                     </div>
                 </section>
             </main>
-        
-            {products.filter((productz) => productz?.item_group === product?.item_group).filter((productz) => productz?.item_code  != product?.item_code).length > 0 ? (
-                <section className='px-4 lg:p-0 pt-[38px] lg:pt-[140px]'>
-                <h1 className='mb-8 text-primary text-base lg:text-3xl font-semibold'>สินค้าที่คุณอาจสนใจ</h1>
-                <div
-                    className="grid gap-[14px] grid-cols-2 lg:grid-cols-4 place-items-center"
-                    >
+
+            {product !== undefined ? (
+                <>{filteredProducts.length > 0 && (
+                    <section className='px-4 lg:p-0 pt-[38px] lg:pt-[140px]'>
+                    <h1 className='mb-8 text-primary text-base lg:text-3xl font-semibold'>สินค้าที่คุณอาจสนใจ</h1>
+                    <div className="grid gap-[14px] grid-cols-2 lg:grid-cols-4 place-items-center">
                         {products
                             .filter((productz) => productz?.item_group === product?.item_group)
                             .filter((productz) => productz?.item_code  != product?.item_code )
@@ -368,8 +370,9 @@ const Product = () => {
                                 />
                             )).slice(0,4)
                         }
-                </div>
-            </section>
+                    </div>
+                </section>
+                )}</>
             ) : (
             <div className='flex flex-col gap-y-2 m-4 lg:m-0 lg:mt-[140px]'>
                 <div className='grid gap-[14px] grid-cols-2 lg:grid-cols-4 place-items-center w-full h-full'>

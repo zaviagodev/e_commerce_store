@@ -227,7 +227,7 @@ export default function Checkout(){
                                 {!isProductLoading ? (
                                     <li key={itemCode} className="flex pb-5">
                                         <div className="h-[53px] w-[53px] flex-shrink-0 overflow-hidden">
-                                            <img src={product?.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`} className="h-full w-full object-cover object-center fade-in"/>
+                                            <img src={product?.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`} className="h-full w-full object-cover object-center"/>
                                         </div>
 
                                         <div className="ml-[10px] flex flex-1 flex-col gap-y-0.5">
@@ -312,10 +312,10 @@ export default function Checkout(){
             <div className='lg:ml-[98px]'>
             <div className='flex justify-between pt-[21px] border-t'>
                 <div className="flex flex-col pr-2 gap-y-[21px]">
-                    <p>ยอดรวมย่อย</p>
+                    <p>ราคาสินค้าทั้งหมด</p>
                     <p className="text-maingray">ค่าจัดส่ง</p>
                     <p className='text-maingray'>
-                    ภาษีสินค้า
+                    ภาษีมูลค่าเพิ่ม
                     {defaultTaxe && ` (${
                         defaultTaxe?.rate !== 0 ? defaultTaxe?.rate+'%' : ''
                     }${
@@ -335,7 +335,7 @@ export default function Checkout(){
             </div>
             {addCoupon}
             <div className="flex justify-between typography-headline-4 md:typography-headline-3 py-4 lg:pt-4 border-t mt-4">
-                <p>ยอดชำระเงินทั้งหมด</p>
+                <p>ยอดรวมทั้งสิ้น</p>
                 <p className='text-right'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : <Skeleton className='h-4 w-[100px]'/> : `฿ ${codeResult?.message?.doc?.grand_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</p>
             </div>
         </div>
@@ -386,7 +386,7 @@ export default function Checkout(){
                                 )
                             }).slice(0, 1)}
                             <div className='flex items-center justify-center lg:justify-between w-full'>
-                                <p className="text-sm text-secgray leading-[9px]">ยอดรวมทั้งหมด</p>
+                                <p className="text-sm text-secgray leading-[9px]">ยอดรวมทั้งสิ้น</p>
                                 {isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : <p className="text-secgray text-sm leading-[9px] ml-1">{cartCount} ชิ้น</p>}
                             </div>
                         </div>
@@ -576,7 +576,7 @@ export default function Checkout(){
                                             ชำระเงิน
                                         </SfButton>
                                         <div className="mt-3 text-sm text-secgray">
-                                            เมื่อคลิก 'ชำระเงิน' คุณยินยอมให้ทำการชำระเงินตาม <SfLink href="#" className='text-linkblack no-underline'>นโยบายความเป็นส่วนตัว</SfLink> และ<SfLink href="#" className='text-linkblack no-underline'>เงื่อนไขการให้บริการของทางร้าน</SfLink>
+                                            เมื่อคลิกปุ่ม 'ชำระเงิน' แสดงว่าคุณยินยอมและยอมรับ <SfLink href="#" className='text-linkblack no-underline'>นโยบายความเป็นส่วนตัว</SfLink> และ <SfLink href="#" className='text-linkblack no-underline'>เงื่อนไขการให้บริการ</SfLink> ของทางร้าน
                                         </div>
                                     </div>
                                     <div className='w-full flex justify-center h-10 items-center'>
