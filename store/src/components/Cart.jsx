@@ -63,6 +63,9 @@ const Cart = () => {
         setIntervalId(id);
     };
 
+    useEffect(() => {
+        updateCurrentUser();
+    }, [])
 
 
     // Fonction pour arrêter d'augmenter la valeur
@@ -72,7 +75,7 @@ const Cart = () => {
     };
 
     const handlecheckout = () => {
-        updateCurrentUser();
+        console.log(currentUser);
         if(!currentUser){
             navigate("/login");
         }
