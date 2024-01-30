@@ -19,7 +19,7 @@ const Cart = () => {
     const { getByItemCode, isLoading } = useProducts()
     const navigate = useNavigate()
     const { call, isCompleted } = useFrappePostCall('webshop.webshop.api.update_cart')
-    const { currentUser } = useFrappeAuth();
+    const { currentUser,updateCurrentUser } = useFrappeAuth();
 
     // Ajouter un état pour l'intervalle
     const [intervalId, setIntervalId] = useState(null);
@@ -72,6 +72,7 @@ const Cart = () => {
     };
 
     const handlecheckout = () => {
+        updateCurrentUser();
         if(!currentUser){
             navigate("/login");
         }

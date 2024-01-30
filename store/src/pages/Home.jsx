@@ -19,6 +19,11 @@ const Home = () => {
         updateCurrentUser();
     }, [updateCurrentUser]);
 
+    useEffect(() => {
+        setpageno(pageno);
+        console.log(pageData);
+    }, [pageno]);
+
     const [sortOptions, setSortOptions] = useState([
         {
             title:'Default',
@@ -92,10 +97,6 @@ const Home = () => {
                                     perpage={settingPage.products_per_page} 
                                     indexproducts={(newPage) => {
 
-                                        console.log(pageData[newPage[1]]);
-                                        console.log(pageData);
-                                        console.log(newPage);
-                                        
                                         if (pageData[Math.max(0, newPage[1] - 1)]) {
                                             setProducts([pageData[Math.max(0, newPage[1] - 1)]]?.[0] || []);
                                             // console.log([newPage[1]]);
