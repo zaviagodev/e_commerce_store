@@ -60,6 +60,7 @@ export const SettingProvider = ({ children }) => {
                 // console.log(itemsCopy)
             }
         })
+        console.log(items);
         return items;
     }
 
