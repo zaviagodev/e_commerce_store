@@ -25,8 +25,6 @@ export default function PaymentMethods({
     const [randomKey, setrandomKey] = useState(0)
     const { data:paymentmethods } = useFrappeGetCall('webshop.webshop.api.payment_info', null, `payments-${randomKey}`)
 
-    console.log(paymentmethods);
-
     return (
         <>
             {paymentmethods ? (

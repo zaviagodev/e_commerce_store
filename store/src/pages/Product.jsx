@@ -123,7 +123,7 @@ const Product = () => {
                 {product?.website_image?.length > 0 || settingPage.default_product_image ? (
                 <div className="relative flex w-full lg:gap-x-4">
                     <SfScrollable
-                        className="hidden lg:flex relative !gap-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] lg:!gap-y-4 sticky top-4 cursor-pointer"
+                        className="hidden lg:flex relative !gap-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] lg:!gap-y-4 cursor-pointer sticky top-4"
                         direction="vertical"
                         buttonsPlacement="none"
                         ref={thumbsRef}
@@ -136,7 +136,6 @@ const Product = () => {
                             alt={product?.website_image}
                         />
                         {product?.slider_images?.map((image, index) => (
-                       
                             <LoadingImg
                                 ref={imageRef}
                                 key={`img-product-${index + 1}`}
@@ -144,7 +143,7 @@ const Product = () => {
                                 className="h-[134px] w-[134px] min-w-[134px] object-cover fade-in"
                                 aria-label={image}
                                 alt={image}
-                                id={`img-product-${index + 1}`}
+                                onClick={() => scrollToImage(index)}
                             />
                         ))}
                     </SfScrollable>
@@ -152,7 +151,7 @@ const Product = () => {
                         className="relative [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] !flex-row lg:!flex-col overflow-auto px-4 lg:px-0"
                         direction="vertical"
                         buttonsPlacement="none"
-                        draggable={true}
+                        wrapperClassName='w-full !items-start lg:!items-center overflow-auto lg:overflow-visible'
                     >
                         {product?.discount ? (
                             <div className="absolute inline-flex items-center justify-center text-sm font-medium text-white bg-red-500 py-1 px-2 top-2 left-6 lg:left-2 rounded-xl">
@@ -162,36 +161,23 @@ const Product = () => {
                         ) : null}
                         <img
                             src={product?.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`}
-                            className="object-cover w-[500px] h-auto aspect-square fade-in"
+                            className="object-cover max-w-[500px] w-[500px] h-auto aspect-square fade-in"
                             aria-label={product?.website_image}
                             alt={product?.website_image}
                             id={`img-product-0`}
                         />
 
                         {product?.slider_images && product.slider_images.map((image, index) => (
-                    
                             <LoadingImg
                                 ref={imageRef}
                                 key={`img-product-${index + 1}`}
                                 src={`${import.meta.env.VITE_ERP_URL ?? ''}${image}`}
-                                className="object-cover w-[500px] h-auto aspect-square fade-in"
+                                className="object-cover max-w-[500px] w-[500px] h-auto aspect-square fade-in"
                                 aria-label={image}
                                 alt={image}
                                 id={`img-product-${index + 1}`}
                             />
-
                         ))}
-
-
-
-
-
-
-
-
-
-
-                        
                     </SfScrollable>
                 </div>
                 ) : (

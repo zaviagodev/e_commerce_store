@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { SfButton, SfLoaderCircular } from "@storefront-ui/react";
 import { useProducts } from "../hooks/useProducts";
 import { useCart } from "../hooks/useCart";
-import { month } from "../data/month";
 import AddressCard from "../components/AddressCard";
 import MyAccountSection from "../components/MyAccountSection";
 import { Skeleton } from "../components/Skeleton";
@@ -26,14 +25,15 @@ function SingleorderHistory(randomKey = 0) {
     const [adressParts, setAdress] = useState([])
     const { data } = useFrappeGetCall('headless_e_commerce.api.get_addresses', null, `addresses`)
 
-
     const {call : CheckPromoCode, error : codeError, result : codeResult, reset, isCompleted : PromoCompleted } = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_coupon_code');
     const {call : ApplyDeliveryFee, loading : deliveryLoading, result : deliveryResult, error : deliveryError} = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_shipping_rule');
 
+    console.log(Order)
+
     const orderDetails = [
         {title:'เลขคำสั่งซื้อ',value:order.name},
-        {title:'ยอดรวมทั้งหมด',value:`฿${order.grand_total?.toLocaleString()}`},
-        {title:'วันที่',value:`${new Date(order.creation).getDate()} ${month[new Date(order.creation).getMonth()]} ${new Date(order.creation).getFullYear()}`},
+        {title:'ยอดรวมทั้งหมด',value:`฿${order.grand_total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`},
+        {title:'วันที่',value:`${new Date(order.creation).getDate()}/${new Date(order.creation).getMonth() + 1}/${new Date(order.creation).getFullYear()}`},
         {title:'สถานะ',value:order.status}
         // {title:'Shipping Phone:',value:order.custom_phone_number}
     ]
@@ -82,16 +82,16 @@ function SingleorderHistory(randomKey = 0) {
                     </p>
                 </div>
                 <div className="flex flex-col text-right gap-y-[21px]">
-                    <p className='text-sm font-semibold'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total ? `฿${deliveryResult?.message?.doc?.total.toLocaleString()}` : `฿${getTotal().toLocaleString()}`}</p>
+                    <p className='text-sm font-semibold'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total ? `฿${deliveryResult?.message?.doc?.total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : `฿${getTotal().toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</p>
                     <p className="text-maingray text-sm font-semibold">
-                        {isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total_taxes_and_charges ? `฿${deliveryResult?.message?.doc?.total_taxes_and_charges.toLocaleString()}` : "฿0"}
+                        {isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total_taxes_and_charges ? `฿${deliveryResult?.message?.doc?.total_taxes_and_charges?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : "฿0"}
                     </p>
                     <p className='text-sm text-maingray'>-</p>
                 </div>
             </div>
             <div className="flex justify-between typography-headline-4 md:typography-headline-3 py-4 lg:pt-4 border-t mt-4 font-medium">
                 <p>ยอดชำระเงินทั้งหมด</p>
-                <p className="text-sm">{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total.toLocaleString()}` : 'Your address is not supported' : `฿ ${codeResult?.message?.doc?.grand_total.toLocaleString()}`}</p>
+                <p className="text-sm">{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : 'Your address is not supported' : `฿ ${codeResult?.message?.doc?.grand_total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</p>
             </div>
         </div>
         )

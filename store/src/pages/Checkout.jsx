@@ -233,7 +233,7 @@ export default function Checkout(){
                                         <div className="ml-[10px] flex flex-1 flex-col gap-y-0.5">
                                             <div className="flex justify-between text-gray-900">
                                                 <h3 className='text-darkgray pr-8'>{product?.web_item_name}</h3>
-                                                <p className='whitespace-pre font-bold text-base'>{product?.formatted_price.toLocaleString()}</p>
+                                                <p className='whitespace-pre font-bold text-base'>{product?.formatted_price?.toLocaleString()}</p>
                                             </div>
 
                                             <div className="flex justify-between text-black font-bold">
@@ -326,9 +326,9 @@ export default function Checkout(){
                     </p>
                 </div>
                 <div className="flex flex-col text-right gap-y-[21px]">
-                    <p className='font-semibold'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total ? `฿${deliveryResult?.message?.doc?.total.toLocaleString()}` : `฿${getTotal().toLocaleString()}`}</p>
+                    <p className='font-semibold'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total ? `฿${deliveryResult?.message?.doc?.total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : `฿${getTotal().toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</p>
                     <p className="text-maingray font-semibold">
-                        {isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total_taxes_and_charges ? `฿${deliveryResult?.message?.doc?.total_taxes_and_charges.toLocaleString()}` : "฿0"}
+                        {isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total_taxes_and_charges ? `฿${deliveryResult?.message?.doc?.total_taxes_and_charges?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : "฿0"}
                     </p>
                     <p className='text-maingray  leading-[10px]'>-</p>
                 </div>
@@ -336,7 +336,7 @@ export default function Checkout(){
             {addCoupon}
             <div className="flex justify-between typography-headline-4 md:typography-headline-3 py-4 lg:pt-4 border-t mt-4">
                 <p>ยอดชำระเงินทั้งหมด</p>
-                <p className='text-right'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total.toLocaleString()}` : 'Your address is not supported' : `฿ ${codeResult?.message?.doc?.grand_total.toLocaleString()}`}</p>
+                <p className='text-right'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : <Skeleton className='h-4 w-[100px]'/> : `฿ ${codeResult?.message?.doc?.grand_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</p>
             </div>
         </div>
         )
@@ -365,7 +365,7 @@ export default function Checkout(){
                             )}
                         </div>
                         <div className='lg:hidden'>
-                            <a className=' text-secgray cursor-pointer' onClick={() => setShowOrders(true)}>ข้อมูลตะกร้า</a>
+                            <a className='text-secgray cursor-pointer' onClick={() => setShowOrders(true)}>ข้อมูลตะกร้า</a>
 
                             <MobileCheckoutDrawer isOpen={showOrders} setIsOpen={setShowOrders} title='ทำการสั่งซื้อ'>
                                 <ProductLists />
@@ -391,7 +391,7 @@ export default function Checkout(){
                             </div>
                         </div>
                         <div className={`px-4 lg:pl-[21px] lg:pr-[19px]`}>
-                            <h1 className='text-4xl font-bold pt-[26px] text-center lg:text-left'>{isProductLoading ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total.toLocaleString()}` : 'Change address' : `฿ ${codeResult?.message?.doc?.grand_total.toLocaleString()}` }</h1>
+                            <h1 className='text-4xl font-bold pt-[26px] text-center lg:text-left'>{isProductLoading ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : <Skeleton className='h-8 w-[100px]'/> : `฿ ${codeResult?.message?.doc?.grand_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` }</h1>
                             <div className='hidden lg:block'>
                                 <ProductLists />
                                 <CheckoutDetails addCoupon={<CouponForm />}/>
@@ -506,7 +506,7 @@ export default function Checkout(){
                                                         <span className=' font-bold text-darkgray'>{checkedState ? checkedState : 'หรือเลือกวิธีการจัดส่งที่ต้องการ'}</span>
                                                     </div>
                                                     <div className='flex items-center gap-x-2'>
-                                                        <span className=' font-bold text-darkgray'>{checkedState ? `฿${shippingRules?.find(rule => rule.name === checkedState).shipping_amount.toLocaleString()}` : null}</span>
+                                                        <span className=' font-bold text-darkgray'>{checkedState ? `฿${shippingRules?.find(rule => rule.name === checkedState).shipping_amount?.toLocaleString()}` : null}</span>
                                                         <SfIconArrowForward />
                                                     </div>
                                                 </div>
@@ -539,7 +539,7 @@ export default function Checkout(){
                                                 }}
                                                 />
                                             }
-                                            slotSuffix={<span className="text-gray-900  font-bold">฿{shipping_amount.toLocaleString()}</span>}
+                                            slotSuffix={<span className="text-gray-900  font-bold">฿{shipping_amount?.toLocaleString()}</span>}
                                             className={classNames('w-full !gap-0 border rounded-xl border-neutral-100 !p-4  bg-neutral-50 font-bold', {'outline outline-[1px]': checkedState == name})}
                                             >
                                             {name}

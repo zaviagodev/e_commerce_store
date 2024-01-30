@@ -46,8 +46,6 @@ function OrderHistory() {
       setSelectedStatus(newSelectedStatus);
     };
 
-    console.log(Order)
-
     return (
         <MyAccountSection>
             <div className="mb-5 flex justify-between lg:block">
@@ -77,7 +75,7 @@ function OrderHistory() {
                         </tr>
                         <tr>
                           <td className="text-secgray">วันที่</td>
-                          <td className="text-black font-semibold text-right">{`${new Date(creation).getDate()} ${month[new Date(creation).getMonth()]} ${new Date(creation).getFullYear()}`}</td>
+                          <td className="text-black font-semibold text-right">{`${new Date(creation).getDate()}/${new Date(creation).getMonth() + 1}/${new Date(creation).getFullYear()}`}</td>
                         </tr>
                         <tr>
                           <td className="text-secgray">จำนวนสินค้า</td>
@@ -85,7 +83,7 @@ function OrderHistory() {
                         </tr>
                         <tr>
                           <td className="text-secgray">ยอดรวมทั้งหมด</td>
-                          <td className="text-black font-semibold text-right">฿{base_total.toLocaleString()}</td>
+                          <td className="text-black font-semibold text-right">฿{base_total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -115,9 +113,9 @@ function OrderHistory() {
                           {filteredData.map(({name, status, base_total, company, items, creation}) => (
                             <tr className="border-b">
                               <td className="py-6 text-sm w-1/3">{name}-{}{company}</td>
-                              <td className="py-6 text-sm w-1/6">{`${new Date(creation).getDate()} ${month[new Date(creation).getMonth()]} ${new Date(creation).getFullYear()}`}</td>
+                              <td className="py-6 text-sm w-1/6">{`${new Date(creation).getDate()}/${new Date(creation).getMonth() + 1}/${new Date(creation).getFullYear()}`}</td>
                               <td className="py-6 text-sm w-1/6">{items.length}</td>
-                              <td className="py-6 text-sm w-1/6">฿{base_total.toLocaleString()}</td>
+                              <td className="py-6 text-sm w-1/6">฿{base_total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</td>
                               <td className="py-6 text-sm w-1/6">
                                 <Link to={`/order-history/${name}`} className='flex gap-x-[6px] items-center font-semibold text-sm'>
                                   <Icons.file06 className='w-[14px] h-[14px]'/>
