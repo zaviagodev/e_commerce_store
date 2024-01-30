@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { Icons } from './icons';
 import { Skeleton } from './Skeleton';
 import { useFrappePostCall } from 'frappe-react-sdk';
+import { useFrappeAuth } from 'frappe-react-sdk';
 
 const Cart = () => {
     const { cart, cartCount, addToCart, removeFromCart, getTotal, isOpen, setIsOpen, loading } = useCart()
@@ -18,6 +19,7 @@ const Cart = () => {
     const { getByItemCode, isLoading } = useProducts()
     const navigate = useNavigate()
     const { call, isCompleted } = useFrappePostCall('webshop.webshop.api.update_cart')
+    const { currentUser } = useFrappeAuth();
 
     // Ajouter un état pour l'intervalle
     const [intervalId, setIntervalId] = useState(null);
@@ -70,26 +72,29 @@ const Cart = () => {
     };
 
     const handlecheckout = () => {
-        call({"cart":cart}).then(() => {
+        if(!currentUser){
+            navigate("/login");
+        }
+        else{
+             //call({"cart":cart});
             navigate("/checkout");
-        });
+        }
     };
 
-    
     //useTrapFocus(drawerRef, { activeState: isOpen });
 
     return (
         <CSSTransition
             ref={nodeRef}
             in={isOpen}
-            timeout={500}
+            timeout={200}
             unmountOnExit
             classNames={{
-                enter: 'translate-x-full',
-                enterActive: 'translate-x-0',
-                enterDone: 'translate-x-0 transition duration-500 ease-in-out',
-                exitDone: 'translate-x-0',
-                exitActive: 'translate-x-full transition duration-500 ease-in-out',
+                enter: 'opacity-0',
+                enterActive: 'opacity-1',
+                enterDone: 'opacity-1 transition duration-200 ease-in-out',
+                exitDone: 'opacity-1',
+                exitActive: 'opacity-0 transition duration-200 ease-in-out',
             }}
         >
             <SfDrawer
@@ -108,7 +113,7 @@ const Cart = () => {
                                     <Icons.flipBackward />
                                 </button>
                             </div>
-                            <h2 className="text-basesm font-semibold text-gray-900 text-center whitespace-pre col-span-2 leading-[11px]" id="slide-over-title">ตะกร้าสินค้า</h2>
+                            <h2 className="font-semibold text-gray-900 text-center whitespace-pre col-span-2" id="slide-over-title">ตะกร้าสินค้า</h2>
                             <div className="flex h-7 items-center justify-end">
                                 <button onClick={() => {setIsOpen(false);setWishOpen(true)}} type="button">
                                     <SfIconFavorite />
@@ -137,7 +142,7 @@ const Cart = () => {
                                                 }
                                                 return (
                                                     <li key={itemCode} className="flex">
-                                                        <div className="h-[90px] w-[90px] flex-shrink-0">
+                                                        <div className="h-[90px] min-w-[90px]">
                                                             <Link to={`/products/${product?.name}`}>
                                                                 {product?.website_image ? (
                                                                     <img src={`${import.meta.env.VITE_ERP_URL ?? ""}${product?.website_image}`} alt={product?.item_name} className="h-full w-full object-cover object-center" />
@@ -150,10 +155,10 @@ const Cart = () => {
                                                         <div className="ml-[10px] flex flex-1 flex-col justify-between">
                                                             <div>
                                                                 <div className="flex justify-between text-gray-900">
-                                                                    <h3 className='text-texttag hover:underline text-[20px] leading-5 font-medium'>
+                                                                    <h3 className='text-texttag hover:underline text-[13px] leading-[17px]'>
                                                                         <Link to={`/products/${product?.name}`} >{product?.web_item_name}</Link>
                                                                     </h3>
-                                                                    <p className="ml-4 whitespace-pre text-[20px] font-bold leading-5">{product?.formatted_price}</p>
+                                                                    <p className="ml-4 whitespace-pre text-sm font-semibold">{product?.formatted_price}</p>
                                                                 </div>
                                                                 {/* <p className="mt-1 text-base text-gray-500">{product?.short_description}</p> */}
                                                             </div>
@@ -220,10 +225,10 @@ const Cart = () => {
                             </div>
                             ) : (
                                 <div className="h-1/2 text-center flex flex-col gap-y-3 justify-end px-4">
-                                    <h1 className='font-bold text-lg'>Your cart is empty</h1>
-                                    <p className='text-base'>Go to the store to browse the products.</p>
+                                    <h1 className='font-bold text-lg'>ตะกร้าของคุณว่างเปล่า</h1>
+                                    <p className='text-base'>ไปยังร้านค้าเพื่อเลือกสินค้า</p>
                                     <Link to='/home/all%20items'>
-                                        <SfButton onClick={() => setIsOpen(false)} className='btn-primary rounded-xl'>Shop now</SfButton>
+                                        <SfButton onClick={() => setIsOpen(false)} className='btn-primary rounded-xl font-semibold'>เลือกซื้อสินค้า</SfButton>
                                     </Link>
                                 </div>
                             )}
@@ -236,16 +241,16 @@ const Cart = () => {
                         <div className="p-6 pb-[10px] flex flex-col gap-y-9">
                         {getTotal() ? (
                             <>
-                            <div className="flex justify-between text-basesm font-bold text-gray-900 leading-[10px]">
+                            <div className="flex justify-between text-basesm font-semibold text-gray-900 leading-[10px]">
                                 <p>ยอดชำระ</p>
-                                <p>฿ {getTotal()}</p>
+                                <p>฿ {getTotal().toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</p>
                             </div>
                             <div className='flex flex-col gap-y-4'>
-                                <SfButton className="w-full btn-primary h-[50px] flex items-center gap-x-[10px] rounded-xl" disabled={cartCount == 0} onClick={() => { setIsOpen(false);handlecheckout(); }}>
+                                <SfButton className="w-full btn-primary h-[50px] flex items-center gap-x-[10px] rounded-xl" disabled={cartCount == 0 || loading} onClick={() => { setIsOpen(false);handlecheckout(); }}>
                                     ชำระเงิน
                                     <Icons.shoppingBag01 color='white' className='w-[22px] h-[22px]'/>
                                 </SfButton>  
-                                <p className="text-sm text-center text-gray-500 leading-[9px]">ค่าจัดส่งและภาษีคำนวณเมื่อชำระเงิน</p>
+                                <p className="text-sm text-center text-gray-500">ค่าจัดส่งและภาษีคำนวณเมื่อชำระเงิน</p>
                             </div>
                             </>
                         ) : (
