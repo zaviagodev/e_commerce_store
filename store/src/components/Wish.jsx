@@ -47,7 +47,7 @@ const Wish = () => {
                                     <Icons.flipBackward />
                                 </button>
                             </div>
-                            <h2 className=" font-semibold text-gray-900 text-center whitespace-pre col-span-2 leading-[11px]" id="slide-over-title">รายการสินค้าที่สนใจของฉัน</h2>
+                            <h2 className=" font-semibold text-gray-900 text-center whitespace-pre col-span-2 leading-[11px]" id="slide-over-title">รายการโปรด</h2>
                         </div>
                         {isLoading ? (
                             <div className='flex gap-x-2 p-6'>
@@ -99,8 +99,8 @@ const Wish = () => {
                                     </div>
                                 </div>) : (
                                     <div className="h-1/2 text-center flex flex-col gap-y-3 justify-end px-6">
-                                        <h1 className='font-bold text-lg'>ยังไม่มีรายการสินค้าที่สนใจ</h1>
-                                        <p className='text-base'>เริ่มบันทึกสินค้าที่สนใจโดยกดปุ่มหัวใจ</p>
+                                        <h1 className='font-bold text-lg'>ยังไม่มีสินค้าในรายการโปรด</h1>
+                                        <p className='text-base'>เพิ่มสินค้าที่สนใจโดยการกดปุ่มรูปหัวใจ</p>
                                         <Link to='/home/all%20items'>
                                             <SfButton onClick={() => setIsOpen(false)} className='btn-primary font-semibold'>เริ่มเลือกสินค้า</SfButton>
                                         </Link>

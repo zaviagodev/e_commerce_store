@@ -85,6 +85,7 @@ import MobileHeaderDrawer from './drawers/MobileHeaderDrawer';
       ariaLabel: 'Search',
       role: 'search',
       show: false,
+      showOnMobile: true,
       onClick: (e) => e.preventDefault()
     },
     {
@@ -93,6 +94,7 @@ import MobileHeaderDrawer from './drawers/MobileHeaderDrawer';
       ariaLabel: 'Wishlist',
       role: 'button',
       show: false,
+      showOnMobile: false,
       onClick: () => setWishOpen(true),
     },
     {
@@ -101,6 +103,7 @@ import MobileHeaderDrawer from './drawers/MobileHeaderDrawer';
       ariaLabel: 'Cart',
       role: 'button',
       show: false,
+      showOnMobile: true,
       onClick: () => setIsOpen(true)
     },
   ]);
@@ -366,7 +369,7 @@ import MobileHeaderDrawer from './drawers/MobileHeaderDrawer';
             </div>
           ) : (
             <div className='flex items-center gap-x-[10px]' onClick={handlLoginClick}>
-              <p className="inline-flex whitespace-nowrap font-semibold">{user?.name ?? 'Login'}</p>
+              <p className="inline-flex whitespace-nowrap font-semibold">{user?.name ?? 'เข้าสู่ระบบ'}</p>
             </div>
           )}
           <nav>
@@ -457,7 +460,7 @@ import MobileHeaderDrawer from './drawers/MobileHeaderDrawer';
                   <>{actionItems.map((actionItem) => 
                     {return actionItem.show && <SfButton
                           key={actionItem.ariaLabel}
-                          className="relative rounded-md text-black hover:bg-primary-100 active:bg-primary-200 hover:text-primary-600 active:text-primary-700"
+                          className={`relative rounded-md text-black hover:bg-primary-100 active:bg-primary-200 hover:text-primary-600 active:text-primary-700 ${!actionItem.showOnMobile ? 'hidden lg:block' : ''}`}
                           aria-label={actionItem.ariaLabel}
                           variant="tertiary"
                           square
@@ -475,7 +478,7 @@ import MobileHeaderDrawer from './drawers/MobileHeaderDrawer';
                           )}
                           {actionItem.role === 'login' && (
                             <div className='hidden lg:flex items-center gap-x-[10px] border-r-2 pr-6'>
-                              <p className="inline-flex whitespace-nowrap  font-semibold" onClick={handlLoginClick}>{user?.name ?? 'Login'}</p>
+                              <p className="inline-flex whitespace-nowrap  font-semibold" onClick={handlLoginClick}>{user?.name ?? 'เข้าสู่ระบบ'}</p>
                                 {user?.name && <Icons.login onClick={() => {
                                   logout();
                                   navigate(`/`);

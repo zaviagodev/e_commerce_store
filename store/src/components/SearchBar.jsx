@@ -160,7 +160,7 @@ export default function SearchWithIcon( {className}) {
                           onChange={handleChange}
                           wrapperClassName={`w-full border-0 shadow-none focus-within:shadow-none`}
                           aria-label="Search"
-                          placeholder="Search 'MacBook' or 'iPhone'..."
+                          placeholder="ค้นหาสินค้า..."
                           onKeyDown={handleInputKeyDown}
                           slotPrefix={<SfIconSearch />}
                           slotSuffix={isResetButton && (
@@ -214,8 +214,8 @@ export default function SearchWithIcon( {className}) {
                                 </>
                               ) : (
                                 <div className="py-4 text-center flex flex-col gap-y-2 justify-end">
-                                  <h1 className='font-medium text-lg'>No search results</h1>
-                                  <p className='text-sm'>Please try another search</p>
+                                  <h1 className='font-medium text-lg'>ไม่พบสิ่งที่คุณต้องการค้นหา</h1>
+                                  <p className='text-sm'>กรุณาลองค้นหาโดยใช้คำอื่นๆ</p>
                                 </div>
                               )}
                             </ul>)

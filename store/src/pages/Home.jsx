@@ -26,7 +26,7 @@ const Home = () => {
 
     const [sortOptions, setSortOptions] = useState([
         {
-            title:'Default',
+            title:'ค่าเริ่มต้น',
             state:true,
             onChange:undefined
         },
@@ -64,9 +64,12 @@ const Home = () => {
                     {products?.length > 0 ? (
                         <div>
                             <div className='flex items-center justify-between mb-4'>
-                                <h3 className='font-semibold'>สินค้าทั้งหมด <span className='font-normal text-maingray inline-block ml-1'> ({totalitems} ไอเทม)</span></h3>
+                                <div>
+                                    <h3 className='font-semibold hidden lg:block'>สินค้าทั้งหมด <span className='font-normal text-maingray inline-block ml-1'> ({totalitems} ไอเทม)</span></h3>
+                                    <h3 className='font-normal text-maingray inline-block lg:hidden'>{totalitems} ไอเทม</h3>
+                                </div>
                                 <div className='flex items-center gap-x-[22px]'>
-                                    <h3 className='font-semibold flex items-center gap-x-[9px]'>
+                                    <h3 className='hidden font-semibold lg:flex items-center gap-x-[9px]'>
                                         <Icons.filterLines className='w-[22px] h-[22px]'/>
                                         เรียงตาม
                                     </h3>

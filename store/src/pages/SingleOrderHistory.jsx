@@ -28,11 +28,9 @@ function SingleorderHistory(randomKey = 0) {
     const {call : CheckPromoCode, error : codeError, result : codeResult, reset, isCompleted : PromoCompleted } = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_coupon_code');
     const {call : ApplyDeliveryFee, loading : deliveryLoading, result : deliveryResult, error : deliveryError} = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_shipping_rule');
 
-    console.log(Order)
-
     const orderDetails = [
-        {title:'เลขคำสั่งซื้อ',value:order.name},
-        {title:'ยอดรวมทั้งหมด',value:`฿${order.grand_total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`},
+        {title:'เลขที่คำสั่งซื้อ',value:order.name},
+        {title:'ยอดรวมทั้งสิ้น',value:`฿${order.grand_total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`},
         {title:'วันที่',value:`${new Date(order.creation).getDate()}/${new Date(order.creation).getMonth() + 1}/${new Date(order.creation).getFullYear()}`},
         {title:'สถานะ',value:order.status}
         // {title:'Shipping Phone:',value:order.custom_phone_number}
@@ -49,13 +47,16 @@ function SingleorderHistory(randomKey = 0) {
         isGift={product?.item_group === "Gift" || product?.item_group === "Gift and Cards"}
     */
 
-    const PurchasedList = ({name, company, status, creation, image, price}) => {
+    const PurchasedList = ({name, company, status, creation, image, price, qty}) => {
         return (
           <div className="w-full flex gap-x-4">
               {image ? <img src={image} className="min-w-[96px] h-24 object-cover fade-in"/> : <SfThumbnail size="lg" className="bg-gray-100 h-24 min-w-[96px]"/>}
               <div className="flex flex-col gap-y-1 w-full">
                 <div className="flex items-center justify-between text-sm">
-                  <h2>{name}</h2>
+                  <div className="flex flex-col gap-y-1">
+                    <h2>{name}</h2>
+                    <p className="font-semibold">{qty} ชิ้น</p>
+                  </div>
                   <p className="font-semibold">{price}</p>
                 </div>
               </div>
@@ -68,10 +69,10 @@ function SingleorderHistory(randomKey = 0) {
             <div className='lg:ml-[98px]'>
             <div className='flex justify-between pt-[21px] border-t'>
                 <div className="flex flex-col pr-2 gap-y-[21px]">
-                    <p>ยอดรวมย่อย</p>
+                    <p>ราคาสินค้าทั้งหมด</p>
                     <p className="text-maingray">ค่าจัดส่ง</p>
                     <p className='text-maingray'>
-                    ภาษีสินค้า
+                    ภาษีมูลค่าเพิ่ม
                     {defaultTaxe && ` (${
                         defaultTaxe?.rate !== 0 ? defaultTaxe?.rate+'%' : ''
                     }${
@@ -90,7 +91,7 @@ function SingleorderHistory(randomKey = 0) {
                 </div>
             </div>
             <div className="flex justify-between typography-headline-4 md:typography-headline-3 py-4 lg:pt-4 border-t mt-4 font-medium">
-                <p>ยอดชำระเงินทั้งหมด</p>
+                <p>ยอดรวมทั้งสิ้น</p>
                 <p className="text-sm">{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : 'Your address is not supported' : `฿ ${codeResult?.message?.doc?.grand_total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</p>
             </div>
         </div>
@@ -114,8 +115,6 @@ function SingleorderHistory(randomKey = 0) {
             setAdress(order.address_display.split('<br>'))
         }
     }, [Order, products,order])
-
-    // console.log(itemsList.length)
 
     return (  
         <MyAccountSection>
@@ -156,7 +155,7 @@ function SingleorderHistory(randomKey = 0) {
                     </div>
                 </div>
                 <div className="flex flex-col gap-y-4">
-                    <h2 className='font-semibold text-darkgray'>ที่อยู่จัดส่ง</h2>
+                    <h2 className='font-semibold text-darkgray'>ที่อยู่ในการจัดส่ง</h2>
                     <div className="flex flex-col gap-y-4">
 
                         {data?.message.length > 0 ? (
@@ -181,8 +180,8 @@ function SingleorderHistory(randomKey = 0) {
                 <div className="flex flex-col gap-y-4">
                     <h2 className='font-semibold text-darkgray'>รายละเอียดสินค้า</h2>
                     <div className="grid grid-cols-1 gap-4 place-items-center">
-                        {itemsList.length > 0 ? itemsList.map(product => (
-                            <PurchasedList name={product.web_item_name} image={product.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`} price={product.formatted_price}/>
+                        {itemsList.length > 0 ? itemsList.map((product, index) => (
+                            <PurchasedList qty={order.items[index].qty} name={product.web_item_name} image={product.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`} price={product.formatted_price}/>
                         )): itemsList.map(p => (
                                 <div className='flex justify-between w-full'>
                                     <div className='flex gap-x-2'>

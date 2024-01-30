@@ -8,7 +8,6 @@ import { useWish } from '../hooks/useWishe';
 import { useSetting } from '../hooks/useWebsiteSettings';
 import { Skeleton } from '../components/Skeleton';
 
-
 const ProductCard = ({
     title,
     description,
@@ -94,8 +93,8 @@ const ProductCard = ({
                         {description}
                     </p> */}
                     <span className='flex flex-row items-center justify-start gap-2'>
-                        <strong className={`block ${salesPrice ? 'text-destructive product-sales-price' : 'text-maingray product-price text-base'}`}>{price}</strong>
-                        {salesPrice && <span className="block text-base text-maingray line-through">{salesPrice}</span>}
+                        <strong className={`block ${salesPrice ? 'text-destructive text-sm lg:text-base' : 'text-maingray product-price'}`}>{price}</strong>
+                        {salesPrice && <span className="block text-sm text-maingray line-through">{salesPrice}</span>}
                     </span>
                 </div>
             </div>

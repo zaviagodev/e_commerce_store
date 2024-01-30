@@ -166,7 +166,7 @@
 }
 
 .product-price {
-  @apply font-normal text-base
+  @apply font-normal text-sm lg:text-base
 }
 
 .product_card:hover .product-title, .product_card:hover .product-desc, .product_card:hover .product-price {
@@ -175,10 +175,6 @@
 
 .product_card:hover .product-price {
   @apply font-semibold
-}
-
-.product_card:hover .product-sales-price {
-  @apply text-lg
 }
 
 .post-gradient {

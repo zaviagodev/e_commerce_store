@@ -29,13 +29,16 @@ export default function Login() {
         let schema = {};
 
         if (loginState) {
-            schema['usr'] = Yup.string().equals([Yup.ref('usr')], 'enter username').required('Required');
-            schema['pwd'] = Yup.string().equals([Yup.ref('pwd')], 'Passwords must match').required('Required');
+            schema['usr'] = Yup.string().equals([Yup.ref('usr')], 'enter username').required('จำเป็นต้องกรอกข้อมูล');
+            schema['pwd'] = Yup.string().equals([Yup.ref('pwd')], 'Passwords must match').required('จำเป็นต้องกรอกข้อมูล');
         }
         else{
-            schema['email'] = Yup.string().email('Invalid email address').required('Required');
-            schema['pwd'] = Yup.string().equals([Yup.ref('pwd_confirm')], 'Passwords must match').required('Required');
-            schema['pwd_confirm'] = Yup.string().equals([Yup.ref('pwd')], 'Passwords must match').required('Required');
+            schema['pwd'] = Yup.string().equals([Yup.ref('pwd_confirm')], 'Passwords must match').required('จำเป็นต้องกรอกข้อมูล');
+            schema['pwd_confirm'] = Yup.string().equals([Yup.ref('pwd')], 'Passwords must match').required('จำเป็นต้องกรอกข้อมูล');
+            schema['first_name'] = Yup.string().equals([Yup.ref('first_name')], 'Passwords must match').required('จำเป็นต้องกรอกข้อมูล');
+            schema['last_name'] = Yup.string().equals([Yup.ref('last_name')], 'Passwords must match').required('จำเป็นต้องกรอกข้อมูล');
+            schema['email'] = Yup.string().email('Invalid email address').required('จำเป็นต้องกรอกข้อมูล');
+            schema['usr'] = Yup.string().equals([Yup.ref('usr')], 'Passwords must match').required('จำเป็นต้องกรอกข้อมูล');
         }
         return Yup.object().shape(schema);
     };
@@ -102,7 +105,7 @@ export default function Login() {
     return (
         <>
         <main className='main-section-login'>
-        <h2 className="mb-[85px] text-primary text-center text-4xl font-semibold">{loginState ? 'ลงชื่อเข้าใช้งาน' : 'ลงทะเบียน'}</h2>
+        <h2 className="mb-[85px] text-primary text-center text-4xl font-semibold">{loginState ? 'เข้าสู่ระบบ' : 'สมัครสมาชิก'}</h2>
             <section className={`grid grid-cols-1 gap-[70px] mx-auto ${!loginState ? 'w-[410px]' : 'lg:grid-cols-2'}`}>
             <form className="flex gap-4 flex-wrap text-neutral-900 text-start text-big" onSubmit={formik.handleSubmit}>
                 <h2 className="text-darkgray text-2xl font-semibold">{loginState ? forgotPassword ? 'รีเซ็ตรหัสผ่านของคุณ' : 'ลงชื่อเข้าใช้งาน' : 'ลงทะเบียนสมาชิกใหม่'}</h2>
@@ -195,9 +198,12 @@ export default function Login() {
                     <SfButton variant='tertiary' className={`btn-primary rounded-xl h-[50px] w-full`} type='submit'>{isLoading ? 'Loading...' : 'ลงทะเบียน'}</SfButton>
                 )}
                 {loginState === false && (
+                    <>
+                    <p className='text-secgray'>หากเป็นสมาชิกอยู่แล้ว คลิกที่นี่เพื่อเข้าสู่ระบบ</p>
                     <SfButton variant='tertiary' className='btn-secondary h-[50px] rounded-xl w-full text-black shadow-none font-semibold' onClick={handleLoginState}>
                         เข้าสู่ระบบ
                     </SfButton>
+                    </>
                 )}
             </form>
             {loginState === true ? (
@@ -205,7 +211,7 @@ export default function Login() {
                     <h2 className="text-darkgray text-2xl font-semibold">ลูกค้าใหม่</h2>
                     <p className='text-secgray'>ลงทะเบียนเพื่อเข้าถึง การสินค้าสุดพิเศษพร้อมกับสินค้ามาใหม่ เทรนด์ที่มาแรง ส่วนลดและโปรโมชั่นมากมายสำหรับสมาชิก</p>
                     <SfButton className='w-fit mt-5 btn-primary h-[50px] rounded-xl' onClick={handleLoginState}>
-                        ลงทะเบียน
+                        สมัครสมาชิก
                     </SfButton>
                 </div>
             ) : null}
