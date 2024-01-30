@@ -28,7 +28,6 @@ export default function Login() {
     const getValidationSchema = () => {
         let schema = {};
 
-
         if (loginState) {
             schema['usr'] = Yup.string().equals([Yup.ref('usr')], 'enter username').required('Required');
             schema['pwd'] = Yup.string().equals([Yup.ref('pwd')], 'Passwords must match').required('Required');
@@ -128,7 +127,7 @@ export default function Login() {
 
                 {loginState == false && 
                 <>
-                <label className="w-full flex flex-col gap-0.5">
+                {/* <label className="w-full flex flex-col gap-0.5">
                     <SfInput name="first_name" autoComplete="first_name" onChange={formik.handleChange} value={formik.values.first_name} 
                         wrapperClassName={`!bg-neutral-50 ${formik.errors.first_name ? '!ring-red-500/50' : '!ring-lightgray'} h-[50px] px-6 rounded-xl`}
                         className={`bg-neutral-50 font-medium ${formik.errors.first_name ? 'text-red-500' : 'text-darkgray'} `}
@@ -143,7 +142,7 @@ export default function Login() {
                         placeholder='นามสกุล *'
                     />
                     <p className='text-red-500 text-sm'>{formik.errors.last_name}</p>
-                </label>
+                </label> */}
                 <label className="w-full flex flex-col gap-0.5">
                     <SfInput name="email" autoComplete="email" onChange={formik.handleChange} value={formik.values.email} 
                         wrapperClassName={`!bg-neutral-50 ${formik.errors.email ? '!ring-red-500/50' : '!ring-lightgray'} h-[50px] px-6 rounded-xl`}
@@ -256,11 +255,9 @@ export default function Login() {
                     <p className='text-darkgray'>ขอบคุณสำหรับการสมัครสมาชิก คุณสามารถตรวจสอบข้อมูลส่วนตัวของคุณได้ที่ “รายละเอียดบัญชี”</p>
                 </div>
 
-                <SfLink to='/home/all items' className='w-full'>
-                    <SfButton className='w-full btn-primary h-[50px] rounded-xl'>
-                        เริ่มต้นการใช้งาน
-                    </SfButton>
-                </SfLink>
+                <SfButton className='w-full btn-primary h-[50px] rounded-xl' onClick={() => navigate('/home/all items')}>
+                    เริ่มต้นการใช้งาน
+                </SfButton>
             </SfModal>
         </CSSTransition>
         </>
