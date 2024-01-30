@@ -14,7 +14,6 @@ export const CartProvider = ({ children }) => {
     const fectchToAddToCart = (itemCode, quantity) => {
         try {
         call({"item_code" : itemCode, 'qty' : quantity ?? (cart[itemCode] ?? 0) + 1}).then(() => {
-        mutateItemsList()
         })
         } catch (error) {
             console.log(error)

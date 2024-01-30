@@ -4,15 +4,14 @@ import React, { useState, useEffect } from 'react';
 
 const Pagination = ({ total,perpage,indexproducts }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [startIndex, setStartIndex] = useState(0);
+  const [startIndex, setStartIndex] = useState(1);
   const itemsPerPage = perpage;
 
   useEffect(() => {
     const newStartIndex = (currentPage - 1) * itemsPerPage;
     setStartIndex(newStartIndex >= 0 ? newStartIndex : 0);
-    indexproducts(newStartIndex);
-    console.log(newStartIndex);
-  }, [currentPage, itemsPerPage, indexproducts]);
+    indexproducts([newStartIndex,currentPage]);
+  }, [currentPage]);
 
   const totalPages = Math.ceil(total / itemsPerPage);
 

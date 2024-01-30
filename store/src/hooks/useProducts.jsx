@@ -12,13 +12,22 @@ export const ProductsProvider = ({ children }) => {
     const [totalitems, settotalitems] = useState(0)
     const [pageno, setpageno] = useState(0)
 
+    const [pageData, setPageData] = useState({});
+
     const {mutate : mutateItemsList, error : itemListError, isLoading} = useFrappeGetCall('webshop.webshop.api.get_product_filter_data', {
         name: newP,
-        query_args: { "field_filters": {}, "attribute_filters": {}, "item_group": null, "start": pageno, "from_filters": false }
+        query_args: { "field_filters": {}, "attribute_filters": {}, "item_group": null, "start": Math.max(0, (pageno - 1) * 8), "from_filters": false }
     }, `products-${pageno}`, {
         isOnline: () => products.length === 0,
         onSuccess: (data) => {
+
+            setPageData((prevPageData) => ({
+                ...prevPageData,
+                [Math.max(0, (pageno - 1))]: data.message.items
+            }));
+
             setProducts(data.message.items);
+
             setsettingPage(data.message.settings);
             settotalitems(data.message.total_items);
         }
@@ -52,11 +61,32 @@ export const ProductsProvider = ({ children }) => {
     }
 
     const getByItemCode = (itemCode) => {
-        // if product is already in the list, return it & refetch it in the background
-        const p = products.find((product) => product.item_code === itemCode)
-        return p
-    }
-
+        console.log(itemCode);
+        console.log(pageData);
+    
+        // If pageData is not null, search within pageData
+        if (pageData !== null) {
+            // Iterate over each page in pageData
+            for (const pageKey in pageData) {
+                const pageArray = pageData[pageKey];
+    
+                // Use find to search for the product with the specified item_code in the current page
+                const productInPage = pageArray.find((product) => product.item_code === itemCode);
+    
+                // If the product is found in the current page, return it
+                if (productInPage) {
+                    return productInPage;
+                }
+            }
+        }
+    
+        // If pageData is null or the product is not found in any page, search within products
+        const productInProducts = products.find((product) => product.item_code === itemCode);
+    
+        // Return the product found in products or null if not found
+        return productInProducts || null;
+    };
+    
     const getProductsCodeInCart= () => {
         return products.filter((product) => product.in_cart == true).map((product) => product.item_code).flat()
     }
@@ -86,6 +116,7 @@ export const ProductsProvider = ({ children }) => {
             getWishedProducts,
             mainGroup,
             settingPage,
+            pageData,
             totalitems,
             setpageno,
             getItemByCategorie,
