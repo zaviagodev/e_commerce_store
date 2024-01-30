@@ -30,15 +30,12 @@ export default function Login() {
 
         if (loginState) {
             schema['usr'] = Yup.string().equals([Yup.ref('usr')], 'enter username').required('จำเป็นต้องกรอกข้อมูล');
-            schema['pwd'] = Yup.string().equals([Yup.ref('pwd')], 'Passwords must match').required('จำเป็นต้องกรอกข้อมูล');
+            schema['pwd'] = Yup.string().equals([Yup.ref('pwd')], 'Passwords must match').required('Required');
         }
         else{
-            schema['pwd'] = Yup.string().equals([Yup.ref('pwd_confirm')], 'Passwords must match').required('จำเป็นต้องกรอกข้อมูล');
-            schema['pwd_confirm'] = Yup.string().equals([Yup.ref('pwd')], 'Passwords must match').required('จำเป็นต้องกรอกข้อมูล');
-            schema['first_name'] = Yup.string().equals([Yup.ref('first_name')], 'Passwords must match').required('จำเป็นต้องกรอกข้อมูล');
-            schema['last_name'] = Yup.string().equals([Yup.ref('last_name')], 'Passwords must match').required('จำเป็นต้องกรอกข้อมูล');
-            schema['email'] = Yup.string().email('Invalid email address').required('จำเป็นต้องกรอกข้อมูล');
-            schema['usr'] = Yup.string().equals([Yup.ref('usr')], 'Passwords must match').required('จำเป็นต้องกรอกข้อมูล');
+            schema['email'] = Yup.string().email('Invalid email address').required('Required');
+            schema['pwd'] = Yup.string().equals([Yup.ref('pwd_confirm')], 'Passwords must match').required('Required');
+            schema['pwd_confirm'] = Yup.string().equals([Yup.ref('pwd')], 'Passwords must match').required('Required');
         }
         return Yup.object().shape(schema);
     };
