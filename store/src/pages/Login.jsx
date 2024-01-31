@@ -83,7 +83,9 @@ export default function Login() {
 
     useEffect(() => {
         if (getToken() || currentUser) {
+
             navigate("/home/all items");
+            window.location.reload();
         }
         // formik.validateForm();
     }, [ currentUser,  loginState ])

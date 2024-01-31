@@ -77,18 +77,14 @@ const Cart = () => {
     };
 
     const handlecheckout = () => {
-        updateCurrentUser().then((s) => {
-            console.log(updateCurrentUser());
-            console.log(updateCurrentUser());
-        });
-        console.log(currentUser);
-        //setIsOpen(false);
+        
+        setIsOpen(false);
         if(!currentUser){
-            //navigate("/login");
+            navigate("/login");
         }
         else{
              //call({"cart":cart});
-            //navigate("/checkout");
+            navigate("/checkout");
         }
     };
 
