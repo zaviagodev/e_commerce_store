@@ -73,6 +73,7 @@ const Cart = () => {
 
     const handlecheckout = () => {
         console.log('fff');
+        console.log(currentUser);
         
         // if(!currentUser){
         //     navigate("/login");
