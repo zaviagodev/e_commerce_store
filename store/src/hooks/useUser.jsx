@@ -67,17 +67,13 @@ export const UserProvider = ({ children }) => {
         });
 
         const data = await response.json();
-
-        //if (data.message.token) {
-            // handle jwt
-        //    //setToken(data.message.token);
-       // }
-
-        // get user
-        //await mutate();
-       // updateCurrentUser();
-
-        return data;
+            if (data.message.token) {
+                setToken(data.message.token);
+            }
+            mutate().then((s) => {
+                updateCurrentUser();
+            });
+            return data;
     } catch (error) {
         console.error("Error during registration:", error);
         throw error; // Re-throw the error so it can be caught by the calling code if necessary
