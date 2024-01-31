@@ -72,6 +72,7 @@ const Cart = () => {
     };
 
     const handlecheckout = () => {
+        updateCurrentUser();
         console.log('fff');
         console.log(currentUser);
         
