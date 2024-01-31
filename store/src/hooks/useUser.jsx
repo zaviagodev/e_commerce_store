@@ -68,11 +68,11 @@ export const UserProvider = ({ children }) => {
 
         const data = await response.json();
             if (data.message.token) {
-                setToken(data.message.token);
+                login(email, pwd);
             }
-            mutate().then((s) => {
-                updateCurrentUser();
-            });
+            // mutate().then((s) => {
+            //     updateCurrentUser();
+            // });
             return data;
     } catch (error) {
         console.error("Error during registration:", error);
