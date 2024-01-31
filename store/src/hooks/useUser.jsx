@@ -70,9 +70,9 @@ export const UserProvider = ({ children }) => {
             if (data.message.token) {
                 login(email, pwd);
             } 
-            // mutate().then((s) => {
-            //     updateCurrentUser();
-            // });
+            mutate().then((s) => {
+                updateCurrentUser();
+            });
             return data;
     } catch (error) {
         console.error("Error during registration:", error);
