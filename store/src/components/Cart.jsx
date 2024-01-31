@@ -82,23 +82,16 @@ const Cart = () => {
     const handlecheckout = () => {
 
         mutate().then((s) => {
-            updateCurrentUser().then((s) => {
-                console.log(currentUser);
-                console.log('inside');
-            })
+            updateCurrentUser();
         });
 
-        updateCurrentUser();
-        console.log('fff');
-        console.log(currentUser);
-        
-        // if(!currentUser){
-        //     navigate("/login");
-        // }
-        // else{
-        //      //call({"cart":cart});
-        //     navigate("/checkout");
-        // }
+        if(!currentUser){
+            navigate("/login");
+        }
+        else{
+             //call({"cart":cart});
+            navigate("/checkout");
+        }
     };
 
     //useTrapFocus(drawerRef, { activeState: isOpen });
