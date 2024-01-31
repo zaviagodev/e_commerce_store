@@ -10,19 +10,18 @@ import Pagination from '../components/Pagination';
 
 const Home = () => {
     const { updateCurrentUser } = useFrappeAuth();
-    const { products, mainGroup, settingPage,totalitems,setpageno,mutateItemsList,pageData,setProducts} = useProducts()
+    const {  mainGroup, settingPage,totalitems,setpageno,mutateItemsList,pageData,setProducts,pageno} = useProducts()
     const navigate = useNavigate();
     const idFromUrl = useParams().itemsgroup;
-    const pageno = useParams().pageno;
+    const page_no = useParams().pageno;
 
     useEffect(() => {
         updateCurrentUser();
     }, [updateCurrentUser]);
 
     useEffect(() => {
-        setpageno(pageno);
-        console.log(pageData);
-    }, [pageno]);
+        setpageno(page_no);
+    }, [page_no]);
 
     const [sortOptions, setSortOptions] = useState([
         {
@@ -56,12 +55,14 @@ const Home = () => {
     return (
         <>
             <main className='main-section'>
-                {products?.length > 0 ? (
+                {console.log(pageData)}
+                {console.log(pageno)}
+                {pageData[pageno]?.length > 0 ? (
                     <h1 className="mb-[53px] text-primary text-center text-4xl font-semibold">{idFromUrl}</h1>
                 ): (
                     <Skeleton className='h-10 w-[200px] mx-auto mb-[53px]'/>
                 )}
-                    {products?.length > 0 ? (
+                    {pageData[pageno]?.length > 0 ? (
                         <div>
                             <div className='flex items-center justify-between mb-4'>
                                 <div>
@@ -81,7 +82,7 @@ const Home = () => {
                                 </div>
                             </div>
                             <div className="grid gap-[14px] grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center">
-                                {products?.filter((product) => idFromUrl === 'all items' || idFromUrl === product.item_group).sort(sortOptions.find(option => option.state === true).onChange).map((product) => (
+                                {pageData[pageno]?.filter((product) => idFromUrl === 'all items' || idFromUrl === product.item_group).sort(sortOptions.find(option => option.state === true).onChange).map((product) => (
                                     <ProductCard
                                         key={product.item_code}
                                         title={product.web_item_name}
@@ -100,13 +101,16 @@ const Home = () => {
                                     perpage={settingPage.products_per_page} 
                                     indexproducts={(newPage) => {
 
-                                        if (pageData[Math.max(0, newPage[1] - 1)]) {
-                                            setProducts([pageData[Math.max(0, newPage[1] - 1)]]?.[0] || []);
-                                            // console.log([newPage[1]]);
-                                            // console.log([pageData]);
-                                        } else {
-                                            setpageno(newPage[1]);
-                                        }
+                                        navigate(`/home/${idFromUrl}/${newPage}`);
+
+
+                                        // if (pageData[Math.max(0, newPage[1] - 1)]) {
+                                        //     //setProducts([pageData[Math.max(0, newPage[1] - 1)]]?.[0] || []);
+                                        //     // console.log([newPage[1]]);
+                                        //     // console.log([pageData]);
+                                        // } else {
+                                        //     //setpageno(newPage[1]);
+                                        // }
                                     }}
                                 />
                         </div>

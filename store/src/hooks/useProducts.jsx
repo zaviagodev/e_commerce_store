@@ -10,7 +10,7 @@ export const ProductsProvider = ({ children }) => {
     const [mainGroup, setMainGroup] = useState([])
     const [settingPage, setsettingPage] = useState([])
     const [totalitems, settotalitems] = useState(0)
-    const [pageno, setpageno] = useState(0)
+    const [pageno, setpageno] = useState(1)
 
     const [pageData, setPageData] = useState({});
 
@@ -23,7 +23,7 @@ export const ProductsProvider = ({ children }) => {
 
             setPageData((prevPageData) => ({
                 ...prevPageData,
-                [Math.max(0, (pageno - 1))]: data.message.items
+                [pageno]: data.message.items
             }));
 
             setProducts(data.message.items);
@@ -118,6 +118,7 @@ export const ProductsProvider = ({ children }) => {
             settingPage,
             pageData,
             totalitems,
+            pageno,
             setpageno,
             getItemByCategorie,
             getProductsCodeInCart
