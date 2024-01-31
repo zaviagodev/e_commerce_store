@@ -77,7 +77,10 @@ const Cart = () => {
     };
 
     const handlecheckout = () => {
-        updateCurrentUser();
+        updateCurrentUser().then((s) => {
+            console.log('f');
+            console.log(currentUser);
+        });
         console.log(currentUser);
         //setIsOpen(false);
         if(!currentUser){
