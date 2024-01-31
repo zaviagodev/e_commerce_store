@@ -10,6 +10,7 @@ import { Icons } from './icons';
 import { Skeleton } from './Skeleton';
 import { useFrappePostCall } from 'frappe-react-sdk';
 import { useFrappeAuth } from 'frappe-react-sdk';
+import { useSetting } from '../hooks/useWebsiteSettings';
 
 const Cart = () => {
     const { cart, cartCount, addToCart, removeFromCart, getTotal, isOpen, setIsOpen, loading } = useCart()
@@ -20,6 +21,7 @@ const Cart = () => {
     const navigate = useNavigate()
     const { call, isCompleted } = useFrappePostCall('webshop.webshop.api.update_cart')
     const { currentUser,updateCurrentUser } = useFrappeAuth();
+    const { hideWish} = useSetting()
 
     // Ajouter un état pour l'intervalle
     const [intervalId, setIntervalId] = useState(null);
@@ -117,11 +119,14 @@ const Cart = () => {
                                 </button>
                             </div>
                             <h2 className="font-semibold text-gray-900 text-center whitespace-pre col-span-2" id="slide-over-title">ตะกร้าสินค้า</h2>
-                            <div className="flex h-7 items-center justify-end">
-                                <button onClick={() => {setIsOpen(false);setWishOpen(true)}} type="button">
-                                    <SfIconFavorite />
-                                </button>
-                            </div>
+                                <div className="flex h-7 items-center justify-end">
+                                    {hideWish != 1 && (
+                                        <button onClick={() => { setIsOpen(false); setWishOpen(true) }} type="button">
+                                        <SfIconFavorite />
+                                        </button>
+                                    )}
+                                </div>
+
                         </div>
                         {isLoading ? (
                             <div className='flex gap-x-2 p-6'>
