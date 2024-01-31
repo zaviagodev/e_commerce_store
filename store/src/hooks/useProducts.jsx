@@ -61,8 +61,7 @@ export const ProductsProvider = ({ children }) => {
     }
 
     const getByItemCode = (itemCode) => {
-        console.log(itemCode);
-        console.log(pageData);
+
     
         // If pageData is not null, search within pageData
         if (pageData !== null) {
