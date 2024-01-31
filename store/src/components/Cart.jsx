@@ -67,7 +67,7 @@ const Cart = () => {
 
     useEffect(() => {
         updateCurrentUser();
-    }, [])
+    }, [updateCurrentUser])
 
 
     // Fonction pour arrêter d'augmenter la valeur
@@ -77,12 +77,14 @@ const Cart = () => {
     };
 
     const handlecheckout = () => {
+        console.log(currentUser);
+        //setIsOpen(false);
         if(!currentUser){
-            navigate("/login");
+            //navigate("/login");
         }
         else{
              //call({"cart":cart});
-            navigate("/checkout");
+            //navigate("/checkout");
         }
     };
 
@@ -254,7 +256,7 @@ const Cart = () => {
                                 <p>฿ {getTotal().toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</p>
                             </div>
                             <div className='flex flex-col gap-y-4'>
-                                <SfButton className="w-full btn-primary h-[50px] flex items-center gap-x-[10px] rounded-xl" disabled={cartCount == 0 || loading} onClick={() => { setIsOpen(false);handlecheckout(); }}>
+                                <SfButton className="w-full btn-primary h-[50px] flex items-center gap-x-[10px] rounded-xl" disabled={cartCount == 0 || loading} onClick={() => { handlecheckout(); }}>
                                     ชำระเงิน
                                     <Icons.shoppingBag01 color={loading ? '#a1a1aa' : 'white'} className='w-[22px] h-[22px]'/>
                                 </SfButton>  
