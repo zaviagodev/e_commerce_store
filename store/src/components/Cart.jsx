@@ -9,10 +9,8 @@ import { Link } from 'react-router-dom';
 import { Icons } from './icons';
 import { Skeleton } from './Skeleton';
 import { useFrappePostCall } from 'frappe-react-sdk';
-import { useFrappeAuth, useFrappeGetCall } from 'frappe-react-sdk';
+import { useFrappeAuth } from 'frappe-react-sdk';
 import { useSetting } from '../hooks/useWebsiteSettings';
-import { getToken, removeToken, setToken } from '../utils/helper';
-
 
 const Cart = () => {
     const { cart, cartCount, addToCart, removeFromCart, getTotal, isOpen, setIsOpen, loading } = useCart()
@@ -27,13 +25,6 @@ const Cart = () => {
 
     // Ajouter un état pour l'intervalle
     const [intervalId, setIntervalId] = useState(null);
-
-    const { mutate } = useFrappeGetCall('headless_e_commerce.api.get_profile', {}, 'user-profile', {
-        isOnline: () => getToken(),
-        onSuccess: (data) => {
-            setUser(data.message)
-        }
-    })
 
 
     const inputRefs = useRef({});
@@ -74,17 +65,18 @@ const Cart = () => {
         setIntervalId(id);
     };
 
+    useEffect(() => {
+        updateCurrentUser();
+    }, [])
+
+
     // Fonction pour arrêter d'augmenter la valeur
     const stopIncreasing = () => {
         clearInterval(intervalId);
         setIntervalId(null);
     };
+
     const handlecheckout = () => {
-
-        mutate().then((s) => {
-            updateCurrentUser();
-        });
-
         if(!currentUser){
             navigate("/login");
         }
@@ -262,7 +254,7 @@ const Cart = () => {
                                 <p>฿ {getTotal().toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</p>
                             </div>
                             <div className='flex flex-col gap-y-4'>
-                                <SfButton className="w-full btn-primary h-[50px] flex items-center gap-x-[10px] rounded-xl" disabled={cartCount == 0 || loading} onClick={() => { handlecheckout(); }}>
+                                <SfButton className="w-full btn-primary h-[50px] flex items-center gap-x-[10px] rounded-xl" disabled={cartCount == 0 || loading} onClick={() => { setIsOpen(false);handlecheckout(); }}>
                                     ชำระเงิน
                                     <Icons.shoppingBag01 color={loading ? '#a1a1aa' : 'white'} className='w-[22px] h-[22px]'/>
                                 </SfButton>  

@@ -69,7 +69,7 @@ export const UserProvider = ({ children }) => {
         const data = await response.json();
             if (data.message.token) {
                 login(email, pwd);
-            }
+            } 
             // mutate().then((s) => {
             //     updateCurrentUser();
             // });
