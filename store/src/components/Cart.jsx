@@ -9,8 +9,10 @@ import { Link } from 'react-router-dom';
 import { Icons } from './icons';
 import { Skeleton } from './Skeleton';
 import { useFrappePostCall } from 'frappe-react-sdk';
-import { useFrappeAuth } from 'frappe-react-sdk';
+import { useFrappeAuth, useFrappeGetCall } from 'frappe-react-sdk';
 import { useSetting } from '../hooks/useWebsiteSettings';
+import { getToken, removeToken, setToken } from '../utils/helper';
+
 
 const Cart = () => {
     const { cart, cartCount, addToCart, removeFromCart, getTotal, isOpen, setIsOpen, loading } = useCart()
@@ -25,6 +27,13 @@ const Cart = () => {
 
     // Ajouter un état pour l'intervalle
     const [intervalId, setIntervalId] = useState(null);
+
+    const { mutate } = useFrappeGetCall('headless_e_commerce.api.get_profile', {}, 'user-profile', {
+        isOnline: () => getToken(),
+        onSuccess: (data) => {
+            setUser(data.message)
+        }
+    })
 
 
     const inputRefs = useRef({});
@@ -71,6 +80,14 @@ const Cart = () => {
         setIntervalId(null);
     };
     const handlecheckout = () => {
+
+        mutate().then((s) => {
+            updateCurrentUser().then((s) => {
+                console.log(currentUser);
+                console.log('inside');
+            })
+        });
+
         updateCurrentUser();
         console.log('fff');
         console.log(currentUser);
