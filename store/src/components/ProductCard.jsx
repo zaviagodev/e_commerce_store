@@ -57,15 +57,30 @@ const ProductCard = ({
                         </div>
                     )}
                 </Link>
-                <div className='p-2 w-full absolute bottom-0 add_to_cart'>
-                    <SfButton disabled={loading} className='btn-secondary w-full h-10 py-3 font-semibold shadow-custom !text-base' type="button" size="sm" onClick={(e) => {
-                        e.preventDefault();
-                        addToCart(itemCode, cart[itemCode] ? cart[itemCode] + 1 : 1);
-                        setIsOpen(true)
-                    }}>
-                    {loading ? <SfLoaderCircular/> : buttonLabel}
-                    </SfButton>
-                </div>
+
+
+                {hideCheckout != 1 && (
+                    <div className='p-2 w-full absolute bottom-0 add_to_cart'>
+                        <SfButton
+                            disabled={loading}
+                            className='btn-secondary w-full h-10 py-3 font-semibold shadow-custom !text-base'
+                            type="button"
+                            size="sm"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                addToCart(itemCode, cart[itemCode] ? cart[itemCode] + 1 : 1);
+                                setIsOpen(true);
+                            }}
+                        >
+                            {loading ? <SfLoaderCircular/> : buttonLabel}
+                        </SfButton>
+                    </div>
+                )}
+
+
+
+
+
             </div>
             <div className="py-6 flex flex-col justify-between">
                 <div className='flex flex-col gap-y-4'>
