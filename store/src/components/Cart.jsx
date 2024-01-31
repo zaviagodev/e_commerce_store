@@ -70,7 +70,6 @@ const Cart = () => {
         clearInterval(intervalId);
         setIntervalId(null);
     };
-
     const handlecheckout = () => {
         updateCurrentUser();
         console.log('fff');
