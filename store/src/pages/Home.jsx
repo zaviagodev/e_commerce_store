@@ -55,8 +55,6 @@ const Home = () => {
     return (
         <>
             <main className='main-section'>
-                {console.log(pageData)}
-                {console.log(pageno)}
                 {pageData[pageno]?.length > 0 ? (
                     <h1 className="mb-[53px] text-primary text-center text-4xl font-semibold">{idFromUrl}</h1>
                 ): (
