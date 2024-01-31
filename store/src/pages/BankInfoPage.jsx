@@ -18,7 +18,7 @@ const BankInfoPage = () => {
     const [paymentinfo, setpaymentinfo] = useState(0)
     const [isSaving, setIsSaving] = useState(false)
 
-    const { call, isCompleted } = useFrappePostCall('webshop.webshop.api.payment_entry')
+    const { call, isCompleted } = useFrappePostCall('confirmPayment')
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
@@ -28,13 +28,33 @@ const BankInfoPage = () => {
         },
         onSubmit: async (values) => {
             try {
+        
+
+                let apiData = {
+                    'sales_invoice': Order.name,
+                    'reference': Order.name,
+                    'mode_of_payment': payment_method === 1 ? "QR PromptPay" : "Bank Transfer",
+                    'bank': payment_method === 1 ? "พร้อมเพย์ (PromptPay)" : "ธนาคารซูมิโตโม มิตซุย",
+                    'paid_amount': Order.grand_total,
+                    'payment_image': "/files/airpod gen3-1557a81.jpeg",
+                    'fields': {
+                        'paid_to': 'Cash - Z',
+                        'payment_type': 'Receive',
+                        'mode_of_payment': payment_method === 1 ? "QR PromptPay" : "Bank Transfer",
+                        'party_type': 'Customer',
+                        'target_exchange_rate': 1,
+                        'received_amount': Order.grand_total
+                    }
+                };
+            
+
                 // Call your API function here (assuming `call` handles the API request)
-                await call(values);
+                await call(apiData);
                 // Handle success, reset form, or perform any additional logic
-                formik.resetForm();
+                //formik.resetForm();
             } catch (error) {
-                // Handle API error
-                console.error("API Error:", error);
+            // Handle API error
+            console.error("API Error:", error);
             }
         },
     });
