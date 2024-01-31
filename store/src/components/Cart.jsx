@@ -75,7 +75,6 @@ const Cart = () => {
     };
 
     const handlecheckout = () => {
-        console.log(currentUser);
         if(!currentUser){
             navigate("/login");
         }
