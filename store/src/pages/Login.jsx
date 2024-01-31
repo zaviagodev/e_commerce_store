@@ -257,15 +257,9 @@ export default function Login() {
                     <p className='text-darkgray'>ขอบคุณสำหรับการสมัครสมาชิก คุณสามารถตรวจสอบข้อมูลส่วนตัวของคุณได้ที่ “รายละเอียดบัญชี”</p>
                 </div>
 
-                <SfButton
-                    className="w-full btn-primary h-[50px] rounded-xl"
-                    onClick={() => {
-                        navigate('/home/all items');
-                        window.location.reload();
-                    }}>
-                เริ่มต้นการใช้งาน
+                <SfButton className='w-full btn-primary h-[50px] rounded-xl' onClick={() => navigate('/home/all items')}>
+                    เริ่มต้นการใช้งาน
                 </SfButton>
-
             </SfModal>
         </CSSTransition>
         </>
