@@ -65,14 +65,14 @@ const AddressForm = ({ onFormSubmit }) => {
                     />
                 </label>
                 {formik.errors.address_line1 && (
-                    <strong className="typography-error-sm text-negative-700 font-medium">Please provide a street name</strong>
+                    <strong className="text-sm text-red-500 font-medium">Please provide a street name</strong>
                 )}
             </div>
             <div className="w-full flex flex-col gap-0.5">
                 <label>
                     {/* <span className="text-sm font-medium mb-2 block">Phone <span className='text-red-500'>*</span></span> */}
                     <SfInput placeholder='เบอร์โทร *' disabled={isSaving} name="phone" 
-                    wrapperClassName={`!bg-neutral-50 ${formik.errors.phone ? '!ring-red-500/50' : '!ring-lightgray'} h-[50px] px-6 rounded-xl`}
+                    wrapperClassName={`!bg-neutral-50 ${formik.errors.phone ? '!ring-red-500/50 !ring-2' : '!ring-lightgray'} h-[50px] px-6 rounded-xl`}
                     className={`bg-neutral-50 font-medium ${formik.errors.phone ? 'text-red-500' : 'text-darkgray'} `}
                     onChange={formik.handleChange} value={formik.values.phone} />
                 </label>
@@ -87,7 +87,7 @@ const AddressForm = ({ onFormSubmit }) => {
                     </SfSelect>
                 </label>
                 {formik.errors.country && (
-                    <strong className="typography-error-sm text-negative-700 font-medium">{formik.errors.country}</strong>
+                    <strong className="text-sm text-red-500 font-medium">{formik.errors.country}</strong>
                 )}
             </div>
             <div className="w-full flex-grow flex flex-col gap-0.5">
@@ -100,18 +100,18 @@ const AddressForm = ({ onFormSubmit }) => {
                         onChange={formik.handleChange}
                         value={formik.values.address_line1}
                         invalid={formik.errors.address_line1}
-                        placeholder='บ้านเลขที่ , ซอย , หมู่ , ถนน , แขวง/ตำบล *'
+                        placeholder='บ้านเลขที่ , ซอย , หมู่ , ถนน *'
                         disabled={isSaving}
                     />
                 </label>
                 {formik.errors.address_line1 && (
-                    <strong className="typography-error-sm text-negative-700 font-medium">Please provide a street name</strong>
+                    <strong className="text-sm text-red-500 font-medium">Please provide a street name</strong>
                 )}
             </div>
             <div className="w-full flex flex-col gap-0.5">
                 <label>
                     {/* <span className="text-sm font-medium mb-2 block">Address line 2</span> */}
-                    <SfInput name="address_line2" placeholder='ที่อยู่ 2' 
+                    <SfInput name="address_line2" placeholder='แขวง / ตำบล' 
                     wrapperClassName={`!bg-neutral-50 ${formik.errors.address_line2 ? '!ring-red-500/50' : '!ring-lightgray'} h-[50px] px-6 rounded-xl`}
                     className={`bg-neutral-50 font-medium ${formik.errors.address_line2 ? 'text-red-500' : 'text-darkgray'} `}
                     disabled={isSaving} onChange={formik.handleChange} value={formik.values.address_line2} />
@@ -127,7 +127,7 @@ const AddressForm = ({ onFormSubmit }) => {
                     disabled={isSaving} placeholder="เขต / อำเภอ" onChange={formik.handleChange} value={formik.values.city} invalid={formik.errors.city} />
                 </label>
                 {formik.errors.city && (
-                    <strong className="typography-error-sm text-negative-700 font-medium">{formik.errors.city}</strong>
+                    <strong className="text-sm text-red-500 font-medium">{formik.errors.city}</strong>
                 )}
             </div>
 

@@ -289,7 +289,7 @@ import MobileHeaderDrawer from './drawers/MobileHeaderDrawer';
                                       as="div"
                                       size="sm"
                                       role="none"
-                                      className="py-4 md:py-1.5 rounded-lg active:font-semibold text-base"
+                                      className="py-4 md:py-1.5 rounded-lg active:font-semibold text-sm"
                                     >
                                       {item.label}
                                     </SfListItem>
@@ -312,7 +312,7 @@ import MobileHeaderDrawer from './drawers/MobileHeaderDrawer';
                                     }
                                   }
                                   key={item.label}
-                                  className=" pl-2 flex w-full flex-row items-center justify-between text-base"
+                                  className=" pl-2 flex w-full flex-row items-center justify-between text-sm"
                                   aria-label={item.label}
                                   variant="tertiary"
                                   square
@@ -343,7 +343,7 @@ import MobileHeaderDrawer from './drawers/MobileHeaderDrawer';
         <li className='w-full lg:w-fit'> 
           <SfButton
             key={item.label}
-            className="!p-0 lg:!p-2 flex justify-between w-full lg:w-fit text-black bg-transparent !font-semibold hover:bg-white hover:text-black active:bg-white active:text-black"
+            className="!p-0 lg:!p-2 flex justify-between w-full lg:w-fit text-black bg-transparent !font-semibold hover:bg-white hover:text-black active:bg-white active:text-black text-sm"
             aria-label={item.label}
             variant="tertiary"
             square
@@ -478,7 +478,7 @@ import MobileHeaderDrawer from './drawers/MobileHeaderDrawer';
                           )}
                           {actionItem.role === 'login' && (
                             <div className='hidden lg:flex items-center gap-x-[10px] border-r-2 pr-6'>
-                              <p className="inline-flex whitespace-nowrap  font-semibold" onClick={handlLoginClick}>{user?.name ?? 'เข้าสู่ระบบ'}</p>
+                              <p className="inline-flex whitespace-nowrap font-semibold text-sm" onClick={handlLoginClick}>{user?.name ?? 'เข้าสู่ระบบ'}</p>
                                 {user?.name && <Icons.login onClick={() => {
                                   logout();
                                   navigate(`/`);
@@ -524,7 +524,7 @@ import MobileHeaderDrawer from './drawers/MobileHeaderDrawer';
                   as="div"
                   size="sm"
                   role="none"
-                  className="py-4 md:py-1.5 rounded-lg active:font-semibold text-base"
+                  className="py-4 md:py-1.5 rounded-lg active:font-semibold text-sm"
                 >
                   {item.name}
                 </SfListItem>
@@ -566,7 +566,7 @@ function SecondaryProdNav ({group, groups, setGroup}){
                   size="sm"
                   role="none"
                   href={`#${item.name}`}
-                  className="text-base py-4 md:py-1.5 rounded-lg active:font-semibold"
+                  className="text-sm py-4 md:py-1.5 rounded-lg active:font-semibold"
               >
                   {item.name}
               </SfListItem>
