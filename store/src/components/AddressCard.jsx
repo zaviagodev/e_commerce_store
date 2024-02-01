@@ -11,9 +11,12 @@ export const AddressCard = (props) => {
                     {
                         Object.keys(props).map((key, idx) => idx === 0 ?
                             (
-                            <div className="flex items-center gap-x-2 mb-6">
-                                <Icons.marketPin04 color='#666666' className='min-w-6'/>
-                                <p key={key} className="font-semibold text-base">{props[key]}</p>
+                            <div className="flex items-center justify-between mb-6 w-full">
+                                <div className="flex items-center gap-x-2">
+                                    <Icons.marketPin04 color='#666666' className='min-w-6'/>
+                                    <p key={key} className="font-semibold text-base">{props[key]}</p>
+                                </div>
+                                <button>Delete</button>
                             </div>) :
                             (<p key={key} className="font-normal text-sm text-neutral-700">{props[key]}</p>)
                         )
