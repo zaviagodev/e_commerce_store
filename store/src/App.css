@@ -103,7 +103,7 @@
 }
 
 .main-section-single-product {
-  @apply max-w-[1218px] m-auto mb-[120px] lg:mb-0 lg:px-10 py-4 lg:py-[50px] box-content overflow-hidden lg:overflow-auto
+  @apply max-w-[1218px] m-auto mb-[120px] lg:mb-0 lg:px-10 py-4 lg:py-[50px] box-content
 }
 
 .main-section-small {

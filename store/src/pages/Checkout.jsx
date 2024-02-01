@@ -197,14 +197,16 @@ export default function Checkout(){
         setMoreAddresses(true);
     }
 
-
     const NewAddressForm = () => {
         return (
             <label className="w-full">
                 {addressList?.message?.length > 0 ? (<div className='flex items-center justify-between mb-4'>
-                    <legend className="font-bold text-neutral-900 text-base">New address</legend>
-                    <a className='text-base hover:underline cursor-pointer inline-block font-medium' onClick={() => setAddNewAddress(false)}>Cancel</a>
-                </div>) : null}
+                    <legend className="mb-2 font-semibold text-secgray">เพิ่มที่อยู่ใหม่</legend>
+                    <a className='text-base hover:underline cursor-pointer inline-block font-medium' onClick={() => setAddNewAddress(false)}>ยกเลิก</a>
+                </div>) : <>
+                    <legend className="font-bold text-darkgray text-base hidden lg:block">ข้อมูลการจัดส่ง*</legend>
+                    <legend className="mb-2 font-semibold text-secgray mt-8">เพิ่มที่อยู่ใหม่</legend>
+                </>}
                 <AddressForm onFormSubmit={() => UpdateAddresses() }/>
             </label>
         )
@@ -214,7 +216,7 @@ export default function Checkout(){
         setAddNewAddress(true);
         setMoreAddresses(false)
     }
-
+ 
     const ProductLists = () => {
         return (
             <div className="flex flex-col overflow-scroll h-[50vh] lg:h-full lg:pt-[50px] pb-4">
@@ -456,7 +458,7 @@ export default function Checkout(){
                                                 value={formik.values.billing_address}
                                                 error={formik.errors.billing_address}
                                                 randomKey={randomKey}
-                                                onClick={() => {setMoreAddresses(false);setAddNewAddress(false)}}
+                                                onClick={(e) => {setMoreAddresses(false);setAddNewAddress(false)}}
                                             />
                                             <div className='fixed bottom-0 shadow-main p-6 right-0 w-full md:w-[386px] bg-white'>
                                                 <SfButton className='btn-primary w-full text-base h-[50px] rounded-xl' variant='tertiary' onClick={handleAddNewAddress}>เพิ่มที่อยู่ใหม่</SfButton>

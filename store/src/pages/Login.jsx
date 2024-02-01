@@ -42,9 +42,12 @@ export default function Login() {
     
 
     const formik = useFormik({
-        initialValues: {
-            first_name:'',
-            last_name:'',
+        initialValues: loginState ? {
+            usr: '',
+            pwd: '',
+        } : {
+            // first_name:'',
+            // last_name:'',
             usr: '',
             email: '',
             pwd: '',
@@ -52,9 +55,6 @@ export default function Login() {
         },
         validationSchema: getValidationSchema(),
         onSubmit: (values) => {
-
-
-            
             if (loginState == false) {
                  register(values.email,values.pwd).then((data) => {
 

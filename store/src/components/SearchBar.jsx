@@ -162,7 +162,7 @@ export default function SearchWithIcon( {className}) {
                           aria-label="Search"
                           placeholder="ค้นหาสินค้า..."
                           onKeyDown={handleInputKeyDown}
-                          slotPrefix={<SfIconSearch />}
+                          slotPrefix={<Icons.searchIcon color='#979797'/>}
                           slotSuffix={isResetButton && (
                             <SfIconClose className='cursor-pointer' onClick={() => setSearchValue('')}/>
                           )}
