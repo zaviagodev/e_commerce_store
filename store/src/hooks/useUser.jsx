@@ -13,7 +13,7 @@ export const UserProvider = ({ children }) => {
 
 
 
-    const { mutate } = useFrappeGetCall('headless_e_commerce.api.get_profile', {}, 'user-profile', {
+    const { mutate } = useFrappeGetCall('e_commerce_store.api.get_profile', {}, 'user-profile', {
         isOnline: () => getToken(),
         onSuccess: (data) => {
             setUser(data.message)

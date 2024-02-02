@@ -50,7 +50,7 @@ export default function Checkout(){
     const { call: updatecart, isCompleted: cartupdated,result : cartinfo } = useFrappePostCall('webshop.webshop.api.update_cart');
 
 
-    const { data:addressList } = useFrappeGetCall('headless_e_commerce.api.get_addresses', null, `addresses-${randomKey}`)
+    const { data:addressList } = useFrappeGetCall('e_commerce_store.api.get_addresses', null, `addresses-${randomKey}`)
     const [addNewAddress, setAddNewAddress] = useState(false);
 
 
@@ -145,7 +145,7 @@ export default function Checkout(){
         })
     }, [cart, getByItemCode])
 
-    const { call, isCompleted, result, error } = useFrappePostCall('headless_e_commerce.api.place_order');
+    const { call, isCompleted, result, error } = useFrappePostCall('e_commerce_store.api.place_order');
 
     const formik = useFormik({
         initialValues: {
@@ -629,7 +629,7 @@ function AddressOptions({
     limit,
     onClick
 }) {
-    const { data } = useFrappeGetCall('headless_e_commerce.api.get_addresses', null, `addresses-${randomKey}`)
+    const { data } = useFrappeGetCall('e_commerce_store.api.get_addresses', null, `addresses-${randomKey}`)
     const handleSelect = (val) => {
         console.log('sss');
         onChange(val);

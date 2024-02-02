@@ -5,7 +5,7 @@ import AddressCard from './AddressCard';
 
 const AddressListing = ({ randomKey = 0 }) => {
     const [randomKeyz, setrandomKey] = useState(randomKey)
-    const { data } = useFrappeGetCall('headless_e_commerce.api.get_addresses', null,  `addresses-${randomKeyz}`)
+    const { data } = useFrappeGetCall('e_commerce_store.api.get_addresses', null,  `addresses-${randomKeyz}`)
     const { call, isCompleted } = useFrappePostCall('webshop.webshop.api.remove_address');
 
     useEffect(() => {
