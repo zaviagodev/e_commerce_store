@@ -631,6 +631,7 @@ function AddressOptions({
 }) {
     const { data } = useFrappeGetCall('headless_e_commerce.api.get_addresses', null, `addresses-${randomKey}`)
     const handleSelect = (val) => {
+        console.log('sss');
         onChange(val);
         onClick()
     }
@@ -640,7 +641,7 @@ function AddressOptions({
                 {data?.message?.map(({ name: nameVal, address_title, address_line1 = null, address_line2 = null, city, state, country, phone }) => (
                     <label key={nameVal} className="relative xs:w-full md:w-auto" onClick={() => handleSelect(nameVal)}>
                         <div className={`cursor-pointer rounded-xl -outline-offset-2 hover:border-primary-200 hover:bg-primary-100 peer-focus:border-primary-200 peer-focus:bg-primary-100 bg-neutral-50`}>
-                            <AddressCard title={address_title} addressLine1={address_line1} addressLine2={address_line2} city={city} state={state === "Select One" ? null : state} country={country} phone={phone} active={value === nameVal}/>
+                            <AddressCard deletebtn="false" title={address_title} addressLine1={address_line1} addressLine2={address_line2} city={city} state={state === "Select One" ? null : state} country={country} phone={phone} active={value === nameVal}/>
                         </div>
                     </label>
                 )).slice(0, limit || data?.message?.length)}
