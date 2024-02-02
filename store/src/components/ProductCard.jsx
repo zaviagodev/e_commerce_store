@@ -58,7 +58,7 @@ const ProductCard = ({
                     )}
                 </Link>
                 <div className='p-2 w-full absolute bottom-0 add_to_cart'>
-                    <SfButton disabled={loading} className='btn-secondary w-full h-10 py-3 font-semibold shadow-custom !text-base' type="button" size="sm" onClick={(e) => {
+                    <SfButton disabled={loading} className={`btn-secondary w-full h-10 py-3 font-semibold shadow-custom !text-base ${loading ? '!bg-neutral-50' : ''}`} type="button" size="sm" onClick={(e) => {
                         e.preventDefault();
                         addToCart(itemCode, cart[itemCode] ? cart[itemCode] + 1 : 1);
                         setIsOpen(true)

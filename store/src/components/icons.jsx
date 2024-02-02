@@ -120,6 +120,18 @@ export const Icons = {
       </defs>
     </svg>
   ),
+  xcircle: (props) => (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <g clip-path="url(#clip0_1931_1133)">
+        <path d="M12.4998 7.50033L7.49984 12.5003M7.49984 7.50033L12.4998 12.5003M18.3332 10.0003C18.3332 14.6027 14.6022 18.3337 9.99984 18.3337C5.39746 18.3337 1.6665 14.6027 1.6665 10.0003C1.6665 5.39795 5.39746 1.66699 9.99984 1.66699C14.6022 1.66699 18.3332 5.39795 18.3332 10.0003Z" stroke={props.color || "black"} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+      <defs>
+      <clipPath id="clip0_1931_1133">
+        <rect width="20" height="20" fill="white"/>
+      </clipPath>
+      </defs>
+    </svg>
+  ),
   download01: (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" {...props}>
       <path d="M17.5 12.5V13.5C17.5 14.9001 17.5 15.6002 17.2275 16.135C16.9878 16.6054 16.6054 16.9878 16.135 17.2275C15.6002 17.5 14.9001 17.5 13.5 17.5H6.5C5.09987 17.5 4.3998 17.5 3.86502 17.2275C3.39462 16.9878 3.01217 16.6054 2.77248 16.135C2.5 15.6002 2.5 14.9001 2.5 13.5V12.5M14.1667 8.33333L10 12.5M10 12.5L5.83333 8.33333M10 12.5V2.5" stroke={props.color || "black"} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
