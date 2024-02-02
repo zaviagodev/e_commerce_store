@@ -1,5 +1,4 @@
 import { Icons } from "./icons"
-
 export const AddressCard = (props) => {
     return (
         <div className="flex flex-wrap gap-4 lg:gap-6 lg:flex-nowrap">
@@ -16,7 +15,7 @@ export const AddressCard = (props) => {
                                     <Icons.marketPin04 color='#666666' className='min-w-6'/>
                                     <p key={key} className="font-semibold text-base">{props[key]}</p>
                                 </div>
-                                <button>Delete</button>
+                                <button onClick={props.onDelete}>Delete</button>
                             </div>) :
                             (<p key={key} className="font-normal text-sm text-neutral-700">{props[key]}</p>)
                         )

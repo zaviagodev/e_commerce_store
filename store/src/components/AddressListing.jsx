@@ -1,10 +1,22 @@
-import React from 'react'
+import React, { useState,useEffect } from 'react'
 import { SfBadge } from '@storefront-ui/react';
-import { useFrappeGetCall } from 'frappe-react-sdk';
+import { useFrappeGetCall,useFrappePostCall } from 'frappe-react-sdk';
 import AddressCard from './AddressCard';
 
 const AddressListing = ({ randomKey = 0 }) => {
-    const { data } = useFrappeGetCall('headless_e_commerce.api.get_addresses', null, `addresses-${randomKey}`)
+    const [randomKeyz, setrandomKey] = useState(randomKey)
+    const { data } = useFrappeGetCall('headless_e_commerce.api.get_addresses', null,  `addresses-${randomKeyz}`)
+    const { call, isCompleted } = useFrappePostCall('webshop.webshop.api.remove_address');
+
+    useEffect(() => {
+        setrandomKey(prevKey => prevKey + 1);
+    }, [randomKey]);
+
+    const handleDeleteAddress = async (addressIdx) => {
+        call({"address":addressIdx}).then(() => {
+            setrandomKey(prevKey => prevKey + 1);
+        });
+    };
 
     return (
         <div className="grid grid-cols-1 gap-3">
@@ -18,6 +30,8 @@ const AddressListing = ({ randomKey = 0 }) => {
                         state={address.state}
                         country={address.country}
                         phone={address.phone}
+                        name={address.name}
+                        onDelete={() => handleDeleteAddress(address.name)}
                     />
                     {/* <div className='absolute top-0 left-0 flex gap-1 px-1 py-1'>
                         <SfBadge
