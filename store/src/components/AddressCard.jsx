@@ -8,7 +8,7 @@ export const AddressCard = (props) => {
             >
                 <div className="flex flex-col items-start p-6 grow">
                         {Object.keys(props).map((key, idx) => idx === 0 ? (
-                            <div className="flex items-center justify-between mb-6 w-full" key={key}>
+                            <div className="flex items-center justify-between mb-5 w-full" key={key}>
                                 <div className="flex items-center gap-x-2">
                                     <Icons.marketPin04 color='#666666' className='min-w-6'/>
                                     <p className="font-semibold text-base">{props[key]}</p>

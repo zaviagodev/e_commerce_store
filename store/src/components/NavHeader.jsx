@@ -35,6 +35,7 @@ import SelectDropdownPreselected from './dropDown';
 import { findParentName } from '../utils/helper';
 import { Icons } from './icons';
 import MobileHeaderDrawer from './drawers/MobileHeaderDrawer';
+import Modal from './drawers/Modal';
 
  export default function BaseMegaMenu() {
 
@@ -54,6 +55,7 @@ import MobileHeaderDrawer from './drawers/MobileHeaderDrawer';
   const [mobileMenuStep, setMobileMenuStep] = useState(0)
 
   const {mainGroup} = useProducts()
+  const { isOpen:isLogoutOpen, open:openLogout, close:closeLogout } = useDisclosure({ initialValue: false });
 
   const product = useProducts()
 
@@ -131,63 +133,53 @@ import MobileHeaderDrawer from './drawers/MobileHeaderDrawer';
   });
 
    function recursiveBuildPhone (itemTop){
-      const handleClick = (item) => {
-        if (item.children.length == 0)
-        {
-          navigate('/home/' + item.name)
-        }
-        else{
-          setGroup(item)
-        }
-      }
-
-      const recurse = (item) => {
-        return(
-          <div onClick={() => handleClick(item)}  className='flex flex-1 items-center justify-between relative'>
-            <li key={item.name} className='flex-1'>
-              <SfListItem
-                as="div"
-                size="sm"
-                role="none"
-                className="py-4 md:py-1.5 rounded-lg active:font-semibold font-semibold"
-              >
-                {item.name}
-              </SfListItem>
-            </li> 
-            {item.children.length > 0 && <SfIconExpandMore className=" inline-flex m-2 -rotate-90 absolute right-0" />}
-          </div> 
-        )
-      }
-
       return(
       <div key={itemTop.name} className="pt-0">
-        <h2
-          role="presentation"
-          className="font-semibold text-neutral-900 whitespace-nowrap p-0 lg:p-4 lg:mb-9"
-        >
-          {itemTop.name}
-        </h2>
         <ul>
-          {
-            itemTop.children.length > 0 ? itemTop.children.map((child) => {
-              return(
-                 recurse(child)
-              )
-            })
-            :
-            <Link to={`/home/${itemTop.name}`}   >
-            <li key={itemTop.name}>
-              <SfListItem
-                as="div"
-                size="sm"
-                role="none"
-                className="py-4 md:py-1.5 rounded-lg active:font-semibold font-semibold text-[#909090]"
-              >
-                {itemTop.name}
-              </SfListItem>
-            </li>
-          </Link> 
-          }
+          {itemTop.children.length > 0 ? (
+            <>
+              {menu === itemTop.label ? (
+                <>{itemTop.children.filter(i => i.label === menu).map(item => (
+                  <li key={item.name} onClick={() => handleClickMobile(item.label)} className='flex justify-between items-center'>
+                    <SfListItem
+                      as="div"
+                      size="sm"
+                      role="none"
+                      className="!p-0 rounded-lg active:font-semibold font-semibold !bg-transparent"
+                    >
+                      {item.name}
+                    </SfListItem>
+                    <SfIconExpandMore className="inline-flex m-0 -rotate-90" />
+                  </li>
+                ))}</>
+              ) : (
+                <li key={itemTop.name} onClick={() => handleClickMobile(itemTop.label)} className='flex justify-between items-center'>
+                  <SfListItem
+                    as="div"
+                    size="sm"
+                    role="none"
+                    className="!p-0 rounded-lg active:font-semibold font-semibold !bg-transparent"
+                  >
+                    {itemTop.name}
+                  </SfListItem>
+                  <SfIconExpandMore className="inline-flex m-0 -rotate-90" />
+                </li>
+              )}
+            </>
+          ) : (
+            <Link to={`/home/${itemTop.name}`}>
+              <li key={itemTop.name}>
+                <SfListItem
+                  as="div"
+                  size="sm"
+                  role="none"
+                  className="!p-0 rounded-lg active:font-semibold font-semibold !bg-transparent"
+                >
+                  {itemTop.name}
+                </SfListItem>
+              </li>
+            </Link> 
+          )}
         </ul> 
       </div>
       )
@@ -208,7 +200,36 @@ import MobileHeaderDrawer from './drawers/MobileHeaderDrawer';
     toggle()
   }
 
-  const handleMobileGoBack = () => {
+  const handleClickMobile = (label) => {
+    setMenu(label);
+    setMobileMenuStep(mobileMenuStep + 1)
+  }
+
+  const LogoutModal = () => {
+    const clickToLogout = () => {
+      logout();
+      navigate(`/`);
+    }
+    return (
+      <Modal isOpen={isLogoutOpen} close={closeLogout} open={openLogout}>
+        <div className='flex flex-col gap-y-6'>
+            <h1 className='text-black text-2xl font-semibold'>ออกจากระบบ ?</h1>
+            <p className='text-darkgray'>คุณสามารถกลับเข้าสู่ระบบได้ตลอดเวลา <br/>โดยรายละเอียด บัญชีหรือ การสั่งซื้อสินค้ายังคงอยุ่</p>
+        </div>
+
+        <div className='flex gap-x-3 w-full'>
+          <SfButton variant='tertiary' className='w-full btn-secondary h-[50px] rounded-xl' onClick={closeLogout}>
+            ยกเลิก
+          </SfButton>
+          <SfButton variant='tertiary' className='w-full btn-primary h-[50px] rounded-xl' onClick={clickToLogout}>
+            ออกจากระบบ
+          </SfButton>
+        </div>
+      </Modal>
+    )
+  }
+
+  const handleMobileGoBack = (label) => {
     if (mobileMenuStep == 0){setMenu('Menu')}
     if (mobileMenuStep > 0){
       setMobileMenuStep(mobileMenuStep - 1)
@@ -267,9 +288,9 @@ import MobileHeaderDrawer from './drawers/MobileHeaderDrawer';
                           <div className="lg:block hidden lg:border-r lg:px-6">
                             {recursiveBuildPhone(item)}
                           </div>
-                        )))               
+                        )))
                         }
-                      {menu != 'Menu' && (navGroup ? 
+                      {menu != 'Menu' && (navGroup ?  
                         <>
                             <button onClick={() => setNavGroup(null)} className='flex flex-row gap-2 items-center justify-between p-2'><SfIconArrowBack/>  { navGroup ? findParentName(topBarItems, navGroup.name) : 'Back'} </button>
                             {navGroup.children.map((item) => (
@@ -339,63 +360,80 @@ import MobileHeaderDrawer from './drawers/MobileHeaderDrawer';
         </>
 
     function recursiveBuild (item){
-      const button = 
-        <li className='w-full lg:w-fit'> 
-          <SfButton
-            key={item.label}
-            className="!p-0 lg:!p-2 flex justify-between w-full lg:w-fit text-black bg-transparent !font-semibold hover:bg-white hover:text-black active:bg-white active:text-black text-sm"
-            aria-label={item.label}
-            variant="tertiary"
-            square
-            onClick={() => handleClick(item.url)}
-          >
-            {item.label}
-            <SfIconChevronRight className='lg:hidden'/>
-          </SfButton>
-        </li>
-      if(item.children.length === 0) return button
-      if(item.children.length > 0) return  <SelectDropdownPreselected dropdowndame={item.label}  options={item.children} />
+      const Button = ({onClick}) => {
+        return (
+          <li className='w-full lg:w-fit'> 
+            <SfButton
+              key={item.label}
+              className="!p-0 lg:!p-2 flex justify-between w-full lg:w-fit text-black bg-transparent !font-semibold hover:bg-white hover:text-black active:bg-white active:text-black text-sm"
+              aria-label={item.label}
+              variant="tertiary"
+              square
+              onClick={onClick}
+            >
+              {item.label}
+              {item.children.length > 0 && <SfIconChevronRight className='lg:hidden'/>}
+            </SfButton>
+          </li>
+        )
+      }
+      if(item.children.length === 0) return <Button onClick={() => handleClick(item.url)}/>
+      if(item.children.length > 0) return <div>
+        <span className='lg:hidden'><Button onClick={() => handleClickMobile(item.label)}/></span>
+        <span className='hidden lg:block'><SelectDropdownPreselected dropdowndame={item.label}  options={item.children} /></span>
+      </div>
     }
 
   return (
     <div className="w-full h-full">
       {isMobileMenuOpen && <div className="fixed inset-0 bg-neutral-500 bg-opacity-50 transition-opacity z-60" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}/>}
       <MobileHeaderDrawer isOpen={isMobileMenuOpen} setIsOpen={setIsMobileMenuOpen}>
-        <section className='flex flex-col gap-y-9'>
-          {menu !== 'Menu' && mobileMenuStep > 0 ? (
-            <div className='flex items-center gap-x-[10px]'>
-              <SfIconChevronLeft onClick={handleMobileGoBack}/>
-              <p className="inline-flex whitespace-nowrap font-semibold">{menu}</p>
-            </div>
-          ) : (
-            <div className='flex items-center gap-x-[10px]' onClick={handlLoginClick}>
-              <p className="inline-flex whitespace-nowrap font-semibold">{user?.name ?? 'เข้าสู่ระบบ'}</p>
-            </div>
-          )}
-          <nav>
-            <ul className='flex flex-col gap-4 font-semibold'>
-              {!isLoading ? (
-                <>{topBarItems.map((item) => {
-                  if (mobileMenuStep > 0){
-                    if (item.is_product){
-                      return <>{mainGroup.map((item) => {
-                        return(
-                          <div className="lg:hidden">
-                            {recursiveBuildPhone(item)}
-                          </div>
-                        )}
-                      )}</>
+        <section className='flex flex-col justify-between h-full'>
+          <div className='flex flex-col gap-y-9'>
+            {menu !== 'Menu' && mobileMenuStep > 0 ? (
+              <div className='flex items-center gap-x-[10px]'>
+                <SfIconChevronLeft onClick={handleMobileGoBack}/>
+                <p className="inline-flex whitespace-nowrap font-semibold">{menu}</p>
+              </div>
+            ) : (
+              <div className='flex items-center gap-x-[10px]' onClick={handlLoginClick}>
+                <p className="inline-flex whitespace-nowrap font-semibold">{user?.name ?? 'เข้าสู่ระบบ'}</p>
+              </div>
+            )}
+            <nav>
+              <ul className='flex flex-col gap-4 font-semibold'>
+                {!isLoading ? (
+                  <>{topBarItems.map((item) => {
+                    if (mobileMenuStep > 0){
+                      if (item.is_product){
+                        return <>{mainGroup.map((item) => {
+                          return(
+                            <div className="lg:hidden">
+                              {recursiveBuildPhone(item)}
+                            </div>
+                          )}
+                        )}</>
+                      } else {
+                        return <>{item.children.map((menu) => {
+                            return (
+                              <div className='lg:hidden'>
+                                {recursiveBuildPhone(menu)}
+                              </div>
+                            )
+                          })
+                        }</>
+                      }
+                    } else {
+                      if (item.is_product) return productList(item.label)
+                      else return recursiveBuild(item)
                     }
-                  } else {
-                    if (item.is_product) return productList(item.label)
-                    else return recursiveBuild(item)
-                  }
-                })}</>
-              ) : (
-                <Skeleton className='h-8 w-[200px]'/>
-              )}
-            </ul>
-          </nav>
+                  })}</>
+                ) : (
+                  <Skeleton className='h-8 w-[200px]'/>
+                )}
+              </ul>
+            </nav>
+          </div>
           {user?.name && 
             <div className='flex items-center gap-x-[10px] font-semibold' onClick={() => {
               logout();
@@ -479,10 +517,10 @@ import MobileHeaderDrawer from './drawers/MobileHeaderDrawer';
                           {actionItem.role === 'login' && (
                             <div className='hidden lg:flex items-center gap-x-[10px] border-r-2 pr-6'>
                               <p className="inline-flex whitespace-nowrap font-semibold text-sm" onClick={handlLoginClick}>{user?.name ?? 'เข้าสู่ระบบ'}</p>
-                                {user?.name && <Icons.login onClick={() => {
-                                  logout();
-                                  navigate(`/`);
-                                }} className='w-[22px] h-[22px]'/>}
+                                {user?.name && <>
+                                  <Icons.login onClick={openLogout} className='w-[22px] h-[22px]'/>
+                                  <LogoutModal />
+                                </>}
                             </div>
                           )}
                       </SfButton>}
@@ -497,8 +535,6 @@ import MobileHeaderDrawer from './drawers/MobileHeaderDrawer';
       </div>
     );
   }
-
-
 
   function SecondaryOtherNav ({group, groups, setNavGroup, handleClick}){
 

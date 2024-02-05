@@ -126,7 +126,7 @@ function SingleorderHistory(randomKey = 0) {
                             <>
                                 {orderDetails.map(detail => (
                                     <div className="flex items-center justify-between">
-                                        <h3 className="text-sm">{detail.title}</h3>
+                                        <h3 className="text-sm text-secgray">{detail.title}</h3>
                                         <p className="text-sm font-semibold">{detail.value ? detail.value : '-'}</p>
                                     </div>
                                 ))}

@@ -316,7 +316,7 @@ export default function Checkout(){
 
     const CheckoutDetails = ({addCoupon}) => {
         return (
-            <div className='lg:ml-[98px]'>
+            <div className='lg:ml-[63px]'>
             <div className='flex justify-between pt-[21px] border-t'>
                 <div className="flex flex-col pr-2 gap-y-[21px]">
                     <p>ราคาสินค้าทั้งหมด</p>
@@ -428,7 +428,7 @@ export default function Checkout(){
                                                     <div className='flex flex-col gap-y-2 mt-8'>
                                                         <h2 className="font-semibold text-secgray hidden lg:block">ที่อยู่ <span className='text-red-500'>*</span></h2>
                                                         <div className='border border-lightgray rounded-xl bg-neutral-50 overflow-hidden'>
-                                                            <a className='p-6 flex items-center justify-between w-full cursor-pointer' onClick={() => setMoreAddresses(true)}>
+                                                            <a className='p-6 pb-5 flex items-center justify-between w-full cursor-pointer' onClick={() => setMoreAddresses(true)}>
                                                                 <div className='flex items-center gap-x-2'>
                                                                     <Icons.marketPin04 color='#666666' className='min-w-6'/>
                                                                     <span className=' font-bold text-darkgray'>{formik.values.billing_address ? addressList?.message?.find(address => address.name === formik.values.billing_address).address_title : 'เพิ่ม / เลือกที่อยู่การจัดส่ง'}</span>
