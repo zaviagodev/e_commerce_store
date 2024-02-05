@@ -57,6 +57,7 @@ const ProductCard = ({
                         </div>
                     )}
                 </Link>
+
                 {hideCheckout != 1 && (
                     <div className='p-2 w-full absolute bottom-0 add_to_cart'>
                         <SfButton disabled={loading} className={`btn-secondary w-full h-10 py-3 font-semibold shadow-custom !text-base ${loading ? '!bg-neutral-50' : ''}`} type="button" size="sm" onClick={(e) => {
@@ -68,6 +69,7 @@ const ProductCard = ({
                         </SfButton>
                     </div>
                 )}
+
             </div>
             <div className="py-6 flex flex-col justify-between">
                 <div className='flex flex-col gap-y-4'>

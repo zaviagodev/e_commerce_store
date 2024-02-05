@@ -4,7 +4,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import defaultLogo from '../assets/defaultBrandIcon.svg';
 import { useSetting } from '../hooks/useWebsiteSettings';
 import { useFormik } from "formik";
-import { useFrappeGetCall, useFrappePostCall } from 'frappe-react-sdk';
+import { useFrappeGetCall, useFrappePostCall,useFrappeFileUpload } from 'frappe-react-sdk';
 
 
 const BankInfoPage = () => {
@@ -17,6 +17,11 @@ const BankInfoPage = () => {
     const [Pagestep, setPagestep] = useState(0)
     const [paymentinfo, setpaymentinfo] = useState(0)
     const [isSaving, setIsSaving] = useState(false)
+    const [image, setImage] = useState(null)
+    const [imgtoupload, setimgtoupload] = useState()
+    const { upload, loading: uploadingFile, progress, error: errorUploadingDoc, reset: resetUploadDoc } = useFrappeFileUpload()
+    const [paymentcompleted, setpaymentcompleted] = useState(null)
+
 
     const { call, isCompleted } = useFrappePostCall('webshop.webshop.api.payment_entry')
     const formik = useFormik({
@@ -28,13 +33,31 @@ const BankInfoPage = () => {
         },
         onSubmit: async (values) => {
             try {
-                // Call your API function here (assuming `call` handles the API request)
-                await call(values);
+        
+                upload(values.file, {
+                    isPrivate: true,
+                    doctype: 'Raven Message',
+                    fieldname: 'file',
+                })
+                .then(response => {
+                    let apiData = {
+                        'order_name': Order.name,
+                        'payment_file': response.name
+                    };
+                    call(apiData).then(response => {
+                        setpaymentcompleted(response);
+                    })
+                })
+                .catch(error => {
+                    console.error("File upload failed:", error);
+                });
+
+                
                 // Handle success, reset form, or perform any additional logic
-                formik.resetForm();
+                //formik.resetForm();
             } catch (error) {
-                // Handle API error
-                console.error("API Error:", error);
+            // Handle API error
+            console.error("API Error:", error);
             }
         },
     });
@@ -70,9 +93,13 @@ const BankInfoPage = () => {
       { title:'Date', info:''},
       { title:'Total', info:`฿${searchParams.get("amount")}`}
     ]
-    function handleChange(e){
+    function handleChange(event){
+        setimgtoupload(event);
+        if (event.target.files && event.target.files[0]) {
+            setImage(URL.createObjectURL(event.target.files[0]));
+        }
+        formik.setFieldValue("file", event.currentTarget.files[0]);
         // console.log(e.currentTarget.files);
-        formik.setFieldValue("file", e.currentTarget.files[0]);
         formik.setFieldValue('order_name', Order.name);
         formik.setFieldValue('payment_info', paymentinfo.key);
     }
@@ -109,6 +136,7 @@ const BankInfoPage = () => {
 
                     {payment_method == 1 && (
                         <>
+                        <form className="w-full flex flex-col gap-10 text-neutral-900 p-4 lg:p-[60px] lg:pt-[7.75em] min-h-screen lg:shadow-checkout">
                             {Pagestep === 0 && (
                                 <>
                                     <h1 className='text-lg text-center font-medium'>Setp 1 Order Deatils</h1>
@@ -203,9 +231,10 @@ const BankInfoPage = () => {
                                     )}
 
                                     <label style={{ border: 'solid', textAlign: 'center', padding: '8px', cursor: 'pointer' }} htmlFor='file-upload' className='text-darkgray text-base'>
-                                    Upload Now
+                                        Upload Now
                                     </label>
-                                    <input type='file' className='hidden' id='file-upload' onChange={handleChange} />
+                                    <input type='file' className='hidden' id='file-upload' onChange={handleChange} accept='image/*' />
+                                    {image && <img alt="preview image" src={image} />}
 
 
 
@@ -218,7 +247,7 @@ const BankInfoPage = () => {
 
 
 
-
+                        </form>              
 
 
 

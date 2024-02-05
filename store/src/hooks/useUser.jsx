@@ -13,7 +13,7 @@ export const UserProvider = ({ children }) => {
 
 
 
-    const { mutate } = useFrappeGetCall('headless_e_commerce.api.get_profile', {}, 'user-profile', {
+    const { mutate } = useFrappeGetCall('e_commerce_store.api.get_profile', {}, 'user-profile', {
         isOnline: () => getToken(),
         onSuccess: (data) => {
             setUser(data.message)
@@ -67,17 +67,13 @@ export const UserProvider = ({ children }) => {
         });
 
         const data = await response.json();
-
-        //if (data.message.token) {
-            // handle jwt
-        //    //setToken(data.message.token);
-       // }
-
-        // get user
-        //await mutate();
-       // updateCurrentUser();
-
-        return data;
+            if (data.message.token) {
+                login(email, pwd);
+            } 
+            mutate().then((s) => {
+                updateCurrentUser();
+            });
+            return data;
     } catch (error) {
         console.error("Error during registration:", error);
         throw error; // Re-throw the error so it can be caught by the calling code if necessary

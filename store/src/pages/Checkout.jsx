@@ -47,24 +47,29 @@ export default function Checkout(){
         onSuccess: (data) => setShippingRules(data.message)
     })
     const {call : deleteCoupon, loading : deleteLoading, result : deleteResult, error : deleteError} = useFrappePostCall('webshop.webshop.shopping_cart.cart.remove_coupon_code');
-    const { call: updatecart, isCompleted: cartupdated } = useFrappePostCall('webshop.webshop.api.update_cart');
+    const { call: updatecart, isCompleted: cartupdated,result : cartinfo } = useFrappePostCall('webshop.webshop.api.update_cart');
 
 
-    const { data:addressList } = useFrappeGetCall('headless_e_commerce.api.get_addresses', null, `addresses-${randomKey}`)
+    const { data:addressList } = useFrappeGetCall('e_commerce_store.api.get_addresses', null, `addresses-${randomKey}`)
     const [addNewAddress, setAddNewAddress] = useState(false);
+
 
     useEffect(() => {
         if (!deliveryResult && !deliveryError && !shippingRuleLoading && shippingRules.length > 0 && checkedState == '') {
-            const deleteCouponAsync = async () => {
-                await deleteCoupon();
-            };
-            deleteCouponAsync();
-            ApplyDeliveryFee({'shipping_rule' : shippingRules[0].name })
-
-            formik.setFieldValue('billing_address', addressList?.message[0]?.name);
-
-            setCheckedState(shippingRules[0].name);
-            formik.setFieldValue('shipping_method', shippingRules[0].name) 
+            
+            updatecart({ "cart": cart }).then(() => {
+                const deleteCouponAsync = async () => {
+                    await deleteCoupon();
+                };
+                deleteCouponAsync();
+                ApplyDeliveryFee({'shipping_rule' : shippingRules[0].name })
+    
+                formik.setFieldValue('billing_address', addressList?.message[0]?.name);
+    
+                setCheckedState(shippingRules[0].name);
+                formik.setFieldValue('shipping_method', shippingRules[0].name) 
+            });
+            
         }
     }, [deliveryResult, deliveryError, shippingRuleLoading, shippingRules,addressList])
 
@@ -77,12 +82,10 @@ export default function Checkout(){
       }, [codeError]);
 
       useEffect(() => {
-        ApplyDeliveryFee({'shipping_rule' : "" })
+       // ApplyDeliveryFee({'shipping_rule' : "" })
       }, [shippingRules]);
 
-      useEffect(() => {
-        updatecart({"cart":cart});
-      }, [cart]);
+      
       
       useEffect(() => {
         clearTimeout(positiveTimer.current);
@@ -114,17 +117,14 @@ export default function Checkout(){
 
     const { user } =  useUser();
     const navigate = useNavigate();
-    useEffect(() => {
-      if (!getToken() && !user?.name) {
-        navigate("/login");
-      }
-    }, [ user?.name]);
+    // useEffect(() => {
+    //   if (!getToken() && !user?.name) {
+    //     navigate("/login");
+    //   }
+    // }, [ user?.name]);
 
     const { getByItemCode, isLoading:isProductLoading, settingPage } = useProducts()
 
-    useEffect(() => {
-        updatecart({"cart":cart});
-      }, [cart]);
 
     const cartContents = useMemo(() => {
         return Object.entries(cart).reduce((acc, [item_code]) => {
@@ -145,7 +145,7 @@ export default function Checkout(){
         })
     }, [cart, getByItemCode])
 
-    const { call, isCompleted, result, error } = useFrappePostCall('headless_e_commerce.api.place_order');
+    const { call, isCompleted, result, error } = useFrappePostCall('e_commerce_store.api.place_order');
 
     const formik = useFormik({
         initialValues: {
@@ -632,8 +632,9 @@ function AddressOptions({
     limit,
     onClick
 }) {
-    const { data } = useFrappeGetCall('headless_e_commerce.api.get_addresses', null, `addresses-${randomKey}`)
+    const { data } = useFrappeGetCall('e_commerce_store.api.get_addresses', null, `addresses-${randomKey}`)
     const handleSelect = (val) => {
+        console.log('sss');
         onChange(val);
         onClick()
     }
@@ -643,7 +644,7 @@ function AddressOptions({
                 {data?.message?.map(({ name: nameVal, address_title, address_line1 = null, address_line2 = null, city, state, country, phone }) => (
                     <label key={nameVal} className="relative xs:w-full md:w-auto" onClick={() => handleSelect(nameVal)}>
                         <div className={`cursor-pointer rounded-xl -outline-offset-2 hover:border-primary-200 hover:bg-primary-100 peer-focus:border-primary-200 peer-focus:bg-primary-100 bg-neutral-50`}>
-                            <AddressCard title={address_title} addressLine1={address_line1} addressLine2={address_line2} city={city} state={state === "Select One" ? null : state} country={country} phone={phone} active={value === nameVal}/>
+                            <AddressCard deletebtn="false" title={address_title} addressLine1={address_line1} addressLine2={address_line2} city={city} state={state === "Select One" ? null : state} country={country} phone={phone} active={value === nameVal}/>
                         </div>
                     </label>
                 )).slice(0, limit || data?.message?.length)}

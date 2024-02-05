@@ -70,7 +70,7 @@ export const SettingProvider = ({ children }) => {
 
 
 
-    const { mutate, isLoading } = useFrappeGetCall('headless_e_commerce.api.get_websiteSettings', undefined, undefined, {
+    const { mutate, isLoading } = useFrappeGetCall('e_commerce_store.api.get_websiteSettings', undefined, undefined, {
         isOnline: () => appName == 'Store',
         onSuccess: (data) => {
             setAppLogo(data.message.app_logo);

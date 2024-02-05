@@ -272,10 +272,20 @@ const Product = () => {
                                     <>
                                     <p className='text-[13px] text-center lg:text-left'>รับ Cashback สูงถึง ฿ 105 เมื่อเป็นสมาชิก</p>                           
                                     <div className='flex items-center gap-x-[10px] w-full'>
-                                        <SfButton disabled={loading || !product?.in_stock}  onClick={handleClickCart} type="button" size="lg" className="w-full btn-primary flex items-center gap-x-[10px] rounded-xl h-[50px]">
-                                            <Icons.shoppingBag01 color={loading || !product?.in_stock ? '#a1a1aa' : 'white'} className='w-[22px] h-[22px]'/>
-                                            {product?.in_stock ? buttonLabel : 'Sold out'}
-                                        </SfButton>
+                                        
+                                        {hideCheckout != 1 && (
+                                                <SfButton disabled={loading || !product?.in_stock}  onClick={handleClickCart} type="button" size="lg" className="w-full btn-primary flex items-center gap-x-[10px] rounded-xl h-[50px]">
+                                                    <Icons.shoppingBag01 color={loading || !product?.in_stock ? '#a1a1aa' : 'white'} className='w-[22px] h-[22px]'/>
+                                                    {product?.in_stock ? buttonLabel : 'Sold out'}
+                                                </SfButton>
+                                            )}
+
+
+
+
+
+
+
                                         {!hideWish && <SfButton
                                             onClick={handleWish}
                                             type="button"

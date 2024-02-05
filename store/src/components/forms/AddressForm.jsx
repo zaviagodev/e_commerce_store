@@ -12,7 +12,7 @@ const countries = ['Thailand', 'China', 'Pakistan', 'Germany', 'Great Britain', 
 const states = ['กรุงเทพมหานคร','กระบี่','กาญจนบุรี','กำแพงเพชร','ขอนแก่น','จันทบุรี','ฉะเชิงเทรา', 'นครปฐม', 'นครพนม', 'นนทบุรี', 'ปทุมธานี', 'พระนครศรีอยุธยา' ,'ชลบุรี','ตราด','ปราจีนบุรี','เพชรบุรี','ราชบุรี','ระยอง','สมุทรปราการ','สมุทรสาคร','สมุทรสงคราม', 'อุดรธานี', 'หนองคาย', 'หนองบัวลำภู', 'อุบลราชธานี', 'อุทัยธานี', 'อ่างทอง']
 
 const AddressForm = ({ onFormSubmit }) => {
-    const { call, isCompleted } = useFrappePostCall('headless_e_commerce.api.add_address')
+    const { call, isCompleted } = useFrappePostCall('e_commerce_store.api.add_address')
     const [isSaving, setIsSaving] = useState(false)
     const formik = useFormik({
         initialValues: {

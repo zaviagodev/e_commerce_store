@@ -23,7 +23,7 @@ function SingleorderHistory(randomKey = 0) {
     const [order, setOrder] = useState({})
     const [itemsList, setItemsList] = useState([])
     const [adressParts, setAdress] = useState([])
-    const { data } = useFrappeGetCall('headless_e_commerce.api.get_addresses', null, `addresses`)
+    const { data } = useFrappeGetCall('e_commerce_store.api.get_addresses', null, `addresses`)
 
     const {call : CheckPromoCode, error : codeError, result : codeResult, reset, isCompleted : PromoCompleted } = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_coupon_code');
     const {call : ApplyDeliveryFee, loading : deliveryLoading, result : deliveryResult, error : deliveryError} = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_shipping_rule');

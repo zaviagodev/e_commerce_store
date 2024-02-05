@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react'
+import React, {useEffect,useRef, useState} from 'react'
 import { SfButton, SfDrawer, useTrapFocus, SfIconAdd, SfIconRemove, SfLoaderCircular, SfSelect, SfIconFavorite } from '@storefront-ui/react'
 import { CSSTransition } from 'react-transition-group';
 import { useWish } from '../hooks/useWishe'
@@ -10,6 +10,8 @@ import { Icons } from './icons';
 import { Skeleton } from './Skeleton';
 import { useFrappePostCall } from 'frappe-react-sdk';
 import { useFrappeAuth } from 'frappe-react-sdk';
+import { useSetting } from '../hooks/useWebsiteSettings';
+import { getToken } from '../utils/helper';
 
 const Cart = () => {
     const { cart, cartCount, addToCart, removeFromCart, getTotal, isOpen, setIsOpen, loading } = useCart()
@@ -19,7 +21,8 @@ const Cart = () => {
     const { getByItemCode, isLoading } = useProducts()
     const navigate = useNavigate()
     const { call, isCompleted } = useFrappePostCall('webshop.webshop.api.update_cart')
-    const { currentUser } = useFrappeAuth();
+    const { currentUser,updateCurrentUser } = useFrappeAuth();
+    const { hideWish} = useSetting()
 
     // Ajouter un état pour l'intervalle
     const [intervalId, setIntervalId] = useState(null);
@@ -28,8 +31,7 @@ const Cart = () => {
     const inputRefs = useRef({});
 
 
-    const changeCart = (itemcode, qty) =>
-    {
+    const changeCart = (itemcode, qty) => {
         let qtyStr = String(qty);
         if(qty == 0 || qty == '' || qty == null)
         {
@@ -63,6 +65,9 @@ const Cart = () => {
         setIntervalId(id);
     };
 
+    useEffect(() => {
+        updateCurrentUser();
+    }, [updateCurrentUser])
 
 
     // Fonction pour arrêter d'augmenter la valeur
@@ -72,14 +77,16 @@ const Cart = () => {
     };
 
     const handlecheckout = () => {
-        setIsOpen(false);
-        if(!currentUser){
-            navigate("/login");
-        }
-        else{
-             //call({"cart":cart});
-            navigate("/checkout");
-        }
+        console.log(getToken);
+        
+        // setIsOpen(false);
+        // if(!currentUser){
+        //     navigate("/login");
+        // }
+        // else{
+        //      //call({"cart":cart});
+         navigate("/checkout");
+        // }
     };
 
     //useTrapFocus(drawerRef, { activeState: isOpen });
@@ -115,11 +122,14 @@ const Cart = () => {
                                 </button>
                             </div>
                             <h2 className="font-semibold text-gray-900 text-center whitespace-pre col-span-2" id="slide-over-title">ตะกร้าสินค้า</h2>
-                            <div className="flex h-7 items-center justify-end">
-                                <button onClick={() => {setIsOpen(false);setWishOpen(true)}} type="button">
-                                    <SfIconFavorite />
-                                </button>
-                            </div>
+                                <div className="flex h-7 items-center justify-end">
+                                    {hideWish != 1 && (
+                                        <button onClick={() => { setIsOpen(false); setWishOpen(true) }} type="button">
+                                        <SfIconFavorite />
+                                        </button>
+                                    )}
+                                </div>
+
                         </div>
                         {isLoading ? (
                             <div className='flex gap-x-2 p-6'>
