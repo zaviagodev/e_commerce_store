@@ -10,7 +10,7 @@ import * as Yup from 'yup';
 import { Icons } from '../components/icons';
 
 export default function Login() {
-    const { logins, register } = useUser();
+    const { login, register } = useUser();
     const [loginState, setLoginState] = useState(true);
     const [apiResponse, setapiResponse] = useState('');
     const [forgotPassword, setForgotPassword] = useState(false)
@@ -69,7 +69,7 @@ export default function Login() {
                     } 
                 })
             }else{
-                logins(values.usr, values.pwd ).then((data) => {
+                 login(values.usr, values.pwd ).then((data) => {
                     if(data.message == 'Logged In' || data.message == 'No App'){
                         navigate("/home/all items")
                     }
