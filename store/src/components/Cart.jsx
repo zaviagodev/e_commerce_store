@@ -77,8 +77,6 @@ const Cart = () => {
     };
 
     const handlecheckout = () => {
-
-
         console.log(getToken);
         
         // setIsOpen(false);
@@ -87,7 +85,7 @@ const Cart = () => {
         // }
         // else{
         //      //call({"cart":cart});
-            navigate("/checkout");
+         navigate("/checkout");
         // }
     };
 
@@ -135,7 +133,7 @@ const Cart = () => {
                         </div>
                         {isLoading ? (
                             <div className='flex gap-x-2 p-6'>
-                                <Skeleton className='h-[90px] min-w-[90px]'/>
+                                <Skeleton className='h-[90px] min-w-[90px] max-w-[90px]'/>
                                 <div className='flex justify-between w-full'>
                                     <Skeleton className='h-4 w-[100px]'/>
                                     <Skeleton className='h-4 w-10'/>
@@ -155,7 +153,7 @@ const Cart = () => {
                                                 }
                                                 return (
                                                     <li key={itemCode} className="flex">
-                                                        <div className="h-[90px] min-w-[90px]">
+                                                        <div className="h-[90px] min-w-[90px] max-w-[90px]">
                                                             <Link to={`/products/${product?.name}`}>
                                                                 {product?.website_image ? (
                                                                     <img src={`${import.meta.env.VITE_ERP_URL ?? ""}${product?.website_image}`} alt={product?.item_name} className="h-full w-full object-cover object-center" />
@@ -259,10 +257,14 @@ const Cart = () => {
                                 <p>฿ {getTotal().toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</p>
                             </div>
                             <div className='flex flex-col gap-y-4'>
-                                <SfButton className="w-full btn-primary h-[50px] flex items-center gap-x-[10px] rounded-xl" disabled={cartCount == 0 || loading} onClick={() => { handlecheckout(); }}>
+                                {loading ? (<SfButton className="w-full btn-primary h-[50px] flex items-center gap-x-[10px] rounded-xl" disabled={true}>
+                                    <SfLoaderCircular />
+                                </SfButton>) : (
+                                <SfButton className="w-full btn-primary h-[50px] flex items-center gap-x-[10px] rounded-xl" disabled={cartCount == 0} onClick={handlecheckout}>
                                     ชำระเงิน
-                                    <Icons.shoppingBag01 color={loading ? '#a1a1aa' : 'white'} className='w-[22px] h-[22px]'/>
-                                </SfButton>  
+                                    <Icons.shoppingBag01 color={cartCount == 0 ? '#a1a1aa' : 'white'} className='w-[22px] h-[22px]'/>
+                                </SfButton>
+                                )}
                                 <p className="text-sm text-center text-gray-500">ค่าจัดส่งและภาษีมูลค่าเพิ่ม (ถ้ามี) จะคำนวณเมื่อชำระเงิน</p>
                             </div>
                             </>

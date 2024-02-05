@@ -59,7 +59,7 @@ import MobileHeaderDrawer from './drawers/MobileHeaderDrawer';
 
   const {appName, appLogo,hideLogin, hideCheckout, navbarSearch, topBarItems, hideWish, isLoading} = useSetting()
 
- const  handlLoginClick = () => {
+ const handlLoginClick = () => {
     if (user && user.name !== 'Guest') 
       {
         navigate('/profile');

@@ -175,7 +175,7 @@ export default function Checkout(){
                 navigate(`/thankyou?order_id=${result.message.name}&amount=${result.message.grand_total}&payment_method=${result.message.custom_payment_method}`)
             }
         }
-        if (error) { setErrorAlert(JSON.parse(JSON.parse(error?._server_messages)[0]).message) }
+        if(error) { setErrorAlert(JSON.parse(JSON.parse(error?._server_messages)[0]).message) }
         if(deliveryError) { setErrorAlert(JSON.parse(JSON.parse(deliveryError?._server_messages)[0]).message) }
         if(codeError) { setErrorAlert(JSON.parse(JSON.parse(codeError?._server_messages)[0]).message) }
         if(PromoCompleted) { setPositiveAlert(true) }
@@ -186,7 +186,7 @@ export default function Checkout(){
             <>
                 {/* {positiveAlert && (<p className="text-sm">Your promo code has been added.</p>)} */}
                 {/* {informationAlert && (<p className="text-sm">Your promo code has been removed.</p>)} */}
-                {errorAlert && (<p className="text-sm text-red-500">{errorAlert}</p>)}
+                {errorAlert !== undefined && (<p className="text-sm text-red-500">{errorAlert}</p>)}
             </>
         )
     }
@@ -200,12 +200,12 @@ export default function Checkout(){
     const NewAddressForm = () => {
         return (
             <label className="w-full">
-                {addressList?.message?.length > 0 ? (<div className='flex items-center justify-between mb-4'>
-                    <legend className="mb-2 font-semibold text-secgray">เพิ่มที่อยู่ใหม่</legend>
+                {addressList?.message?.length > 0 ? (<div className='flex items-center justify-between mb-2'>
+                    <legend className="font-semibold text-secgray">เพิ่มที่อยู่ใหม่ <span className='text-red-500'>*</span></legend>
                     <a className='text-base hover:underline cursor-pointer inline-block font-medium' onClick={() => setAddNewAddress(false)}>ยกเลิก</a>
                 </div>) : <>
-                    <legend className="font-bold text-darkgray text-base hidden lg:block">ข้อมูลการจัดส่ง*</legend>
-                    <legend className="mb-2 font-semibold text-secgray mt-8">เพิ่มที่อยู่ใหม่</legend>
+                    <legend className="font-bold text-darkgray text-base hidden lg:block">ข้อมูลการจัดส่ง</legend>
+                    <legend className="font-semibold text-secgray mt-8 mb-2">เพิ่มที่อยู่ใหม่ <span className='text-red-500'>*</span></legend>
                 </>}
                 <AddressForm onFormSubmit={() => UpdateAddresses() }/>
             </label>
@@ -216,10 +216,15 @@ export default function Checkout(){
         setAddNewAddress(true);
         setMoreAddresses(false)
     }
- 
+
+    const handleSelectAddress = () => {
+        setMoreAddresses(false);
+        setAddNewAddress(false)
+    }
+
     const ProductLists = () => {
         return (
-            <div className="flex flex-col overflow-scroll h-[50vh] lg:h-full lg:pt-[50px] pb-4">
+            <div className="flex flex-col overflow-scroll max-h-[40vh] lg:max-h-none h-full lg:pt-[50px] pb-4">
                 {cartCount > 0 && (
                     <ul className='flex flex-col gap-y-4'>
                         {Object.entries(cart).map(([itemCode]) => {
@@ -234,11 +239,11 @@ export default function Checkout(){
 
                                         <div className="ml-[10px] flex flex-1 flex-col gap-y-0.5">
                                             <div className="flex justify-between text-gray-900">
-                                                <h3 className='text-darkgray pr-8'>{product?.web_item_name}</h3>
-                                                <p className='whitespace-pre font-bold text-base'>{product?.formatted_price?.toLocaleString()}</p>
+                                                <h3 className='text-darkgray pr-8 text-sm'>{product?.web_item_name}</h3>
+                                                <p className='whitespace-pre font-bold text-sm'>{product?.formatted_price?.toLocaleString()}</p>
                                             </div>
 
-                                            <div className="flex justify-between text-black font-bold">
+                                            <div className="flex justify-between text-black font-bold text-sm">
                                                 {cart[itemCode]} ชิ้น
                                             </div>
                                         </div>
@@ -328,17 +333,17 @@ export default function Checkout(){
                     </p>
                 </div>
                 <div className="flex flex-col text-right gap-y-[21px]">
-                    <p className='font-semibold'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total ? `฿${deliveryResult?.message?.doc?.total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : `฿${getTotal().toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</p>
-                    <p className="text-maingray font-semibold">
+                    <p className='font-semibold text-sm'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total ? `฿${deliveryResult?.message?.doc?.total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : `฿${getTotal().toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</p>
+                    <p className="text-maingray font-semibold text-sm">
                         {isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total_taxes_and_charges ? `฿${deliveryResult?.message?.doc?.total_taxes_and_charges?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : "฿0"}
                     </p>
-                    <p className='text-maingray  leading-[10px]'>-</p>
+                    <p className='text-maingray leading-[10px] text-sm'>-</p>
                 </div>
             </div>
             {addCoupon}
             <div className="flex justify-between typography-headline-4 md:typography-headline-3 py-4 lg:pt-4 border-t mt-4">
                 <p>ยอดรวมทั้งสิ้น</p>
-                <p className='text-right'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : <Skeleton className='h-4 w-[100px]'/> : `฿ ${codeResult?.message?.doc?.grand_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</p>
+                <p className='text-right text-sm font-semibold'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : <Skeleton className='h-4 w-[100px]'/> : `฿ ${codeResult?.message?.doc?.grand_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</p>
             </div>
         </div>
         )
@@ -393,7 +398,7 @@ export default function Checkout(){
                             </div>
                         </div>
                         <div className={`px-4 lg:pl-[21px] lg:pr-[19px]`}>
-                            <h1 className='text-4xl font-bold pt-[26px] text-center lg:text-left'>{isProductLoading ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : <Skeleton className='h-8 w-[100px]'/> : `฿ ${codeResult?.message?.doc?.grand_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` }</h1>
+                            <h1 className='text-4xl font-semibold pt-[26px] text-center lg:text-left'>{isProductLoading ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : <Skeleton className='h-8 w-[100px]'/> : `฿ ${codeResult?.message?.doc?.grand_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` }</h1>
                             <div className='hidden lg:block'>
                                 <ProductLists />
                                 <CheckoutDetails addCoupon={<CouponForm />}/>
@@ -410,7 +415,7 @@ export default function Checkout(){
                         </div>
                     </div>
                 </div>
-                <form className="w-full flex flex-col gap-10 text-neutral-900 p-4 lg:p-[60px] lg:pt-[7.75em] min-h-screen lg:shadow-checkout">
+                <form className="w-full flex flex-col gap-10 text-neutral-900 p-4 lg:p-[60px] lg:pt-[7em] min-h-screen lg:shadow-checkout">
                     {cartContents.hasNormalItem ? (
                         <>
                             {addressList ? (
@@ -418,10 +423,10 @@ export default function Checkout(){
                                     <>
                                         <div className='w-full flex flex-col gap-y-2'>
                                             <label className="w-full">
-                                                <legend className="font-bold text-darkgray text-base hidden lg:block">ข้อมูลการจัดส่ง*</legend>
+                                                <legend className="font-bold text-darkgray text-base hidden lg:block">ข้อมูลการจัดส่ง</legend>
                                                 {!addNewAddress ? (
                                                     <div className='flex flex-col gap-y-2 mt-8'>
-                                                        <h2 className="font-semibold text-secgray hidden lg:block">ที่อยู่*</h2>
+                                                        <h2 className="font-semibold text-secgray hidden lg:block">ที่อยู่ <span className='text-red-500'>*</span></h2>
                                                         <div className='border border-lightgray rounded-xl bg-neutral-50 overflow-hidden'>
                                                             <a className='p-6 flex items-center justify-between w-full cursor-pointer' onClick={() => setMoreAddresses(true)}>
                                                                 <div className='flex items-center gap-x-2'>
@@ -435,12 +440,12 @@ export default function Checkout(){
                                                                     <div className='p-6 pt-0'>
                                                                         {addressList?.message?.filter(address => address.name === formik.values.billing_address).map(a => (
                                                                             <div className='flex flex-col gap-y-1'>
-                                                                                <p>{a.address_line1}</p>
-                                                                                <p>{a.address_line2}</p>
-                                                                                <p>{a.city}</p>
-                                                                                <p>{a.state}</p>
-                                                                                <p>{a.country}</p>
-                                                                                <p>{a.phone}</p>
+                                                                                <p className='font-normal text-sm text-neutral-700'>{a.address_line1}</p>
+                                                                                <p className='font-normal text-sm text-neutral-700'>{a.address_line2}</p>
+                                                                                <p className='font-normal text-sm text-neutral-700'>{a.city}</p>
+                                                                                <p className='font-normal text-sm text-neutral-700'>{a.state}</p>
+                                                                                <p className='font-normal text-sm text-neutral-700'>{a.country}</p>
+                                                                                <p className='font-normal text-sm text-neutral-700'>{a.phone}</p>
                                                                             </div>
                                                                         ))}
                                                                     </div>
@@ -449,7 +454,9 @@ export default function Checkout(){
                                                             )}
                                                         </div>
                                                     </div>
-                                                ) : null}
+                                                ) : <div className='mt-8'>
+                                                    <NewAddressForm />
+                                                </div>}
                                             </label>
                                         </div>
                                         <AddressDrawer isOpen={moreAddresses} setIsOpen={setMoreAddresses} title='เลือกที่อยู่'>
@@ -458,7 +465,7 @@ export default function Checkout(){
                                                 value={formik.values.billing_address}
                                                 error={formik.errors.billing_address}
                                                 randomKey={randomKey}
-                                                onClick={(e) => {setMoreAddresses(false);setAddNewAddress(false)}}
+                                                onClick={handleSelectAddress}
                                             />
                                             <div className='fixed bottom-0 shadow-main p-6 right-0 w-full md:w-[386px] bg-white'>
                                                 <SfButton className='btn-primary w-full text-base h-[50px] rounded-xl' variant='tertiary' onClick={handleAddNewAddress}>เพิ่มที่อยู่ใหม่</SfButton>
@@ -474,10 +481,6 @@ export default function Checkout(){
                                         <Skeleton className='h-[72px] w-full'/>
                                     </div>
                                 </div>
-                            )}
-
-                            {addNewAddress && (
-                                <NewAddressForm />
                             )}
                             {/* <label className="w-full flex items-center gap-2">
                                 <SfCheckbox
@@ -498,14 +501,14 @@ export default function Checkout(){
                                 {!shippingRuleLoading && addressList ?
                                 (<>
                                 <label className='w-full'>
-                                    <legend className="mb-2 font-semibold text-secgray">ตัวเลือกการจัดส่ง*</legend>
+                                    <legend className="mb-2 font-semibold text-secgray">ตัวเลือกการจัดส่ง <span className='text-red-500'>*</span></legend>
                                     <div className='border border-lightgray rounded-xl bg-neutral-50 overflow-hidden'>
                                         {shippingRules?.length > 0 ? (
                                             <a className='px-6 py-[18px] flex items-center justify-between w-full cursor-pointer' onClick={() => setMorePayments(true)}>
                                                 <div className='flex items-center justify-between w-full'>
                                                     <div className='flex items-center gap-x-2'>
                                                         <Icons.truck01 color='#595959'/>
-                                                        <span className=' font-bold text-darkgray'>{checkedState ? checkedState : 'หรือเลือกวิธีการจัดส่งที่ต้องการ'}</span>
+                                                        <span className=' font-bold text-darkgray'>{checkedState ? checkedState : 'รูปแบบการจัดส่ง'}</span>
                                                     </div>
                                                     <div className='flex items-center gap-x-2'>
                                                         <span className=' font-bold text-darkgray'>{checkedState ? `฿${shippingRules?.find(rule => rule.name === checkedState).shipping_amount?.toLocaleString()}` : null}</span>
@@ -516,7 +519,7 @@ export default function Checkout(){
                                         ) : (
                                             <div className='px-6 py-[18px] flex items-center gap-x-2'>
                                                 <Icons.truck01 color='#595959'/>
-                                                <span className='text-secgray'>ไม่มีตัวเลือกในการจัดส่ง</span>
+                                                <span className='text-secgray'>ไม่มีช่องทางการจัดส่ง กรุณาติดต่อร้านค้าโดยตรง</span>
                                             </div>
                                         )}
                                     </div>

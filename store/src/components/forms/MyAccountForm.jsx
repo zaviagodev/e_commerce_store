@@ -8,9 +8,25 @@ import { useEffect, useState } from "react";
 
 export default function MyAccountForm(onSuccess = () => { },){
   const [isSaved, setIsSaved] = useState(false)
+  const [isError, setIsError] = useState(false)
   const [preview, setPreview] = useState()
   const { user, logout } = useUser();
-  const { call, isCompleted } = useFrappePostCall('webshop.webshop.api.update_profile')
+  const { call, isCompleted, error, loading } = useFrappePostCall('webshop.webshop.api.update_profile')
+
+  const handleSaved = () => {
+    setIsSaved(true)
+    setTimeout(() => {
+      setIsSaved(false)
+    }, 5000)
+  }
+
+  const handleError = () => {
+    setIsError(true)
+    setTimeout(() => {
+      setIsError(false)
+    }, 5000)
+  }
+
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -25,13 +41,6 @@ export default function MyAccountForm(onSuccess = () => { },){
 
   // console.log("Formik Values:", formik.values);
 
-  const handleToast = () => {
-    setIsSaved(true)
-    setTimeout(() => {
-      setIsSaved(false)
-    }, 5000)
-  }
-
   function handleChange(e){
     setPreview(URL.createObjectURL(e.target.files[0]));
   }
@@ -39,6 +48,11 @@ export default function MyAccountForm(onSuccess = () => { },){
   const editedState = 
     formik.values.first_name === user?.user?.first_name || 
     formik.values.last_name === user?.user?.last_name
+
+  useEffect(() => {
+    isCompleted && handleSaved()
+    error && handleError()
+  }, [isCompleted, error])
 
   return (
     <>
@@ -69,7 +83,7 @@ export default function MyAccountForm(onSuccess = () => { },){
             />
           </label>
           {formik.errors.first_name && (
-              <strong className="typography-error-sm text-red-500 font-medium">First name is required</strong>
+              <strong className="text-xs text-red-500 font-semibold">First name is required</strong>
           )}
       </div>
 
@@ -86,7 +100,7 @@ export default function MyAccountForm(onSuccess = () => { },){
             />
           </label>
           {formik.errors.last_name && (
-              <strong className="typography-error-sm text-red-500 font-medium">Last name is required</strong>
+              <strong className="text-xs text-red-500 font-semibold">Last name is required</strong>
           )}
       </div>
 
@@ -103,14 +117,14 @@ export default function MyAccountForm(onSuccess = () => { },){
             />
           </label>
           {formik.errors.email && (
-              <strong className="typography-error-sm text-red-500 font-medium">Email is required</strong>
+              <strong className="text-xs text-red-500 font-semibold">Email is required</strong>
           )}
       </div>
 
       <div className="w-full">
-          <SfButton type='submit' className="w-full btn-primary text-base h-[50px] rounded-xl mt-3" disabled={editedState}>อัพเดทข้อมูล</SfButton>
+          <SfButton type='submit' className="w-full btn-primary text-base h-[50px] rounded-xl mt-3" disabled={editedState || loading}>อัพเดทข้อมูล</SfButton>
       </div>
-  </form>
+    </form>
     <Toast isOpen={isSaved}>
       <div className="flex items-start gap-x-[18px]">
         <Icons.checkCircle />
@@ -126,7 +140,24 @@ export default function MyAccountForm(onSuccess = () => { },){
       >
         ยืนยัน
       </SfButton>
-  </Toast>
+    </Toast>
+
+    <Toast isOpen={isError}>
+      <div className="flex items-start gap-x-[18px]">
+        <Icons.xcircle color="#EF4444"/>
+        <div className="flex flex-col gap-y-4">
+          <h3 className="text-baselg leading-3 font-medium">อัพเดทข้อมูลไม่สำเร็จ</h3>
+          <p className="text-secgray  leading-[10px]">เกิดปัญหาในการอัพเดทข้อมูล</p>
+        </div>
+      </div>
+      <SfButton
+        variant="tertiary"
+        className="btn-primary rounded-xl p-4 text-sm"
+        onClick={() => setIsError(false)}
+      >
+        ยืนยัน
+      </SfButton>
+    </Toast>
     </>
   )
 }

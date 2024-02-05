@@ -1,6 +1,5 @@
+import { SfIconArrowBack, SfIconArrowForward } from '@storefront-ui/react';
 import React, { useState, useEffect } from 'react';
-
-
 
 const Pagination = ({ total,perpage,indexproducts }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -29,15 +28,22 @@ const Pagination = ({ total,perpage,indexproducts }) => {
   };
 
   return (
-    <div>
-      <div>
+    <div className='w-full flex justify-between items-center mt-20'>
+      <button className={`flex items-center gap-x-2 ${currentPage === 1 ? 'text-secgray' : ''}`} onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>
+        <SfIconArrowBack className='w-5 h-5'/>
+        ก่อนหน้า
+      </button>
+      <div className='flex gap-x-[2px]'>
         {[...Array(totalPages).keys()].map((page) => (
-          <button key={page + 1} onClick={() => handlePageChange(page + 1)} disabled={currentPage === page + 1}>
+          <button className={`h-10 w-10 rounded-lg hover:bg-zinc-100 hover:text-maingray ${currentPage === page + 1 ? 'bg-zinc-100' : 'bg-white text-maingray'}`} key={page + 1} onClick={() => handlePageChange(page + 1)} disabled={currentPage === page + 1}>
             {page + 1}
           </button>
         ))}
       </div>
-      
+      <button className={`flex items-center gap-x-2 ${currentPage === totalPages ? 'text-secgray' : ''}`} onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages}>
+        ถัดไป
+        <SfIconArrowForward className='w-5 h-5'/>
+      </button>
     </div>
   );
 };
