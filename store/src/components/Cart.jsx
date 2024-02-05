@@ -72,6 +72,7 @@ const Cart = () => {
     };
 
     const handlecheckout = () => {
+        setIsOpen(false);
         if(!currentUser){
             navigate("/login");
         }
@@ -80,11 +81,6 @@ const Cart = () => {
             navigate("/checkout");
         }
     };
-
-    const makePayment = () => {
-        setIsOpen(false);
-        handlecheckout();
-    }
 
     //useTrapFocus(drawerRef, { activeState: isOpen });
 
@@ -254,7 +250,7 @@ const Cart = () => {
                                 {loading ? (<SfButton className="w-full btn-primary h-[50px] flex items-center gap-x-[10px] rounded-xl" disabled={true}>
                                     <SfLoaderCircular />
                                 </SfButton>) : (
-                                <SfButton className="w-full btn-primary h-[50px] flex items-center gap-x-[10px] rounded-xl" disabled={cartCount == 0} onClick={makePayment}>
+                                <SfButton className="w-full btn-primary h-[50px] flex items-center gap-x-[10px] rounded-xl" disabled={cartCount == 0} onClick={handlecheckout}>
                                     ชำระเงิน
                                     <Icons.shoppingBag01 color={cartCount == 0 ? '#a1a1aa' : 'white'} className='w-[22px] h-[22px]'/>
                                 </SfButton>
