@@ -79,14 +79,14 @@ const Cart = () => {
     const handlecheckout = () => {
         console.log(getToken);
         
-        // setIsOpen(false);
-        // if(!currentUser){
-        //     navigate("/login");
-        // }
-        // else{
+        setIsOpen(false);
+         if(!getToken){
+             navigate("/login");
+         }
+         else{
         //      //call({"cart":cart});
          navigate("/checkout");
-        // }
+        }
     };
 
     //useTrapFocus(drawerRef, { activeState: isOpen });

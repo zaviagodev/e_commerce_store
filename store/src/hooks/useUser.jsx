@@ -36,8 +36,7 @@ export const UserProvider = ({ children }) => {
                 .then((response) => response.json())
                 .then((data) => {
                     if (data.message.token) {
-                        // handle jwt
-                        setToken(data.message.token);
+                        setToken(521012);
                     }
                     // get user
                     mutate().then((s) => {
@@ -69,6 +68,7 @@ export const UserProvider = ({ children }) => {
         const data = await response.json();
             if (data.message.token) {
                 login(email, pwd);
+                setToken(data.message.token);
             } 
             mutate().then((s) => {
                 updateCurrentUser();
