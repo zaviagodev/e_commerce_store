@@ -193,9 +193,14 @@ import MobileHeaderDrawer from './drawers/MobileHeaderDrawer';
       )
     }
 
-   function handleClick(url) {
+   function handleClick(url,openInNewTab=0) {
     if(!url.startsWith('/')){  
-      window.location.assign('https://' + url)
+      if (openInNewTab) {
+        window.open(url, '_blank');
+      }
+      else{
+        window.location.assign('https://' + url)
+      }  
     }
     else {
       navigate(`https://${url}`)
@@ -347,7 +352,7 @@ import MobileHeaderDrawer from './drawers/MobileHeaderDrawer';
             aria-label={item.label}
             variant="tertiary"
             square
-            onClick={() => handleClick(item.url)}
+            onClick={() => handleClick(item.url, item.open_in_new_tab === 1)}
           >
             {item.label}
             <SfIconChevronRight className='lg:hidden'/>
@@ -542,14 +547,11 @@ function SecondaryProdNav ({group, groups, setGroup}){
 
   const navigate = useNavigate()
 
-  const handleClick = (item) => 
-  {
-    if(item.children.length > 0 )
-    {
+  const handleClick = (item) => {
+    if(item.children.length > 0 ){
       setGroup(item.name)
     }
-    if(item.children.length ==0)
-    {
+    if(item.children.length ==0){
       navigate(`/home/${item.name}`)
     }
   }
