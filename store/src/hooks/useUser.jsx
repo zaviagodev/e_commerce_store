@@ -35,9 +35,9 @@ export const UserProvider = ({ children }) => {
             })
                 .then((response) => response.json())
                 .then((data) => {
-                    if (data.message.token) {
+                    //if (data.message.token) {
                         setToken(521012);
-                    }
+                    //}
                     // get user
                     mutate().then((s) => {
                         updateCurrentUser();
