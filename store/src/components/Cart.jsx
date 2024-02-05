@@ -77,10 +77,10 @@ const Cart = () => {
     };
 
     const handlecheckout = () => {
-        console.log(getToken);
+        console.log(getToken());
         
         setIsOpen(false);
-         if(!getToken){
+         if(!getToken()){
              navigate("/login");
          }
          else{
