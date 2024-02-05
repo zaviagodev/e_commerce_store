@@ -11,6 +11,7 @@ import { Skeleton } from './Skeleton';
 import { useFrappePostCall } from 'frappe-react-sdk';
 import { useFrappeAuth } from 'frappe-react-sdk';
 import { useSetting } from '../hooks/useWebsiteSettings';
+import { getToken } from '../utils/helper';
 
 const Cart = () => {
     const { cart, cartCount, addToCart, removeFromCart, getTotal, isOpen, setIsOpen, loading } = useCart()
@@ -30,8 +31,7 @@ const Cart = () => {
     const inputRefs = useRef({});
 
 
-    const changeCart = (itemcode, qty) =>
-    {
+    const changeCart = (itemcode, qty) => {
         let qtyStr = String(qty);
         if(qty == 0 || qty == '' || qty == null)
         {
@@ -77,15 +77,14 @@ const Cart = () => {
     };
 
     const handlecheckout = () => {
-        
-        // setIsOpen(false);
-        // if(!currentUser){
-        //     navigate("/login");
-        // }
-        // else{
-        //      //call({"cart":cart});
-             navigate("/checkout");
-        // }
+        console.log(getToken());
+        setIsOpen(false);
+        if(!getToken()){
+             navigate("/login");
+        }
+        else{
+            navigate("/checkout");
+        }
     };
 
     //useTrapFocus(drawerRef, { activeState: isOpen });
