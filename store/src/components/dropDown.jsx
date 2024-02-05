@@ -32,12 +32,22 @@ export default function SelectDropdownPreselected({options, dropdowndame, submen
     initialFocusContainerFallback: true,
   });
 
-  function handleClick(url) {
-    if(!url) return
-    if(!url.startsWith('/') && !url.startsWith('http'))  window.location.href = `https://${url}`;
-    if(url.startsWith('http')) window.location.href = url;
-    else navigate(url);
+  function handleClick(url, openInNewTab) {
+    if (!url) return;
+  
+    if (openInNewTab) {
+      window.open(url, '_blank');
+    } else {
+      if (!url.startsWith('/') && !url.startsWith('http')) {
+        window.location.href = `https://${url}`;
+      } else if (url.startsWith('http')) {
+        window.location.href = url;
+      } else {
+        navigate(url);
+      }
+    }
   }
+  
 
   const handleTriggerKeyDown = (event) => {
     if (event.key === ' ') toggle();
@@ -80,7 +90,7 @@ export default function SelectDropdownPreselected({options, dropdowndame, submen
               role="option"
               tabIndex={0}
               className={`${option.children.length > 0 ? 'p-[0!important]' : 'block !px-3'} text-maingray hover:text-black text-sm`}
-              onClick={() => handleClick(option.url)}
+              onClick={() => handleClick(option.url, option.open_in_new_tab === 1)}
               onKeyDown={(event) => handleOptionItemKeyDown(event, option)}
             >
               {option.children.length > 0 ?  <SelectDropdownPreselected submenu={true} options={option.children} dropdowndame={option.label} />  : option.label }
