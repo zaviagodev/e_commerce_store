@@ -117,11 +117,11 @@ export default function Checkout(){
 
     const { user } =  useUser();
     const navigate = useNavigate();
-    useEffect(() => {
-      if (!getToken() && !user?.name) {
-        navigate("/login");
-      }
-    }, [ user?.name]);
+    // useEffect(() => {
+    //   if (!getToken() && !user?.name) {
+    //     navigate("/login");
+    //   }
+    // }, [ user?.name]);
 
     const { getByItemCode, isLoading:isProductLoading, settingPage } = useProducts()
 
