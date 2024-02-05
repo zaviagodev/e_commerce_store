@@ -216,7 +216,12 @@ export default function Checkout(){
         setAddNewAddress(true);
         setMoreAddresses(false)
     }
- 
+
+    const handleSelectAddress = () => {
+        setMoreAddresses(false);
+        setAddNewAddress(false)
+    }
+
     const ProductLists = () => {
         return (
             <div className="flex flex-col overflow-scroll max-h-[40vh] lg:max-h-none h-full lg:pt-[50px] pb-4">
@@ -460,7 +465,7 @@ export default function Checkout(){
                                                 value={formik.values.billing_address}
                                                 error={formik.errors.billing_address}
                                                 randomKey={randomKey}
-                                                onClick={() => {setMoreAddresses(false);setAddNewAddress(false)}}
+                                                onClick={handleSelectAddress}
                                             />
                                             <div className='fixed bottom-0 shadow-main p-6 right-0 w-full md:w-[386px] bg-white'>
                                                 <SfButton className='btn-primary w-full text-base h-[50px] rounded-xl' variant='tertiary' onClick={handleAddNewAddress}>เพิ่มที่อยู่ใหม่</SfButton>
