@@ -36,13 +36,15 @@ export const UserProvider = ({ children }) => {
             })
                 .then((response) => response.json())
                 .then((data) => {
-                    login(usr, pwd);
-                    if (data.message.token) {
-                        setToken(data.message.token);
-                    }
-                    mutate().then((s) => {
+                    login(usr, pwd).then((s) => {
                         updateCurrentUser();
-                    });
+                    })
+                    // if (data.message.token) {
+                    //     setToken(data.message.token);
+                    // }
+                    // mutate().then((s) => {
+                    //     updateCurrentUser();
+                    // });
                     return data;
 
                 });
