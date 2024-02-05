@@ -71,7 +71,8 @@ export default function Login() {
             }else{
                  login(values.usr, values.pwd ).then((data) => {
                     if(data.message == 'Logged In' || data.message == 'No App'){
-                        navigate("/home/all items")
+                        navigate("/home/all items");
+                        navigate(-1);
                     }
                     else{
                         setapiResponse(data.message);
