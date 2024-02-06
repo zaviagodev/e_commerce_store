@@ -17,6 +17,9 @@ export const AddressCard = (props) => {
                                         <Icons.marketPin04 color='#666666' className='min-w-6'/>
                                         <p className="font-semibold text-base">{props[key]}</p>
                                     </div>
+
+                                    {/* move onClick={props.onDelete} to the button of 'ลบที่อยู่', which is on the modal */}
+
                                     {props.deletebtn === false ? null : <button onClick={openModal}><Icons.trash01 color='#979797' className='w-5 h-5'/></button>}
                                 </div>
                             ) : (

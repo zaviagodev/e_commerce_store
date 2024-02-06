@@ -24,6 +24,8 @@ function SingleorderHistory(randomKey = 0) {
     const [itemsList, setItemsList] = useState([])
     const [adressParts, setAdress] = useState([])
     const { data } = useFrappeGetCall('e_commerce_store.api.get_addresses', null, `addresses`)
+    const day = (creation) => new Date(creation).getDate()
+    const month = (creation) => new Date(creation).getMonth() + 1
 
     const {call : CheckPromoCode, error : codeError, result : codeResult, reset, isCompleted : PromoCompleted } = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_coupon_code');
     const {call : ApplyDeliveryFee, loading : deliveryLoading, result : deliveryResult, error : deliveryError} = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_shipping_rule');
@@ -31,7 +33,7 @@ function SingleorderHistory(randomKey = 0) {
     const orderDetails = [
         {title:'เลขที่คำสั่งซื้อ',value:order.name},
         {title:'ยอดรวมทั้งสิ้น',value:`฿${order.grand_total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`},
-        {title:'วันที่',value:`${new Date(order.creation).getDate()}/${new Date(order.creation).getMonth() + 1}/${new Date(order.creation).getFullYear()}`},
+        {title:'วันที่',value:`${day(order.creation) < 10 ? "0" + day(order.creation) : day(order.creation)}/${month(order.creation) < 10 ? "0" + month(order.creation) : month(order.creation)}/${new Date(order.creation).getFullYear()}`},
         {title:'สถานะ',value:order.status}
         // {title:'Shipping Phone:',value:order.custom_phone_number}
     ]
@@ -50,14 +52,14 @@ function SingleorderHistory(randomKey = 0) {
     const PurchasedList = ({name, company, status, creation, image, price, qty}) => {
         return (
           <div className="w-full flex gap-x-4">
-              {image ? <img src={image} className="min-w-[96px] h-24 object-cover fade-in"/> : <SfThumbnail size="lg" className="bg-gray-100 h-24 min-w-[96px]"/>}
+              {image ? <img src={image} className="min-w-[53px] h-[53px] object-cover fade-in"/> : <SfThumbnail size="lg" className="bg-gray-100 h-[53px] min-w-[53px]"/>}
               <div className="flex flex-col gap-y-1 w-full">
                 <div className="flex items-center justify-between text-sm">
                   <div className="flex flex-col gap-y-1">
                     <h2>{name}</h2>
                     <p className="font-semibold">{qty} ชิ้น</p>
                   </div>
-                  <p className="font-semibold">{price}</p>
+                  <p className="font-semibold whitespace-pre">{price}</p>
                 </div>
               </div>
           </div>
@@ -66,7 +68,7 @@ function SingleorderHistory(randomKey = 0) {
 
       const CheckoutDetails = () => {
         return (
-            <div className='lg:ml-[98px]'>
+            <div className='lg:ml-[69px]'>
             <div className='flex justify-between pt-[21px] border-t'>
                 <div className="flex flex-col pr-2 gap-y-[21px]">
                     <p>ราคาสินค้าทั้งหมด</p>
@@ -119,7 +121,7 @@ function SingleorderHistory(randomKey = 0) {
     return (  
         <MyAccountSection>
             <div className="flex flex-col gap-y-8">
-                <div className="flex flex-col gap-y-4">
+                <div className="flex flex-col gap-y-10">
                     <h2 className='font-semibold text-darkgray'>รายละเอียดคำสั่งซื้อ</h2>
                     <div className="flex flex-col gap-y-2">
                         {!loading ? (
@@ -143,7 +145,7 @@ function SingleorderHistory(randomKey = 0) {
                         )}
                     </div>
                 </div>
-                <div className="flex flex-col gap-y-4">
+                <div className="flex flex-col gap-y-2">
                     <h2 className='font-semibold text-darkgray'>วิธีการชำระเงิน</h2>
                     <div className="flex items-center gap-3 lg:justify-between">
                         <div className="border border-neutral-100 bg-neutral-50 rounded-xl h-[50px] w-full lg:w-1/2 px-4 flex items-center font-semibold">
@@ -154,46 +156,49 @@ function SingleorderHistory(randomKey = 0) {
                         </SfButton>
                     </div>
                 </div>
-                <div className="flex flex-col gap-y-4">
-                    <h2 className='font-semibold text-darkgray'>ที่อยู่ในการจัดส่ง</h2>
-                    <div className="flex flex-col gap-y-4">
+                {!loading ? (
+                    <div className="flex flex-col gap-y-2">
+                        {data?.message?.filter((addressz) => addressz?.name === order.shipping_address_name).length > 0 ? <h2 className='font-semibold text-darkgray'>ที่อยู่จัดส่ง</h2> : null}
+                        <div className="flex flex-col gap-y-4">
 
-                        {data?.message.length > 0 ? (
-                        data.message
-                            .filter((addressz) => addressz?.name === order.shipping_address_name)
-                            .map((address, index) => (
-                                <AddressCard
-                                    title={address.address_title}
-                                    addressLine1={address.address_line1}
-                                    city={address.city}
-                                    state={address.state === "Select One" ? null : address.state}
-                                    postcode={address.pincode}
-                                    country={address.country}
-                                    phone={address.phone}
-                                />
-                            ))
-                        ) : (
-                        <Skeleton className='h-24 w-full' />
-                        )}   
+                            {data?.message?.filter((addressz) => addressz?.name === order.shipping_address_name).length > 0 && (
+                            data.message
+                                .filter((addressz) => addressz?.name === order.shipping_address_name)
+                                .map((address, index) => (
+                                    <AddressCard
+                                        title={address.address_title}
+                                        addressLine1={address.address_line1}
+                                        city={address.city}
+                                        state={address.state === "Select One" ? null : address.state}
+                                        postcode={address.pincode}
+                                        country={address.country}
+                                        phone={address.phone}
+                                    />
+                                ))
+                            )}
+                        </div>
                     </div>
-                </div>
-                <div className="flex flex-col gap-y-4">
-                    <h2 className='font-semibold text-darkgray'>รายละเอียดสินค้า</h2>
-                    <div className="grid grid-cols-1 gap-4 place-items-center">
-                        {itemsList.length > 0 ? itemsList.map((product, index) => (
-                            <PurchasedList qty={order.items[index].qty} name={product.web_item_name} image={product.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`} price={product.formatted_price}/>
-                        )): itemsList.map(p => (
-                                <div className='flex justify-between w-full'>
-                                    <div className='flex gap-x-2'>
-                                    <Skeleton className='h-24 w-24'/>
-                                    <Skeleton className='h-4 w-[200px]'/>
-                                    </div>
-                                    <Skeleton className='h-4 w-16'/>
-                                </div>
-                            ))
-                        }
+                ) : (
+                    <Skeleton className='h-24 w-full' />
+                )}
+                {!loading ? (
+                    <div className="flex flex-col gap-y-4">
+                        {itemsList.length > 0 ? <h2 className='font-semibold text-darkgray'>รายละเอียดสินค้า</h2> : null}
+                        <div className="grid grid-cols-1 gap-4 place-items-center">
+                            {itemsList.length > 0 ? itemsList.map((product, index) => (
+                                <PurchasedList qty={order.items[index].qty} name={product.web_item_name} image={product.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`} price={product.formatted_price}/>
+                            )) : null}
+                        </div>
                     </div>
-                </div>
+                ) : (
+                    <div className='flex justify-between mb-4'>
+                        <div className='flex gap-x-2'>
+                            <Skeleton className='h-[53px] w-[53px]'/>
+                            <Skeleton className='h-4 w-[100px]'/>
+                        </div>
+                        <Skeleton className='h-4 w-[100px]'/>
+                    </div>
+                )}
                 <CheckoutDetails />
                 <div className="flex justify-center gap-x-10 mt-2">
                     <button className='flex items-center gap-x-2 text-base font-semibold'>

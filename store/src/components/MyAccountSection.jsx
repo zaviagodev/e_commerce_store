@@ -17,15 +17,13 @@ const MyAccountSection = ({children}) => {
     {title:'คำสั่งซื้อ', link:'/order-history', icon:<Icons.file06 color={activeLink.includes('/order-history') ? '#111111' : '#595959'}/>},
   ]
 
-  console.log(user)
-
   return (
     <main className='main-section-my-account'>
       <div className='grid grid-cols-1 lg:grid-cols-5 gap-12'>
         <div className='col-span-1 lg:flex flex-col py-[50px] hidden'>
           <div className='flex flex-col gap-y-4'>
             <img
-              className="rounded-full bg-neutral-100 group-hover:shadow-xl group-active:shadow-none w-[60px] h-[60px] object-cover"
+              className="rounded-full bg-neutral-100 group-hover:shadow-xl group-active:shadow-none w-20 h-20 object-cover"
               src={user?.user?.user_image ? `${import.meta.env.VITE_ERP_URL || ""}${user.user.user_image}` : defaultAvatar}
               width="80"
               height="80"
