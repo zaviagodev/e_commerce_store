@@ -31,7 +31,6 @@ const Layer = () => {
     if (formattedPath === '/store') {
       navigate('/home/all items');
     }
-  
   }, [navigate]);
 
   return (

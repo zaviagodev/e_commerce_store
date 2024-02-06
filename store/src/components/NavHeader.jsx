@@ -231,7 +231,7 @@ import Modal from './drawers/Modal';
       <Modal isOpen={isLogoutOpen} close={closeLogout} open={openLogout}>
         <div className='flex flex-col gap-y-6'>
             <h1 className='text-black text-2xl font-semibold'>ออกจากระบบ ?</h1>
-            <p className='text-darkgray'>คุณสามารถกลับเข้าสู่ระบบได้ตลอดเวลา <br/>โดยรายละเอียด บัญชีหรือ การสั่งซื้อสินค้ายังคงอยุ่</p>
+            <p className='text-darkgray'>คุณสามารถกลับเข้าสู่ระบบได้ตลอดเวลา <br/>โดยรายละเอียด บัญชีหรือ การสั่งซื้อสินค้ายังคงอยู่</p>
         </div>
 
         <div className='flex gap-x-3 w-full'>

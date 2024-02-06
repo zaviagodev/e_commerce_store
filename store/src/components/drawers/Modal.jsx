@@ -37,7 +37,7 @@ export default function Modal({children, isOpen, close, open}){
                 ref={modalRef}
                 as="section"
                 role="alertdialog"
-                className="max-w-[90%] md:max-w-[456px] z-100 flex flex-col gap-y-8 items-center text-center !p-8"
+                className="max-w-[90%] md:max-w-[456px] w-full z-100 flex flex-col gap-y-8 items-center text-center !p-8"
             >
                 {children}
             </SfModal>

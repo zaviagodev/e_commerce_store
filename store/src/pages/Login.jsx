@@ -22,6 +22,7 @@ export default function Login() {
     const {
         currentUser,
         isLoading,
+        error
     } = useFrappeAuth();
 
     const getValidationSchema = () => {
@@ -84,6 +85,8 @@ export default function Login() {
             }
         }
     });
+
+    const validRegister = Object.keys(formik.errors).length > 0
 
     useEffect(() => {
         if (getToken() || currentUser) {
@@ -150,6 +153,7 @@ export default function Login() {
                         wrapperClassName={`!bg-neutral-50 ${formik.errors.email || apiResponse === 'Already Registered' ? '!ring-red-500/50' : '!ring-lightgray'} h-[50px] px-6 rounded-xl`}
                         className={`bg-neutral-50 font-medium ${formik.errors.email || apiResponse === 'Already Registered' ? 'text-red-500' : 'text-darkgray'} `}
                         placeholder='อีเมล *'
+                        onKeyDown={() => apiResponse === 'Already Registered' && setapiResponse('')}
                     />
                     <p className='text-red-500 text-xs font-semibold'>{apiResponse === 'Already Registered' ? 'อีเมลนี้ได้ทำการสมัครสมาชิกเรียบร้อยแล้ว' : formik.errors.email}</p>
                 </label>
@@ -196,7 +200,7 @@ export default function Login() {
                         </div>
                     )}</>
                 ) : (
-                    <SfButton variant='tertiary' className={`btn-primary rounded-xl h-[50px] w-full ${saveLoading ? '!bg-[#F3F3F3]' : ''}`} type='submit' disabled={saveLoading}>{saveLoading ? <SfLoaderCircular /> : 'ลงทะเบียน'}</SfButton>
+                    <SfButton variant='tertiary' className={`btn-primary rounded-xl h-[50px] w-full ${saveLoading || validRegister  ? '!bg-[#F3F3F3]' : ''}`} type='submit' disabled={saveLoading || validRegister}>{saveLoading ? <SfLoaderCircular /> : 'ลงทะเบียน'}</SfButton>
                 )}
                 {loginState === false && (
                 <div className='flex flex-col gap-y-3 mt-[14px] w-full'>
@@ -219,7 +223,7 @@ export default function Login() {
             </section>
         </main>
 
-        <Modal close={close} isOpen={isOpen} open={openRegisteredModal}>
+        <Modal isOpen={isOpen} open={openRegisteredModal}>
             <div className='p-3 bg-black rounded-full w-fit'>
                 <Icons.check color='white'/>
             </div>
