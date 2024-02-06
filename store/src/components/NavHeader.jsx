@@ -58,6 +58,7 @@ import Modal from './drawers/Modal';
   const { isOpen:isLogoutOpen, open:openLogout, close:closeLogout } = useDisclosure({ initialValue: false });
 
   const product = useProducts()
+  const groupes = product.getProductGroups()
 
   const {appName, appLogo,hideLogin, hideCheckout, navbarSearch, topBarItems, hideWish, isLoading} = useSetting()
 
@@ -132,62 +133,78 @@ import Modal from './drawers/Modal';
     close();
   });
 
-   function recursiveBuildPhone (itemTop){
+  function recursiveBuildPhone (itemTop){
+    const handleClick = (item) => {
+      if (item.children.length == 0)
+      {
+        navigate('/home/' + item.name)
+      }
+      else{
+        setGroup(item)
+      }
+    }
+
+    const recurse = (item) => {
       return(
-      <div key={itemTop.name} className="pt-0">
-        <ul>
-          {itemTop.children.length > 0 ? (
-            <>
-              {menu === itemTop.label ? (
-                <>{itemTop.children.filter(i => i.label === menu).map(item => (
-                  <li key={item.name} onClick={() => handleClickMobile(item.label)} className='flex justify-between items-center'>
-                    <SfListItem
-                      as="div"
-                      size="sm"
-                      role="none"
-                      className="!p-0 rounded-lg active:font-semibold font-semibold !bg-transparent"
-                    >
-                      {item.name}
-                    </SfListItem>
-                    <SfIconExpandMore className="inline-flex m-0 -rotate-90" />
-                  </li>
-                ))}</>
-              ) : (
-                <li key={itemTop.name} onClick={() => handleClickMobile(itemTop.label)} className='flex justify-between items-center'>
-                  <SfListItem
-                    as="div"
-                    size="sm"
-                    role="none"
-                    className="!p-0 rounded-lg active:font-semibold font-semibold !bg-transparent"
-                  >
-                    {itemTop.name}
-                  </SfListItem>
-                  <SfIconExpandMore className="inline-flex m-0 -rotate-90" />
-                </li>
-              )}
-            </>
-          ) : (
-            <Link to={`/home/${itemTop.name}`}>
-              <li key={itemTop.name}>
-                <SfListItem
-                  as="div"
-                  size="sm"
-                  role="none"
-                  className="!p-0 rounded-lg active:font-semibold font-semibold !bg-transparent"
-                >
-                  {itemTop.name}
-                </SfListItem>
-              </li>
-            </Link> 
-          )}
-        </ul> 
-      </div>
+        <div onClick={() => handleClick(item)}  className='flex flex-1 items-center justify-between relative'>
+          <li key={item.name} className='flex-1'>
+            <SfListItem
+              as="div"
+              size="sm"
+              role="none"
+              className="text-sm py-4 md:py-1.5 rounded-lg active:font-bold font-bold"
+            >
+              {item.name}
+            </SfListItem>
+          </li> 
+          {item.children.length > 0 && <SfIconExpandMore className=" inline-flex m-2 -rotate-90 absolute right-0" />}
+        </div> 
       )
     }
 
-   function handleClick(url) {
+    return(
+    <div key={itemTop.name} className="pt-0">
+      <h2
+        role="presentation"
+        className="text-sm font-bold text-neutral-900 whitespace-nowrap p-4 md:py-1.5"
+      >
+        {itemTop.name}
+      </h2>
+      <hr className="mb-3.5" />
+      <ul>
+        {
+          itemTop.children.length > 0 ? itemTop.children.map((child) => {
+            return(
+               recurse(child)
+            )
+          })
+          :
+          <Link to={`/home/${itemTop.name}`}   >
+          <li key={itemTop.name}>
+            <SfListItem
+              as="div"
+              size="sm"
+              role="none"
+              className="py-4 md:py-1.5 rounded-lg active:font-bold text-sm font-bold"
+            >
+              {itemTop.name}
+            </SfListItem>
+          </li>
+        </Link> 
+        }
+      </ul> 
+    </div>
+    )
+  }
+
+   function handleClick(url,openInNewTab=0) {
     if(!url.startsWith('/')){  
-      window.location.assign('https://' + url)
+      if (openInNewTab) {
+        window.open(url, '_blank');
+      }
+      else{
+        window.location.assign('https://' + url)
+      }
     }
     else {
       navigate(`https://${url}`)
@@ -236,153 +253,161 @@ import Modal from './drawers/Modal';
     }
   }
 
-    const productList = (name) => 
-        <>
-        <SfButton
-          className="!p-0 lg:!p-2 flex w-full lg:w-fit justify-between text-black bg-transparent font-body hover:bg-white hover:text-black active:bg-white active:text-black gap-[2px]"
-          aria-haspopup="true"
-          aria-expanded={isOpen}
-          slotSuffix={<SfIconExpandMore className="inline-flex -rotate-90 lg:rotate-0" />}
-          variant="tertiary"
-          onClick={() => handleClickProduct(name)}
-          square
-        >
-        <span className="inline-flex whitespace-nowrap font-semibold">{name}</span>
-        </SfButton>
-        <nav className='absolute top-0 right-0 w-full'>
-          <ul>
-              <li role="none" className='hidden lg:block'>
-                  <CSSTransition
-                    in={isOpen}
-                    timeout={500}
-                    unmountOnExit
-                    classNames={{
-                      enter: '-translate-x-full lg:opacity-0 lg:translate-x-0',
-                      enterActive: 'translate-x-0 lg:opacity-100 transition duration-500 ease-in-out',
-                      exitActive: '-translate-x-full lg:opacity-0 lg:translate-x-0 transition duration-500 ease-in-out',
-                    }}
+  const productList = (name) => 
+  <>
+    <SfButton
+      className="hidden lg:flex text-black bg-transparent font-body hover:bg-white hover:text-black active:bg-white active:text-black gap-[2px]"
+      aria-haspopup="true"
+      aria-expanded={isOpen}
+      slotSuffix={<SfIconExpandMore className="hidden lg:inline-flex" />}
+      variant="tertiary"
+      onClick={toggle}
+      square
+    >
+      <span className="hidden lg:inline-flex whitespace-nowrap text-sm font-bold">{name}</span>
+    </SfButton>
+    <nav className='absolute top-0 right-0 w-full'>
+    <ul>
+        <li role="none">
+            <CSSTransition
+              in={isOpen}
+              timeout={500}
+              unmountOnExit
+              classNames={{
+                enter: '-translate-x-full lg:opacity-0 lg:translate-x-0',
+                enterActive: 'translate-x-0 lg:opacity-100 transition duration-500 ease-in-out',
+                exitActive: '-translate-x-full lg:opacity-0 lg:translate-x-0 transition duration-500 ease-in-out',
+              }}
+            >
+              <SfDrawer
+                ref={drawerRef}
+                open
+                disableClickAway
+                placement="top"
+                className="grid grid-cols-1 lg:gap-x-6 lg:grid-cols-4 bg-white shadow-lg p-0 max-h-screen overflow-y-auto lg:!absolute lg:!top-[57px] max-w-[376px] lg:max-w-full lg:p-6 mr-[50px] lg:mr-0 z-99"
+              >
+                <div className="sticky top-0 flex items-center justify-between p-2 bg-primary lg:hidden">
+                  <div className="flex items-center font-bold text-black typography-text-lg">{menu}</div>
+                  <SfButton
+                    square
+                    variant="tertiary"
+                    aria-label="Close navigation menu"
+                    onClick={close}
+                    className="text-black ml-2"
                   >
-                    <SfDrawer
-                      ref={drawerRef}
-                      open
-                      disableClickAway
-                      placement="top"
-                      className="grid grid-cols-1 lg:grid-cols-4 bg-white shadow-lg p-0 max-h-screen overflow-y-auto lg:!absolute lg:!top-[57px] max-w-[376px] lg:max-w-full lg:p-6 mr-[50px] lg:mr-0 z-99"
-                    >
-                      <div className="sticky top-0 flex items-center justify-between p-2 bg-primary lg:hidden">
-                        <div className="flex items-center font-semibold text-white typography-text-lg">{menu}</div>
-                        <SfButton
-                          square
-                          variant="tertiary"
-                          aria-label="Close navigation menu"
-                          onClick={close}
-                          className="text-black ml-2"
-                        >
-                          <SfIconClose />
-                        </SfButton>
+                    <SfIconClose />
+                  </SfButton>
+                </div>
+                    {mainGroup.map((item) => {
+                    return(
+                      <div className="lg:block hidden">
+                        {recursiveBuildPhone(item)}
                       </div>
-                      {menu == name  && (group  ? 
-                        <SecondaryProdNav group={group} groups={mainGroup} setGroup={setGroup} /> 
-                        : 
-                        mainGroup.map((item) => (
-                          <div className="lg:block hidden lg:border-r lg:px-6">
-                            {recursiveBuildPhone(item)}
-                          </div>
-                        )))
-                        }
-                      {menu != 'Menu' && (navGroup ?  
-                        <>
-                            <button onClick={() => setNavGroup(null)} className='flex flex-row gap-2 items-center justify-between p-2'><SfIconArrowBack/>  { navGroup ? findParentName(topBarItems, navGroup.name) : 'Back'} </button>
-                            {navGroup.children.map((item) => (
-                                <SfButton variant={'tertiary'} onClick={() => 
-                                    {
-                                    if(item.children.length > 0 )
-                                        {
-                                        setNavGroup(item)
-                                        }
-                                    if(item.children.length ==0 && item.url)
-                                        {
-                                          handleClick(item.url)
-                                        }
-                                }} className='flex flex-1 pl-2 items-center justify-between relative'>
-                                    <li key={item.name} className='flex-1'>
-                                    <SfListItem
-                                      as="div"
-                                      size="sm"
-                                      role="none"
-                                      className="py-4 md:py-1.5 rounded-lg active:font-semibold text-sm"
-                                    >
-                                      {item.label}
-                                    </SfListItem>
-                                    </li> 
-                                    {item.children.length > 0 && <SfIconExpandMore className="inline-flex m-2 -rotate-90 absolute right-0" />}
-                                </SfButton> 
-                            ))
-                        }
-                        </> : topBarItems.find(item => item.label === menu).children?.map((item) =>  
-                              <li> 
-                                <SfButton
-                                  onClick={() => 
-                                    {
-                                      if(item.children.length == 0)
-                                      {
-                                        handleClick(item.url)
-                                      }else{
-                                        setNavGroup(item)
-                                      }
-                                    }
+                    )
+                    }
+                    )}
+                <div className='flex lg:hidden flex-col gap-2'>
+                  {menu == 'Menu' ? topBarItems.map((item) => (
+                    <SfButton
+                      variant={'tertiary'}
+                      onClick={()=>{setMenu(item.label)}}
+                      className='justify-start w-full'
+                    >
+                      {item.name}
+                    </SfButton>
+                  )) :
+                  <button onClick={() => {setMenu('Menu'), setNavGroup(null)}} className='flex flex-row gap-2 items-center justify-start p-2'><SfIconArrowBack/>Back</button>
+                  }
+                </div>
+                {menu == name  && (group  ? 
+                  <SecondaryProdNav group={group} groups={mainGroup} setGroup={setGroup} /> 
+                  : 
+                  mainGroup.map((item) => recursiveBuildPhone(item)))               
+                  }
+                {menu != 'Menu' && (navGroup ? 
+                  <>
+                      <button onClick={() => setNavGroup(null)} className='flex flex-row gap-2 items-center justify-between p-2'><SfIconArrowBack/>  { navGroup ? findParentName(topBarItems, navGroup.name) : 'Back'} </button>
+                      {navGroup.children.map((item) => (
+                          <SfButton variant={'tertiary'} onClick={() => 
+                              {
+                              if(item.children.length > 0 )
+                                  {
+                                  setNavGroup(item)
                                   }
-                                  key={item.label}
-                                  className=" pl-2 flex w-full flex-row items-center justify-between text-sm"
-                                  aria-label={item.label}
-                                  variant="tertiary"
-                                  square
-                                >{item.label}
-                                {!item.children.length == 0 && <SfIconExpandMore className='-rotate-90'/>}
-                                </SfButton>
-                            </li>
-                         )
-                      )}
-                      <SfButton
-                        square
-                        variant="tertiary"
-                        aria-label="Close navigation menu"
-                        onClick={close}
-                        className="block md:absolute md:right-0 hover:bg-white active:bg-white"
-                      >
-                        <SfIconClose />
-                      </SfButton>
-                    </SfDrawer>
-                  </CSSTransition>
-                </li>
-          </ul>
-        </nav>
-        </>
+                              if(item.children.length ==0 && item.url)
+                                  {
+                                    handleClick(item.url)
+                                  }
+                          }} className='flex flex-1 pl-2 items-center justify-between relative'>
+                              <li key={item.name} className='flex-1'>
+                              <SfListItem
+                                as="div"
+                                size="sm"
+                                role="none"
+                                className="py-4 md:py-1.5 rounded-lg active:font-bold text-base"
+                              >
+                                {item.name}
+                              </SfListItem>
+                              </li> 
+                              {item.children.length > 0 && <SfIconExpandMore className="inline-flex m-2 -rotate-90 absolute right-0" />}
+                          </SfButton> 
+                      ))
+                  }
+                  </> : topBarItems.find(item => item.name === menu).children.map((item) =>  
+                        <li> 
+                          <SfButton
+                            onClick={() => 
+                              {
+                                if(item.children.length == 0)
+                                {
+                                  handleClick(item.url)
+                                }else{
+                                  setNavGroup(item)
+                                }
+                              }
+                            }
+                            key={item.label}
+                            className=" pl-2 flex w-full flex-row items-center justify-between text-base"
+                            aria-label={item.label}
+                            variant="tertiary"
+                            square
+                          >{item.label}
+                          {!item.children.length == 0 && <SfIconExpandMore className='-rotate-90'/>}
+                          </SfButton>
+                      </li>
+                   )
+                )}
+                <SfButton
+                  square
+                  variant="tertiary"
+                  aria-label="Close navigation menu"
+                  onClick={close}
+                  className="hidden md:block md:absolute md:right-0 hover:bg-white active:bg-white"
+                >
+                  <SfIconClose />
+                </SfButton>
+              </SfDrawer>
+            </CSSTransition>
+          </li>
+    </ul>
+  </nav>
+  </>
 
     function recursiveBuild (item){
-      const Button = ({onClick}) => {
-        return (
-          <li className='w-full lg:w-fit'> 
-            <SfButton
-              key={item.label}
-              className="!p-0 lg:!p-2 flex justify-between w-full lg:w-fit text-black bg-transparent !font-semibold hover:bg-white hover:text-black active:bg-white active:text-black text-sm"
-              aria-label={item.label}
-              variant="tertiary"
-              square
-              onClick={onClick}
-            >
-              {item.label}
-              {item.children.length > 0 && <SfIconChevronRight className='lg:hidden'/>}
-            </SfButton>
-          </li>
-        )
-      }
-      if(item.children.length === 0) return <Button onClick={() => handleClick(item.url)}/>
-      if(item.children.length > 0) return <div>
-        <span className='lg:hidden'><Button onClick={() => handleClickMobile(item.label)}/></span>
-        <span className='hidden lg:block'><SelectDropdownPreselected dropdowndame={item.label}  options={item.children} /></span>
-      </div>
-    }
+    const button = 
+      <li> 
+        <SfButton
+          key={item.label}
+          className="hidden md:flex text-black bg-transparent !font-bold hover:bg-white hover:text-black active:bg-white active:text-black !text-sm"
+          aria-label={item.label}
+          variant="tertiary"
+          square
+          onClick={() => handleClick(item.url, item.open_in_new_tab === 1)}
+        >{item.label}</SfButton>
+      </li>
+    if(item.children.length === 0) return button
+    if(item.children.length > 0) return  <SelectDropdownPreselected dropdowndame={item.label}  options={item.children} />
+  }
 
   return (
     <div className="w-full h-full">
@@ -405,7 +430,7 @@ import Modal from './drawers/Modal';
                 {!isLoading ? (
                   <>{topBarItems.map((item) => {
                     if (mobileMenuStep > 0){
-                      if (item.is_product){
+                      if (item.is_product_list){
                         return <>{mainGroup.map((item) => {
                           return(
                             <div className="lg:hidden">
@@ -424,7 +449,7 @@ import Modal from './drawers/Modal';
                         }</>
                       }
                     } else {
-                      if (item.is_product) return productList(item.label)
+                      if (item.is_product_list) return productList(item.label)
                       else return recursiveBuild(item)
                     }
                   })}</>
@@ -481,7 +506,7 @@ import Modal from './drawers/Modal';
               <ul className='flex flex-row gap-4 items-center justify-center font-semibold'>
                 {!isLoading ? (
                   <>{topBarItems.map((item) => {
-                    if (item.is_product) return productList(item.label)
+                    if (item.is_product_list) return productList(item.label)
                     else return recursiveBuild(item)
                   })}</>
                 ) : (

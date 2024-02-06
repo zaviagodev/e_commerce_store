@@ -13,7 +13,7 @@ export const AddressCard = (props) => {
                                     <Icons.marketPin04 color='#666666' className='min-w-6'/>
                                     <p className="font-semibold text-base">{props[key]}</p>
                                 </div>
-                                {props.deletebtn === "false" ? null : <button onClick={props.onDelete}>Delete</button>}
+                                {props.deletebtn === false ? null : <button onClick={props.onDelete}>Delete</button>}
                             </div>
                         ) : (
                             <p key={key} className="font-normal text-sm text-neutral-700">{props[key]}</p>
