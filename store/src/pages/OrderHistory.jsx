@@ -6,21 +6,6 @@ import MyAccountSection from "../components/MyAccountSection";
 import { Skeleton } from "../components/Skeleton";
 import { Icons } from "../components/icons";
 
-const month = {
-    0: "Jan",
-    1: "Feb",
-    2: "Mar",
-    3: "Apr",
-    4: "May",
-    5: "June",
-    6: "July",
-    7: "Aug",
-    8: "Sept",
-    9: "Oct",
-    10: "Nov",
-    11: "Dec"
-}
-
 function OrderHistory() {
     const {Order} = useOrder();
     const [loading, setLoading] = useState(true)
@@ -28,10 +13,12 @@ function OrderHistory() {
     const [statusOptions, setStatusOptions] = useState(['คำสั่งซื้อทั้งหมด'])
     const showList = [5, 10, 20, 50, 100, 'All']
     const [selectedShow, setSelectedShow] = useState()
+    const day = (creation) => new Date(creation).getDate()
+    const month = (creation) => new Date(creation).getMonth() + 1
 
     useEffect(() => {
         if (Order.length > 0) {
-            setLoading(false)
+          setLoading(false)
         }
         const uniqueStatuses = Array.from(new Set(Order.map(item => item.status)));
         setStatusOptions(['คำสั่งซื้อทั้งหมด', ...uniqueStatuses]);
@@ -48,53 +35,66 @@ function OrderHistory() {
 
     return (
         <MyAccountSection>
-            <div className="mb-5 flex justify-between lg:block">
+            <div className="flex justify-between lg:block items-center">
               <h1 className='font-semibold text-baselg text-darkgray'>คำสั่งซื้อ</h1>
               <div className="lg:hidden">
-                <SfSelect size='sm' className='!ring-0 !border-0 !pr-12 !bg-[#F3F3F3] !text-[#7A7A7A] !rounded-[9px] leading-6 text-[18px] font-bold' onChange={handleStatusChange} value={selectedStatus}>
+                <SfSelect size='sm' className='!ring-0 !border-0 !pr-12 !bg-[#F3F3F3] !text-[#7A7A7A] !rounded-[9px] leading-6 text-sm font-semibold' onChange={handleStatusChange} value={selectedStatus}>
                   {statusOptions.map(option => (
-                    <option key={option} className={`w-full px-4 py-2 border-b-2 text-sm font-medium ${selectedStatus === option ? 'border-b-black' : 'border-b-white'}`}>{option}</option>
+                    <option key={option} className={`w-full px-4 py-2 border-b-2 text-sm font-semibold ${selectedStatus === option ? 'border-b-black' : 'border-b-white'}`}>{option}</option>
                   ))}
                 </SfSelect>
               </div>
             </div>
-            <div className="flex flex-col gap-y-10">
-              <div className="hidden lg:flex border-b">
+            <div className="flex flex-col gap-y-10 mt-[50px] lg:mt-5">
+              <div className="hidden lg:flex border-b h-[50px]">
                 {statusOptions.map(option => (
-                  <button onClick={() => setSelectedStatus(option)} key={option} className={`w-full px-4 py-2 border-b-2 text-sm font-medium ${selectedStatus === option ? 'border-b-black' : 'border-b-white'}`}>{option}</button>
+                  <button onClick={() => setSelectedStatus(option)} key={option} className={`w-full px-2 py-4 border-b-2 text-sm ${selectedStatus === option ? 'border-b-black font-semibold text-linkblack' : 'border-b-white text-darkgray font-normal'}`}>{option}</button>
                 ))}
               </div>
               <div className="flex gap-y-[30px] flex-col lg:hidden">
-                {filteredData.map(({name, status, base_total, company, items, creation}) => (
-                  <div className="border-b pb-[30px]">
-                    <table className="w-full">
-                      <tbody>
-                        <tr>
-                          <td className="text-secgray">เลขคำสั่งซื้อ</td>
-                          <td className="text-black font-semibold text-right">{name}-{}{company}</td>
-                        </tr>
-                        <tr>
-                          <td className="text-secgray">วันที่</td>
-                          <td className="text-black font-semibold text-right">{`${new Date(creation).getDate()}/${new Date(creation).getMonth() + 1}/${new Date(creation).getFullYear()}`}</td>
-                        </tr>
-                        <tr>
-                          <td className="text-secgray">จำนวนสินค้า</td>
-                          <td className="text-black font-semibold text-right">{items.length}</td>
-                        </tr>
-                        <tr>
-                          <td className="text-secgray">ยอดรวมทั้งหมด</td>
-                          <td className="text-black font-semibold text-right">฿{base_total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</td>
-                        </tr>
-                      </tbody>
-                    </table>
+              {!loading ? (
+                <>{filteredData.length > 0 ? (
+                  <>{filteredData.map(({name, status, base_total, company, items, creation}) => (
+                    <div className="border-b pb-[30px]">
+                      <table className="w-full">
+                        <tbody>
+                          <tr>
+                            <td className="text-secgray text-sm py-[7px]">เลขคำสั่งซื้อ</td>
+                            <td className="text-linkblack text-sm font-semibold text-right py-[7px]">{name}-{}{company}</td>
+                          </tr>
+                          <tr>
+                            <td className="text-secgray text-sm py-[7px]">วันที่</td>
+                            <td className="text-linkblack text-sm font-semibold text-right py-[7px]">{`${day(creation) < 10 ? "0" + day(creation) : day(creation)}/${month(creation) < 10 ? "0" + month(creation) : month(creation)}/${new Date(creation).getFullYear()}`}</td>
+                          </tr>
+                          <tr>
+                            <td className="text-secgray text-sm py-[7px]">จำนวนสินค้า</td>
+                            <td className="text-linkblack text-sm font-semibold text-right py-[7px]">{items.length}</td>
+                          </tr>
+                          <tr>
+                            <td className="text-secgray text-sm py-[7px]">ยอดรวมทั้งหมด</td>
+                            <td className="text-linkblack text-sm font-semibold text-right py-[7px]">฿{base_total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</td>
+                          </tr>
+                        </tbody>
+                      </table>
 
-                    <Link to={`/order-history/${name}`} className="w-full h-[50px] btn-secondary flex items-center justify-center gap-x-[6px] font-semibold">
-                      <Icons.file06 />
-                      รายละเอียด
-                    </Link>
-                  </div>
-                ))}
+                      <Link to={`/order-history/${name}`} className="w-full h-[50px] btn-secondary flex items-center justify-center gap-x-[6px] font-semibold mt-[7px]">
+                        <Icons.file06 />
+                        รายละเอียด
+                      </Link>
+                    </div>
+                  ))}</>
+                ) : (
+                  <p className="text-xs text-darkgray">คุณยังไม่มีคำสั่งซื้อ</p>
+                )}</>
+              ) : (
+                <div className="flex flex-col gap-y-2">
+                  <Skeleton className='h-8 w-full'/>
+                  <Skeleton className='h-8 w-full'/>
+                  <Skeleton className='h-8 w-full'/>
+                </div>
+              )}
               </div>
+
               <div className="hidden lg:block">
                 {!loading ? (
                   <>
@@ -102,22 +102,22 @@ function OrderHistory() {
                       <table className="text-left w-full">
                         <thead>
                           <tr className="border-b">
-                            <th className="py-6 text-sm w-1/3">เลขคำสั่งซื้อ</th>
-                            <th className="py-6 text-sm w-1/6">วันที่</th>
-                            <th className="py-6 text-sm w-1/6">จำนวนสินค้า</th>
-                            <th className="py-6 text-sm w-1/6">ยอดรวมทั้งหมด</th>
+                            <th className="py-6 text-xs w-1/3">เลขคำสั่งซื้อ</th>
+                            <th className="py-6 text-xs w-1/6">วันที่</th>
+                            <th className="py-6 text-xs w-1/6">จำนวนสินค้า</th>
+                            <th className="py-6 text-xs w-1/6">ยอดรวมทั้งหมด</th>
                             <th className="py-6 w-1/6"></th>
                           </tr>
                         </thead>
                         <tbody>
                           {filteredData.map(({name, status, base_total, company, items, creation}) => (
                             <tr className="border-b">
-                              <td className="py-6 text-sm w-1/3">{name}-{}{company}</td>
-                              <td className="py-6 text-sm w-1/6">{`${new Date(creation).getDate()}/${new Date(creation).getMonth() + 1}/${new Date(creation).getFullYear()}`}</td>
-                              <td className="py-6 text-sm w-1/6">{items.length}</td>
-                              <td className="py-6 text-sm w-1/6">฿{base_total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</td>
+                              <td className="py-6 text-sm w-1/3 text-darkgray">{name}-{}{company}</td>
+                              <td className="py-6 text-sm w-1/6 text-darkgray">{`${day(creation) < 10 ? "0" + day(creation) : day(creation)}/${month(creation) < 10 ? "0" + month(creation) : month(creation)}/${new Date(creation).getFullYear()}`}</td>
+                              <td className="py-6 text-sm w-1/6 text-darkgray">{items.length}</td>
+                              <td className="py-6 text-sm w-1/6 text-darkgray">฿{base_total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</td>
                               <td className="py-6 text-sm w-1/6">
-                                <Link to={`/order-history/${name}`} className='flex gap-x-[6px] items-center font-semibold text-sm'>
+                                <Link to={`/order-history/${name}`} className='flex gap-x-[6px] items-center text-sm justify-end mr-[14px]'>
                                   <Icons.file06 className='w-[14px] h-[14px]'/>
                                   รายละเอียด
                                 </Link>
@@ -127,7 +127,7 @@ function OrderHistory() {
                         </tbody>
                       </table>
                     ) : (
-                      <p className="text-sml text-darkgray">คุณยังไม่มีคำสั่งซื้อ</p>
+                      <p className="text-xs text-darkgray">คุณยังไม่มีคำสั่งซื้อ</p>
                     )}
                   </>
                 ) : (

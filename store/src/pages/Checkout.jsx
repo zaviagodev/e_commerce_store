@@ -316,7 +316,7 @@ export default function Checkout(){
 
     const CheckoutDetails = ({addCoupon}) => {
         return (
-            <div className='lg:ml-[98px]'>
+            <div className='lg:ml-[63px]'>
             <div className='flex justify-between pt-[21px] border-t'>
                 <div className="flex flex-col pr-2 gap-y-[21px]">
                     <p>ราคาสินค้าทั้งหมด</p>
@@ -428,7 +428,7 @@ export default function Checkout(){
                                                     <div className='flex flex-col gap-y-2 mt-8'>
                                                         <h2 className="font-semibold text-secgray hidden lg:block">ที่อยู่ <span className='text-red-500'>*</span></h2>
                                                         <div className='border border-lightgray rounded-xl bg-neutral-50 overflow-hidden'>
-                                                            <a className='p-6 flex items-center justify-between w-full cursor-pointer' onClick={() => setMoreAddresses(true)}>
+                                                            <a className='p-6 pb-5 flex items-center justify-between w-full cursor-pointer' onClick={() => setMoreAddresses(true)}>
                                                                 <div className='flex items-center gap-x-2'>
                                                                     <Icons.marketPin04 color='#666666' className='min-w-6'/>
                                                                     <span className=' font-bold text-darkgray'>{formik.values.billing_address ? addressList?.message?.find(address => address.name === formik.values.billing_address).address_title : 'เพิ่ม / เลือกที่อยู่การจัดส่ง'}</span>
@@ -644,7 +644,7 @@ function AddressOptions({
                 {data?.message?.map(({ name: nameVal, address_title, address_line1 = null, address_line2 = null, city, state, country, phone }) => (
                     <label key={nameVal} className="relative xs:w-full md:w-auto" onClick={() => handleSelect(nameVal)}>
                         <div className={`cursor-pointer rounded-xl -outline-offset-2 hover:border-primary-200 hover:bg-primary-100 peer-focus:border-primary-200 peer-focus:bg-primary-100 bg-neutral-50`}>
-                            <AddressCard deletebtn="false" title={address_title} addressLine1={address_line1} addressLine2={address_line2} city={city} state={state === "Select One" ? null : state} country={country} phone={phone} active={value === nameVal}/>
+                            <AddressCard title={address_title} addressLine1={address_line1} addressLine2={address_line2} city={city} state={state === "Select One" ? null : state} country={country} phone={phone} active={value === nameVal} deletebtn={false}/>
                         </div>
                     </label>
                 )).slice(0, limit || data?.message?.length)}

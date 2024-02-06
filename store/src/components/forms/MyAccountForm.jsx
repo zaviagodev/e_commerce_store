@@ -1,10 +1,11 @@
 import { useFormik } from "formik";
-import { SfInput, SfButton } from "@storefront-ui/react";
+import { SfInput, SfButton, SfLoaderCircular } from "@storefront-ui/react";
 import { useUser } from '../../hooks/useUser';
 import { useFrappePostCall } from 'frappe-react-sdk';
 import { Icons } from "../icons";
 import Toast from "../Toast";
 import { useEffect, useState } from "react";
+import defaultAvatar from "../../assets/default-avatar.svg"
 
 export default function MyAccountForm(onSuccess = () => { },){
   const [isSaved, setIsSaved] = useState(false)
@@ -46,8 +47,8 @@ export default function MyAccountForm(onSuccess = () => { },){
   }
 
   const editedState = 
-    formik.values.first_name === user?.user?.first_name || 
-    formik.values.last_name === user?.user?.last_name
+    formik.values.first_name !== user?.user?.first_name || 
+    formik.values.last_name !== user?.user?.last_name
 
   useEffect(() => {
     isCompleted && handleSaved()
@@ -60,7 +61,7 @@ export default function MyAccountForm(onSuccess = () => { },){
       <div className='flex items-center gap-x-3 mt-10 mb-2'>
         <img
           className="rounded-full bg-neutral-100 group-hover:shadow-xl group-active:shadow-none w-[60px] h-[60px] object-cover"
-          src={preview ? preview : user?.user?.user_image ? `${import.meta.env.VITE_ERP_URL || ""}${user.user.user_image}` : "https://storage.googleapis.com/sfui_docs_artifacts_bucket_public/production/men_category.png"}
+          src={preview ? preview : user?.user?.user_image ? `${import.meta.env.VITE_ERP_URL || ""}${user.user.user_image}` : defaultAvatar}
           width="60"
           height="60"
           alt="User Image"
@@ -122,7 +123,9 @@ export default function MyAccountForm(onSuccess = () => { },){
       </div>
 
       <div className="w-full">
-          <SfButton type='submit' className="w-full btn-primary text-base h-[50px] rounded-xl mt-3" disabled={editedState || loading}>อัพเดทข้อมูล</SfButton>
+          <SfButton type='submit' className="w-full btn-primary text-base h-[50px] rounded-xl mt-3" disabled={!editedState || loading}>
+            {loading ? <SfLoaderCircular /> : 'อัพเดทข้อมูล'}
+          </SfButton>
       </div>
     </form>
     <Toast isOpen={isSaved}>

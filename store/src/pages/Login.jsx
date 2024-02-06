@@ -5,9 +5,9 @@ import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../hooks/useUser';
 import { getToken } from '../utils/helper';
-import { CSSTransition } from 'react-transition-group';
 import * as Yup from 'yup';
 import { Icons } from '../components/icons';
+import Modal from '../components/drawers/Modal';
 
 export default function Login() {
     const { login, register } = useUser();
@@ -17,13 +17,12 @@ export default function Login() {
     const [saveLoading, setSaveLoading] = useState(false)
 
     const { isOpen, open:openRegisteredModal, close } = useDisclosure({ initialValue: false });
-    const modalRef = useRef(null);
-    const backdropRef = useRef(null);
 
     const navigate = useNavigate();
     const {
         currentUser,
         isLoading,
+        error
     } = useFrappeAuth();
 
     const getValidationSchema = () => {
@@ -34,15 +33,14 @@ export default function Login() {
             schema['pwd'] = Yup.string().equals([Yup.ref('pwd')], 'Passwords must match').required('จำเป็นต้องกรอกรหัสผ่าน');
         }
         else{
-            schema['pwd'] = Yup.string().equals([Yup.ref('pwd')], 'Passwords must match').required('จำเป็นต้องกรอกรหัสผ่าน');
-            schema['pwd_confirm'] = Yup.string().equals([Yup.ref('pwd_confirm')], 'Passwords must match').required('จำเป็นต้องกรอกรหัสผ่าน');
+            schema['pwd'] = Yup.string().equals([Yup.ref('pwd_confirm')], 'รหัสผ่านไม่ตรงกัน').required('จำเป็นต้องกรอกรหัสผ่าน');
+            schema['pwd_confirm'] = Yup.string().equals([Yup.ref('pwd')], 'รหัสผ่านไม่ตรงกัน').required('จำเป็นต้องกรอกรหัสผ่าน');
             // schema['first_name'] = Yup.string().required('จำเป็นต้องกรอกข้อมูล');
             // schema['last_name'] = Yup.string().required('จำเป็นต้องกรอกข้อมูล');
             schema['email'] = Yup.string().email('รูปแบบอีเมลไม่ถูกต้อง').required('จำเป็นต้องกรอกข้อมูล');
         }
         return Yup.object().shape(schema);
     };
-    
 
     const formik = useFormik({
         initialValues: loginState ? {
@@ -88,6 +86,8 @@ export default function Login() {
         }
     });
 
+    const validRegister = Object.keys(formik.errors).length > 0
+
     useEffect(() => {
         if (getToken() || currentUser) {
             navigate("/home/all items");
@@ -117,7 +117,7 @@ export default function Login() {
                     <p className='text-secgray'>เราจะส่งข้อมูลไปยังอีเมลของคุณเพื่อรีเซ็ตรหัสผ่าน</p>
                 )}
 
-                {apiResponse && <h2 className="text-xs text-red-500 font-semibold w-full">{apiResponse}</h2>}
+                {apiResponse == 'อีเมลหรือรหัสผ่านไม่ถูกต้อง' && <h2 className="text-xs text-red-500 font-semibold w-full">{apiResponse}</h2>}
 
                 {loginState == true && 
                     <label className="w-full flex flex-col gap-2">
@@ -153,6 +153,7 @@ export default function Login() {
                         wrapperClassName={`!bg-neutral-50 ${formik.errors.email || apiResponse === 'Already Registered' ? '!ring-red-500/50' : '!ring-lightgray'} h-[50px] px-6 rounded-xl`}
                         className={`bg-neutral-50 font-medium ${formik.errors.email || apiResponse === 'Already Registered' ? 'text-red-500' : 'text-darkgray'} `}
                         placeholder='อีเมล *'
+                        onKeyDown={() => apiResponse === 'Already Registered' && setapiResponse('')}
                     />
                     <p className='text-red-500 text-xs font-semibold'>{apiResponse === 'Already Registered' ? 'อีเมลนี้ได้ทำการสมัครสมาชิกเรียบร้อยแล้ว' : formik.errors.email}</p>
                 </label>
@@ -189,17 +190,17 @@ export default function Login() {
                 {loginState ? (
                     <>{forgotPassword ? (
                         <div className="w-full flex mt-6 gap-3">
-                            <SfButton variant='tertiary' className={`btn-primary rounded-xl h-[50px] ${loginState === false ? 'w-full' : ''} ${saveLoading ? 'bg-neutral-50' : ''}`} type='submit' disabled={saveLoading}>{saveLoading ? <SfLoaderCircular /> : 'ยืนยัน'}</SfButton>
-                            <SfButton variant='tertiary' className={`btn-secondary rounded-xl h-[50px] ${loginState === false ? 'w-full' : ''} ${saveLoading ? 'bg-neutral-50' : ''}`} onClick={handleForgotPass} disabled={saveLoading}>{saveLoading ? <SfLoaderCircular /> : `ยกเลิก`}</SfButton>
+                            <SfButton variant='tertiary' className={`btn-primary rounded-xl h-[50px] ${loginState === false ? 'w-full' : 'w-[100px]'} ${saveLoading ? '!bg-[#F3F3F3]' : ''}`} type='submit' disabled={saveLoading}>{saveLoading ? <SfLoaderCircular /> : 'ยืนยัน'}</SfButton>
+                            <SfButton variant='tertiary' className={`btn-secondary rounded-xl h-[50px] ${loginState === false ? 'w-full' : 'w-[120px]'} ${saveLoading ? '!bg-[#F3F3F3]' : ''}`} onClick={handleForgotPass} disabled={saveLoading}>{saveLoading ? <SfLoaderCircular /> : `ยกเลิก`}</SfButton>
                         </div>
                     ) : (
                         <div className="w-full flex mt-6 gap-3">
-                            <SfButton variant='tertiary' className={`btn-primary rounded-xl h-[50px] ${loginState === false ? 'w-full' : ''} ${saveLoading ? 'bg-neutral-50' : ''}`} type='submit' disabled={saveLoading}>{saveLoading ? <SfLoaderCircular /> : 'เข้าสู่ระบบ'}</SfButton>
-                            <SfButton variant='tertiary' className={`btn-secondary rounded-xl h-[50px] ${loginState === false ? 'w-full' : ''} ${saveLoading ? 'bg-neutral-50' : ''}`} onClick={handleForgotPass} disabled={saveLoading}>{saveLoading ? <SfLoaderCircular /> : `ลืมรหัสผ่าน`}</SfButton>
+                            <SfButton variant='tertiary' className={`btn-primary rounded-xl h-[50px] ${loginState === false ? 'w-full' : 'w-[100px]'} ${saveLoading ? '!bg-[#F3F3F3]' : ''}`} type='submit' disabled={saveLoading}>{saveLoading ? <SfLoaderCircular /> : 'เข้าสู่ระบบ'}</SfButton>
+                            <SfButton variant='tertiary' className={`btn-secondary rounded-xl h-[50px] ${loginState === false ? 'w-full' : 'w-[120px]'} ${saveLoading ? '!bg-[#F3F3F3]' : ''}`} onClick={handleForgotPass} disabled={saveLoading}>{saveLoading ? <SfLoaderCircular /> : `ลืมรหัสผ่าน`}</SfButton>
                         </div>
                     )}</>
                 ) : (
-                    <SfButton variant='tertiary' className={`btn-primary rounded-xl h-[50px] w-full ${saveLoading ? 'bg-neutral-50' : ''}`} type='submit' disabled={saveLoading}>{saveLoading ? <SfLoaderCircular /> : 'ลงทะเบียน'}</SfButton>
+                    <SfButton variant='tertiary' className={`btn-primary rounded-xl h-[50px] w-full ${saveLoading || validRegister  ? '!bg-[#F3F3F3]' : ''}`} type='submit' disabled={saveLoading || validRegister}>{saveLoading ? <SfLoaderCircular /> : 'ลงทะเบียน'}</SfButton>
                 )}
                 {loginState === false && (
                 <div className='flex flex-col gap-y-3 mt-[14px] w-full'>
@@ -222,52 +223,20 @@ export default function Login() {
             </section>
         </main>
 
-        <CSSTransition
-            in={isOpen}
-            nodeRef={backdropRef}
-            timeout={200}
-            unmountOnExit
-            classNames={{
-            enter: 'opacity-0',
-            enterDone: 'opacity-100 transition duration-200 ease-out',
-            exitActive: 'opacity-0 transition duration-200 ease-out',
-            }}
-        >
-            <div ref={backdropRef} className="fixed inset-0 bg-neutral-700 bg-opacity-50 z-99" />
-        </CSSTransition>
-        <CSSTransition
-            in={isOpen}
-            nodeRef={modalRef}
-            timeout={200}
-            unmountOnExit
-            classNames={{
-            enter: 'translate-y-10 opacity-0',
-            enterDone: 'translate-y-0 opacity-100 transition duration-200 ease-out',
-            exitActive: 'translate-y-10 opacity-0 transition duration-200 ease-out',
-            }}
-        >
-            <SfModal
-                open
-                onClose={close}
-                ref={modalRef}
-                as="section"
-                role="alertdialog"
-                className="max-w-[90%] md:max-w-[456px] z-100 flex flex-col gap-y-8 items-center text-center !p-8"
-            >
-                <div className='p-3 bg-black rounded-full w-fit'>
-                    <Icons.check color='white'/>
-                </div>
+        <Modal isOpen={isOpen} open={openRegisteredModal}>
+            <div className='p-3 bg-black rounded-full w-fit'>
+                <Icons.check color='white'/>
+            </div>
 
-                <div className='flex flex-col gap-y-6'>
-                    <h1 className='text-black text-2xl font-semibold'>ลงทะเบียนสำเร็จ</h1>
-                    <p className='text-darkgray'>ขอบคุณสำหรับการสมัครสมาชิก คุณสามารถตรวจสอบข้อมูลส่วนตัวของคุณได้ที่ “รายละเอียดบัญชี”</p>
-                </div>
+            <div className='flex flex-col gap-y-6'>
+                <h1 className='text-black text-2xl font-semibold'>ลงทะเบียนสำเร็จ</h1>
+                <p className='text-darkgray'>ขอบคุณสำหรับการสมัครสมาชิก คุณสามารถตรวจสอบข้อมูลส่วนตัวของคุณได้ที่ “รายละเอียดบัญชี”</p>
+            </div>
 
-                <SfButton className='w-full btn-primary h-[50px] rounded-xl' onClick={() => navigate('/home/all items')}>
-                    เริ่มต้นการใช้งาน
-                </SfButton>
-            </SfModal>
-        </CSSTransition>
+            <SfButton className='w-full btn-primary h-[50px] rounded-xl' onClick={() => navigate('/home/all items')}>
+                เริ่มต้นการใช้งาน
+            </SfButton>
+        </Modal>
         </>
     );
 }
