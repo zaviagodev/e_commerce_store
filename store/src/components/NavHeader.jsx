@@ -204,7 +204,7 @@ import Modal from './drawers/Modal';
       }
       else{
         window.location.assign('https://' + url)
-      }
+      }  
     }
     else {
       navigate(`https://${url}`)
@@ -394,20 +394,23 @@ import Modal from './drawers/Modal';
   </>
 
     function recursiveBuild (item){
-    const button = 
-      <li> 
-        <SfButton
-          key={item.label}
-          className="!p-0 lg:!p-2 flex justify-between w-full lg:w-fit text-black bg-transparent !font-semibold hover:bg-white hover:text-black active:bg-white active:text-black text-sm"
-          aria-label={item.label}
-          variant="tertiary"
-          square
-          onClick={() => handleClick(item.url, item.open_in_new_tab === 1)}
-        >{item.label}</SfButton>
-      </li>
-    if(item.children.length === 0) return button
-    if(item.children.length > 0) return  <SelectDropdownPreselected dropdowndame={item.label}  options={item.children} />
-  }
+      const button = 
+        <li className='w-full lg:w-fit'> 
+          <SfButton
+            key={item.label}
+            className="!p-0 lg:!p-2 flex justify-between w-full lg:w-fit text-black bg-transparent !font-semibold hover:bg-white hover:text-black active:bg-white active:text-black text-sm"
+            aria-label={item.label}
+            variant="tertiary"
+            square
+            onClick={() => handleClick(item.url, item.open_in_new_tab === 1)}
+          >
+            {item.label}
+            <SfIconChevronRight className='lg:hidden'/>
+          </SfButton>
+        </li>
+      if(item.children.length === 0) return button
+      if(item.children.length > 0) return  <SelectDropdownPreselected dropdowndame={item.label}  options={item.children} />
+    }
 
   return (
     <div className="w-full h-full">
@@ -603,14 +606,11 @@ function SecondaryProdNav ({group, groups, setGroup}){
 
   const navigate = useNavigate()
 
-  const handleClick = (item) => 
-  {
-    if(item.children.length > 0 )
-    {
+  const handleClick = (item) => {
+    if(item.children.length > 0 ){
       setGroup(item.name)
     }
-    if(item.children.length ==0)
-    {
+    if(item.children.length ==0){
       navigate(`/home/${item.name}`)
     }
   }
