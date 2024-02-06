@@ -33,7 +33,7 @@ export default function Login() {
         }
         else{
             schema['pwd'] = Yup.string().equals([Yup.ref('pwd_confirm')], 'รหัสผ่านไม่ตรงกัน').required('จำเป็นต้องกรอกรหัสผ่าน');
-            schema['pwd_confirm'] = Yup.string().equals([Yup.ref('pwd_confirm')], 'รหัสผ่านไม่ตรงกัน').required('จำเป็นต้องกรอกรหัสผ่าน');
+            schema['pwd_confirm'] = Yup.string().equals([Yup.ref('pwd')], 'รหัสผ่านไม่ตรงกัน').required('จำเป็นต้องกรอกรหัสผ่าน');
             // schema['first_name'] = Yup.string().required('จำเป็นต้องกรอกข้อมูล');
             // schema['last_name'] = Yup.string().required('จำเป็นต้องกรอกข้อมูล');
             schema['email'] = Yup.string().email('รูปแบบอีเมลไม่ถูกต้อง').required('จำเป็นต้องกรอกข้อมูล');

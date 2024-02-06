@@ -398,7 +398,7 @@ import Modal from './drawers/Modal';
       <li> 
         <SfButton
           key={item.label}
-          className="hidden md:flex text-black bg-transparent !font-bold hover:bg-white hover:text-black active:bg-white active:text-black !text-sm"
+          className="!p-0 lg:!p-2 flex justify-between w-full lg:w-fit text-black bg-transparent !font-semibold hover:bg-white hover:text-black active:bg-white active:text-black text-sm"
           aria-label={item.label}
           variant="tertiary"
           square
