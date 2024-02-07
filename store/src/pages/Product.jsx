@@ -33,7 +33,7 @@ const Product = () => {
         setLoaded(updatedLoaded);
     };
 
-
+    
     const [openedAccordion, setOpenedAccordion] = useState([]);
     const isAccordionOpen = (id) => openedAccordion.includes(id);
 
@@ -46,7 +46,7 @@ const Product = () => {
       };
 
 
-    const { get, products,settingPage } = useProducts();
+    const { get, products,settingPage,getGroupedProducts } = useProducts();
 
     const {hideCheckout, buttonLabel, buttonLink} = useSetting();
 
@@ -58,6 +58,8 @@ const Product = () => {
     const max = 999;
     const [value, { inc, dec, set }] = useCounter(min);
     const navigate = useNavigate();
+
+    console.log(product);
 
 
     function handleOnChange(event) {
@@ -118,6 +120,7 @@ const Product = () => {
     }
 
     const filteredProducts = products.filter((productz) => productz?.item_group === product?.item_group).filter((productz) => productz?.item_code  != product?.item_code)
+    const groupedProductsData = getGroupedProducts(product?.item_group)?.data;
 
     return (
         <main className='main-section-single-product'>
@@ -357,42 +360,35 @@ const Product = () => {
                 </section>
             </main>
 
-            {product !== undefined ? (
-                <>{filteredProducts.length > 0 && (
-                    <section className='px-4 lg:p-0 pt-[38px] lg:pt-[140px]'>
-                    <h1 className='mb-8 text-primary text-base lg:text-3xl font-semibold'>สินค้าที่คุณอาจสนใจ</h1>
-                    <div className="grid gap-[14px] grid-cols-2 lg:grid-cols-4 place-items-center">
-                        {products
-                            .filter((productz) => productz?.item_group === product?.item_group)
-                            .filter((productz) => productz?.item_code  != product?.item_code )
-                            .slice(0, 4)
-                            .map((product) => (
-                                <ProductCard
-                                    key={product.item_code}
-                                    title={product.web_item_name}
-                                    productId={product.name}
-                                    description={product.short_description}
-                                    itemCode={product.item_code}
-                                    price={product.formatted_price}
-                                    thumbnail={product.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`}
-                                    salesPrice={product?.formatted_mrp}
-                                    isGift={product?.item_group === "Gift" || product?.item_group === "Gift and Cards"}
-                                />
-                            )).slice(0,4)
-                        }
-                    </div>
-                </section>
-                )}</>
-            ) : (
-            <div className='flex flex-col gap-y-2 m-4 lg:m-0 lg:mt-[140px]'>
-                <div className='grid gap-[14px] grid-cols-2 lg:grid-cols-4 place-items-center w-full h-full'>
-                    <Skeleton className='h-full w-full aspect-square'/>
-                    <Skeleton className='h-full w-full aspect-square'/>
-                    <Skeleton className='h-full w-full aspect-square'/>
-                    <Skeleton className='h-full w-full aspect-square'/>
-                </div>
-            </div>
-            )}
+                    {groupedProductsData !== undefined ? (
+                        <section className='px-4 lg:p-0 pt-[38px] lg:pt-[140px]'>
+                            <h1 className='mb-8 text-primary text-base lg:text-3xl font-semibold'>สินค้าที่คุณอาจสนใจ</h1>
+                            <div className="grid gap-[14px] grid-cols-2 lg:grid-cols-4 place-items-center">
+                                {groupedProductsData?.message?.items.slice(0, 4).map((product) => (
+                                    <ProductCard
+                                        key={product.item_code}
+                                        title={product.web_item_name}
+                                        productId={product.name}
+                                        description={product.short_description}
+                                        itemCode={product.item_code}
+                                        price={product.formatted_price}
+                                        thumbnail={product.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`}
+                                        salesPrice={product?.formatted_mrp}
+                                        isGift={product?.item_group === "Gift" || product?.item_group === "Gift and Cards"}
+                                    />
+                                )).slice(0,4)}
+                            </div>
+                        </section>
+                    ) : (
+                        <div className='flex flex-col gap-y-2 m-4 lg:m-0 lg:mt-[140px]'>
+                            <div className='grid gap-[14px] grid-cols-2 lg:grid-cols-4 place-items-center w-full h-full'>
+                                <Skeleton className='h-full w-full aspect-square'/>
+                                <Skeleton className='h-full w-full aspect-square'/>
+                                <Skeleton className='h-full w-full aspect-square'/>
+                                <Skeleton className='h-full w-full aspect-square'/>
+                            </div>
+                        </div>
+                    )}
         </main>
     )
 }
