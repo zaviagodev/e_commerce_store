@@ -92,16 +92,16 @@ function SingleorderHistory(randomKey = 0) {
                     </p>
                 </div>
                 <div className="flex flex-col text-right gap-y-[21px]">
-                    <p className='text-sm font-semibold'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total ? `฿${deliveryResult?.message?.doc?.total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : `฿${getTotal().toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</p>
+                    <p className='text-sm font-semibold'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : order.base_total}`</p>
                     <p className="text-maingray text-sm font-semibold">
-                        {isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total_taxes_and_charges ? `฿${deliveryResult?.message?.doc?.total_taxes_and_charges?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : "฿0"}
+                    {isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : order.tax_amount}`
                     </p>
                     <p className='text-sm text-maingray'>-</p>
                 </div>
             </div>
             <div className="flex justify-between typography-headline-4 md:typography-headline-3 py-4 lg:pt-4 border-t mt-4 font-medium">
                 <p>ยอดรวมทั้งสิ้น</p>
-                <p className="text-sm">{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : 'Your address is not supported' : `฿ ${codeResult?.message?.doc?.grand_total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</p>
+                <p className="text-sm">{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : order.grand_total}`</p>
             </div>
         </div>
         )
