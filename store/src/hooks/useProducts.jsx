@@ -49,7 +49,7 @@ export const ProductsProvider = ({ children }) => {
     const get =  (name) => {
         const p = products.find((product) => product.name === name);
         if (!p) {
-            setNew(name);
+            setNewP(name);
             
         }
         return p;
