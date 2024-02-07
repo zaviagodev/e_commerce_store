@@ -20,7 +20,10 @@ const Home = () => {
     }, [updateCurrentUser]);
 
     useEffect(() => {
-        setpageno(page_no);
+        if(page_no){
+            setpageno(page_no);
+        }
+        
     }, [page_no]);
 
     const [sortOptions, setSortOptions] = useState([
@@ -95,7 +98,8 @@ const Home = () => {
                                 ))}
                             </div>
                                 <Pagination 
-                                    total={totalitems} 
+                                    total={totalitems}
+                                    selectedpage={page_no}
                                     perpage={settingPage.products_per_page} 
                                     indexproducts={(newPage) => {
 

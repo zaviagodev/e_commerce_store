@@ -11,11 +11,11 @@ export const ProductsProvider = ({ children }) => {
     const [settingPage, setsettingPage] = useState([])
     const [totalitems, settotalitems] = useState(0)
     const [pageno, setpageno] = useState(1)
-
+    const [realtedproducts, setrealtedProducts] = useState(1)
+    const [productinfo, setproductinfo] = useState([])
     const [pageData, setPageData] = useState({});
 
     const {mutate : mutateItemsList, error : itemListError, isLoading} = useFrappeGetCall('webshop.webshop.api.get_product_filter_data', {
-        name: newP,
         query_args: { "field_filters": {}, "attribute_filters": {}, "item_group": null, "start": Math.max(0, (pageno - 1) * 8), "from_filters": false }
     }, `products-${pageno}`, {
         isOnline: () => products.length === 0,
@@ -46,23 +46,33 @@ export const ProductsProvider = ({ children }) => {
     }
     
 
-    const get = (name) => {
-        // if product is already in the list, return it & refetch it in the background
-        const p = products.find((product) => product.name === name)
-        // if product is not in the list, return null & fetch it in the background
+    const get =  (name) => {
+        const p = products.find((product) => product.name === name);
         if (!p) {
-            setNewP(name)
+            setNewP(name);
+            
         }
-        return p
-    }
+        return p;
+    };
+    
 
     const getItemByCategorie = (categorie) => {
         return products.filter((product) => product.item_group === categorie)
     }
 
-    const getByItemCode = (itemCode) => {
 
-    
+    const getGroupedProducts = (groupname) => {
+        const swrResult = useFrappeGetCall('webshop.webshop.api.get_product_filter_data', {
+            query_args: { "field_filters": {}, "attribute_filters": {}, "item_group": groupname, "start": 0, "from_filters": false }
+        }, `products-${groupname}`, {
+            isOnline: () => products.length === 0, 
+        })
+
+        return swrResult
+        
+    };
+
+    const getByItemCode = (itemCode) => {
         // If pageData is not null, search within pageData
         if (pageData !== null) {
             // Iterate over each page in pageData
@@ -117,9 +127,10 @@ export const ProductsProvider = ({ children }) => {
             settingPage,
             pageData,
             totalitems,
+            productinfo,
             pageno,
             setpageno,
-            getItemByCategorie,
+            getGroupedProducts,
             getProductsCodeInCart
             }}>
             {children}

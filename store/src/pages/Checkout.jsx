@@ -197,6 +197,8 @@ export default function Checkout(){
         setMoreAddresses(true);
     }
 
+    console.log(shippingRules)
+
     const NewAddressForm = () => {
         return (
             <label className="w-full">
@@ -526,7 +528,7 @@ export default function Checkout(){
                                 </label>
                                 <AddressDrawer isOpen={morePayments} setIsOpen={setMorePayments} title='เลือกการจัดส่ง'>
                                     <div className='flex flex-col gap-y-3'>
-                                        { shippingRules.map(({ name, shipping_amount }) => (
+                                        { shippingRules.map(({ name, shipping_amount, calculate_based_on }) => (
                                             <SfListItem
                                             as="label"
                                             key={name}
@@ -544,8 +546,8 @@ export default function Checkout(){
                                                 }}
                                                 />
                                             }
-                                            slotSuffix={<span className="text-gray-900  font-bold">฿{shipping_amount?.toLocaleString()}</span>}
-                                            className={classNames('w-full !gap-0 border rounded-xl border-neutral-100 !p-4  bg-neutral-50 font-bold', {'outline outline-[1px]': checkedState == name})}
+                                            slotSuffix={<span className="text-gray-900 font-semibold text-sm whitespace-pre">{`${calculate_based_on === 'Fixed' ? `฿${shipping_amount?.toLocaleString()}` : 'เลือกเพื่อคำนวณค่าจัดส่ง'}`}</span>}
+                                            className={classNames('w-full !gap-0 border rounded-xl border-neutral-100 !p-4 text-sm bg-neutral-50 font-semibold', {'outline outline-[1px]': checkedState == name})}
                                             >
                                             {name}
                                             </SfListItem>

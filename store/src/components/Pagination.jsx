@@ -1,14 +1,19 @@
 import { SfIconArrowBack, SfIconArrowForward } from '@storefront-ui/react';
 import React, { useState, useEffect } from 'react';
 
-const Pagination = ({ total,perpage,indexproducts }) => {
-  const [currentPage, setCurrentPage] = useState(1);
+const Pagination = ({ total,perpage,indexproducts,selectedpage }) => {
+  const initialPage = typeof selectedpage !== 'undefined' ? selectedpage : 1;
+
+
+  const [currentPage, setCurrentPage] = useState(initialPage);
   const [startIndex, setStartIndex] = useState(1);
   const itemsPerPage = perpage;
 
   useEffect(() => {
     const newStartIndex = (currentPage - 1) * itemsPerPage;
     setStartIndex(newStartIndex >= 0 ? newStartIndex : 0);
+    
+
   }, [currentPage]);
 
   const totalPages = Math.ceil(total / itemsPerPage);
@@ -34,11 +39,18 @@ const Pagination = ({ total,perpage,indexproducts }) => {
         ก่อนหน้า
       </button>
       <div className='flex gap-x-[2px]'>
-        {[...Array(totalPages).keys()].map((page) => (
-          <button className={`h-10 w-10 rounded-lg hover:bg-zinc-100 hover:text-maingray ${currentPage === page + 1 ? 'bg-zinc-100' : 'bg-white text-maingray'}`} key={page + 1} onClick={() => handlePageChange(page + 1)} disabled={currentPage === page + 1}>
+      {[...Array(totalPages).keys()].map((page) => (
+          <button
+            className={`h-10 w-10 rounded-lg hover:bg-zinc-100 hover:text-maingray ${currentPage === page + 1 || selectedpage == page+1 ? 'bg-zinc-100' : 'bg-white text-maingray'}`}
+            key={page + 1}
+            onClick={() => handlePageChange(page + 1)}
+            disabled={currentPage === page + 1}
+          >
             {page + 1}
           </button>
-        ))}
+      ))}
+
+
       </div>
       <button className={`flex items-center gap-x-2 ${currentPage === totalPages ? 'text-secgray' : ''}`} onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages}>
         ถัดไป

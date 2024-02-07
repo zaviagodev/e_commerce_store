@@ -1,5 +1,5 @@
-import { SfButton } from '@storefront-ui/react';
-import { useState,React} from 'react';
+import { SfButton, SfTooltip } from '@storefront-ui/react';
+import { useState,React, useEffect} from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import defaultLogo from '../assets/defaultBrandIcon.svg';
 import { useSetting } from '../hooks/useWebsiteSettings';
@@ -11,7 +11,7 @@ import { Icons } from '../components/icons';
 const BankInfoPage = () => {
     const [searchParams] = useSearchParams();
     const navigate = useNavigate()
-    const { appLogo } = useSetting()
+    const { appLogo, defaultTaxe } = useSetting()
     const payment_method = searchParams.get("payment_method");
     const [Order, setOrder] = useState([])
     const [randomKey, setrandomKey] = useState(0)
@@ -23,6 +23,9 @@ const BankInfoPage = () => {
     const { upload, loading: uploadingFile, progress, error: errorUploadingDoc, reset: resetUploadDoc } = useFrappeFileUpload()
     const [paymentcompleted, setpaymentcompleted] = useState(null)
     const [hideData, setHideData] = useState(false)
+    const [bankselection, setbankselection] = useState(false)
+    const [isTextCopied, setIsTextCopied] = useState(false)
+    const [selectedBank, setSelectedBank] = useState(null)
 
     const { call, isCompleted } = useFrappePostCall('webshop.webshop.api.payment_entry')
     const formik = useFormik({
@@ -34,26 +37,28 @@ const BankInfoPage = () => {
         },
         onSubmit: async (values) => {
             try {
-                upload(values.file, {
-                    isPrivate: true,
-                    doctype: 'Raven Message',
-                    fieldname: 'file',
-                })
-                .then(response => {
-                    let apiData = {
-                        'order_name': Order.name,
-                        'payment_file': response.name
-                    };
-                    call(apiData).then(response => {
-                        setpaymentcompleted(response);
+                if (values.file){
+                    upload(values.file, {
+                        isPrivate: true,
+                        doctype: 'Raven Message',
+                        fieldname: 'file',
                     })
-                })
-                .catch(error => {
-                    console.error("File upload failed:", error);
-                });
+                    .then(response => {
+                        const apiData = {
+                            'order_name': Order.name,
+                            'payment_file': response.name
+                        };
+                        const updatedValues = { ...values, ...apiData };
 
-                // Handle success, reset form, or perform any additional logic
-                //formik.resetForm();
+                        call(updatedValues).then(response => {
+                            setpaymentcompleted(response);
+                        })
+                    })
+                    .catch(error => {
+                        console.error("File upload failed:", error);
+                    });
+                    formik.resetForm();
+                }
             } catch (error) {
             // Handle API error
             console.error("API Error:", error);
@@ -86,16 +91,29 @@ const BankInfoPage = () => {
       }
   );
 
-    function handleChange(event){
+  function handleChange(event){
         setimgtoupload(event);
         if (event.target.files && event.target.files[0]) {
             setImage(URL.createObjectURL(event.target.files[0]));
         }
         formik.setFieldValue("file", event.currentTarget.files[0]);
-        // console.log(e.currentTarget.files);
         formik.setFieldValue('order_name', Order.name);
         formik.setFieldValue('payment_info', paymentinfo.key);
+        if(bankselection){
+            formik.setFieldValue('bank', bankselection);
+        }
     }
+
+    const fileSize = (size) => {
+        if (size > 1024 * 1024){
+            return `${(size / 1024 / 1024).toFixed(1)} MB`
+        } else if (size > 1024){
+            return `${(size / 1024).toFixed(1)} KB`
+        } else {
+            return `${(size).toFixed(1)} B`
+        }
+    }
+
     function SubmitNow(){
         //formik.setFieldValue('order_name', Order.name);
         //formik.setFieldValue('payment_info', paymentinfo.key);
@@ -105,9 +123,41 @@ const BankInfoPage = () => {
        // })
     }
 
+    const receiptTitle = 
+        payment_method == 1 ?
+            Pagestep == 1 ? 'ชำระเงินด้วย QR พร้อมเพย์' :
+            Pagestep == 2 ? 'แจ้งการชำระเงิน' :
+            'ใบเสร็จ บริษัท เดอะแบรนด์'
+        : payment_method == 2 ?
+            Pagestep == 1 ? 'ชำระเงินผ่านธนาคาร' :
+            Pagestep == 2 ? 'แจ้งการชำระเงิน' :
+            'ใบเสร็จ บริษัท เดอะแบรนด์'
+        : 'ใบเสร็จ บริษัท เดอะแบรนด์'
+
+    const CopyButton = ({children}) => {
+        return (
+            <SfTooltip label={isTextCopied ? 'คัดลอกแล้ว' : 'คัดลอก'}>
+                <div onMouseOut={() => setIsTextCopied(false)}>
+                    {children}
+                </div>
+            </SfTooltip>
+        )
+    }
+
+    const copyInfo = {
+        accountNum: () => {
+            setIsTextCopied(true);
+            navigator.clipboard.writeText(paymentinfo.promptpay_number)
+        },
+        bankNum: (acc) => {
+            setIsTextCopied(true);
+            navigator.clipboard.writeText(acc)
+        }
+    }
+
     return (
-        <div className='pt-10 w-full'>
-            <div className='max-w-[549px] mx-auto flex flex-col gap-y-9 p-8 border border-neutral-50 rounded-[30px]'>
+        <div className='py-10 w-full'>
+            <div className='max-w-[513px] mx-auto flex flex-col gap-y-10 p-8 rounded-[30px]'>
                 <div className='flex justify-center'>
                     <picture>
                     <source srcSet={appLogo ? `${import.meta.env.VITE_ERP_URL ?? ''}${appLogo}` : defaultLogo} media="(min-width: 768px)" />
@@ -118,7 +168,16 @@ const BankInfoPage = () => {
                     />
                     </picture>
                 </div>
-                <div className='flex flex-col gap-y-[26px]'>
+                <div className='flex flex-col gap-y-4'>
+                    <h2 className='text-center text-[22px] font-semibold leading-[30px]'>{receiptTitle}</h2>
+
+                    {Pagestep == 0 && (
+                        <div className='flex flex-col text-center gap-y-[6px] text-sm tracking-[-0.4px] font-semibold'>
+                            <p>999/99 ถนนพระราม 9 </p> {/* Company's address is still static */}
+                            <p>หมายเลขกำกับภาษี: 0128954123857111 (VAT Included)</p> {/* Sales invoice ID is still static */}
+                            <p>เลขที่คำสั่งซื้อ: {Order.name}</p> {/* Order ID is already dynamic */}
+                        </div>
+                    )}
 
                     <div className='flex flex-col gap-y-[14px]'>
 
@@ -131,32 +190,31 @@ const BankInfoPage = () => {
                                 <>
                                     <h1 className='text-lg text-center font-medium'>Setp 1 Order Deatils</h1>
 
-                                    <div className='border border-lightgray rounded-xl bg-neutral-50 overflow-hidden'>
-                                        <div className='p-6 pb-5 flex items-center justify-between w-full cursor-pointer'>
+                                    <div className='border border-lightgray rounded-xl bg-neutral-50 overflow-hidden mt-8'>
+                                        <div className='px-6 py-3 flex items-center justify-between w-full'>
                                             <div className='flex items-center gap-x-2'>
                                                 <Icons.wallet04 color='#666666' className='min-w-6'/>
                                                 <span className='font-bold text-darkgray'>วิธีการชำระเงิน</span>
                                             </div>
-                                            {paymentinfo.name}
+                                            <p className='font-semibold'>{paymentinfo.name}</p>
                                         </div>
                                     </div>
 
-                                    <div className='flex flex-col gap-y-6'>
+                                    <div className='flex flex-col gap-y-[26px]'>
                                         <div className="flex justify-between items-center">
                                             <p className='text-secgray text-sm'>ยอดรวมทั้งสิ้น</p>
                                             <p className='text-right text-sm font-semibold text-secgray'>{Order?.items?.length} ชิ้น</p>
                                         </div>
-                                        <div className='flex items-center justify-center gap-x-1'>
-                                            <h1 className='text-[40px] font-semibold'>฿{Order.grand_total?.toFixed(2)}</h1>
-                                        </div>
+                                        <h1 className='text-[40px] font-semibold text-center leading-5'>฿{Order.grand_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</h1>
                                     </div>
 
-                                    <div className='flex flex-col justify-center gap-4 items-center'>
+                                    <div className='flex flex-col justify-center gap-3 items-center'>
                                         <SfButton variant='tertiary' className='w-full btn-primary h-[50px]' onClick={() => setPagestep(1)}>
                                             ชำระเงิน
                                         </SfButton>
                                         <a className='text-secgray text-sm cursor-pointer inline-block w-fit' onClick={() => setHideData(!hideData)}>{hideData ? 'แสดงข้อมูล' : 'ซ่อนข้อมูล'}</a>
                                     </div>
+
                                     {/* <div className='flex items-center justify-center gap-x-1'>
                                         Render HTML content using dangerouslySetInnerHTML
                                         <div dangerouslySetInnerHTML={{ __html: Order.address_display }} />
@@ -165,17 +223,49 @@ const BankInfoPage = () => {
                                     {/* Insert address_display into an address card, which I already created CSS in case of CSS styles */}
                                     {!hideData && (
                                         <>
-                                        <AddressCard address_title={Order.name} address_line1={<div dangerouslySetInnerHTML={{ __html: Order.address_display }} />} deletebtn={false} active={true}/>
+                                        <AddressCard address_title={Order.shipping_address_name} address_line1={<div dangerouslySetInnerHTML={{ __html: Order.address_display }} />} deletebtn={false} active={true}/>
 
-                                        {Order.items?.map((d, index) => (
-                                            <div key={index} className='flex justify-between'>
-                                                <div className='flex flex-col gap-y-[10px]'>
-                                                    <h2 className='text-sm text-darkgray'>{d.item_name}</h2>
-                                                    <p className='text-sm font-semibold'>{d.qty} ชิ้น</p>
-                                                </div>
-                                                <p className='text-sm font-semibold'>฿{d.rate.toFixed(2)}</p>
+                                        <section className='flex flex-col gap-y-4'>
+                                            <div className='flex flex-col gap-9'>
+                                                {Order.items?.map((d, index) => (
+                                                    <div key={index} className='flex justify-between'>
+                                                        <div className='flex flex-col gap-y-1'>
+                                                            <h2 className='text-sm text-darkgray'>{d.item_name}</h2>
+                                                            <p className='text-sm font-semibold'>{d.qty} ชิ้น</p>
+                                                        </div>
+                                                        <p className='text-sm font-semibold'>฿{d.rate.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</p>
+                                                    </div>
+                                                ))}
                                             </div>
-                                        ))}
+
+                                            <div className='flex flex-col pt-4 border-t gap-y-4'>
+                                                <div className="flex justify-between items-center">
+                                                    <p className='font-semibold text-sm'>ราคาสินค้าทั้งหมด</p>
+                                                    <p className='font-semibold text-sm'>฿{Order.base_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</p>
+                                                </div>
+                                                <div className="flex justify-between items-center">
+                                                    <p className="text-maingray text-sm">ค่าจัดส่ง</p>
+                                                    <p className="text-maingray font-semibold text-sm">฿0</p>
+                                                </div>
+                                                <div className="flex justify-between items-center">
+                                                    <p className='text-maingray text-sm'>
+                                                        ภาษีมูลค่าเพิ่ม
+                                                        {defaultTaxe && ` (${
+                                                            defaultTaxe?.rate !== 0 ? defaultTaxe?.rate+'%' : ''
+                                                        }${
+                                                            defaultTaxe?.rate !== 0 && defaultTaxe?.amout !== 0 ? ' + ' : ''
+                                                        }${
+                                                            defaultTaxe?.amout !== 0 ? +defaultTaxe?.amout + '฿' : ''
+                                                        })`}
+                                                    </p>
+                                                    <p className='text-maingray leading-[10px] text-sm'>-</p>
+                                                </div>
+                                                <div className='flex justify-between pt-4 border-t'>
+                                                    <p className='font-semibold text-sm'>ยอดชำระเงินทั้งหมด</p>
+                                                    <p className='font-semibold text-sm text-right'>฿{Order.grand_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</p>
+                                                </div>
+                                            </div>
+                                        </section>
                                         </>
                                     )}
 
@@ -187,8 +277,8 @@ const BankInfoPage = () => {
                                 <>
                                     <h1 className='text-lg text-center font-medium'>Setp 2 QR Deatils</h1>
                                     <div className='flex items-center justify-between'>
-                                        <h2 className='text-sm text-secgray'>เลขที่คำสั่งซื้อ</h2>
-                                        <p className='text-sm font-semibold'>123123123</p>
+                                        <h2 className='text-secgray'>เลขที่คำสั่งซื้อ</h2>
+                                        <p className='font-semibold'>{Order.name}</p>
                                     </div>
 
                                     <div className='flex items-center justify-center gap-x-1'>
@@ -197,23 +287,43 @@ const BankInfoPage = () => {
                                             alt="Sf Logo"
                                         />
                                     </div>
-                                    {paymentinfo.account_name && (
-                                        <div className='flex items-center justify-center gap-x-1'>
-                                            <h2 className='text-sm font-medium'>Account Name </h2>
-                                            <p className='text-sm'>{paymentinfo.account_name}</p>
-                                        </div>
-                                    )}
+                                    
+                                    <div className='flex flex-col gap-y-6'>
+                                        {paymentinfo.account_name && (
+                                            <div className='flex items-center justify-between'>
+                                                <h2 className='font-semibold text-secgray'>ชื่อบัญชี</h2>
+                                                <p className='font-semibold'>{paymentinfo.account_name}</p>
+                                            </div>
+                                        )}
+                                        {paymentinfo.promptpay_number && (
+                                            <div className='flex items-center justify-between'>
+                                                <h2 className='font-semibold text-secgray'>หมายเลขบัญชี</h2>
+                                                <div className='flex gap-x-2 items-center'>
+                                                    <p className='font-semibold'>{paymentinfo.promptpay_number}</p>
+                                                    <CopyButton>
+                                                        <Icons.copy06 className='cursor-pointer' onClick={copyInfo.accountNum}/>
+                                                    </CopyButton>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
 
-                                    {paymentinfo.promptpay_number && (
-                                        <div className='flex items-center justify-center gap-x-1'>
-                                            <h2 className='text-sm font-medium'>Account Number </h2>
-                                            <p className='text-sm'>{paymentinfo.promptpay_number}</p>
-                                        </div>
-                                    )}
+                                    <div className='flex flex-col gap-y-[26px] items-center'>
+                                        <p className='text-secgray text-sm'>ยอดรวมทั้งหมด</p>
+                                        <h1 className='text-[40px] font-semibold text-center leading-5'>฿{Order.grand_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</h1>
+                                    </div>
 
-                                    <SfButton variant='tertiary' className='w-full btn-primary h-[50px]' onClick={() => setPagestep(2)}>
-                                        PayNow
-                                    </SfButton>
+                                    <div className='flex flex-col gap-y-4'>
+                                        <a href={paymentinfo.promptpay_qr_image ? `${import.meta.env.VITE_ERP_URL ?? ''}${paymentinfo.promptpay_qr_image}` : ""} download={paymentinfo.name}>
+                                            <SfButton variant='tertiary' className='w-full btn-secondary h-[50px] flex items-center gap-x-[10px]'>
+                                                <Icons.download03 />
+                                                บันทึก QR
+                                            </SfButton>
+                                        </a>
+                                        <SfButton variant='tertiary' className='w-full btn-primary h-[50px]' onClick={() => setPagestep(2)}>
+                                            แจ้งชำระเงิน
+                                        </SfButton>
+                                    </div>
                                     <div>Your content for payment_method 1 and Pagestep 2</div>
                                 </>
                             )}
@@ -222,82 +332,152 @@ const BankInfoPage = () => {
                                 <>
                                     <h1 className='text-lg text-center font-medium'>Setp 3 QR Deatils</h1>
 
-                                    <div className='flex items-center justify-center gap-x-1'>
-                                        <h2 className='text-sm font-medium'>Sales Invoice: </h2>
-                                        <p className='text-sm'>123123123</p>
+                                    <div className='flex flex-col gap-y-[14px]'>
+                                        <div className='flex items-center justify-between'>
+                                            <h2 className='text-secgray'>เลขที่คำสั่งซื้อ</h2>
+                                            <p className='font-semibold'>{Order.name}</p>
+                                        </div>
+
+                                        <div className='flex items-center justify-between'>
+                                            <h2 className='text-secgray'>ยอดรวมทั้งหมด</h2>
+                                            <p className='font-semibold'>฿{Order.grand_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</p>
+                                        </div>
                                     </div>
 
-                                    <div className='flex items-center justify-center gap-x-1'>
-                                        <h2 className='text-sm font-medium'>Total: </h2>
-                                        <p className='text-sm'>{Order.grand_total}</p>
+                                    <div className='flex flex-col gap-y-2'>
+                                        <h2 className='font-semibold text-linkblack'>บัญชีธนาคารที่โอนเข้า</h2>
+                                        <div className='border border-lightgray rounded-xl bg-neutral-50 overflow-hidden'>
+                                            <div className='px-6 py-3 flex flex-col w-full'>
+                                                {paymentinfo.name && <p className='text-sm text-darkgray'>{paymentinfo.name}</p>}
+                                                {paymentinfo.promptpay_number && <p className='font-semibold'>{paymentinfo.promptpay_number}</p>}
+                                                {paymentinfo.account_name && <p className='text-sm font-semibold text-darkgray'>{paymentinfo.account_name}</p>}
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    {paymentinfo.account_name && (
-                                        <div className='flex items-center justify-center gap-x-1'>
-                                            <h2 className='text-sm font-medium'>Account Name </h2>
-                                            <p className='text-sm'>{paymentinfo.account_name}</p>
-                                        </div>
-                                    )}
+                                    <div className='flex flex-col gap-y-2'>
+                                        <h2 className='font-semibold text-linkblack'>หลักฐานการโอน <span className='text-red-500'>*</span></h2>
+                                        {image ? (
+                                            <div className='border border-lightgray rounded-xl bg-neutral-50 overflow-hidden'>
+                                                <div className='px-3 h-[140px] flex w-full gap-x-3 items-center relative'>
+                                                    <Icons.x onClick={() => setImage(null)} className='absolute top-6 right-4 cursor-pointer'/>
+                                                    <img alt="preview image" src={image} width='76' height='76' className='h-[76px] w-[76px] object-cover aspect-square'/>
+                                                    <div className='flex flex-col gap-y-1'>
+                                                        <h2 className='font-semibold text-sm pr-4'>{imgtoupload?.target.files[0].name}</h2>
+                                                        <p className='text-sm text-secgray'>{fileSize(imgtoupload?.target.files[0].size)}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                        <><label htmlFor='file-upload' className='text-darkgray text-base cursor-pointer'>
+                                            <div className='border border-lightgray rounded-xl bg-neutral-50 overflow-hidden'>
+                                                <div className='h-[140px] flex flex-col w-full justify-center items-center'>
+                                                    <Icons.imagePlus />
+                                                    <h2 className='text-lg font-semibold text-linkblack mt-3'>อัปโหลดสลิป</h2>
+                                                    <p className='text-secgray text-xs'>PNG or JPG (max.800x400px)</p>
+                                                </div>
+                                            </div>
+                                        </label>
+                                        <input type='file' className='hidden' id='file-upload' onChange={handleChange} accept='image/*' /></> 
+                                        )}
+                                    </div>
 
-                                    {paymentinfo.promptpay_number && (
-                                        <div className='flex items-center justify-center gap-x-1'>
-                                            <h2 className='text-sm font-medium'>Account Number </h2>
-                                            <p className='text-sm'>{paymentinfo.promptpay_number}</p>
-                                        </div>
-                                    )}
-
-                                    <label style={{ border: 'solid', textAlign: 'center', padding: '8px', cursor: 'pointer' }} htmlFor='file-upload' className='text-darkgray text-base'>
+                                    {/* <label style={{ border: 'solid', textAlign: 'center', padding: '8px', cursor: 'pointer' }} htmlFor='file-upload' className='text-darkgray text-base'>
                                         Upload Now
                                     </label>
                                     <input type='file' className='hidden' id='file-upload' onChange={handleChange} accept='image/*' />
-                                    {image && <img alt="preview image" src={image} />}
+                                    {image && <img alt="preview image" src={image} />} */}
 
-                                    <SfButton variant='tertiary' className='w-full btn-primary h-[50px]' onClick={() => SubmitNow()}>PayNow</SfButton>
+                                    <SfButton variant='tertiary' className='w-full btn-primary h-[50px]' onClick={() => SubmitNow()}>ยืนยันการแจ้งชำระเงิน</SfButton>
                                     <div>Your content for payment_method 1 and Pagestep 2</div>
                                 </>
                             )}
-
-                        </form>              
-
+                        </form>
                         </>
                     )}
 
 
                     {payment_method == 2 && (
                         <>
+                        <form className="w-full flex flex-col gap-9 text-neutral-900">
                             {Pagestep === 0 && (
                                 <>
                                     <h1 className='text-lg text-center font-medium'>Setp 1 Order Deatils</h1>
-                                    <div className='flex flex-col gap-y-6'>
+
+                                    <div className='border border-lightgray rounded-xl bg-neutral-50 overflow-hidden'>
+                                        <div className='px-6 py-3 flex items-center justify-between w-full'>
+                                            <div className='flex items-center gap-x-2'>
+                                                <Icons.wallet04 color='#666666' className='min-w-6'/>
+                                                <span className='font-bold text-darkgray'>วิธีการชำระเงิน</span>
+                                            </div>
+                                            <p className='font-semibold'>{paymentinfo.name}</p>
+                                        </div>
+                                    </div>
+
+                                    <div className='flex flex-col gap-y-[26px]'>
                                         <div className="flex justify-between items-center">
                                             <p className='text-secgray text-sm'>ยอดรวมทั้งสิ้น</p>
                                             <p className='text-right text-sm font-semibold text-secgray'>{Order?.items?.length} ชิ้น</p>
                                         </div>
-                                        <div className='flex items-center justify-center gap-x-1'>
-                                            <h1 className='text-[40px] font-semibold'>฿{Order.grand_total?.toFixed(2)}</h1>
-                                        </div>
+                                        <h1 className='text-[40px] font-semibold text-center leading-5'>฿{Order.grand_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</h1>
+                                    </div>
+
+                                    <div className='flex flex-col justify-center gap-3 items-center'>
+                                        <SfButton variant='tertiary' className='w-full btn-primary h-[50px]' onClick={() => setPagestep(1)}>
+                                            ชำระเงิน
+                                        </SfButton>
+                                        <a className='text-secgray text-sm cursor-pointer inline-block w-fit' onClick={() => setHideData(!hideData)}>{hideData ? 'แสดงข้อมูล' : 'ซ่อนข้อมูล'}</a>
                                     </div>
                                     {/* <div className='flex items-center justify-center gap-x-1'>
                                         Render HTML content using dangerouslySetInnerHTML 
                                         <div dangerouslySetInnerHTML={{ __html: Order.address_display }} />
                                     </div> */}
 
-                                    <div className='flex flex-col justify-center gap-4 items-center'>
-                                        <SfButton variant='tertiary' className='w-full btn-primary h-[50px]' onClick={() => setPagestep(1)}>
-                                            ชำระเงิน
-                                        </SfButton>
-                                        <a className='text-secgray text-sm cursor-pointer inline-block w-fit' onClick={() => setHideData(!hideData)}>{hideData ? 'แสดงข้อมูล' : 'ซ่อนข้อมูล'}</a>
-                                    </div>
-
                                     {!hideData && (
                                         <><AddressCard address_title={Order.name} address_line1={<div dangerouslySetInnerHTML={{ __html: Order.address_display }} />} deletebtn={false} active={true}/>
 
-                                        {Order.items?.map((d, index) => (
-                                            <div key={index} className='flex items-center justify-center gap-x-1'>
-                                                <h2 className='text-sm font-medium'>{d.item_name}: </h2>
-                                                <p className='text-sm'>{d.rate}</p>
+                                        <section className='flex flex-col gap-y-4'>
+                                            <div className='flex flex-col gap-9'>
+                                                {Order.items?.map((d, index) => (
+                                                    <div key={index} className='flex justify-between'>
+                                                        <div className='flex flex-col gap-y-1'>
+                                                            <h2 className='text-sm text-darkgray'>{d.item_name}</h2>
+                                                            <p className='text-sm font-semibold'>{d.qty} ชิ้น</p>
+                                                        </div>
+                                                        <p className='text-sm font-semibold'>฿{d.rate.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</p>
+                                                    </div>
+                                                ))}
                                             </div>
-                                        ))}</>
+
+                                            <div className='flex flex-col pt-4 border-t gap-y-4'>
+                                                <div className="flex justify-between items-center">
+                                                    <p className='font-semibold text-sm'>ราคาสินค้าทั้งหมด</p>
+                                                    <p className='font-semibold text-sm'>฿{Order.base_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</p>
+                                                </div>
+                                                <div className="flex justify-between items-center">
+                                                    <p className="text-maingray text-sm">ค่าจัดส่ง</p>
+                                                    <p className="text-maingray font-semibold text-sm">฿0</p>
+                                                </div>
+                                                <div className="flex justify-between items-center">
+                                                    <p className='text-maingray text-sm'>
+                                                        ภาษีมูลค่าเพิ่ม
+                                                        {defaultTaxe && ` (${
+                                                            defaultTaxe?.rate !== 0 ? defaultTaxe?.rate+'%' : ''
+                                                        }${
+                                                            defaultTaxe?.rate !== 0 && defaultTaxe?.amout !== 0 ? ' + ' : ''
+                                                        }${
+                                                            defaultTaxe?.amout !== 0 ? +defaultTaxe?.amout + '฿' : ''
+                                                        })`}
+                                                    </p>
+                                                    <p className='text-maingray leading-[10px] text-sm'>-</p>
+                                                </div>
+                                                <div className='flex justify-between pt-4 border-t'>
+                                                    <p className='font-semibold text-sm'>ยอดชำระเงินทั้งหมด</p>
+                                                    <p className='font-semibold text-sm text-right'>฿{Order.grand_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</p>
+                                                </div>
+                                            </div>
+                                        </section>
+                                        </>
                                     )}
 
                                     <div>Your content for payment_method 2 and Pagestep 1</div>
@@ -308,21 +488,34 @@ const BankInfoPage = () => {
                                 <>
                                     <h1 className='text-lg text-center font-medium'>Setp 2 Bank Details</h1>
                                     <div className='flex items-center justify-between'>
-                                        <h2 className='text-sm text-secgray'>เลขที่คำสั่งซื้อ</h2>
-                                        <p className='text-sm font-semibold'>123123123</p>
+                                        <h2 className='text-secgray'>เลขที่คำสั่งซื้อ</h2>
+                                        <p className='font-semibold'>{Order.name}</p>
                                     </div>
 
-                                    {paymentinfo.banks_list?.map((d, index) => (
-                                        <div key={index} className='justify-center gap-x-1 bankdeatils'>
-                                            <h2 className='text-sm font-medium'>{d.bank}: </h2>
-                                            <p className='text-sm'>{d.bank_account_name}</p>
-                                            <p className='text-sm'>{d.bank_account_number}</p>
-                                        </div>
-                                    ))}
-                                    
+                                    <div className='flex flex-col gap-y-3'>
+                                        {paymentinfo.banks_list?.map((d, index) => (
+                                            <div key={index} className='border border-lightgray rounded-xl bg-neutral-50 overflow-hidden bankdeatils'>
+                                                <div className='px-6 py-3 flex flex-col w-full'>
+                                                    <h2 className='text-sm text-darkgray'>{d.bank}</h2>
+                                                    <div className='flex justify-between w-full items-center'>
+                                                        <p className='font-semibold'>{d.bank_account_number}</p>
+                                                        <CopyButton>
+                                                            <Icons.copy06 className='cursor-pointer' onClick={() => copyInfo.bankNum(d.bank_account_number)}/>
+                                                        </CopyButton>
+                                                    </div>
+                                                    <p className='text-sm font-semibold text-darkgray'>{d.bank_account_name}</p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <div className='flex flex-col gap-y-[26px] items-center'>
+                                        <p className='text-secgray text-sm'>ยอดรวมทั้งหมด</p>
+                                        <h1 className='text-[40px] font-semibold text-center leading-5'>฿{Order.grand_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</h1>
+                                    </div>
 
                                     <SfButton variant='tertiary' className='w-full btn-primary h-[50px]' onClick={() => setPagestep(2)}>
-                                        PayNow
+                                        แจ้งชำระเงิน
                                     </SfButton>
                                     <div>Your content for payment_method 2 and Pagestep 2</div>
                                 </>
@@ -331,47 +524,77 @@ const BankInfoPage = () => {
                             {Pagestep === 2 && (
                                 <>
                                     <h1 className='text-lg text-center font-medium'>Setp 3 Invoice Deatils</h1>
-                                    
-                                    
-                                    <div className='flex items-center justify-center gap-x-1'>
-                                        <h2 className='text-sm font-medium'>Sales Invoice: </h2>
-                                        <p className='text-sm'>123123123</p>
+
+                                    <div className='flex flex-col gap-y-[14px]'>
+                                        <div className='flex items-center justify-between'>
+                                            <h2 className='text-secgray'>เลขที่คำสั่งซื้อ</h2>
+                                            <p className='font-semibold'>{Order.name}</p>
+                                        </div>
+
+                                        <div className='flex items-center justify-between'>
+                                            <h2 className='text-secgray'>ยอดรวมทั้งหมด</h2>
+                                            <p className='font-semibold'>฿{Order.grand_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</p>
+                                        </div>
                                     </div>
 
-                                    <div className='flex items-center justify-center gap-x-1'>
-                                        <h2 className='text-sm font-medium'>Total: </h2>
-                                        <p className='text-sm'>{Order.grand_total}</p>
+                                    <div className='flex flex-col gap-y-2'>
+                                        <h2 className='font-semibold text-linkblack'>บัญชีธนาคารที่โอนเข้า <span className='text-red-500'>*</span></h2>
+                                        {paymentinfo.banks_list?.map((d, index) => (
+                                            <><label key={index} htmlFor={`bank-${index}`} className='cursor-pointer'>
+                                                <div className={`border ${selectedBank === `bank-${index}` ? 'border-black' : 'border-lightgray'} rounded-xl bg-neutral-50 overflow-hidden bankdeatils`}>
+                                                    <div className='p-4 flex w-full items-center gap-x-3'>
+                                                        <div className='flex gap-x-[10px] items-center'>
+                                                            <span className='h-[18px] w-[18px] border border-black rounded-full bg-white flex items-center justify-center'>
+                                                                {selectedBank === `bank-${index}` && <span className='flex h-3 w-3 bg-black rounded-full' />}
+                                                            </span>
+                                                            <img src="" />{/* Payment info logo will be inserted here */}
+                                                        </div>
+                                                        <div className='flex flex-col gap-y-1'>
+                                                            <h2 className='text-sm text-darkgray'>{d.bank}</h2>
+                                                            <p className='font-semibold'>{d.bank_account_number}</p>
+                                                            <p className='text-sm font-semibold text-darkgray'>{d.bank_account_name}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                            <input type='radio' className='hidden' id={`bank-${index}`} name="bank" value={d.bank} onChange={(e) => setSelectedBank(e.target.id)}/></>
+                                        ))}
                                     </div>
 
-                                    {paymentinfo.account_name && (
-                                        <div className='flex items-center justify-center gap-x-1'>
-                                            <h2 className='text-sm font-medium'>Account Name </h2>
-                                            <p className='text-sm'>{paymentinfo.account_name}</p>
-                                        </div>
-                                    )}
+                                    <div className='flex flex-col gap-y-2'>
+                                        <h2 className='font-semibold text-linkblack'>หลักฐานการโอน <span className='text-red-500'>*</span></h2>
+                                        {image ? (
+                                            <div className='border border-lightgray rounded-xl bg-neutral-50 overflow-hidden'>
+                                                <div className='px-3 h-[140px] flex w-full gap-x-3 items-center relative'>
+                                                    <Icons.x onClick={() => setImage(null)} className='absolute top-6 right-4 cursor-pointer'/>
+                                                    <img alt="preview image" src={image} width='76' height='76' className='h-[76px] w-[76px] object-cover aspect-square'/>
+                                                    <div className='flex flex-col gap-y-1'>
+                                                        <h2 className='font-semibold text-sm pr-4'>{imgtoupload?.target.files[0].name}</h2>
+                                                        <p className='text-sm text-secgray'>{fileSize(imgtoupload?.target.files[0].size)}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                        <><label htmlFor='file-upload' className='text-darkgray text-base cursor-pointer'>
+                                            <div className='border border-lightgray rounded-xl bg-neutral-50 overflow-hidden'>
+                                                <div className='h-[140px] flex flex-col w-full justify-center items-center'>
+                                                    <Icons.imagePlus />
+                                                    <h2 className='text-lg font-semibold text-linkblack mt-3'>อัปโหลดสลิป</h2>
+                                                    <p className='text-secgray text-xs'>PNG or JPG (max.800x400px)</p>
+                                                </div>
+                                            </div>
+                                        </label>
+                                        <input type='file' className='hidden' id='file-upload' onChange={handleChange} accept='image/*' /></> 
+                                        )}
+                                    </div>
 
-                                    {paymentinfo.promptpay_number && (
-                                        <div className='flex items-center justify-center gap-x-1'>
-                                            <h2 className='text-sm font-medium'>Account Number </h2>
-                                            <p className='text-sm'>{paymentinfo.promptpay_number}</p>
-                                        </div>
-                                    )}
-
-                                    <label style={{ border: 'solid', textAlign: 'center', padding: '8px', cursor: 'pointer' }} htmlFor='file-upload' className='text-darkgray text-base'>
-                                    Upload Now
-                                    </label>
-                                    <input type='file' className='hidden' id='file-upload' onChange={handleChange} />
-
-
-                                    <SfButton variant='tertiary' className='w-full btn-primary h-[50px]' onClick={() => SubmitNow()}>PayNow</SfButton>
+                                    <SfButton variant='tertiary' className='w-full btn-primary h-[50px]' onClick={() => SubmitNow()}>ยืนยันการแจ้งชำระเงิน</SfButton>
                                     <div>Your content for payment_method 2 and Pagestep 2</div>
                                 </>
                             )}
-
-
+                        </form>
                         </>
                     )}
-
                     </div>
                 </div>
                

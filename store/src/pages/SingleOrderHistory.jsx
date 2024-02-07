@@ -12,11 +12,12 @@ import { useSetting } from "../hooks/useWebsiteSettings";
 import { useFrappePostCall } from "frappe-react-sdk";
 import { Icons } from "../components/icons";
 import { useFrappeGetCall } from 'frappe-react-sdk';
+import { useNavigate } from 'react-router-dom';
 
 function SingleorderHistory(randomKey = 0) {
     const id = useParams().id;
     const {getOrderByOrderCode, Order} = useOrder();
-    const {defaultTaxe} = useSetting()
+    const {defaultTaxe,paymentmethods} = useSetting()
     const {getByItemCode, products, settingPage, isLoading:isProductLoading} = useProducts();
     const { cart, cartCount, getTotal, resetCart, loading:cartLoading } = useCart();
     const [loading, setLoading] = useState(true)
@@ -26,6 +27,7 @@ function SingleorderHistory(randomKey = 0) {
     const { data } = useFrappeGetCall('e_commerce_store.api.get_addresses', null, `addresses`)
     const day = (creation) => new Date(creation).getDate()
     const month = (creation) => new Date(creation).getMonth() + 1
+    const navigate = useNavigate();
 
     const {call : CheckPromoCode, error : codeError, result : codeResult, reset, isCompleted : PromoCompleted } = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_coupon_code');
     const {call : ApplyDeliveryFee, loading : deliveryLoading, result : deliveryResult, error : deliveryError} = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_shipping_rule');
@@ -37,6 +39,11 @@ function SingleorderHistory(randomKey = 0) {
         {title:'สถานะ',value:order.status}
         // {title:'Shipping Phone:',value:order.custom_phone_number}
     ]
+
+
+    const gotopaymentpage = async() => {
+        navigate(`/thankyou?order_id=${order.name}&amount=${order.grand_total}&payment_method=${order.custom_payment_method}`)
+    };
 
     /* 
         key={product.item_code}
@@ -85,16 +92,16 @@ function SingleorderHistory(randomKey = 0) {
                     </p>
                 </div>
                 <div className="flex flex-col text-right gap-y-[21px]">
-                    <p className='text-sm font-semibold'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total ? `฿${deliveryResult?.message?.doc?.total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : `฿${getTotal().toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</p>
+                    <p className='text-sm font-semibold'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : `฿${order.base_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</p>
                     <p className="text-maingray text-sm font-semibold">
-                        {isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total_taxes_and_charges ? `฿${deliveryResult?.message?.doc?.total_taxes_and_charges?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : "฿0"}
+                    {isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : `฿${order.tax_amount?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}
                     </p>
                     <p className='text-sm text-maingray'>-</p>
                 </div>
             </div>
             <div className="flex justify-between typography-headline-4 md:typography-headline-3 py-4 lg:pt-4 border-t mt-4 font-medium">
                 <p>ยอดรวมทั้งสิ้น</p>
-                <p className="text-sm">{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : 'Your address is not supported' : `฿ ${codeResult?.message?.doc?.grand_total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</p>
+                <p className="text-sm">{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : `฿${order.grand_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</p>
             </div>
         </div>
         )
@@ -148,12 +155,21 @@ function SingleorderHistory(randomKey = 0) {
                 <div className="flex flex-col gap-y-2">
                     <h2 className='font-semibold text-darkgray'>วิธีการชำระเงิน</h2>
                     <div className="flex items-center gap-3 lg:justify-between">
-                        <div className="border border-neutral-100 bg-neutral-50 rounded-xl h-[50px] w-full lg:w-1/2 px-4 flex items-center font-semibold">
-                            QR พร้อมเพย์
-                        </div>
-                        <SfButton className="btn-primary rounded-xl h-[50px] whitespace-pre" variant="tertiary">
-                            ชำระเงิน
-                        </SfButton>
+                            <div className="border border-neutral-100 bg-neutral-50 rounded-xl h-[50px] w-full lg:w-1/2 px-4 flex items-center font-semibold">
+                                {order.custom_payment_method === "1" ? (
+                                    paymentmethods.map((method) => method.key === 1 && <span key={method.key}>{method.name}</span>)
+                                ) : order.custom_payment_method === "2" ? (
+                                    paymentmethods.map((method) => method.key === 2 && <span key={method.key}>{method.name}</span>)
+                                ) : (
+                                    <span>Not found</span>
+                                )}
+                            </div>
+                            {order.status === "Unpaid" && (
+                                    <SfButton className="btn-primary rounded-xl h-[50px] whitespace-pre" variant="tertiary" onClick={gotopaymentpage}>
+                                        ชำระเงิน
+                                    </SfButton>
+                            )}
+
                     </div>
                 </div>
                 {!loading ? (
@@ -173,6 +189,7 @@ function SingleorderHistory(randomKey = 0) {
                                         postcode={address.pincode}
                                         country={address.country}
                                         phone={address.phone}
+                                        deletebtn={false}
                                     />
                                 ))
                             )}
@@ -186,7 +203,7 @@ function SingleorderHistory(randomKey = 0) {
                         {itemsList.length > 0 ? <h2 className='font-semibold text-darkgray'>รายละเอียดสินค้า</h2> : null}
                         <div className="grid grid-cols-1 gap-4 place-items-center">
                             {itemsList.length > 0 ? itemsList.map((product, index) => (
-                                <PurchasedList qty={order.items[index].qty} name={product.web_item_name} image={product.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`} price={product.formatted_price}/>
+                                <PurchasedList qty={order.items[index].qty} name={product?.web_item_name} image={product?.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product?.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`} price={product?.formatted_price}/>
                             )) : null}
                         </div>
                     </div>

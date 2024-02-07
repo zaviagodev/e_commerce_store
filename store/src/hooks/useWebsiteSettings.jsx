@@ -1,6 +1,3 @@
-
-
-
 import { createContext, useContext, useState } from 'react';
 
 import { useFrappeGetCall } from 'frappe-react-sdk';
@@ -23,6 +20,7 @@ export const SettingProvider = ({ children }) => {
     const [buttonLabel, setButtonLabel] = useState('Add to Cart');
     const [buttonLink, setButtonLink] = useState(null);
     const [defaultTaxe, setDefaultTaxe] = useState(null); 
+    const [paymentmethods, setPaymentmethods] = useState([]); 
     var items = []
 
     const setFavicon = (iconUrl) => {
@@ -73,22 +71,23 @@ export const SettingProvider = ({ children }) => {
     const { mutate, isLoading } = useFrappeGetCall('e_commerce_store.api.get_websiteSettings', undefined, undefined, {
         isOnline: () => appName == 'Store',
         onSuccess: (data) => {
-            setAppLogo(data.message.app_logo);
-            setAppName(data.message.app_name);
-            setDisableSignup(data.message.disable_signup == 1 ? true : false);
-            setHideLogin(data.message.hide_login == 1 ? true : false );
-            setHideCheckout(data.message.hide_checkout == 1 ? true : false);
-            setNavbarSearch(data.message.navbar_search == 1 ? true : false);
-            setShowLanguagePicker(data.message.show_language_picker == 1 ? true : false);
-            setHideFooterSignup(data.message.hide_footer_signup == 1 ? true : false);
-            setFooterItems(data.message.footer_items);
-            setHideWish(data.message.hide_wish == 1 ? true : false);
-            setFavicon(data.message.app_logo);
-            setButtonLabel(data.message.button_label);
-            setButtonLink(data.message.button_link);
-            setTopBarItems(buildTopBarItems([...data.message.top_bar_items].sort((a, b) => a.idx - b.idx)));
-            setDefaultTaxe(data.message.default_taxe);
-            document.title = data.message.app_name;
+            setAppLogo(data.message.settings.app_logo);
+            setAppName(data.message.settings.app_name);
+            setDisableSignup(data.message.settings.disable_signup == 1 ? true : false);
+            setHideLogin(data.message.settings.hide_login == 1 ? true : false );
+            setHideCheckout(data.message.settings.hide_checkout == 1 ? true : false);
+            setNavbarSearch(data.message.settings.navbar_search == 1 ? true : false);
+            setShowLanguagePicker(data.message.settings.show_language_picker == 1 ? true : false);
+            setHideFooterSignup(data.message.settings.hide_footer_signup == 1 ? true : false);
+            setFooterItems(data.message.settings.footer_items);
+            setPaymentmethods(data.message.payment_methods);
+            setHideWish(data.message.settings.hide_wish == 1 ? true : false);
+            setFavicon(data.message.settings.app_logo);
+            setButtonLabel(data.message.settings.button_label);
+            setButtonLink(data.message.settings.button_link);
+            setTopBarItems(buildTopBarItems([...data.message.settings.top_bar_items].sort((a, b) => a.idx - b.idx)));
+            setDefaultTaxe(data.message.settings.default_taxe);
+            document.title = data.message.settings.app_name;
         }
     })
 
@@ -111,10 +110,10 @@ export const SettingProvider = ({ children }) => {
         buttonLabel,
         buttonLink,
         mutate,
+        paymentmethods
     }}>
         {children}
     </SettingContext.Provider>
 }
 
 export const useSetting = () => useContext(SettingContext);
-
