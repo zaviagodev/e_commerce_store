@@ -12,11 +12,11 @@ export const ProductsProvider = ({ children }) => {
     const [totalitems, settotalitems] = useState(0)
     const [pageno, setpageno] = useState(1)
     const [realtedproducts, setrealtedProducts] = useState(1)
-
+    const [productinfo, setproductinfo] = useState([])
     const [pageData, setPageData] = useState({});
 
     const {mutate : mutateItemsList, error : itemListError, isLoading} = useFrappeGetCall('webshop.webshop.api.get_product_filter_data', {
-        query_args: { "field_filters": newP ? {"name": newP} : {}, "attribute_filters": {}, "item_group": null, "start": Math.max(0, (pageno - 1) * 8), "from_filters": false }
+        query_args: { "field_filters": {}, "attribute_filters": {}, "item_group": null, "start": Math.max(0, (pageno - 1) * 8), "from_filters": false }
     }, `products-${pageno}`, {
         isOnline: () => products.length === 0,
         onSuccess: (data) => {
@@ -46,19 +46,22 @@ export const ProductsProvider = ({ children }) => {
     }
     
 
-    const get = (name) => {
-        console.log(name);
-        const p = products.find((product) => product.name === name)
+    const get =  (name) => {
+        const p = products.find((product) => product.name === name);
         if (!p) {
-            const swrResult = useFrappeGetCall('webshop.webshop.api.get_product_filter_data', {
+            const { data, error } = useFrappeGetCall('webshop.webshop.api.get_product_filter_data', {
                 query_args: { "field_filters": {"name":name}, "attribute_filters": {}, "item_group": null, "start": 0, "from_filters": false }
             }, `products-${name}`, {
-                isOnline: () => products.length === 0, 
-            })
-            return swrResult?.data?.message.items[0];
+                onSuccess: (data) => {
+                    console.log(data);
+                    setproductinfo(data?.message?.items[0]);
+                }
+            });
+            
         }
-        return p
-    }
+        return p;
+    };
+    
 
     const getItemByCategorie = (categorie) => {
         return products.filter((product) => product.item_group === categorie)
@@ -131,6 +134,7 @@ export const ProductsProvider = ({ children }) => {
             settingPage,
             pageData,
             totalitems,
+            productinfo,
             pageno,
             setpageno,
             getGroupedProducts,

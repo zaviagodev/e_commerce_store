@@ -46,13 +46,13 @@ const Product = () => {
       };
 
 
-    const { get, products,settingPage,getGroupedProducts } = useProducts();
-
+    const { get, products,settingPage,getGroupedProducts,productinfo } = useProducts();
+    get(id);  
     const {hideCheckout, buttonLabel, buttonLink} = useSetting();
 
     const { cart, addToCart, loading, isOpen, setIsOpen } = useCart();
-    
-    const product = get(id);
+      
+    const product = productinfo;
     const inputId = "useId('input')";
     const min = 1;
     const max = 999;
