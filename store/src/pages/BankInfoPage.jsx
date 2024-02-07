@@ -23,6 +23,7 @@ const BankInfoPage = () => {
     const { upload, loading: uploadingFile, progress, error: errorUploadingDoc, reset: resetUploadDoc } = useFrappeFileUpload()
     const [paymentcompleted, setpaymentcompleted] = useState(null)
     const [hideData, setHideData] = useState(false)
+    const [bankselection, setbankselection] = useState(false)
 
     const { call, isCompleted } = useFrappePostCall('webshop.webshop.api.payment_entry')
     const formik = useFormik({
@@ -34,26 +35,28 @@ const BankInfoPage = () => {
         },
         onSubmit: async (values) => {
             try {
-                upload(values.file, {
-                    isPrivate: true,
-                    doctype: 'Raven Message',
-                    fieldname: 'file',
-                })
-                .then(response => {
-                    let apiData = {
-                        'order_name': Order.name,
-                        'payment_file': response.name
-                    };
-                    call(apiData).then(response => {
-                        setpaymentcompleted(response);
+                if (values.file){
+                    upload(values.file, {
+                        isPrivate: true,
+                        doctype: 'Raven Message',
+                        fieldname: 'file',
                     })
-                })
-                .catch(error => {
-                    console.error("File upload failed:", error);
-                });
+                    .then(response => {
+                        const apiData = {
+                            'order_name': Order.name,
+                            'payment_file': response.name
+                        };
+                        const updatedValues = { ...values, ...apiData };
 
-                // Handle success, reset form, or perform any additional logic
-                //formik.resetForm();
+                        call(updatedValues).then(response => {
+                            setpaymentcompleted(response);
+                        })
+                    })
+                    .catch(error => {
+                        console.error("File upload failed:", error);
+                    });
+                    formik.resetForm();
+                }
             } catch (error) {
             // Handle API error
             console.error("API Error:", error);
@@ -92,10 +95,17 @@ const BankInfoPage = () => {
             setImage(URL.createObjectURL(event.target.files[0]));
         }
         formik.setFieldValue("file", event.currentTarget.files[0]);
-        // console.log(e.currentTarget.files);
         formik.setFieldValue('order_name', Order.name);
         formik.setFieldValue('payment_info', paymentinfo.key);
+        if(bankselection){
+            formik.setFieldValue('bank', bankselection);
+        }
     }
+
+    
+
+
+
     function SubmitNow(){
         //formik.setFieldValue('order_name', Order.name);
         //formik.setFieldValue('payment_info', paymentinfo.key);
@@ -313,15 +323,25 @@ const BankInfoPage = () => {
                                     </div>
 
                                     {paymentinfo.banks_list?.map((d, index) => (
-                                        <div key={index} className='justify-center gap-x-1 bankdeatils'>
-                                            <h2 className='text-sm font-medium'>{d.bank}: </h2>
-                                            <p className='text-sm'>{d.bank_account_name}</p>
-                                            <p className='text-sm'>{d.bank_account_number}</p>
+                                        <div key={index} className='justify-center gap-x-1 bankdetails'>
+                                            <input 
+                                                type="radio"
+                                                id={`bank${index}`}
+                                                name="selectedBank"
+                                                value={d.bank}
+                                                className="mr-2"
+                                                onChange={(e) => setbankselection(e.target.value)}
+                                            />
+                                            <label htmlFor={`bank${index}`}>
+                                                <h2 className='text-sm font-medium'>{d.bank}: </h2>
+                                                <p className='text-sm'>{d.bank_account_name}</p>
+                                                <p className='text-sm'>{d.bank_account_number}</p>
+                                            </label>
                                         </div>
                                     ))}
                                     
 
-                                    <SfButton variant='tertiary' className='w-full btn-primary h-[50px]' onClick={() => setPagestep(2)}>
+                                    <SfButton variant='tertiary' className='w-full btn-primary h-[50px]' onClick={() => bankselection && setPagestep(2)}>
                                         PayNow
                                     </SfButton>
                                     <div>Your content for payment_method 2 and Pagestep 2</div>

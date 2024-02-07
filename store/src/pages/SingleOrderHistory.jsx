@@ -12,11 +12,12 @@ import { useSetting } from "../hooks/useWebsiteSettings";
 import { useFrappePostCall } from "frappe-react-sdk";
 import { Icons } from "../components/icons";
 import { useFrappeGetCall } from 'frappe-react-sdk';
+import { useNavigate } from 'react-router-dom';
 
 function SingleorderHistory(randomKey = 0) {
     const id = useParams().id;
     const {getOrderByOrderCode, Order} = useOrder();
-    const {defaultTaxe} = useSetting()
+    const {defaultTaxe,paymentmethods} = useSetting()
     const {getByItemCode, products, settingPage, isLoading:isProductLoading} = useProducts();
     const { cart, cartCount, getTotal, resetCart, loading:cartLoading } = useCart();
     const [loading, setLoading] = useState(true)
@@ -26,6 +27,7 @@ function SingleorderHistory(randomKey = 0) {
     const { data } = useFrappeGetCall('e_commerce_store.api.get_addresses', null, `addresses`)
     const day = (creation) => new Date(creation).getDate()
     const month = (creation) => new Date(creation).getMonth() + 1
+    const navigate = useNavigate();
 
     const {call : CheckPromoCode, error : codeError, result : codeResult, reset, isCompleted : PromoCompleted } = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_coupon_code');
     const {call : ApplyDeliveryFee, loading : deliveryLoading, result : deliveryResult, error : deliveryError} = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_shipping_rule');
@@ -37,6 +39,11 @@ function SingleorderHistory(randomKey = 0) {
         {title:'สถานะ',value:order.status}
         // {title:'Shipping Phone:',value:order.custom_phone_number}
     ]
+
+
+    const gotopaymentpage = async() => {
+        navigate(`/thankyou?order_id=${order.name}&amount=${order.grand_total}&payment_method=${order.custom_payment_method}`)
+    };
 
     /* 
         key={product.item_code}
@@ -148,12 +155,21 @@ function SingleorderHistory(randomKey = 0) {
                 <div className="flex flex-col gap-y-2">
                     <h2 className='font-semibold text-darkgray'>วิธีการชำระเงิน</h2>
                     <div className="flex items-center gap-3 lg:justify-between">
-                        <div className="border border-neutral-100 bg-neutral-50 rounded-xl h-[50px] w-full lg:w-1/2 px-4 flex items-center font-semibold">
-                            QR พร้อมเพย์
-                        </div>
-                        <SfButton className="btn-primary rounded-xl h-[50px] whitespace-pre" variant="tertiary">
-                            ชำระเงิน
-                        </SfButton>
+                            <div className="border border-neutral-100 bg-neutral-50 rounded-xl h-[50px] w-full lg:w-1/2 px-4 flex items-center font-semibold">
+                                {order.custom_payment_method === "1" ? (
+                                    paymentmethods.map((method) => method.key === 1 && <span key={method.key}>{method.name}</span>)
+                                ) : order.custom_payment_method === "2" ? (
+                                    paymentmethods.map((method) => method.key === 2 && <span key={method.key}>{method.name}</span>)
+                                ) : (
+                                    <span>Not found</span>
+                                )}
+                            </div>
+                            {order.status === "Unpaid" && (
+                                    <SfButton className="btn-primary rounded-xl h-[50px] whitespace-pre" variant="tertiary" onClick={gotopaymentpage}>
+                                        ชำระเงิน
+                                    </SfButton>
+                            )}
+
                     </div>
                 </div>
                 {!loading ? (
