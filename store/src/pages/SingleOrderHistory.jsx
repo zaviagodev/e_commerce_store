@@ -202,7 +202,7 @@ function SingleorderHistory(randomKey = 0) {
                         {itemsList.length > 0 ? <h2 className='font-semibold text-darkgray'>รายละเอียดสินค้า</h2> : null}
                         <div className="grid grid-cols-1 gap-4 place-items-center">
                             {itemsList.length > 0 ? itemsList.map((product, index) => (
-                                <PurchasedList qty={order.items[index].qty} name={product?.web_item_name} image={product.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`} price={product.formatted_price}/>
+                                <PurchasedList qty={order.items[index].qty} name={product?.web_item_name} image={product?.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product?.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`} price={product.formatted_price}/>
                             )) : null}
                         </div>
                     </div>
