@@ -47,19 +47,17 @@ const Product = () => {
 
 
     const { get, products,settingPage,getGroupedProducts,productinfo } = useProducts();
-    get(id);  
     const {hideCheckout, buttonLabel, buttonLink} = useSetting();
 
     const { cart, addToCart, loading, isOpen, setIsOpen } = useCart();
       
-    const product = productinfo;
+    const product = get(id);
     const inputId = "useId('input')";
     const min = 1;
     const max = 999;
     const [value, { inc, dec, set }] = useCounter(min);
     const navigate = useNavigate();
 
-    console.log(product);
 
 
     function handleOnChange(event) {
@@ -364,19 +362,24 @@ const Product = () => {
                         <section className='px-4 lg:p-0 pt-[38px] lg:pt-[140px]'>
                             <h1 className='mb-8 text-primary text-base lg:text-3xl font-semibold'>สินค้าที่คุณอาจสนใจ</h1>
                             <div className="grid gap-[14px] grid-cols-2 lg:grid-cols-4 place-items-center">
-                                {groupedProductsData?.message?.items.slice(0, 4).map((product) => (
-                                    <ProductCard
-                                        key={product.item_code}
-                                        title={product.web_item_name}
-                                        productId={product.name}
-                                        description={product.short_description}
-                                        itemCode={product.item_code}
-                                        price={product.formatted_price}
-                                        thumbnail={product.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`}
-                                        salesPrice={product?.formatted_mrp}
-                                        isGift={product?.item_group === "Gift" || product?.item_group === "Gift and Cards"}
-                                    />
-                                )).slice(0,4)}
+                                {groupedProductsData?.message?.items
+    .filter(productz => productz?.item_code !== product?.item_code)
+    .slice(0, 4)
+    .map(product => (
+        <ProductCard
+            key={product.item_code}
+            title={product.web_item_name}
+            productId={product.name}
+            description={product.short_description}
+            itemCode={product.item_code}
+            price={product.formatted_price}
+            thumbnail={product.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`}
+            salesPrice={product?.formatted_mrp}
+            isGift={product?.item_group === "Gift" || product?.item_group === "Gift and Cards"}
+        />
+    ))
+}
+
                             </div>
                         </section>
                     ) : (
