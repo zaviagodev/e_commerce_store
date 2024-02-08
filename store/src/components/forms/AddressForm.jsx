@@ -44,8 +44,17 @@ const AddressForm = ({ onFormSubmit }) => {
                  });
             }
         })
-        
     }
+
+    const checkValidation = 
+        formik.values.address_title === "" ||
+        formik.values.phone === "" ||
+        formik.values.address_line1 === "" ||
+        formik.values.address_line2 === "" ||
+        formik.values.city === "" ||
+        formik.values.state === "" ||
+        formik.values.country === "" ||
+        formik.values.pincode === ""
 
     return (
         <form className="max-w-[950px] flex gap-3 flex-wrap text-neutral-900">
@@ -177,7 +186,7 @@ const AddressForm = ({ onFormSubmit }) => {
                     Clear all
                 </SfButton> */}
 
-                {!isSaving ? <SfButton  className="w-full h-[50px] btn-primary text-base rounded-xl" onClick={CreateNewAddress}>ยืนยันที่อยู่</SfButton> : <Skeleton className='h-[50px] w-full'/>}
+                {!isSaving ? <SfButton  className="w-full h-[50px] btn-primary text-base rounded-xl" onClick={CreateNewAddress} disabled={checkValidation}>ยืนยันที่อยู่</SfButton> : <Skeleton className='h-[50px] w-full'/>}
             </div>
         </form>
     )
