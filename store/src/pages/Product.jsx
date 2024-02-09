@@ -152,7 +152,7 @@ const Product = () => {
                         ))}
                     </SfScrollable>
                     <SfScrollable
-                        className="relative [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] !flex-row lg:!flex-col overflow-auto px-4 lg:px-0 w-full"
+                        className="relative [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] !flex-row lg:!flex-col overflow-auto px-4 lg:px-0 w-full scroll-slide"
                         direction="vertical"
                         buttonsPlacement="none"
                         wrapperClassName='w-full !items-start lg:!items-center overflow-auto lg:overflow-visible'
@@ -184,6 +184,10 @@ const Product = () => {
                             />
                         ))}
                     </SfScrollable>
+
+                    <div className='absolute right-[14px] bottom-[14px] border border-[#E3E3E3] rounded-full bg-white text-darkgray text-xs p-[6px] w-8 text-center lg:hidden'>
+                        1/{product?.slider_images?.length + 1}
+                    </div>
                 </div>
                 ) : (
                     <div className='flex gap-4 px-4 lg:px-0'>
