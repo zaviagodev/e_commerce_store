@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useOrder } from "../hooks/useOrders";
 import ProductCard from "../components/ProductCard";
 import { useEffect, useState } from "react";
-import { SfButton, SfLoaderCircular } from "@storefront-ui/react";
+import { SfButton, SfLoaderCircular,SfSelect  } from "@storefront-ui/react";
 import { useProducts } from "../hooks/useProducts";
 import { useCart } from "../hooks/useCart";
 import AddressCard from "../components/AddressCard";
@@ -22,6 +22,7 @@ function SingleorderHistory(randomKey = 0) {
     const { cart, cartCount, getTotal, resetCart, loading:cartLoading } = useCart();
     const [loading, setLoading] = useState(true)
     const [order, setOrder] = useState({})
+    const [selectedmethod, setSelectedMethod] = useState({})
     const [itemsList, setItemsList] = useState([])
     const [adressParts, setAdress] = useState([])
     const { data } = useFrappeGetCall('e_commerce_store.api.get_addresses', null, `addresses`)
@@ -31,6 +32,7 @@ function SingleorderHistory(randomKey = 0) {
 
     const {call : CheckPromoCode, error : codeError, result : codeResult, reset, isCompleted : PromoCompleted } = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_coupon_code');
     const {call : ApplyDeliveryFee, loading : deliveryLoading, result : deliveryResult, error : deliveryError} = useFrappePostCall('webshop.webshop.shopping_cart.cart.apply_shipping_rule');
+    const {call : UpdatePaymentMethod} = useFrappePostCall('webshop.webshop.api.changepaymentmethod');
 
     const orderDetails = [
         {title:'เลขที่คำสั่งซื้อ',value:order.name},
@@ -43,6 +45,11 @@ function SingleorderHistory(randomKey = 0) {
 
     const gotopaymentpage = async() => {
         navigate(`/payment?order_id=${order.name}&amount=${order.grand_total}&payment_method=${order.custom_payment_method}`)
+    };
+
+    const onpaymentchange = async(paymentid) => {
+        setSelectedMethod(paymentid);
+        UpdatePaymentMethod({"invoiceno":order.name,"paymentid":paymentid});
     };
 
     /* 
@@ -112,6 +119,7 @@ function SingleorderHistory(randomKey = 0) {
             if(products.length > 0){
                 const temp = getOrderByOrderCode(id)
                 setOrder(temp)
+                setSelectedMethod(temp.custom_payment_method)
                 // console.log(temp);
                 setItemsList([]);
                 temp.items.forEach((item) => {
@@ -156,13 +164,14 @@ function SingleorderHistory(randomKey = 0) {
                     <h2 className='font-semibold text-darkgray'>วิธีการชำระเงิน</h2>
                     <div className="flex items-center gap-3 lg:justify-between">
                             <div className="border border-neutral-100 bg-neutral-50 rounded-xl h-[50px] w-full lg:w-1/2 px-4 flex items-center font-semibold">
-                                {order.custom_payment_method === "1" ? (
-                                    paymentmethods.map((method) => method.key === 1 && <span key={method.key}>{method.name}</span>)
-                                ) : order.custom_payment_method === "2" ? (
-                                    paymentmethods.map((method) => method.key === 2 && <span key={method.key}>{method.name}</span>)
-                                ) : (
-                                    <span>Not found</span>
-                                )}
+
+
+                                <SfSelect  size="base" value={selectedmethod} onChange={(e) => onpaymentchange(e.target.value)}>
+                                    {paymentmethods.map((method) => (
+                                        <option value={method.key} key={method.key}>{method.name}</option>
+                                    ))}
+                                </SfSelect>    
+
                             </div>
                             {order.status === "Unpaid" && (
                                     <SfButton className="btn-primary rounded-xl h-[50px] whitespace-pre" variant="tertiary" onClick={gotopaymentpage}>
