@@ -58,8 +58,6 @@ const Product = () => {
     const [value, { inc, dec, set }] = useCounter(min);
     const navigate = useNavigate();
 
-
-
     function handleOnChange(event) {
         const { value: currentValue } = event.target;
         const nextValue = parseFloat(currentValue);
