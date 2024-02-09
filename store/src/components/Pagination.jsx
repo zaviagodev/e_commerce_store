@@ -34,7 +34,7 @@ const Pagination = ({ total,perpage,indexproducts,selectedpage }) => {
 
   return (
     <div className='w-full flex justify-between items-center mt-20'>
-      <button className={`flex items-center gap-x-2 ${currentPage === 1 ? 'text-secgray' : ''}`} onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+      <button className={`flex items-center gap-x-2 ${currentPage === 1 ? 'text-secgray' : ''}`} onClick={() => handlePageChange(parseInt(currentPage) - 1)} disabled={currentPage === 1}>
         <SfIconArrowBack className='w-5 h-5'/>
         ก่อนหน้า
       </button>
@@ -52,7 +52,7 @@ const Pagination = ({ total,perpage,indexproducts,selectedpage }) => {
 
 
       </div>
-      <button className={`flex items-center gap-x-2 ${currentPage === totalPages ? 'text-secgray' : ''}`} onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
+      <button className={`flex items-center gap-x-2 ${currentPage === totalPages ? 'text-secgray' : ''}`} onClick={() => handlePageChange(parseInt(currentPage) + 1)} disabled={currentPage === totalPages}>
         ถัดไป
         <SfIconArrowForward className='w-5 h-5'/>
       </button>
