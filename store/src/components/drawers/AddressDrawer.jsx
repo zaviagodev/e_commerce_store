@@ -6,6 +6,7 @@ import { Icons } from '../icons';
 export default function AddressDrawer({isOpen, setIsOpen, children, title}){
     const nodeRef = useRef(null);
     const drawerRef = useRef(null);
+
     return (
         <CSSTransition
             ref={nodeRef}

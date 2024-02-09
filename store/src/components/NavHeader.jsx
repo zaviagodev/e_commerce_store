@@ -414,7 +414,6 @@ import Modal from './drawers/Modal';
 
   return (
     <div className="w-full h-full">
-      {isMobileMenuOpen && <div className="fixed inset-0 bg-neutral-500 bg-opacity-50 transition-opacity z-60" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}/>}
       <MobileHeaderDrawer isOpen={isMobileMenuOpen} setIsOpen={setIsMobileMenuOpen}>
         <section className='flex flex-col justify-between h-full'>
           <div className='flex flex-col gap-y-9'>

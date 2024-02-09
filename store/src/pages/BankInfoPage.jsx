@@ -1,17 +1,20 @@
-import { SfButton } from '@storefront-ui/react';
-import { useState,React} from 'react';
+import { SfButton, SfTooltip, useDisclosure } from '@storefront-ui/react';
+import { useState,React, useEffect} from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import defaultLogo from '../assets/defaultBrandIcon.svg';
 import { useSetting } from '../hooks/useWebsiteSettings';
 import { useFormik } from "formik";
-import { useFrappeGetCall, useFrappePostCall,useFrappeFileUpload } from 'frappe-react-sdk';
+import { useFrappeGetCall, useFrappePostCall,useFrappeFileUpload, useFrappeAuth } from 'frappe-react-sdk';
 import AddressCard from '../components/AddressCard';
 import { Icons } from '../components/icons';
+import { Skeleton } from '../components/Skeleton';
+import { useUser } from '../hooks/useUser';
+import Modal from '../components/drawers/Modal';
 
 const BankInfoPage = () => {
     const [searchParams] = useSearchParams();
     const navigate = useNavigate()
-    const { appLogo } = useSetting()
+    const { appLogo, defaultTaxe } = useSetting()
     const payment_method = searchParams.get("payment_method");
     const [Order, setOrder] = useState([])
     const [randomKey, setrandomKey] = useState(0)
@@ -24,6 +27,10 @@ const BankInfoPage = () => {
     const [paymentcompleted, setpaymentcompleted] = useState(null)
     const [hideData, setHideData] = useState(false)
     const [bankselection, setbankselection] = useState(false)
+    const [isTextCopied, setIsTextCopied] = useState(false)
+    const [selectedBank, setSelectedBank] = useState(null)
+    const { user } = useUser();
+    const { isOpen:isModalOpen, open:openModal, close:closeModal } = useDisclosure({ initialValue: false });
 
     const { call, isCompleted } = useFrappePostCall('webshop.webshop.api.payment_entry')
     const formik = useFormik({
@@ -102,9 +109,15 @@ const BankInfoPage = () => {
         }
     }
 
-    
-
-
+    const fileSize = (size) => {
+        if (size >= 1024 * 1024){
+            return `${(size / (1024 * 1024)).toFixed(1)} MB`
+        } else if (size >= 1024){
+            return `${(size / 1024).toFixed(1)} KB`
+        } else {
+            return `${(size).toFixed(1)} B`
+        }
+    }
 
     function SubmitNow(){
         //formik.setFieldValue('order_name', Order.name);
@@ -112,14 +125,42 @@ const BankInfoPage = () => {
         //console.log(formik.values);
        // formik.validateForm().then((zz) => {
             formik.submitForm();
+            setPagestep(3)
        // })
     }
 
+    const receiptTitle = 
+        Pagestep == 1 ? `ชำระเงินด้วย ${paymentinfo.name}` :
+        Pagestep == 2 ? 'แจ้งการชำระเงิน' :
+        Pagestep == 3 ? 'แจ้งชำระเงินสำเร็จ'
+        : 'บริษัท เดอะแบรนด์ แอน ซาเวียโก จำกัด'
+
+    const CopyButton = ({children}) => {
+        return (
+            <SfTooltip label={isTextCopied ? 'คัดลอกแล้ว' : 'คัดลอก'}>
+                <div onMouseOut={() => setIsTextCopied(false)}>
+                    {children}
+                </div>
+            </SfTooltip>
+        )
+    }
+
+    const copyInfo = {
+        accountNum: () => {
+            setIsTextCopied(true);
+            navigator.clipboard.writeText(paymentinfo.promptpay_number)
+        },
+        bankNum: (acc) => {
+            setIsTextCopied(true);
+            navigator.clipboard.writeText(acc)
+        }
+    }
+
     return (
-        <div className='pt-10 w-full'>
-            <div className='max-w-[549px] mx-auto flex flex-col gap-y-9 p-8 border border-neutral-50 rounded-[30px]'>
+        <div className='py-10 w-full'>
+            <div className='max-w-[513px] mx-auto flex flex-col gap-y-12 p-8 border border-neutral-50 rounded-[30px]'>
                 <div className='flex justify-center'>
-                    <picture>
+                    <picture className='cursor-pointer' onClick={openModal}>
                     <source srcSet={appLogo ? `${import.meta.env.VITE_ERP_URL ?? ''}${appLogo}` : defaultLogo} media="(min-width: 768px)" />
                     <img
                         src={appLogo ? `${import.meta.env.VITE_ERP_URL ?? ''}${appLogo}` : defaultLogo}
@@ -128,8 +169,43 @@ const BankInfoPage = () => {
                     />
                     </picture>
                 </div>
-                <div className='flex flex-col gap-y-[26px]'>
+                <Modal open={openModal} isOpen={isModalOpen} close={closeModal}>
+                    <div className='flex flex-col gap-y-6'>
+                        <h1 className='text-black text-2xl font-semibold'>ออกจากขั้นตอนการชำระเงิน ?</h1>
+                        <p className='text-darkgray'>เมื่อคุณออกจากขั้นตอนการชำระเงิน<br/> ระบบจะบันทึกสถานะคำสั่งซื้อว่า “ยังไม่ได้ชำระเงิน”<br/> คุณต้องการออกจากขั้นตอนการชำระเงินหรือไม่</p>
+                    </div>
 
+                    <div className='flex gap-x-3 w-full'>
+                        <SfButton variant='tertiary' className='w-full btn-secondary h-[50px] rounded-xl' onClick={closeModal}>
+                            ดำเนินการต่อ
+                        </SfButton>
+                        <SfButton variant='tertiary' className='w-full btn-primary h-[50px] rounded-xl' onClick={() => navigate('/home/all items')}>
+                            ออกจากการชำระเงิน
+                        </SfButton>
+                    </div>
+                </Modal>
+                <div className='flex flex-col gap-y-12'>
+                    <div className='flex flex-col gap-y-4'>
+                        <h2 className='text-center text-[22px] font-semibold leading-[30px]'>{receiptTitle}</h2>
+                        {Pagestep == 0 || Pagestep == 3 ? (
+                            <div className='flex flex-col text-center gap-y-[6px] text-sm tracking-[-0.4px] font-semibold'>
+                                {Pagestep == 0 ? (
+                                    <>{user && (
+                                        <p className='leading-6'>
+                                            อีเมล : {user?.user?.email}<br/>
+                                            เบอร์โทร : {user?.user?.phone}
+                                        </p>
+                                    )}</>
+                                ) : (
+                                    <p className='leading-6'>
+                                        ขอบคุณสำหรับการสั่งซื้อสินค้า<br/>
+                                        คุณสามารถไปที่ คำสั่งซื้อของฉัน เพื่อติดตามสถานะ<br/>
+                                        คำสั่งซื้อของคุณ<br/>
+                                    </p>
+                                )}
+                            </div>
+                        ) : null}
+                    </div>
                     <div className='flex flex-col gap-y-[14px]'>
 
                         {/* {console.log(Order.grand_total)} */}
@@ -139,7 +215,12 @@ const BankInfoPage = () => {
                         <form className="w-full flex flex-col gap-9 text-neutral-900">
                             {Pagestep === 0 && (
                                 <>
-                                    <h1 className='text-lg text-center font-medium'>Setp 1 Order Deatils</h1>
+
+                                    {/* <h1 className='text-lg text-center font-medium'>Setp 1 Order Deatils</h1> */}
+                                    <div className='flex items-center justify-between'>
+                                        <h2 className='text-secgray'>เลขที่คำสั่งซื้อ</h2>
+                                        <p className='font-semibold'>{Order.name}</p>
+                                    </div>
 
                                     <div className='border border-lightgray rounded-xl bg-neutral-50 overflow-hidden'>
                                         <div className='p-6 pb-5 flex items-center justify-between w-full cursor-pointer'>
