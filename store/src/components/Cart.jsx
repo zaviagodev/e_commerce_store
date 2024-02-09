@@ -95,14 +95,14 @@ const Cart = () => {
         <CSSTransition
             ref={nodeRef}
             in={isOpen}
-            timeout={200}
+            timeout={300}
             unmountOnExit
             classNames={{
-                enter: 'opacity-0',
-                enterActive: 'opacity-1',
-                enterDone: 'opacity-1 transition duration-200 ease-in-out',
-                exitDone: 'opacity-1',
-                exitActive: 'opacity-0 transition duration-200 ease-in-out',
+                enter: 'translate-x-full lg:translate-x-0 lg:opacity-0',
+                enterActive: 'translate-x-0 lg:opacity-1',
+                enterDone: 'translate-x-0 lg:opacity-1 transition duration-300 lg:duration-200 ease-in-out',
+                exitDone: 'translate-x-0 lg:opacity-1',
+                exitActive: 'translate-x-full lg:translate-x-0 lg:opacity-0 transition duration-300 lg:duration-200 ease-in-out',
             }}
         >
             <SfDrawer

@@ -1,13 +1,28 @@
-import { useRef, useState } from "react";
-import { SfDrawer } from "@storefront-ui/react";
+import { useEffect, useRef, useState } from "react";
+import { SfDrawer, SfIconArrowUpward } from "@storefront-ui/react";
 import { CSSTransition } from 'react-transition-group';
 import { Icons } from '../icons';
 
 export default function MobileCheckoutDrawer({isOpen, setIsOpen, children, title}){
     const nodeRef = useRef(null);
     const drawerRef = useRef(null);
+    const backdropRef = useRef(null);
 
     return (
+        <>
+        <CSSTransition
+            in={isOpen}
+            nodeRef={backdropRef}
+            timeout={300}
+            unmountOnExit
+            classNames={{
+            enter: 'opacity-0',
+            enterDone: 'opacity-100 transition duration-500 ease-out',
+            exitActive: 'opacity-0 transition duration-500 ease-out',
+            }}
+        >
+            <div ref={backdropRef} className="fixed inset-0 bg-neutral-700 bg-opacity-50 z-99" />
+        </CSSTransition>
         <CSSTransition
             ref={nodeRef}
             in={isOpen}
@@ -26,7 +41,7 @@ export default function MobileCheckoutDrawer({isOpen, setIsOpen, children, title
                 placement='top'
                 open
                 onClose={() => setIsOpen(false)}
-                className="bg-neutral-50 z-99 w-full box-border"
+                className="z-99 w-full box-border"
             >
                 <div className="flex h-full flex-col overflow-y-auto bg-white shadow-xl rounded-b-xl">
                     <div className="flex-1 overflow-y-auto">
@@ -39,12 +54,17 @@ export default function MobileCheckoutDrawer({isOpen, setIsOpen, children, title
                             </div>
                             <h2 className="text-base font-medium text-gray-900 text-center whitespace-pre" id="slide-over-title">{title}</h2>
                         </div>
-                        <div className="flow-root p-6 pb-9">
+                        <div className="flow-root p-6 pb-3">
                             {children}
                         </div>
+                    </div>
+                    <div className="flex items-center justify-center gap-x-2 text-secgray mb-4 text-sm cursor-pointer w-fit mx-auto" onClick={() => setIsOpen(false)}>
+                        ซ่อนข้อมูลตะกร้า
+                        <SfIconArrowUpward className="!w-4 !h-4"/>
                     </div>
                 </div>
             </SfDrawer>
         </CSSTransition>
+        </>
     );
 }

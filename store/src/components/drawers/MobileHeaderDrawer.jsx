@@ -5,18 +5,35 @@ import { CSSTransition } from 'react-transition-group';
 export default function MobileHeaderDrawer({isOpen, setIsOpen, children, title}){
     const nodeRef = useRef(null);
     const drawerRef = useRef(null);
+    const backdropRef = useRef(null);
     return (
+        <>
+        <CSSTransition
+            in={isOpen}
+            nodeRef={backdropRef}
+            timeout={300}
+            unmountOnExit
+            classNames={{
+            enter: 'opacity-0',
+            enterActive: 'opacity-100 transition duration-300 ease-in-out',
+            enterDone: 'opacity-100 transition duration-300 ease-in-out',
+            exitDone: 'opacity-0',
+            exitActive: 'opacity-0 transition duration-300 ease-in-out',
+            }}
+        >
+            <div ref={backdropRef} className="fixed inset-0 bg-neutral-500 bg-opacity-50 z-60" />
+        </CSSTransition>
         <CSSTransition
             ref={nodeRef}
             in={isOpen}
-            timeout={200}
+            timeout={300}
             unmountOnExit
             classNames={{
-                enter: 'opacity-0',
-                enterActive: 'opacity-1',
-                enterDone: 'opacity-1 transition duration-200 ease-in-out',
-                exitDone: 'opacity-1',
-                exitActive: 'opacity-0 transition duration-200 ease-in-out',
+                enter: '-translate-x-full',
+                enterActive: 'translate-x-0 transition duration-300 ease-in-out',
+                enterDone: 'translate-x-0 transition duration-300 ease-in-out',
+                exitDone: 'translate-x-0',
+                exitActive: '-translate-x-full transition duration-300 ease-in-out',
             }}
         >
             <SfDrawer
@@ -44,5 +61,6 @@ export default function MobileHeaderDrawer({isOpen, setIsOpen, children, title})
                 </div>
             </SfDrawer>
         </CSSTransition>
+        </>
     )
 }

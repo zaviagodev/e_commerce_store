@@ -34,7 +34,7 @@ export default function Checkout(){
     const [checkedState, setCheckedState] = useState('');
     const [shippingRules, setShippingRules] = useState([]);
     const [randomKey, setrandomKey] = useState(0)
-    const [showOrders, setShowOrders] = useState(true)
+    const [showOrders, setShowOrders] = useState(false)
     const [moreAddresses, setMoreAddresses] = useState(false)
     const [morePayments, setMorePayments] = useState(false)
 
@@ -179,6 +179,8 @@ export default function Checkout(){
         if(deliveryError) { setErrorAlert(JSON.parse(JSON.parse(deliveryError?._server_messages)[0]).message) }
         if(codeError) { setErrorAlert(JSON.parse(JSON.parse(codeError?._server_messages)[0]).message) }
         if(PromoCompleted) { setPositiveAlert(true) }
+
+        setTimeout(() => setShowOrders(true), 2000)
     }, [isCompleted, error, PromoCompleted, codeError, deliveryError])
 
     const CouponAlert = () => {
@@ -392,13 +394,14 @@ export default function Checkout(){
                                     )}</>
                                 )
                             }).slice(0, 1)}
-                            <div className='flex items-center justify-center lg:justify-between w-full'>
+                            <div className='flex items-center justify-center lg:justify-between w-fit mx-auto lg:w-full' onClick={() => setShowOrders(true)}>
                                 <p className="text-sm text-secgray leading-[9px]">ยอดรวมทั้งสิ้น</p>
                                 {isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : <p className="text-secgray text-sm leading-[9px] ml-1">{cartCount} ชิ้น</p>}
+                                <SfIconExpandMore className='lg:hidden text-secgray ml-1'/>
                             </div>
                         </div>
                         <div className={`px-4 lg:pl-[21px] lg:pr-[19px]`}>
-                            <h1 className='text-4xl font-semibold pt-[26px] text-center lg:text-left'>{isProductLoading ? <Skeleton className='h-8 w-[100px]'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : <Skeleton className='h-8 w-[100px]'/> : `฿ ${codeResult?.message?.doc?.grand_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` }</h1>
+                            <h1 className='text-4xl font-semibold pt-[26px] text-center lg:text-left'>{isProductLoading ? <Skeleton className='h-8 w-[100px] mx-auto lg:mx-0'/> : typeof codeResult?.message?.doc?.grand_total == 'undefined' ? deliveryResult?.message?.doc?.grand_total ? `฿ ${deliveryResult?.message?.doc?.grand_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : <Skeleton className='h-8 w-[100px] mx-auto lg:mx-0'/> : `฿ ${codeResult?.message?.doc?.grand_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` }</h1>
                             <div className='hidden lg:block'>
                                 <ProductLists />
                                 <CheckoutDetails addCoupon={<CouponForm />}/>
@@ -426,7 +429,7 @@ export default function Checkout(){
                                                 <legend className="font-bold text-darkgray text-base hidden lg:block">ข้อมูลการจัดส่ง</legend>
                                                 {!addNewAddress ? (
                                                     <div className='flex flex-col gap-y-2 mt-8'>
-                                                        <h2 className="font-semibold text-secgray hidden lg:block">ที่อยู่ <span className='text-red-500'>*</span></h2>
+                                                        <h2 className="font-semibold text-secgray">ที่อยู่ <span className='text-red-500'>*</span></h2>
                                                         <div className='border border-lightgray rounded-xl bg-neutral-50 overflow-hidden'>
                                                             <a className='p-6 pb-5 flex items-center justify-between w-full cursor-pointer' onClick={() => setMoreAddresses(true)}>
                                                                 <div className='flex items-center gap-x-2'>
@@ -505,20 +508,16 @@ export default function Checkout(){
                                     <div className='border border-lightgray rounded-xl bg-neutral-50 overflow-hidden'>
                                         {shippingRules?.length > 0 ? (
                                             <a className='px-6 py-[18px] flex items-center justify-between w-full cursor-pointer' onClick={() => setMorePayments(true)}>
-                                                <div className='flex items-center justify-between w-full'>
-                                                    <div className='flex items-center gap-x-2'>
-                                                        <Icons.truck01 color='#595959'/>
-                                                        <span className=' font-bold text-darkgray'>{checkedState ? checkedState : 'รูปแบบการจัดส่ง'}</span>
+                                                <div className='flex items-start justify-between w-full'>
+                                                    <div className='flex flex-col'>
+                                                        <span className='font-semibold text-darkgray'>{checkedState ? checkedState : 'รูปแบบการจัดส่ง'}</span>
+                                                        <span className='text-sm text-darkgray'>{checkedState ? shippingRules?.find(rule => rule.name === checkedState && rule.calculate_based_on !== 'Fixed') ? 'เลือกเพื่อคำนวณค่าจัดส่ง' : `฿ ${shippingRules?.find(rule => rule.name === checkedState).shipping_amount?.toLocaleString()}` : null}</span> {/* `฿ ${shippingRules?.find(rule => rule.name === checkedState).shipping_amount?.toLocaleString()}` */}
                                                     </div>
-                                                    <div className='flex items-center gap-x-2'>
-                                                        <span className=' font-bold text-darkgray'>{checkedState ? `฿ ${shippingRules?.find(rule => rule.name === checkedState).shipping_amount?.toLocaleString()}` : null}</span>
-                                                        <SfIconArrowForward />
-                                                    </div>
+                                                    <SfIconArrowForward className='!h-6 !w-6'/>
                                                 </div>
                                             </a>
                                         ) : (
                                             <div className='px-6 py-[18px] flex items-center gap-x-2'>
-                                                <Icons.truck01 color='#595959'/>
                                                 <span className='text-secgray font-semibold text-sm'>ไม่มีช่องทางการจัดส่ง กรุณาติดต่อร้านค้าโดยตรง</span>
                                             </div>
                                         )}

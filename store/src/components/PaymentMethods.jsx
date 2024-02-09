@@ -18,7 +18,7 @@ export default function PaymentMethods({
             {!isLoading ? (
                 <fieldset className="w-full">
                     <legend className="mb-2 font-semibold text-secgray">วิธีการชำระเงิน <span className='text-red-500'>*</span></legend>
-                    <div className={`grid ${paymentmethods.message?.length == 2 ? 'grid-cols-2' : 'grid-cols-1'} gap-4 items-stretch`}>
+                    <div className={`grid grid-cols-1 ${paymentmethods.message?.length == 2 ? 'md:grid-cols-2' : ''} gap-4 items-stretch`}>
                         {paymentmethods.message?.length > 0 ? paymentmethods.message.map(({name,key }) => (
                             <label key={name} className="relative" onClick={() => onChange(key)}>
                                 <div className={`flex ${paymentmethods?.length > 1 ? 'flex-col gap-y-2' : 'items-center gap-x-2'} px-4 py-3 cursor-pointer rounded-xl border border-lightgray -outline-offset-2 hover:border-lightgray hover:bg-primary-100 peer-focus:border-primary-200 peer-focus:bg-primary-100 bg-neutral-50 ${value == key ? "border-primary-300 outline outline-[1px]" : ""}`}>

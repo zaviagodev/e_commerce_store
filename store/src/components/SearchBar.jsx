@@ -137,12 +137,12 @@ export default function SearchWithIcon( {className}) {
             <li role="none">
                 <CSSTransition
                   in={isOpen}
-                  timeout={500}
+                  timeout={300}
                   unmountOnExit
                   classNames={{
-                    enter: 'opacity-0 translate-x-0',
-                    enterActive: 'translate-x-0 opacity-100 transition duration-300 ease-in-out',
-                    exitActive: 'opacity-0 translate-x-0 transition duration-300 ease-in-out',
+                    enter: '-translate-y-full lg:opacity-0 lg:translate-y-0',
+                    enterActive: 'translate-y-0 lg:opacity-100 transition duration-300 ease-in-out',
+                    exitActive: '-translate-y-full lg:opacity-0 lg:translate-y-0 transition duration-300 ease-in-out',
                   }}
                 >
                   <SfDrawer
