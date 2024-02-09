@@ -34,7 +34,7 @@ function SingleorderHistory(randomKey = 0) {
 
     const orderDetails = [
         {title:'เลขที่คำสั่งซื้อ',value:order.name},
-        {title:'ยอดรวมทั้งสิ้น',value:`฿${order.grand_total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`},
+        {title:'ยอดรวมทั้งสิ้น',value:`฿ ${order.grand_total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`},
         {title:'วันที่',value:`${day(order.creation) < 10 ? "0" + day(order.creation) : day(order.creation)}/${month(order.creation) < 10 ? "0" + month(order.creation) : month(order.creation)}/${new Date(order.creation).getFullYear()}`},
         {title:'สถานะ',value:order.status}
         // {title:'Shipping Phone:',value:order.custom_phone_number}
@@ -42,7 +42,7 @@ function SingleorderHistory(randomKey = 0) {
 
 
     const gotopaymentpage = async() => {
-        navigate(`/thankyou?order_id=${order.name}&amount=${order.grand_total}&payment_method=${order.custom_payment_method}`)
+        navigate(`/payment?order_id=${order.name}&amount=${order.grand_total}&payment_method=${order.custom_payment_method}`)
     };
 
     /* 
@@ -87,21 +87,21 @@ function SingleorderHistory(randomKey = 0) {
                     }${
                         defaultTaxe?.rate !== 0 && defaultTaxe?.amout !== 0 ? ' + ' : ''
                     }${
-                        defaultTaxe?.amout !== 0 ? +defaultTaxe?.amout + '฿' : ''
+                        defaultTaxe?.amout !== 0 ? +defaultTaxe?.amout + '฿ ' : ''
                     })`}
                     </p>
                 </div>
                 <div className="flex flex-col text-right gap-y-[21px]">
-                    <p className='text-sm font-semibold'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : order.base_total}`</p>
+                    <p className='text-sm font-semibold'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : `฿ ${order.base_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</p>
                     <p className="text-maingray text-sm font-semibold">
-                    {isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : order.tax_amount}`
+                    {isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : `฿ ${order.tax_amount?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}
                     </p>
                     <p className='text-sm text-maingray'>-</p>
                 </div>
             </div>
             <div className="flex justify-between typography-headline-4 md:typography-headline-3 py-4 lg:pt-4 border-t mt-4 font-medium">
                 <p>ยอดรวมทั้งสิ้น</p>
-                <p className="text-sm">{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : order.grand_total}`</p>
+                <p className="text-sm font-semibold">{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : `฿ ${order.grand_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</p>
             </div>
         </div>
         )
@@ -189,6 +189,7 @@ function SingleorderHistory(randomKey = 0) {
                                         postcode={address.pincode}
                                         country={address.country}
                                         phone={address.phone}
+                                        deletebtn={false}
                                     />
                                 ))
                             )}
