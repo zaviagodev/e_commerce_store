@@ -47,9 +47,7 @@ export const ProductsProvider = ({ children }) => {
     
 
     const get =  (name) => {
-        //Temporary Fix
-
-
+        
         // const p = products.find((product) => product.name === name);
         // if (!p) {
         //     setNewP(name);
