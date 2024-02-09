@@ -265,7 +265,7 @@ const BankInfoPage = () => {
 
                                     {/* Insert address_display into an address card, which I already created CSS in case of CSS styles */}
                                     {!hideData && (
-                                        <>
+                                        <div className='flex flex-col gap-9'>
                                         <AddressCard address_title={Order.shipping_address_name} address_line1={<div dangerouslySetInnerHTML={{ __html: Order.address_display }} />} deletebtn={false} active={true}/>
 
                                         <section className='flex flex-col gap-y-4'>
@@ -309,7 +309,7 @@ const BankInfoPage = () => {
                                                 </div>
                                             </div>
                                         </section>
-                                        </>
+                                        </div>
                                     )}
 
                                     <div>Your content for payment_method 1 and Pagestep 1</div>
@@ -484,7 +484,8 @@ const BankInfoPage = () => {
                                     </div> */}
 
                                     {!hideData && (
-                                        <><AddressCard address_title={Order.name} address_line1={<div dangerouslySetInnerHTML={{ __html: Order.address_display }} />} deletebtn={false} active={true}/>
+                                        <div className='flex flex-col gap-9'>
+                                        <AddressCard address_title={Order.name} address_line1={<div dangerouslySetInnerHTML={{ __html: Order.address_display }} />} deletebtn={false} active={true}/>
 
                                         <section className='flex flex-col gap-y-4'>
                                             <div className='flex flex-col gap-9'>
@@ -527,7 +528,7 @@ const BankInfoPage = () => {
                                                 </div>
                                             </div>
                                         </section>
-                                        </>
+                                        </div>
                                     )}
 
                                     <div>Your content for payment_method 2 and Pagestep 1</div>

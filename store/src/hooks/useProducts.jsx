@@ -47,12 +47,19 @@ export const ProductsProvider = ({ children }) => {
     
 
     const get =  (name) => {
-        const p = products.find((product) => product.name === name);
-        if (!p) {
-            setNewP(name);
+        
+        // const p = products.find((product) => product.name === name);
+        // if (!p) {
+        //     setNewP(name);
             
-        }
-        return p;
+        // }
+        // return p;
+        const swrResult =  useFrappeGetCall('webshop.webshop.api.get_product_filter_data', {
+            query_args: { "field_filters": {"name": name}, "attribute_filters": {}, "item_group": null, "start": 0, "from_filters": false }
+        }, `products-${name}`, {
+            isOnline: () => true,
+        });
+        return swrResult.data?.message?.items[0];
     };
     
 
