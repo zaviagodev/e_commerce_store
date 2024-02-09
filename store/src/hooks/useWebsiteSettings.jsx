@@ -83,7 +83,7 @@ export const SettingProvider = ({ children }) => {
             setShowLanguagePicker(data.message.settings.show_language_picker == 1 ? true : false);
             setHideFooterSignup(data.message.settings.hide_footer_signup == 1 ? true : false);
             setFooterItems(data.message.settings.footer_items);
-            setPaymentmethods(data.message.payment_methods);
+            setPaymentmethods(data.message.payment_settings);
             setHideWish(data.message.settings.hide_wish == 1 ? true : false);
             setFavicon(data.message.settings.app_logo);
             setButtonLabel(data.message.settings.button_label);

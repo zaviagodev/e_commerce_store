@@ -141,7 +141,7 @@ function SingleorderHistory(randomKey = 0) {
                     <div className="flex flex-col gap-y-2">
                         {!loading ? (
                             <>
-                                {orderDetails.map(detail => (
+                                {orderDetails?.map(detail => (
                                     <div className="flex items-center justify-between">
                                         <h3 className="text-sm text-secgray">{detail.title}</h3>
                                         <p className="text-sm font-semibold">{detail.value ? detail.value : '-'}</p>
@@ -150,7 +150,7 @@ function SingleorderHistory(randomKey = 0) {
                             </>
                         ) : (
                             <>
-                                {orderDetails.map(d => (
+                                {orderDetails?.map(d => (
                                     <div className="flex items-center justify-between">
                                         <Skeleton className='h-4 w-[200px]'/>
                                         <Skeleton className='h-4 w-[200px]'/>
@@ -166,8 +166,9 @@ function SingleorderHistory(randomKey = 0) {
                             <div className="border border-neutral-100 bg-neutral-50 rounded-xl h-[50px] w-full lg:w-1/2 px-4 flex items-center font-semibold">
 
 
+{console.log(paymentmethods)}
                                 <SfSelect  size="base" value={selectedmethod} onChange={(e) => onpaymentchange(e.target.value)}>
-                                    {paymentmethods.map((method) => (
+                                    {paymentmethods?.map((method) => (
                                         <option value={method.key} key={method.key}>{method.name}</option>
                                     ))}
                                 </SfSelect>    
@@ -211,7 +212,7 @@ function SingleorderHistory(randomKey = 0) {
                     <div className="flex flex-col gap-y-4">
                         {itemsList.length > 0 ? <h2 className='font-semibold text-darkgray'>รายละเอียดสินค้า</h2> : null}
                         <div className="grid grid-cols-1 gap-4 place-items-center">
-                            {itemsList.length > 0 ? itemsList.map((product, index) => (
+                            {itemsList.length > 0 ? itemsList?.map((product, index) => (
                                 <PurchasedList qty={order.items[index].qty} name={product?.web_item_name} image={product?.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product?.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`} price={product?.formatted_price}/>
                             )) : null}
                         </div>
