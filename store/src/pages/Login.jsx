@@ -93,7 +93,7 @@ export default function Login() {
             navigate("/home/all items");
         }
         // formik.validateForm();
-    }, [ currentUser ]) // Removed 'loginState' because the modal won't show after registered
+    }, [ currentUser,  loginState ])
 
     const handleLoginState = () => {
         setLoginState(!loginState);

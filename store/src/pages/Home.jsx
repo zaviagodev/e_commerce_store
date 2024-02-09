@@ -98,7 +98,7 @@ const Home = () => {
                                 ))}
                             </div>
                                 <Pagination 
-                                    total={totalitems}
+                                    total={totalitems} 
                                     selectedpage={page_no}
                                     perpage={settingPage.products_per_page} 
                                     indexproducts={(newPage) => {

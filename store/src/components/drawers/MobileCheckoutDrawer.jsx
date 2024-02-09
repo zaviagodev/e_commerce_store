@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { SfDrawer } from "@storefront-ui/react";
 import { CSSTransition } from 'react-transition-group';
 import { Icons } from '../icons';
@@ -6,7 +6,6 @@ import { Icons } from '../icons';
 export default function MobileCheckoutDrawer({isOpen, setIsOpen, children, title}){
     const nodeRef = useRef(null);
     const drawerRef = useRef(null);
-
     return (
         <CSSTransition
             ref={nodeRef}

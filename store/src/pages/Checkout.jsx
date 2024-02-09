@@ -50,7 +50,7 @@ export default function Checkout(){
     const { call: updatecart, isCompleted: cartupdated,result : cartinfo } = useFrappePostCall('webshop.webshop.api.update_cart');
 
 
-    const { data:addressList, isLoading:loadingAddress } = useFrappeGetCall('e_commerce_store.api.get_addresses', null, `addresses-${randomKey}`)
+    const { data:addressList } = useFrappeGetCall('e_commerce_store.api.get_addresses', null, `addresses-${randomKey}`)
     const [addNewAddress, setAddNewAddress] = useState(false);
 
 
@@ -172,7 +172,7 @@ export default function Checkout(){
         if (isCompleted ) {
             if (result?.message?.name) {
                 resetCart();
-                navigate(`/payment?order_id=${result.message.name}&amount=${result.message.grand_total}&payment_method=${result.message.custom_payment_method}`)
+                navigate(`/thankyou?order_id=${result.message.name}&amount=${result.message.grand_total}&payment_method=${result.message.custom_payment_method}`)
             }
         }
         if(error) { setErrorAlert(JSON.parse(JSON.parse(error?._server_messages)[0]).message) }
@@ -328,14 +328,14 @@ export default function Checkout(){
                     }${
                         defaultTaxe?.rate !== 0 && defaultTaxe?.amout !== 0 ? ' + ' : ''
                     }${
-                        defaultTaxe?.amout !== 0 ? +defaultTaxe?.amout + '฿ ' : ''
+                        defaultTaxe?.amout !== 0 ? +defaultTaxe?.amout + '฿' : ''
                     })`}
                     </p>
                 </div>
                 <div className="flex flex-col text-right gap-y-[21px]">
-                    <p className='font-semibold text-sm'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total ? `฿ ${deliveryResult?.message?.doc?.total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : `฿ ${getTotal().toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</p>
+                    <p className='font-semibold text-sm'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total ? `฿${deliveryResult?.message?.doc?.total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : `฿${getTotal().toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</p>
                     <p className="text-maingray font-semibold text-sm">
-                        {isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total_taxes_and_charges ? `฿ ${deliveryResult?.message?.doc?.total_taxes_and_charges?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : "฿ 0"}
+                        {isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total_taxes_and_charges ? `฿${deliveryResult?.message?.doc?.total_taxes_and_charges?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : "฿0"}
                     </p>
                     <p className='text-maingray leading-[10px] text-sm'>-</p>
                 </div>
@@ -498,7 +498,7 @@ export default function Checkout(){
                                 />
                                 <AddressForm onSuccess={() => setrandomKey(randomKey + 1)}/>
                             )} */}
-                                {!shippingRuleLoading && !loadingAddress ?
+                                {!shippingRuleLoading && addressList ?
                                 (<>
                                 <label className='w-full'>
                                     <legend className="mb-2 font-semibold text-secgray">ตัวเลือกการจัดส่ง <span className='text-red-500'>*</span></legend>
@@ -511,7 +511,7 @@ export default function Checkout(){
                                                         <span className=' font-bold text-darkgray'>{checkedState ? checkedState : 'รูปแบบการจัดส่ง'}</span>
                                                     </div>
                                                     <div className='flex items-center gap-x-2'>
-                                                        <span className=' font-bold text-darkgray'>{checkedState ? `฿ ${shippingRules?.find(rule => rule.name === checkedState).shipping_amount?.toLocaleString()}` : null}</span>
+                                                        <span className=' font-bold text-darkgray'>{checkedState ? `฿${shippingRules?.find(rule => rule.name === checkedState).shipping_amount?.toLocaleString()}` : null}</span>
                                                         <SfIconArrowForward />
                                                     </div>
                                                 </div>
@@ -519,14 +519,14 @@ export default function Checkout(){
                                         ) : (
                                             <div className='px-6 py-[18px] flex items-center gap-x-2'>
                                                 <Icons.truck01 color='#595959'/>
-                                                <span className='text-secgray font-semibold text-sm'>ไม่มีช่องทางการจัดส่ง กรุณาติดต่อร้านค้าโดยตรง</span>
+                                                <span className='text-secgray'>ไม่มีช่องทางการจัดส่ง กรุณาติดต่อร้านค้าโดยตรง</span>
                                             </div>
                                         )}
                                     </div>
                                 </label>
                                 <AddressDrawer isOpen={morePayments} setIsOpen={setMorePayments} title='เลือกการจัดส่ง'>
                                     <div className='flex flex-col gap-y-3'>
-                                        { shippingRules.map(({ name, shipping_amount, calculate_based_on }) => (
+                                        { shippingRules.map(({ name, shipping_amount }) => (
                                             <SfListItem
                                             as="label"
                                             key={name}
@@ -539,14 +539,13 @@ export default function Checkout(){
                                                 className='checked:bg-black !border border-primary flex hidden'
                                                 onChange={() => {
                                                     setCheckedState(name);
-                                                    setMorePayments(false)
                                                     formik.setFieldValue('shipping_method', name);
                                                     ApplyDeliveryFee({'shipping_rule' : name })
                                                 }}
                                                 />
                                             }
-                                            slotSuffix={<span className="text-gray-900 font-semibold text-sm whitespace-pre">{`${calculate_based_on === 'Fixed' ? `฿ ${shipping_amount?.toLocaleString()}` : 'เลือกเพื่อคำนวณค่าจัดส่ง'}`}</span>}
-                                            className={classNames('w-full !gap-0 border rounded-xl border-neutral-100 !p-4 text-sm bg-neutral-50 font-semibold', {'outline outline-[1px]': checkedState == name})}
+                                            slotSuffix={<span className="text-gray-900  font-bold">฿{shipping_amount?.toLocaleString()}</span>}
+                                            className={classNames('w-full !gap-0 border rounded-xl border-neutral-100 !p-4  bg-neutral-50 font-bold', {'outline outline-[1px]': checkedState == name})}
                                             >
                                             {name}
                                             </SfListItem>
@@ -578,7 +577,7 @@ export default function Checkout(){
                                         <CheckoutDetails addCoupon={<CouponForm />}/>
                                     </div>
                                     <div className='w-full pt-[11px] lg:pt-0'>
-                                        <SfButton size="lg" className="w-full btn-primary text-base h-[50px] rounded-xl" onClick={formik.handleSubmit} disabled={(formik.values.billing_address === undefined || "") || (formik.values.payment_method === "") || (checkedState === "") || undefined}>
+                                        <SfButton size="lg" className="w-full btn-primary text-base h-[50px] rounded-xl" onClick={formik.handleSubmit} disabled={formik.values.billing_address === undefined || formik.values.payment_method === undefined || checkedState === "" || undefined}>
                                             ชำระเงิน
                                         </SfButton>
                                         <div className="mt-3 text-sm text-secgray">
@@ -593,9 +592,18 @@ export default function Checkout(){
                                     </div>
                                 </>
                             ) : (
-                                <div className='flex flex-col gap-y-2'>
-                                    <Skeleton className='h-[50px] w-full'/>
-                                    <Skeleton className='h-4 w-full'/>
+                                <div>
+                                    <div className='flex flex-col gap-y-2 mb-10'>
+                                        <Skeleton className='h-5 w-[100px]'/>
+                                        <div className='flex gap-x-4'>
+                                            <Skeleton className='h-[58px] w-full'/>
+                                            <Skeleton className='h-[58px] w-full'/>
+                                        </div>
+                                    </div>
+                                    <div className='flex flex-col gap-y-2'>
+                                        <Skeleton className='h-[50px] w-full'/>
+                                        <Skeleton className='h-4 w-full'/>
+                                    </div>
                                 </div>
                             )}
                         </>

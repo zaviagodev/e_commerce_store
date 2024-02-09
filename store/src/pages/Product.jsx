@@ -166,7 +166,7 @@ const Product = () => {
                         <LoadingImg
                             ref={imageRef}
                             src={product?.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`}
-                            className="object-cover max-w-[500px] w-[95%] lg:w-full h-auto aspect-square fade-in"
+                            className="object-cover max-w-[500px] w-full h-auto aspect-square fade-in"
                             aria-label={product?.website_image}
                             alt={product?.website_image}
                             id={`img-product-0`}
@@ -177,7 +177,7 @@ const Product = () => {
                                 ref={imageRef}
                                 key={`img-product-${index + 1}`}
                                 src={`${import.meta.env.VITE_ERP_URL ?? ''}${image}`}
-                                className="object-cover max-w-[500px] w-[95%] lg:w-full h-auto aspect-square fade-in"
+                                className="object-cover max-w-[500px] w-full h-auto aspect-square fade-in"
                                 aria-label={image}
                                 alt={image}
                                 id={`img-product-${index + 1}`}
