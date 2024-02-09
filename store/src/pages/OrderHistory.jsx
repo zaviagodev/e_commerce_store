@@ -72,7 +72,7 @@ function OrderHistory() {
                           </tr>
                           <tr>
                             <td className="text-secgray text-sm py-[7px]">ยอดรวมทั้งหมด</td>
-                            <td className="text-linkblack text-sm font-semibold text-right py-[7px]">฿ {base_total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</td>
+                            <td className="text-linkblack text-sm font-semibold text-right py-[7px]">฿{base_total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -103,9 +103,9 @@ function OrderHistory() {
                         <thead>
                           <tr className="border-b">
                             <th className="py-6 text-xs w-1/3">เลขคำสั่งซื้อ</th>
-                            <th className="py-6 text-xs w-1/6 text-center">วันที่</th>
-                            <th className="py-6 text-xs w-1/6 text-center">จำนวนสินค้า</th>
-                            <th className="py-6 text-xs w-1/6 text-right">ยอดรวมทั้งหมด</th>
+                            <th className="py-6 text-xs w-1/6">วันที่</th>
+                            <th className="py-6 text-xs w-1/6">จำนวนสินค้า</th>
+                            <th className="py-6 text-xs w-1/6">ยอดรวมทั้งหมด</th>
                             <th className="py-6 w-1/6"></th>
                           </tr>
                         </thead>
@@ -113,11 +113,11 @@ function OrderHistory() {
                           {filteredData.map(({name, status, base_total, company, items, creation}) => (
                             <tr className="border-b">
                               <td className="py-6 text-sm w-1/3 text-darkgray">{name}-{}{company}</td>
-                              <td className="py-6 text-sm w-1/6 text-darkgray text-center">{`${day(creation) < 10 ? "0" + day(creation) : day(creation)}/${month(creation) < 10 ? "0" + month(creation) : month(creation)}/${new Date(creation).getFullYear()}`}</td>
-                              <td className="py-6 text-sm w-1/6 text-darkgray text-center">{items.length}</td>
-                              <td className="py-6 text-sm w-1/6 text-darkgray text-right">฿ {base_total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</td>
+                              <td className="py-6 text-sm w-1/6 text-darkgray">{`${day(creation) < 10 ? "0" + day(creation) : day(creation)}/${month(creation) < 10 ? "0" + month(creation) : month(creation)}/${new Date(creation).getFullYear()}`}</td>
+                              <td className="py-6 text-sm w-1/6 text-darkgray">{items.length}</td>
+                              <td className="py-6 text-sm w-1/6 text-darkgray">฿{base_total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</td>
                               <td className="py-6 text-sm w-1/6">
-                                <Link to={`/order-history/${name}`} className='flex gap-x-[6px] items-center text-sm justify-end'>
+                                <Link to={`/order-history/${name}`} className='flex gap-x-[6px] items-center text-sm justify-end mr-[14px]'>
                                   <Icons.file06 className='w-[14px] h-[14px]'/>
                                   รายละเอียด
                                 </Link>

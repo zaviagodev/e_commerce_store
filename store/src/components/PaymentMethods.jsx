@@ -3,7 +3,19 @@ import qrmock from '../assets/qrmock.png'
 import { useState} from 'react';
 import { Skeleton } from './Skeleton';
 import { useFrappeGetCall, useFrappePostCall } from 'frappe-react-sdk';
-import { Icons } from './icons';
+
+const paymentMethods = [
+    {
+        label: 'QR พร้อมเพย์',
+        value: 'QR พร้อมเพย์',
+        logo: qrmock,
+    },
+    {
+        label: 'โอนเงินผ่านธนาคาร',
+        value: 'โอนเงินผ่านธนาคาร',
+        logo: qrmock,
+    }
+];
 
 export default function PaymentMethods({
     onChange,
@@ -11,7 +23,7 @@ export default function PaymentMethods({
     error
 }) {
     const [randomKey, setrandomKey] = useState(0)
-    const { data:paymentmethods, isLoading } = useFrappeGetCall('webshop.webshop.api.payment_info', null, `payments-${randomKey}`)
+    const { data:paymentmethods } = useFrappeGetCall('webshop.webshop.api.payment_info', null, `payments-${randomKey}`)
 
     return (
         <>
@@ -31,17 +43,19 @@ export default function PaymentMethods({
                                 <Icons.wallet04 color='#595959'/>
                                 <p className={`text-secgray font-semibold text-sm`}>ไม่มีช่องทางการชำระเงิน กรุณาติดต่อร้านค้าโดยตรง</p>
                             </div>
-                        )}
-                    </div>
-                    {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
-                </fieldset>
+                            {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+                        </fieldset>
+                    ) : (
+                        <div className='rounded-xl border border-lightgray px-4 py-3 bg-neutral-50'>
+                            <p className={`text-secgray font-bold text-center`}>ไม่มีช่องทางการชำระเงิน กรุณาติดต่อร้านค้าโดยตรง</p>
+                        </div>
+                    )}
+                </>
             ) : (
                 <div className='flex flex-col gap-y-2'>
-                    <Skeleton className='h-5 w-[100px]'/>
-                    <div className='flex gap-x-4'>
-                        <Skeleton className='h-[58px] w-full'/>
-                        <Skeleton className='h-[58px] w-full'/>
-                    </div>
+                <Skeleton className='h-6 w-full'/>
+                <Skeleton className='h-6 w-full'/>
+                <Skeleton className='h-6 w-full'/>
                 </div>
             )}
         </>

@@ -36,7 +36,7 @@ const Layer = () => {
 
   return (
     <>
-      {window.location.pathname.includes('/checkout') || window.location.pathname.includes('/payment') ? null : <NavHeader />}
+      {window.location.pathname.includes('/checkout') || window.location.pathname.includes('/thankyou') ? null : <NavHeader />}
         <Outlet />
         <Wish/>
       <Cart />
@@ -53,7 +53,7 @@ const router = createBrowserRouter(
       <Route path="checkout" element={<Checkout />} />
       <Route path="my-addresses" element={<MyAddresses />} />
       <Route path="loyality-program" element={<LoyaltyProgram />} />
-      <Route path="payment" element={<BankInfoPage />} />
+      <Route path="thankyou" element={<BankInfoPage />} />
       <Route path="profile" element={<Profile />} />
       <Route path="login" element={<Login />} />
       <Route path='order-history/:id' element={<SingleOrderHistory />} />

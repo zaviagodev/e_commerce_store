@@ -16,7 +16,32 @@ def get_addresses():
 
 @frappe.whitelist(allow_guest=True)
 def get_websiteSettings():
-    return  frappe.get_doc("Storefront Website Settings")
+    settings = frappe.get_doc("Storefront Website Settings")
+    payment_methods = []
+
+    if settings.enable_promptpay_qr == 1:
+        payment_info = {
+            'name': settings.payment_method_title,
+            'key': 1,
+            'promptpay_qr_image': settings.upload_your_promptpay_qr_image,
+            'account_name': settings.promptpay_account_name,
+            'promptpay_number': settings.promptpay_number
+        }
+        payment_methods.append(payment_info)
+        
+    if settings.enable_bank_transfer == 1:
+        banks_list = frappe.get_all("Payment channel", filters={"parent": "Storefront Website Settings"}, fields=["bank","bank_account_name","bank_account_number"])
+        payment_info = {
+            'name': settings.bank_title,
+            'key': 2,
+            'banks_list': banks_list
+        }
+        payment_methods.append(payment_info)
+        
+    return {
+        "settings": settings,
+        "payment_settings": payment_methods
+    }
 
 
 
