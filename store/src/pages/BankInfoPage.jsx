@@ -405,6 +405,32 @@ const BankInfoPage = () => {
 
                                     {paymentinfo.banks_list?.map((d, index) => (
                                         <div key={index} className='justify-center gap-x-1 bankdetails'>
+                                            <label htmlFor={`bank${index}`}>
+                                                <h2 className='text-sm font-medium'>{d.bank}: </h2>
+                                                <p className='text-sm'>{d.bank_account_name}</p>
+                                                <p className='text-sm'>{d.bank_account_number}</p>
+                                            </label>
+                                        </div>
+                                    ))}
+                                    
+
+                                    <SfButton variant='tertiary' className='w-full btn-primary h-[50px]' onClick={() => setPagestep(2)}>
+                                        PayNow
+                                    </SfButton>
+                                    <div>Your content for payment_method 2 and Pagestep 2</div>
+                                </>
+                            )}
+
+                            {Pagestep === 2 && (
+                                <>
+                                    <h1 className='text-lg text-center font-medium'>Setp 2 Bank Details</h1>
+                                    <div className='flex items-center justify-between'>
+                                        <h2 className='text-sm text-secgray'>เลขที่คำสั่งซื้อ</h2>
+                                        <p className='text-sm font-semibold'>123123123</p>
+                                    </div>
+
+                                    {paymentinfo.banks_list?.map((d, index) => (
+                                        <div key={index} className='justify-center gap-x-1 bankdetails'>
                                             <input 
                                                 type="radio"
                                                 id={`bank${index}`}
@@ -422,14 +448,14 @@ const BankInfoPage = () => {
                                     ))}
                                     
 
-                                    <SfButton variant='tertiary' className='w-full btn-primary h-[50px]' onClick={() => bankselection && setPagestep(2)}>
+                                    <SfButton variant='tertiary' className='w-full btn-primary h-[50px]' onClick={() => bankselection && setPagestep(3)}>
                                         PayNow
                                     </SfButton>
                                     <div>Your content for payment_method 2 and Pagestep 2</div>
                                 </>
                             )}
 
-                            {Pagestep === 2 && (
+                            {Pagestep === 3 && (
                                 <>
                                     <h1 className='text-lg text-center font-medium'>Setp 3 Invoice Deatils</h1>
                                     
@@ -461,7 +487,8 @@ const BankInfoPage = () => {
                                     <label style={{ border: 'solid', textAlign: 'center', padding: '8px', cursor: 'pointer' }} htmlFor='file-upload' className='text-darkgray text-base'>
                                     Upload Now
                                     </label>
-                                    <input type='file' className='hidden' id='file-upload' onChange={handleChange} />
+                                    <input type='file' className='hidden' id='file-upload' onChange={handleChange} accept='image/*' />
+                                    {image && <img alt="preview image" src={image} />}
 
 
                                     <SfButton variant='tertiary' className='w-full btn-primary h-[50px]' onClick={() => SubmitNow()}>PayNow</SfButton>
