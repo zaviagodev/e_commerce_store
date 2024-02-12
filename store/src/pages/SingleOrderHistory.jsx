@@ -42,9 +42,8 @@ function SingleorderHistory(randomKey = 0) {
         // {title:'Shipping Phone:',value:order.custom_phone_number}
     ]
 
-
     const gotopaymentpage = async() => {
-        navigate(`/payment?order_id=${order.name}&amount=${order.grand_total}&payment_method=${order.custom_payment_method}`)
+        navigate(`/payment?order_id=${order.name}&amount=${order.grand_total}&payment_method=${selectedmethod}`) // order.custom_payment_method was replaced with selectedmethod due to the test of the 'make a payment' button
     };
 
     const onpaymentchange = async(paymentid) => {
@@ -152,8 +151,8 @@ function SingleorderHistory(randomKey = 0) {
                             <>
                                 {orderDetails?.map(d => (
                                     <div className="flex items-center justify-between">
-                                        <Skeleton className='h-4 w-[200px]'/>
-                                        <Skeleton className='h-4 w-[200px]'/>
+                                        <Skeleton className='h-4 w-[100px]'/>
+                                        <Skeleton className='h-4 w-[160px]'/>
                                     </div>
                                 ))}
                             </>
@@ -163,21 +162,17 @@ function SingleorderHistory(randomKey = 0) {
                 <div className="flex flex-col gap-y-2">
                     <h2 className='font-semibold text-darkgray'>วิธีการชำระเงิน</h2>
                     <div className="flex items-center gap-3 lg:justify-between">
-                            <div className="border border-neutral-100 bg-neutral-50 rounded-xl h-[50px] w-full lg:w-1/2 px-4 flex items-center font-semibold">
-
+                            <SfSelect className='!p-0 !ring-0 w-full m-auto' wrapperClassName="border border-neutral-100 bg-neutral-50 rounded-xl h-[50px] w-full lg:w-1/2 px-4 flex items-center font-semibold" size="base" value={selectedmethod} onChange={(e) => onpaymentchange(e.target.value)}>
+                                {paymentmethods?.map((method) => (
+                                    <option value={method.key} key={method.key}>{method.name}</option>
+                                ))}
 
 {console.log(paymentmethods)}
-                                <SfSelect  size="base" value={selectedmethod} onChange={(e) => onpaymentchange(e.target.value)}>
-                                    {paymentmethods?.map((method) => (
-                                        <option value={method.key} key={method.key}>{method.name}</option>
-                                    ))}
-                                </SfSelect>    
-
-                            </div>
+                            </SfSelect>
                             {order.status === "Unpaid" && (
-                                    <SfButton className="btn-primary rounded-xl h-[50px] whitespace-pre" variant="tertiary" onClick={gotopaymentpage}>
-                                        ชำระเงิน
-                                    </SfButton>
+                                <SfButton className="btn-primary rounded-xl h-[50px] whitespace-pre" variant="tertiary" onClick={gotopaymentpage}>
+                                    ชำระเงิน
+                                </SfButton>
                             )}
 
                     </div>

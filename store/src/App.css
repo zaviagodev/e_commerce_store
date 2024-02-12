@@ -99,7 +99,7 @@
 } */
 
 .main-section {
-  @apply max-w-[1400px] m-auto px-4 lg:px-10 py-[50px] box-content
+  @apply max-w-[1400px] m-auto px-4 lg:px-10 py-6 lg:py-[50px] box-content
 }
 
 .main-section-single-product {

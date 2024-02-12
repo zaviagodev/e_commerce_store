@@ -6,11 +6,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useUser } from '../hooks/useUser';
 import { getToken } from '../utils/helper';
 import * as Yup from 'yup';
+import { Icons } from '../components/icons';
 
 export default function Login() {
     const { login } = useUser();
     const [loginState, setLoginState] = useState(true);
     const [apiResponse, setapiResponse] = useState('');
+    const [showPassword, setShowPassword] = useState(false)
     const [forgotPassword, setForgotPassword] = useState(false)
     const [saveLoading, setSaveLoading] = useState(false)
 
@@ -66,33 +68,34 @@ export default function Login() {
     return (
         <>
         <main className='main-section-login'>
-        <h2 className="mb-[85px] text-primary text-center text-4xl font-semibold">เข้าสู่ระบบ</h2>
-            <section className={`grid grid-cols-1 gap-[70px] mx-auto lg:grid-cols-2`}>
-            <form className="flex gap-4 flex-wrap text-neutral-900 text-start text-big" onSubmit={formik.handleSubmit}>
-                <h2 className="text-darkgray text-2xl font-semibold">{forgotPassword ? 'รีเซ็ตรหัสผ่านของคุณ' : 'ลงชื่อเข้าใช้งาน'}</h2>
+        <h2 className="mb-[41px] lg:mb-[85px] text-primary text-center text-2xl lg:text-4xl font-semibold">เข้าสู่ระบบ</h2>
+            <section className={`max-w-[410px] w-full lg:max-w-none grid grid-cols-1 gap-[70px] mx-auto lg:grid-cols-2`}>
+            <form className="flex gap-3 flex-wrap text-neutral-900 text-start text-big" onSubmit={formik.handleSubmit}>
+                <h2 className="text-darkgray text-lg lg:text-2xl font-semibold">{forgotPassword ? 'รีเซ็ตรหัสผ่านของคุณ' : 'ลงชื่อเข้าใช้งาน'}</h2>
                 {forgotPassword && (
                     <p className='text-secgray'>เราจะส่งข้อมูลไปยังอีเมลของคุณเพื่อรีเซ็ตรหัสผ่าน</p>
                 )}
 
                 {apiResponse == 'อีเมลหรือรหัสผ่านไม่ถูกต้อง' && <h2 className="text-xs text-red-500 font-semibold w-full">{apiResponse}</h2>}
 
-                <label className="w-full flex flex-col gap-2">
+                <label className="w-full flex flex-col">
                     <SfInput name="usr" autoComplete="usr" onChange={formik.handleChange} value={formik.values.usr} 
                         wrapperClassName={`!bg-neutral-50 ${formik.errors.usr ? '!ring-red-500/50' : '!ring-lightgray'} h-[50px] px-6 rounded-xl`}
                         className={`bg-neutral-50 font-medium ${formik.errors.usr ? 'text-red-500' : 'text-darkgray'} `}
                         placeholder='อีเมล *'
                     />
-                    <p className='text-red-500 text-xs font-semibold'>{formik.errors.usr}</p>
+                    <p className='text-red-500 text-xs font-semibold mt-2'>{formik.errors.usr}</p>
                 </label>
 
                 {!forgotPassword && (
-                    <label className="w-full flex flex-col gap-2">
-                        <SfInput name="pwd" type='password' autoComplete="given-password" onChange={formik.handleChange} value={formik.values.pwd} 
+                    <label className="w-full flex flex-col">
+                        <SfInput name="pwd" type={showPassword ? 'text' : 'password'} autoComplete="given-password" onChange={formik.handleChange} value={formik.values.pwd} 
                             wrapperClassName={`!bg-neutral-50 ${formik.errors.pwd ? '!ring-red-500/50' : '!ring-lightgray'} h-[50px] px-6 rounded-xl`}
                             className={`bg-neutral-50 font-medium ${formik.errors.pwd ? 'text-red-500' : 'text-darkgray'} `}
                             placeholder="รหัสผ่าน *"
+                            slotSuffix={<a onClick={() => setShowPassword(!showPassword)} className='cursor-pointer'>{showPassword ? <Icons.eye /> : <Icons.eyeOff />}</a>}
                         />
-                        <p className='text-red-500 text-xs font-semibold'>{formik.errors.pwd}</p>
+                        <p className='text-red-500 text-xs font-semibold mt-2'>{formik.errors.pwd}</p>
                     </label>
                 )}
 
@@ -109,7 +112,7 @@ export default function Login() {
                 )}
             </form>
             <div className='flex flex-col gap-y-5'>
-                <h2 className="text-darkgray text-2xl font-semibold">ลูกค้าใหม่</h2>
+                <h2 className="text-darkgray text-lg lg:text-2xl font-semibold">ลูกค้าใหม่</h2>
                 <p className='text-secgray'>ลงทะเบียนเพื่อเข้าถึง การสินค้าสุดพิเศษพร้อมกับสินค้ามาใหม่ เทรนด์ที่มาแรง ส่วนลดและโปรโมชั่นมากมายสำหรับสมาชิก</p>
                 <Link to='/register' className='w-fit'>
                     <SfButton className='w-fit mt-5 btn-primary h-[50px] rounded-xl'>

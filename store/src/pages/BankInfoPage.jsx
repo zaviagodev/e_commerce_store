@@ -1,6 +1,6 @@
 import { SfButton, SfTooltip, useDisclosure } from '@storefront-ui/react';
-import { useState,React, useEffect} from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useState,React, useEffect, useCallback} from 'react';
+import { Link, useLocation, useNavigate, useSearchParams, useBeforeUnload } from 'react-router-dom';
 import defaultLogo from '../assets/defaultBrandIcon.svg';
 import { useSetting } from '../hooks/useWebsiteSettings';
 import { useFormik } from "formik";
@@ -156,6 +156,23 @@ const BankInfoPage = () => {
         }
     }
 
+    useEffect(() => {
+        window.scrollTo(0,0)
+    }, [])
+
+    // const location = useLocation()
+
+    // useEffect(() => {
+    //     function handleOnBeforeUnload(event){
+    //         if (event.state){
+    //             navigate(location.pathname + location.search)
+    //             openModal()
+    //         }
+    //     }
+
+    //     window.addEventListener('popstate', handleOnBeforeUnload)
+    // }, [location])
+
     return (
         <div className='py-10 w-full'>
             <div className='max-w-[513px] mx-auto flex flex-col gap-y-12 p-8 rounded-[30px]'>
@@ -172,7 +189,7 @@ const BankInfoPage = () => {
                 <Modal open={openModal} isOpen={isModalOpen} close={closeModal}>
                     <div className='flex flex-col gap-y-6'>
                         <h1 className='text-black text-2xl font-semibold'>ออกจากขั้นตอนการชำระเงิน ?</h1>
-                        <p className='text-darkgray'>เมื่อคุณออกจากขั้นตอนการชำระเงิน<br/> ระบบจะบันทึกสถานะคำสั่งซื้อว่า “ยังไม่ได้ชำระเงิน”<br/> คุณต้องการออกจากขั้นตอนการชำระเงินหรือไม่</p>
+                        <p className='text-darkgray px-5'>เมื่อคุณออกจากขั้นตอนการชำระเงิน ระบบจะบันทึกสถานะคำสั่งซื้อว่า “ยังไม่ได้ชำระเงิน” คุณต้องการออกจากขั้นตอนการชำระเงินหรือไม่</p>
                     </div>
 
                     <div className='flex gap-x-3 w-full'>
@@ -421,7 +438,7 @@ const BankInfoPage = () => {
                                                 </div>
                                             </div>
                                         </label>
-                                        <input type='file' className='hidden' id='file-upload' onChange={handleChange} accept='image/*' /></> 
+                                        <input type='file' className='hidden' id='file-upload' onChange={handleChange} accept=".png, .jpg, .jpeg" /></> 
                                         )}
                                     </div>
 
@@ -635,7 +652,7 @@ const BankInfoPage = () => {
                                                 </div>
                                             </div>
                                         </label>
-                                        <input type='file' className='hidden' id='file-upload' onChange={handleChange} accept='image/*' /></> 
+                                        <input type='file' className='hidden' id='file-upload' onChange={handleChange} accept=".png, .jpg, .jpeg"/></> 
                                         )}
                                     </div>
 
