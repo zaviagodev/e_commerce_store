@@ -9,3 +9,4 @@ e_commerce_store/public/node_modules/
 e_commerce_store/public/store/
 e_commerce_store/www/store.html
 node_modules/
+store/proxyOptions.js

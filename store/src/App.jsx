@@ -21,16 +21,23 @@ import SingleOrderHistory from "./pages/SingleOrderHistory";
 import { WishProvider } from "./hooks/useWishe";
 import Wish from "./components/Wish";
 import { SettingProvider } from "./hooks/useWebsiteSettings";
-
+import MyAddresses from "./pages/MyAddresses";
+import Register from "./pages/Register";
 
 const Layer = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    navigate("/home/all items")
-  }, [])
+    const currentPath = window.location.pathname;
+    const formattedPath = currentPath.replace(/\/+$/, '');
+    if (formattedPath === '/store') {
+      navigate('/home/all items');
+    }
+  
+  }, [navigate]);
+
   return (
     <>
-      <NavHeader />
+      {window.location.pathname.includes('/checkout') || window.location.pathname.includes('/payment') ? null : <NavHeader />}
         <Outlet />
         <Wish/>
       <Cart />
@@ -42,12 +49,15 @@ const router = createBrowserRouter(
     <Route path="/" element={<Layer/>}>
       <Route path="order-history" element={<OrderHistory />} />
       <Route path="home/:itemsgroup" element={<Home />} />
+      <Route path="home/:itemsgroup/:pageno" element={<Home />} />
       <Route path="products/:id" element={<Product />} />
       <Route path="checkout" element={<Checkout />} />
+      <Route path="my-addresses" element={<MyAddresses />} />
       <Route path="loyality-program" element={<LoyaltyProgram />} />
-      <Route path="thankyou" element={<BankInfoPage />} />
+      <Route path="payment" element={<BankInfoPage />} />
       <Route path="profile" element={<Profile />} />
       <Route path="login" element={<Login />} />
+      <Route path="register" element={<Register />} />
       <Route path='order-history/:id' element={<SingleOrderHistory />} />
     </Route>
   ),
@@ -55,14 +65,13 @@ const router = createBrowserRouter(
 );
 
 export const AppWrapper = () => {
-  {/* Change from import.meta to process after completed the code */}
 
   return (
     <FrappeProvider
       url={import.meta.env.VITE_ERP_URL ?? ""}
       enableSocket={false}
       tokenParams={
-        import.meta.env.VITE_USE_TOKEN_AUTH ?
+        import.meta.env.VITE_USE_TOKEN_AUTH == 'true' ?
         {
           type: import.meta.env.VITE_TOKEN_TYPE ? import.meta.env.VITE_TOKEN_TYPE : "token", 
           useToken: true,

@@ -13,7 +13,7 @@ export const UserProvider = ({ children }) => {
 
 
 
-    const { mutate } = useFrappeGetCall('headless_e_commerce.api.get_profile', {}, 'user-profile', {
+    const { mutate } = useFrappeGetCall('e_commerce_store.api.get_profile', {}, 'user-profile', {
         isOnline: () => getToken(),
         onSuccess: (data) => {
             setUser(data.message)
@@ -23,7 +23,7 @@ export const UserProvider = ({ children }) => {
 
     const login = async (usr, pwd) => {
         try {
-            return fetch(`${import.meta.env.VITE_ERP_URL ?? ""}/api/method/${process.env.USE_TOKEN_AUTH ? "frappeauth_app.authentication.login" : "login"}`, {
+            return fetch(`${import.meta.env.VITE_ERP_URL ?? ""}/api/method/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -35,56 +35,57 @@ export const UserProvider = ({ children }) => {
             })
                 .then((response) => response.json())
                 .then((data) => {
-                    if (data.message.token) {
-                        // handle jwt
-                        setToken(data.message.token);
-                    }
+                    //if (data.message.token) {
+                        setToken(521012);
+                    //}
                     // get user
-                    return mutate().then((data) => {
+                    mutate().then((s) => {
                         updateCurrentUser();
-                        return data;
                     });
+                    return data;
+
                 });
         } catch (error) {
             return error;
         }
     };
 
-    const register = async (usr,email, pwd) => {
-        try{
-            fetch(`${import.meta.env.VITE_ERP_URL ?? ""}/api/method/frappe.core.doctype.user.user.sign_up`,{
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body : JSON.stringify({
+    const register = async (email, pwd) => {
+    try {
+        const response = await fetch(`${import.meta.env.VITE_ERP_URL ?? ""}/api/method/webshop.webshop.api.sign_up`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
                 email: email,
-                full_name: usr,
+                full_name: email,
                 password: pwd,
                 redirect_to: "/",
-                })
-            })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.message.token) {
-                    // handle jwt
-                    setToken(data.message.token);
-                }
-                // get user
-                return mutate().then((data) => {
-                    updateCurrentUser();
-                    return data;
-                });
+            }),
+        });
+
+        const data = await response.json();
+            if (data.message.token) {
+                login(email, pwd);
+                setToken(data.message.token);
+            } 
+            mutate().then((s) => {
+                updateCurrentUser();
             });
-        }catch(error){
-            return error;
-        }
-    };
+            return data;
+    } catch (error) {
+        console.error("Error during registration:", error);
+        throw error; // Re-throw the error so it can be caught by the calling code if necessary
+    }
+};
+
 
     const logout = async () => {
         return frappeLogout().then(() => {
             setUser(null);
             removeToken();
+            frappeLogout()
             window.location.reload();
         })
     };
