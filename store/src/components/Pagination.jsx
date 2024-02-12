@@ -12,8 +12,6 @@ const Pagination = ({ total,perpage,indexproducts,selectedpage }) => {
   useEffect(() => {
     const newStartIndex = (currentPage - 1) * itemsPerPage;
     setStartIndex(newStartIndex >= 0 ? newStartIndex : 0);
-    
-
   }, [currentPage]);
 
   const totalPages = Math.ceil(total / itemsPerPage);
@@ -36,7 +34,7 @@ const Pagination = ({ total,perpage,indexproducts,selectedpage }) => {
     <div className='w-full flex justify-between items-center mt-20'>
       <button className={`flex items-center gap-x-2 ${currentPage <= 1 ? 'text-secgray' : ''}`} onClick={() => handlePageChange(parseInt(currentPage) - 1)} disabled={currentPage <= 1}>
         <SfIconArrowBack className='w-5 h-5'/>
-        ก่อนหน้า
+        <span className='hidden lg:block'>ก่อนหน้า</span>
       </button>
       <div className='flex gap-x-[2px]'>
       {[...Array(totalPages).keys()].map((page) => (
@@ -49,11 +47,9 @@ const Pagination = ({ total,perpage,indexproducts,selectedpage }) => {
             {page + 1}
           </button>
       ))}
-
-
       </div>
       <button className={`flex items-center gap-x-2 ${currentPage >= totalPages ? 'text-secgray' : ''}`} onClick={() => handlePageChange(parseInt(currentPage) + 1)} disabled={currentPage >= totalPages}>
-        ถัดไป
+        <span className='hidden lg:block'>ถัดไป</span>
         <SfIconArrowForward className='w-5 h-5'/>
       </button>
     </div>

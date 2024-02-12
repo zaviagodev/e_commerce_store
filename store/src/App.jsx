@@ -22,6 +22,7 @@ import { WishProvider } from "./hooks/useWishe";
 import Wish from "./components/Wish";
 import { SettingProvider } from "./hooks/useWebsiteSettings";
 import MyAddresses from "./pages/MyAddresses";
+import Register from "./pages/Register";
 
 const Layer = () => {
   const navigate = useNavigate();
@@ -56,6 +57,7 @@ const router = createBrowserRouter(
       <Route path="payment" element={<BankInfoPage />} />
       <Route path="profile" element={<Profile />} />
       <Route path="login" element={<Login />} />
+      <Route path="register" element={<Register />} />
       <Route path='order-history/:id' element={<SingleOrderHistory />} />
     </Route>
   ),
