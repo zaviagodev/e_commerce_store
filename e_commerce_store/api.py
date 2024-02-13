@@ -237,7 +237,7 @@ def get_cities(state=None, country=None):
     cities = frappe.get_all("City", fields=["name","city_name"])
 
     if state:
-        cities = frappe.get_all("City", filters={"state_name1": state}, fields=["name","city_name"])
+        cities = frappe.get_all("City", filters={"state_name": state}, fields=["name","city_name"])
 
     if country:
         cities = frappe.get_all("City", filters={"country": country}, fields=["name","city_name"])
