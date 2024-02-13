@@ -109,6 +109,14 @@ const AddressForm = ({ onFormSubmit }) => {
                         placeholder="ประเทศ *" 
                         onChange={(event) => {
                             formik.setFieldValue('country', event.target.value);
+                            if(formik.values.state !== "")
+                            {
+                                formik.setFieldValue('state', '')
+                            }
+                            if(formik.values.city !== "")
+                            {
+                                formik.setFieldValue('city', '')
+                            }
                             get_states({'country' : event.target.value})
                             get_cities({'country' : event.target.value})
                           }}
@@ -165,22 +173,25 @@ const AddressForm = ({ onFormSubmit }) => {
                         wrapperClassName='!bg-neutral-50' 
                         placeholder="เขต / อำเภอ *" 
                         onChange={(event) => {
+                            if(event.target.value === "")
+                            {
+                                return
+                            }
                             formik.setFieldValue('city', event.target.value)
-                            if(formik.values.state === "")
+                            if(formik.values.state == "")
                             {
                                 get_states({'city' : event.target.value}).then((data) => {
                                     formik.setFieldValue('state', data.message)
                                     get_states()
                                 })
                             }
-                            if(formik.values.country === "")
+                            if(formik.values.country == "")
                             {
                                 get_countries({'city' : event.target.value}).then((data) => {
                                     formik.setFieldValue('country', data.message)
                                     get_countries()
                                 })
                             }
-
                         }} 
                         value={formik.values.city} 
                         invalid={formik.errors.city} >
@@ -204,9 +215,17 @@ const AddressForm = ({ onFormSubmit }) => {
                         wrapperClassName='!bg-neutral-50' 
                         placeholder="จังหวัด *" 
                         onChange={(event) => {
+                            if(event.target.value === "")
+                            {
+                                return
+                            }
                             formik.setFieldValue('state', event.target.value)
+                            if(formik.values.city !== "")
+                            {
+                                formik.setFieldValue('city', '')
+                            }
                             get_cities({'state' : event.target.value})
-                            if(formik.values.country === "")
+                            if(formik.values.country == "")
                             {
                                 get_countries({'state' : event.target.value}).then((data) => {
                                     formik.setFieldValue('country', data.message)
@@ -216,7 +235,7 @@ const AddressForm = ({ onFormSubmit }) => {
                         }} 
                         value={formik.values.state}>
                         { states?.message.map((stateName) => (
-                            <option key={stateName.name} value={stateName.name}>{stateName.name}</option>
+                            <option key={stateName.state_name1} value={stateName.state_name1}>{stateName.state_name1}</option>
                         ))}
                     </SfSelect>
                     {formik.errors.state && (
