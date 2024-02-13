@@ -15,6 +15,8 @@
   "home_tab",
   "sb0",
   "home_page",
+  "products_per_page",
+  "default_product_image",
   "cb4",
   "title_prefix",
   "misc_section",
@@ -41,6 +43,7 @@
   "show_language_picker",
   "hide_wish",
   "button_label",
+  "button_link",
   "navbar_template_section",
   "navbar_template",
   "navbar_template_values",
@@ -81,7 +84,24 @@
   "head_html",
   "robots_txt",
   "redirects_tab",
-  "route_redirects"
+  "route_redirects",
+  "payment_setting_tab",
+  "website_payment_setting_section",
+  "enable_bank_transfer",
+  "section_break_jrcd",
+  "bank_title",
+  "table_gsjg",
+  "mode_of_payment_for_bank",
+  "promptpay_qr_section",
+  "enable_promptpay_qr",
+  "section_break_qkhv",
+  "payment_method_title",
+  "upload_your_promptpay_qr_image",
+  "mode_of_payment_for_qr",
+  "bank",
+  "column_break_qnsr",
+  "promptpay_account_name",
+  "promptpay_number"
  ],
  "fields": [
   {
@@ -210,6 +230,7 @@
    "label": "Navbar"
   },
   {
+   "description": "main items should be on top",
    "fieldname": "top_bar_items",
    "fieldtype": "Table",
    "label": "Top Bar Items",
@@ -286,6 +307,7 @@
   {
    "fieldname": "footer_tab",
    "fieldtype": "Tab Break",
+   "hidden": 1,
    "label": "Footer"
   },
   {
@@ -366,6 +388,7 @@
    "collapsible": 1,
    "fieldname": "integrations",
    "fieldtype": "Tab Break",
+   "hidden": 1,
    "label": "Integrations"
   },
   {
@@ -442,6 +465,7 @@
    "collapsible": 1,
    "fieldname": "section_break_38",
    "fieldtype": "Tab Break",
+   "hidden": 1,
    "label": "Header, Robots"
   },
   {
@@ -466,6 +490,7 @@
   {
    "fieldname": "redirects_tab",
    "fieldtype": "Tab Break",
+   "hidden": 1,
    "label": "Redirects"
   },
   {
@@ -487,16 +512,124 @@
    "label": "Hide Wish"
   },
   {
+   "default": "Add To Cart",
+   "description": "if checkout is hidden u have to add a custom link and custom text in the product main button",
    "fieldname": "button_label",
    "fieldtype": "Data",
-   "label": "Button Text"
+   "label": "Button label"
+  },
+  {
+   "fieldname": "products_per_page",
+   "fieldtype": "Int",
+   "label": "Products per Page"
+  },
+  {
+   "fieldname": "default_product_image",
+   "fieldtype": "Attach Image",
+   "label": "Default Product Image"
+  },
+  {
+   "fieldname": "button_link",
+   "fieldtype": "Data",
+   "label": "Button link"
+  },
+  {
+   "fieldname": "payment_setting_tab",
+   "fieldtype": "Tab Break",
+   "label": "Payment Setting"
+  },
+  {
+   "fieldname": "website_payment_setting_section",
+   "fieldtype": "Section Break",
+   "label": "Website Payment Setting"
+  },
+  {
+   "default": "0",
+   "fieldname": "enable_bank_transfer",
+   "fieldtype": "Check",
+   "label": "Enable Bank Transfer"
+  },
+  {
+   "depends_on": "eval:doc.enable_bank_transfer == 1",
+   "fieldname": "section_break_jrcd",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "bank_title",
+   "fieldtype": "Data",
+   "label": "Payment Method Title"
+  },
+  {
+   "fieldname": "table_gsjg",
+   "fieldtype": "Table",
+   "options": "Payment channel"
+  },
+  {
+   "fieldname": "mode_of_payment_for_bank",
+   "fieldtype": "Link",
+   "label": "Mode Of payment for bank",
+   "options": "Mode of Payment"
+  },
+  {
+   "fieldname": "promptpay_qr_section",
+   "fieldtype": "Section Break",
+   "label": "PromptPay QR"
+  },
+  {
+   "default": "0",
+   "fieldname": "enable_promptpay_qr",
+   "fieldtype": "Check",
+   "label": "Enable PromptPay QR"
+  },
+  {
+   "depends_on": "eval:doc.enable_promptpay_qr == 1",
+   "fieldname": "section_break_qkhv",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "payment_method_title",
+   "fieldtype": "Data",
+   "label": "Payment Method Title"
+  },
+  {
+   "fieldname": "upload_your_promptpay_qr_image",
+   "fieldtype": "Attach Image",
+   "label": "Upload your PromptPay QR image",
+   "mandatory_depends_on": "eval:doc.enable_promptpay_qr == 1"
+  },
+  {
+   "fieldname": "mode_of_payment_for_qr",
+   "fieldtype": "Link",
+   "label": "Mode of payment for Qr",
+   "options": "Mode of Payment"
+  },
+  {
+   "fieldname": "bank",
+   "fieldtype": "Link",
+   "label": "Bank",
+   "options": "Bank"
+  },
+  {
+   "fieldname": "column_break_qnsr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "promptpay_account_name",
+   "fieldtype": "Data",
+   "label": "PromptPay Account Name",
+   "mandatory_depends_on": "eval:doc.enable_promptpay_qr == 1"
+  },
+  {
+   "fieldname": "promptpay_number",
+   "fieldtype": "Data",
+   "label": "PromptPay number"
   }
  ],
  "icon": "fa fa-cog",
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-01-29 10:10:20.679319",
+ "modified": "2024-02-13 14:13:28.980776",
  "modified_by": "Administrator",
  "module": "E Commerce Store",
  "name": "Storefront Website Settings",
