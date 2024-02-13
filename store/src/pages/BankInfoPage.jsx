@@ -318,7 +318,7 @@ const BankInfoPage = () => {
                                                             defaultTaxe?.amout !== 0 ? +defaultTaxe?.amout + '฿ ' : ''
                                                         })`}
                                                     </p>
-                                                    <p className='text-maingray leading-[10px] text-sm'>-</p>
+                                                    <p className='text-maingray font-semibold text-sm'>-</p>
                                                 </div>
                                                 <div className='flex justify-between pt-4 border-t'>
                                                     <p className='font-semibold text-sm'>ยอดรวมทั้งสิ้น</p>
@@ -537,7 +537,7 @@ const BankInfoPage = () => {
                                                             defaultTaxe?.amout !== 0 ? +defaultTaxe?.amout + '฿' : ''
                                                         })`}
                                                     </p>
-                                                    <p className='text-maingray leading-[10px] text-sm'>-</p>
+                                                    <p className='text-maingray font-semibold text-sm'>-</p>
                                                 </div>
                                                 <div className='flex justify-between pt-4 border-t'>
                                                     <p className='font-semibold text-sm'>ยอดรวมทั้งสิ้น</p>

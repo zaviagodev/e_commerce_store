@@ -456,7 +456,7 @@ import Modal from './drawers/Modal';
                     }
                   })}</>
                 ) : (
-                  <Skeleton className='h-8 w-[200px]'/>
+                  <Skeleton className='h-8 w-20 lg:w-[200px]'/>
                 )}
               </ul>
             </nav>
@@ -492,7 +492,7 @@ import Modal from './drawers/Modal';
           <div className='flex justify-center lg:justify-start lg:gap-x-10'>
             <Link to="home/all items" className="flex focus-visible:outline text-black focus-visible:outline-offset focus-visible:rounded-sm shrink-0">
               {appLogo === null ? (
-                  <Skeleton className='h-8 w-[120px]'/>
+                  <Skeleton className='h-8 w-10 lg:w-[120px]'/>
               ) : (
                   <picture>
                   <source srcSet={appLogo ? `${import.meta.env.VITE_ERP_URL ?? ''}${appLogo}` : defaultLogo} media="(min-width: 768px)" />
@@ -512,7 +512,7 @@ import Modal from './drawers/Modal';
                     else return recursiveBuild(item)
                   })}</>
                 ) : (
-                  <Skeleton className='h-8 w-[200px]'/>
+                  <Skeleton className='h-8 w-20 lg:w-[200px]'/>
                 )}
               </ul>
             </nav>
@@ -553,7 +553,7 @@ import Modal from './drawers/Modal';
                       </SfButton>}
                     )}</>
                 ) : (
-                  <Skeleton className='h-8 w-[200px]'/>
+                  <Skeleton className='h-8 w-20 lg:w-[200px]'/>
                 )}
               </div>
             </nav>

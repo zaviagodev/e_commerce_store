@@ -8,7 +8,7 @@ const OrderContext = createContext([])
 export const OrderProvider = ({ children }) => {
     const [Order, setOrder] = useState([])
 
-    const {mutate : mutateOrder, error:orderError} = useFrappeGetCall('webshop.webshop.api.get_orders',undefined,undefined,{
+    const {mutate : mutateOrder, error:orderError, isLoading:orderLoading} = useFrappeGetCall('webshop.webshop.api.get_orders',undefined,undefined,{
         isOnline: () => Order.length === 0,
         onSuccess: (data) => {
             setOrder(data.message)
@@ -26,7 +26,8 @@ export const OrderProvider = ({ children }) => {
         setOrder,
         mutateOrder,
         orderError,
-        getOrderByOrderCode
+        getOrderByOrderCode,
+        orderLoading
     }
 
     return (

@@ -13,6 +13,7 @@ import { useFrappePostCall } from "frappe-react-sdk";
 import { Icons } from "../components/icons";
 import { useFrappeGetCall } from 'frappe-react-sdk';
 import { useNavigate } from 'react-router-dom';
+import { orderStatuses } from "../data/orderStatuses";
 
 function SingleorderHistory(randomKey = 0) {
     const id = useParams().id;
@@ -38,7 +39,7 @@ function SingleorderHistory(randomKey = 0) {
         {title:'เลขที่คำสั่งซื้อ',value:order.name},
         {title:'ยอดรวมทั้งสิ้น',value:`฿ ${order.grand_total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`},
         {title:'วันที่',value:`${day(order.creation) < 10 ? "0" + day(order.creation) : day(order.creation)}/${month(order.creation) < 10 ? "0" + month(order.creation) : month(order.creation)}/${new Date(order.creation).getFullYear()}`},
-        {title:'สถานะ',value:order.status}
+        {title:'สถานะ',value:orderStatuses?.find(stat => stat.value == order.status)?.label}
         // {title:'Shipping Phone:',value:order.custom_phone_number}
     ]
 
@@ -84,9 +85,9 @@ function SingleorderHistory(randomKey = 0) {
             <div className='lg:ml-[69px]'>
             <div className='flex justify-between pt-[21px] border-t'>
                 <div className="flex flex-col pr-2 gap-y-[21px]">
-                    <p>ราคาสินค้าทั้งหมด</p>
-                    <p className="text-maingray">ค่าจัดส่ง</p>
-                    <p className='text-maingray'>
+                    <p className="text-sm">ราคาสินค้าทั้งหมด</p>
+                    <p className="text-maingray text-sm">ค่าจัดส่ง</p>
+                    <p className='text-maingray text-sm'>
                     ภาษีมูลค่าเพิ่ม
                     {defaultTaxe && ` (${
                         defaultTaxe?.rate !== 0 ? defaultTaxe?.rate+'%' : ''
@@ -102,11 +103,11 @@ function SingleorderHistory(randomKey = 0) {
                     <p className="text-maingray text-sm font-semibold">
                     {isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : `฿ ${order.tax_amount?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}
                     </p>
-                    <p className='text-sm text-maingray'>-</p>
+                    <p className='text-sm text-maingray font-semibold'>-</p>
                 </div>
             </div>
             <div className="flex justify-between typography-headline-4 md:typography-headline-3 py-4 lg:pt-4 border-t mt-4 font-medium">
-                <p>ยอดรวมทั้งสิ้น</p>
+                <p className="text-sm">ยอดรวมทั้งสิ้น</p>
                 <p className="text-sm font-semibold">{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : `฿ ${order.grand_total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</p>
             </div>
         </div>
@@ -159,24 +160,37 @@ function SingleorderHistory(randomKey = 0) {
                         )}
                     </div>
                 </div>
-                <div className="flex flex-col gap-y-2">
-                    <h2 className='font-semibold text-darkgray'>วิธีการชำระเงิน</h2>
-                    <div className="flex items-center gap-3 lg:justify-between">
-                            <SfSelect className='!p-0 !ring-0 w-full m-auto' wrapperClassName="border border-neutral-100 bg-neutral-50 rounded-xl h-[50px] w-full lg:w-1/2 px-4 flex items-center font-semibold" size="base" value={selectedmethod} onChange={(e) => onpaymentchange(e.target.value)}>
-                                {paymentmethods?.map((method) => (
-                                    <option value={method.key} key={method.key}>{method.name}</option>
-                                ))}
-
-{console.log(paymentmethods)}
-                            </SfSelect>
-                            {order.status === "Unpaid" && (
-                                <SfButton className="btn-primary rounded-xl h-[50px] whitespace-pre" variant="tertiary" onClick={gotopaymentpage}>
-                                    ชำระเงิน
-                                </SfButton>
-                            )}
-
+                {!loading ? (
+                    <>{order.status === 'Cancelled' || order.status === 'Overdue' ? null : (
+                        <div className="flex flex-col gap-y-2">
+                            <h2 className='font-semibold text-darkgray'>วิธีการชำระเงิน</h2>
+                            <div className="flex items-center gap-3 lg:justify-between">
+                                {order.status === "Paid" ? (
+                                    <div className="border border-neutral-100 bg-neutral-50 rounded-xl h-[50px] w-full lg:w-1/2 px-4 flex items-center font-semibold">
+                                        {paymentmethods?.find(method => method.key == order.custom_payment_method)?.name}
+                                    </div>
+                                ) : (
+                                    <SfSelect className='!p-0 !ring-0 w-full m-auto' wrapperClassName="border border-neutral-100 bg-neutral-50 rounded-xl h-[50px] w-full lg:w-1/2 px-4 flex items-center font-semibold" size="base" value={selectedmethod} onChange={(e) => onpaymentchange(e.target.value)}>
+                                        {paymentmethods?.map((method) => (
+                                            <option value={method.key} key={method.key}>{method.name}</option>
+                                        ))}
+                                    {console.log(paymentmethods)}
+                                    </SfSelect>
+                                )}
+                                {order.status === "Unpaid" && (
+                                    <SfButton className="btn-primary rounded-xl h-[50px] whitespace-pre" variant="tertiary" onClick={gotopaymentpage}>
+                                        ชำระเงิน
+                                    </SfButton>
+                                )}
+                            </div>
+                        </div>
+                    )}</>
+                ) : (
+                    <div className="flex items-center justify-between">
+                        <Skeleton className='h-4 w-[100px]'/>
+                        <Skeleton className='h-4 w-[160px]'/>
                     </div>
-                </div>
+                )}
                 {!loading ? (
                     <div className="flex flex-col gap-y-2">
                         {data?.message?.filter((addressz) => addressz?.name === order.shipping_address_name).length > 0 ? <h2 className='font-semibold text-darkgray'>ที่อยู่จัดส่ง</h2> : null}

@@ -118,11 +118,6 @@ const Product = () => {
     const filteredProducts = products.filter((productz) => productz?.item_group === product?.item_group).filter((productz) => productz?.item_code  != product?.item_code)
     const groupedProductsData = getGroupedProducts(product?.item_group)?.data;
 
-    const handleMobileImgIndex = (index) => {
-        let scrollSlide = document.querySelector('.scroll-slide')
-        scrollSlide.scrollTo((scrollSlide.scrollWidth / product?.slider_images?.length + 1) * index, 0)
-    }
-
     return (
         <main className='main-section-single-product'>
             <main className="flex flex-col lg:flex-row gap-[18px] lg:gap-[33px]"> {/* grid grid-cols-1 lg:grid-cols-2 */}
@@ -187,12 +182,6 @@ const Product = () => {
                             />
                         ))}
                     </SfScrollable>
-
-                    {product?.slider_images && (
-                    <div className='absolute right-[14px] bottom-[14px] border border-[#E3E3E3] rounded-full bg-white text-darkgray text-[10px] h-5 px-[6px] w-8 flex items-center justify-center lg:hidden'>
-                        1/{product?.slider_images?.length + 1}
-                    </div>
-                    )}
                 </div>
                 ) : (
                     <div className='flex gap-4 px-4 lg:px-0'>
