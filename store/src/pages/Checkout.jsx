@@ -335,11 +335,11 @@ export default function Checkout(){
                     </p>
                 </div>
                 <div className="flex flex-col text-right gap-y-[21px]">
-                    <p className='font-semibold text-sm'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total ? `฿ ${deliveryResult?.message?.doc?.total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : `฿ ${getTotal().toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</p>
+                    <p className='font-semibold text-sm'>{isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total ? `฿ ${deliveryResult?.message?.doc?.total?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : `฿ ${getTotal()?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</p>
                     <p className="text-maingray font-semibold text-sm">
                         {isProductLoading ? <Skeleton className='h-4 w-[100px]'/> : deliveryResult?.message?.doc?.total_taxes_and_charges ? `฿ ${deliveryResult?.message?.doc?.total_taxes_and_charges?.toFixed(2)?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : "฿ 0"}
                     </p>
-                    <p className='text-maingray leading-[10px] text-sm'>-</p>
+                    <p className='text-maingray font-semibold text-sm'>-</p>
                 </div>
             </div>
             {addCoupon}

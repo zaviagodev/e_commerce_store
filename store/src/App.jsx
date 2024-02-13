@@ -23,6 +23,7 @@ import Wish from "./components/Wish";
 import { SettingProvider } from "./hooks/useWebsiteSettings";
 import MyAddresses from "./pages/MyAddresses";
 import Register from "./pages/Register";
+import NotFound from "./pages/404";
 
 const Layer = () => {
   const navigate = useNavigate();
@@ -59,6 +60,7 @@ const router = createBrowserRouter(
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
       <Route path='order-history/:id' element={<SingleOrderHistory />} />
+      <Route path='*' element={<NotFound />}/>
     </Route>
   ),
   {basename: "/store"}

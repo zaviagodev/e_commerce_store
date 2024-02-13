@@ -12,7 +12,6 @@ import Modal from '../components/drawers/Modal';
 export default function Register() {
     const { register } = useUser();
     const [apiResponse, setapiResponse] = useState('');
-    const [forgotPassword, setForgotPassword] = useState(false)
     const [saveLoading, setSaveLoading] = useState(false)
 
     const { isOpen, open:openRegisteredModal, close } = useDisclosure({ initialValue: false });
@@ -73,13 +72,10 @@ export default function Register() {
     return (
         <>
         <main className='main-section-login'>
-        <h2 className="mb-[85px] text-primary text-center text-4xl font-semibold">สมัครสมาชิก</h2>
-            <section className={`grid grid-cols-1 gap-[70px] mx-auto w-[410px]`}>
-            <form className="flex gap-4 flex-wrap text-neutral-900 text-start text-big" onSubmit={formik.handleSubmit}>
-                <h2 className="text-darkgray text-2xl font-semibold">ลงทะเบียนสมาชิกใหม่</h2>
-                {forgotPassword && (
-                    <p className='text-secgray'>เราจะส่งข้อมูลไปยังอีเมลของคุณเพื่อรีเซ็ตรหัสผ่าน</p>
-                )}
+        <h2 className="mb-[41px] lg:mb-[85px] text-primary text-center text-2xl lg:text-4xl font-semibold">สมัครสมาชิก</h2>
+            <section className={`grid grid-cols-1 gap-[70px] mx-auto max-w-[410px] w-full`}>
+            <form className="flex gap-3 flex-wrap text-neutral-900 text-start text-big" onSubmit={formik.handleSubmit}>
+                <h2 className="text-darkgray text-lg lg:text-2xl font-semibold">ลงทะเบียนสมาชิกใหม่</h2>
 
                 {apiResponse == 'อีเมลหรือรหัสผ่านไม่ถูกต้อง' && <h2 className="text-xs text-red-500 font-semibold w-full">{apiResponse}</h2>}
 
@@ -99,32 +95,32 @@ export default function Register() {
                     />
                     <p className='text-red-500 text-xs font-semibold'>{formik.errors.last_name}</p>
                 </label> */}
-                <label className="w-full flex flex-col gap-2">
+                <label className="w-full flex flex-col">
                     <SfInput name="email" autoComplete="email" onChange={formik.handleChange} value={formik.values.email} 
                         wrapperClassName={`!bg-neutral-50 ${formik.errors.email || apiResponse === 'Already Registered' ? '!ring-red-500/50' : '!ring-lightgray'} h-[50px] px-6 rounded-xl`}
                         className={`bg-neutral-50 font-medium ${formik.errors.email || apiResponse === 'Already Registered' ? 'text-red-500' : 'text-darkgray'} `}
                         placeholder='อีเมล *'
                         onKeyDown={() => apiResponse === 'Already Registered' && setapiResponse('')}
                     />
-                    <p className='text-red-500 text-xs font-semibold'>{apiResponse === 'Already Registered' ? 'อีเมลนี้ได้ทำการสมัครสมาชิกเรียบร้อยแล้ว' : formik.errors.email}</p>
+                    <p className='text-red-500 text-xs font-semibold mt-2'>{apiResponse === 'Already Registered' ? 'อีเมลนี้ได้ทำการสมัครสมาชิกเรียบร้อยแล้ว' : formik.errors.email}</p>
                 </label>
 
-                <label className="w-full flex flex-col gap-2">
+                <label className="w-full flex flex-col">
                     <SfInput name="pwd" type='password' autoComplete="given-password" onChange={formik.handleChange} value={formik.values.pwd} 
                         wrapperClassName={`!bg-neutral-50 ${formik.errors.pwd ? '!ring-red-500/50' : '!ring-lightgray'} h-[50px] px-6 rounded-xl`}
                         className={`bg-neutral-50 font-medium ${formik.errors.pwd ? 'text-red-500' : 'text-darkgray'} `}
                         placeholder="รหัสผ่าน *"
                     />
-                    <p className='text-red-500 text-xs font-semibold'>{formik.errors.pwd}</p>
+                    <p className='text-red-500 text-xs font-semibold mt-2'>{formik.errors.pwd}</p>
                 </label>
 
-                <label className="w-full flex flex-col gap-2">
+                <label className="w-full flex flex-col">
                     <SfInput name="pwd_confirm" type='password' autoComplete="given-password" onChange={formik.handleChange} value={formik.values.pwd_confirm} 
                         wrapperClassName={`!bg-neutral-50 ${formik.errors.pwd_confirm ? '!ring-red-500/50' : '!ring-lightgray'} h-[50px] px-6 rounded-xl`}
                         className={`bg-neutral-50 font-medium ${formik.errors.pwd_confirm ? 'text-red-500' : 'text-darkgray'} `}
                         placeholder="ยืนยันรหัสผ่าน *"
                     />
-                    <p className='text-red-500 text-xs font-semibold'>{formik.errors.pwd_confirm}</p>
+                    <p className='text-red-500 text-xs font-semibold mt-2'>{formik.errors.pwd_confirm}</p>
                 </label>
                 <div className="mb-7 text-sm text-secgray">
                     ฉันยอมรับ <SfLink href="#" className='text-linkblack no-underline'>ข้อตกลงและเงื่อนไข</SfLink> รวมถึงการประมวลผลข้อมูลของฉันตามจุดประสงค์ดังที่ระบุไว้ใน <SfLink href="#" className='text-linkblack no-underline'>นโยบายความเป็นส่วนตัวและการใช้งานคุ้กกี้</SfLink>

@@ -164,7 +164,7 @@ const Product = () => {
                         <LoadingImg
                             ref={imageRef}
                             src={product?.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`}
-                            className="object-cover max-w-[500px] w-[95%] lg:w-full h-auto aspect-square fade-in"
+                            className={`object-cover max-w-[500px] lg:w-full h-auto aspect-square fade-in ${product?.slider_images?.length > 0 ? 'w-[95%]' : 'w-full'}`}
                             aria-label={product?.website_image}
                             alt={product?.website_image}
                             id={`img-product-0`}
@@ -182,10 +182,6 @@ const Product = () => {
                             />
                         ))}
                     </SfScrollable>
-
-                    <div className='absolute right-[14px] bottom-[14px] border border-[#E3E3E3] rounded-full bg-white text-darkgray text-xs p-[6px] w-8 text-center lg:hidden'>
-                        1/{product?.slider_images?.length + 1}
-                    </div>
                 </div>
                 ) : (
                     <div className='flex gap-4 px-4 lg:px-0'>
@@ -279,14 +275,9 @@ const Product = () => {
                                         {hideCheckout != 1 && (
                                                 <SfButton disabled={loading || !product?.in_stock}  onClick={handleClickCart} type="button" size="lg" className="w-full btn-primary flex items-center gap-x-[10px] rounded-xl h-[50px]">
                                                     <Icons.shoppingBag01 color={loading || !product?.in_stock ? '#a1a1aa' : 'white'} className='w-[22px] h-[22px]'/>
-                                                    {product?.in_stock ? buttonLabel : 'Sold out'}
+                                                    {product?.in_stock ? buttonLabel : 'สินค้าหมด'}
                                                 </SfButton>
                                             )}
-
-
-
-
-
 
 
                                         {!hideWish && <SfButton
@@ -362,7 +353,7 @@ const Product = () => {
 
                     {groupedProductsData !== undefined ? (
                         <section className='px-4 lg:p-0 pt-[38px] lg:pt-[140px]'>
-                            <h1 className='mb-8 text-primary text-base lg:text-3xl font-semibold'>สินค้าที่คุณอาจสนใจ</h1>
+                            <h1 className='mb-8 text-primary text-lg lg:text-3xl font-semibold'>สินค้าที่คุณอาจสนใจ</h1>
                             <div className="grid gap-[14px] grid-cols-2 lg:grid-cols-4 place-items-center">
                                 {groupedProductsData?.message?.items
     .filter(productz => productz?.item_code !== product?.item_code)

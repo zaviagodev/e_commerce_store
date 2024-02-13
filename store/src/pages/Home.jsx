@@ -59,7 +59,7 @@ const Home = () => {
         <>
             <main className='main-section'>
                 {pageData[pageno]?.length > 0 ? (
-                    <h1 className="mb-[53px] text-primary text-center text-4xl font-semibold">{idFromUrl}</h1>
+                    <h1 className="mb-6 lg:mb-[53px] text-primary text-center text-2xl lg:text-4xl font-semibold">{idFromUrl}</h1>
                 ): (
                     <Skeleton className='h-10 w-[200px] mx-auto mb-[53px]'/>
                 )}
@@ -75,7 +75,7 @@ const Home = () => {
                                         <Icons.filterLines className='w-[22px] h-[22px]'/>
                                         เรียงตาม
                                     </h3>
-                                    <SfSelect size='sm' className='!ring-0 !border-0 !text-right !pr-12 !bg-[#F3F3F3] !text-[#7A7A7A] !rounded-[9px] leading-6 font-semibold' onChange={handleSortOptions} value={sortOptions.find(option => option.state)?.title}>
+                                    <SfSelect size='sm' className='!ring-0 !border-0 !text-right !pr-12 !bg-[#F3F3F3] !text-[#7A7A7A] !rounded-[9px] leading-6 font-semibold text-sm' onChange={handleSortOptions} value={sortOptions.find(option => option.state)?.title}>
                                         {sortOptions.map((option, index) => (
                                             <option value={option.title} key={index} className={`text-left ${option.state ? 'font-semibold' : 'font-normal'}`} selected={option.state ? true : false}>{option.title}</option>
                                         ))}
