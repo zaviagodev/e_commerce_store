@@ -202,10 +202,16 @@ def get_countries(city =None, state =None):
     countries = frappe.get_all("Country", fields=["name"])
 
     if city:
-        countries = frappe.get_doc("City", city).country
+        countries = frappe.get_doc({
+            "doctype": "City",
+            "city_name": city
+        }).country
 
     if state:
-        countries = frappe.get_doc("State", state).country_name
+        countries = frappe.get_doc({
+            "doctype": "State",
+            "state_name": state
+        }).country_name
     
     return countries
 
@@ -218,8 +224,11 @@ def get_states(country=None, city=None):
         states = frappe.get_all("State", filters={"country_name": country}, fields=["name","state_name"])
 
     if city:
-        tmp = frappe.get_doc("City", city).state_name
-        states = frappe.get_doc("State", tmp).state_name
+        tmp = frappe.get_doc({
+            "doctype": "City",
+            "city_name": city
+        })
+        states = frappe.get_doc("State", tmp.name).state_name
 
     return states
 
