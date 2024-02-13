@@ -207,7 +207,7 @@ def get_countries(city =None, state =None):
     if state:
         countries = frappe.get_doc("State", state).country_name
     
-    return countries.as_dict()
+    return countries
 
 
 @frappe.whitelist()
@@ -220,7 +220,7 @@ def get_states(country=None, city=None):
     if city:
         states = frappe.get_doc("City", city).state_name
 
-    return states.as_dict()
+    return states
 
 @frappe.whitelist()
 def get_cities(state=None, country=None):
@@ -232,5 +232,5 @@ def get_cities(state=None, country=None):
     if country:
         cities = frappe.get_all("City", filters={"country_name": country}, fields=["city_name"])
 
-    return cities.as_dict()
+    return cities
 
