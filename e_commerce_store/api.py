@@ -228,7 +228,7 @@ def get_states(country=None, city=None):
             "doctype": "City",
             "city_name": city
         })
-        states = frappe.get_doc("State", tmp.name).state_name1
+        states = tmp ##frappe.get_doc("State", tmp.name).state_name1
 
     return states
 
