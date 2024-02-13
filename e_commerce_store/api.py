@@ -212,7 +212,10 @@ def get_countries(city =None, state =None):
 
 @frappe.whitelist()
 def get_states(country=None, city=None):
-    states = frappe.get_all("State", filters={"country_name": country}, fields=["name"])
+    states = frappe.get_all("State", fields=["state_name"])
+
+    if country:
+        states = frappe.get_all("State", filters={"country_name": country}, fields=["state_name"])
 
     if city:
         states = frappe.get_doc("City", city).state_name
@@ -221,7 +224,13 @@ def get_states(country=None, city=None):
 
 @frappe.whitelist()
 def get_cities(state=None, country=None):
-    cities = frappe.get_all("City", filters={"state_name": state,"country":country}, fields=["name"])
+    cities = frappe.get_all("City", fields=["city_name"])
+
+    if state:
+        cities = frappe.get_all("City", filters={"state_name": state}, fields=["city_name"])
+
+    if country:
+        cities = frappe.get_all("City", filters={"country_name": country}, fields=["city_name"])
 
     return cities.as_dict()
 

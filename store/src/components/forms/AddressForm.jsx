@@ -11,11 +11,12 @@ import { Skeleton } from '../Skeleton';
 
 
 const AddressForm = ({ onFormSubmit }) => {
-    const { result: countries,call : get_countries } = useFrappePostCall('e_commerce_store.api.get_countries')
-    const { result: states } = useFrappePostCall('e_commerce_store.api.get_states')
+    const { result: countries,call : get_countries,loading : loading_countries } = useFrappePostCall('e_commerce_store.api.get_countries')
+    const { result: states, call : get_states,loading : loading_states} = useFrappePostCall('e_commerce_store.api.get_states')
     // Fetch all countries
     useEffect(() => {
         get_countries()
+        get_states()
     }, [])
         
     const { call, isCompleted } = useFrappePostCall('e_commerce_store.api.add_address')
@@ -105,12 +106,13 @@ const AddressForm = ({ onFormSubmit }) => {
                         placeholder="ประเทศ *" 
                         onChange={(event) => {
                             formik.setFieldValue('country', event.target.value);
+                            get_states({'country' : event.target.value})
                           }}
                         value={formik.values.country} 
                         invalid={formik.errors.country}>
 
-                        {countries?.map((countryName) => (
-                            <option key={countryName} value={countryName}>{countryName}</option>
+                        {countries?.message.map((countryName) => (
+                            <option key={countryName.name} value={countryName.name}>{countryName.name}</option>
                         ))}
                     </SfSelect>
                 </label>
@@ -166,9 +168,9 @@ const AddressForm = ({ onFormSubmit }) => {
                 <label className="w-full flex flex-col gap-2 flex-grow">
                     {/* <span className="text-sm font-medium mb-2 block">State</span> */}
                     <SfSelect name="state" className={`h-[50px] ${formik.errors.state ? '!ring-red-500/50 text-red-500 !ring-2' : '!ring-lightgray text-darkgray'} !px-6 !rounded-xl`} disabled={isSaving} wrapperClassName='!bg-neutral-50' placeholder="จังหวัด *" onChange={formik.handleChange} value={formik.values.state}>
-                        {states?.map((stateName) => (
+                        {/*!loading_states && states?.map((stateName) => (
                             <option key={stateName.id} value={stateName.name}>{stateName.name}</option>
-                        ))}
+                        ))*/}
                     </SfSelect>
                     {formik.errors.state && (
                         <strong className="text-xs text-red-500 font-semibold">{formik.errors.state}</strong>
