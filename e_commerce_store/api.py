@@ -197,6 +197,52 @@ def add_address(address_line1: str,address_title: str, city: str, country: str, 
 
     return address.as_dict()
 
+@frappe.whitelist()
+def get_countries(city =None, state =None):
+    countries = frappe.get_all("Country", fields=["name"])
+
+    if city:
+        countries = frappe.get_doc({
+            "doctype": "City",
+            "city_name": city
+        }).country
+
+    if state:
+        countries = frappe.get_doc({
+            "doctype": "State",
+            "state_name1": state
+        }).country_name
+    
+    return countries
+
+
+@frappe.whitelist()
+def get_states(country=None, city=None):
+    states = frappe.get_all("State", fields=["name","state_name1"])
+
+    if country:
+        states = frappe.get_all("State", filters={"country_name": country}, fields=["name","state_name1"])
+
+    if city:
+        tmp = frappe.get_doc({
+            "doctype": "City",
+            "city_name": city
+        })
+        states = frappe.get_doc("State", tmp.name).state_name1
+
+    return states
+
+@frappe.whitelist()
+def get_cities(state=None, country=None):
+    cities = frappe.get_all("City", fields=["name","city_name"])
+
+    if state:
+        cities = frappe.get_all("City", filters={"state_name": state}, fields=["name","city_name"])
+
+    if country:
+        cities = frappe.get_all("City", filters={"country": country}, fields=["name","city_name"])
+
+    return cities
 
 
 

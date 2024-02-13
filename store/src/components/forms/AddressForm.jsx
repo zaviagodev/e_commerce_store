@@ -5,13 +5,22 @@ import { useFrappePostCall } from 'frappe-react-sdk';
 import { addressSchema } from './addressFormSchema';
 import { Skeleton } from '../Skeleton';
 
+
 // Here you should provide a list of countries you want to support
 // or use an up-to-date country list like: https://www.npmjs.com/package/country-list
-const countries = ['Thailand', 'China', 'Pakistan', 'Germany', 'Great Britain', 'Poland', 'United States of America'];
-// const states = ['Sindh', 'Punjab', 'Balochistan', 'KPK', 'Florida', 'New York', 'Texas', 'Frankfurt', 'Berlin'];
-const states = ['กรุงเทพมหานคร','กระบี่','กาญจนบุรี','กำแพงเพชร','ขอนแก่น','จันทบุรี','ฉะเชิงเทรา', 'นครปฐม', 'นครพนม', 'นนทบุรี', 'ปทุมธานี', 'พระนครศรีอยุธยา' ,'ชลบุรี','ตราด','ปราจีนบุรี','เพชรบุรี','ราชบุรี','ระยอง','สมุทรปราการ','สมุทรสาคร','สมุทรสงคราม', 'อุดรธานี', 'หนองคาย', 'หนองบัวลำภู', 'อุบลราชธานี', 'อุทัยธานี', 'อ่างทอง']
+
 
 const AddressForm = ({ onFormSubmit }) => {
+    const { result: countries,call : get_countries } = useFrappePostCall('e_commerce_store.api.get_countries')
+    const { result: states, call : get_states} = useFrappePostCall('e_commerce_store.api.get_states')
+    const {result : city, call : get_cities} = useFrappePostCall('e_commerce_store.api.get_cities')
+    // Fetch all countries
+    useEffect(() => {
+        get_countries()
+        get_states()
+        get_cities({"country": "Thailand"})
+    }, [])
+        
     const { call, isCompleted } = useFrappePostCall('e_commerce_store.api.add_address')
     const [isSaving, setIsSaving] = useState(false)
     const formik = useFormik({
@@ -92,9 +101,30 @@ const AddressForm = ({ onFormSubmit }) => {
             <div className="w-full flex flex-col gap-2">
                 <label>
                     {/* <span className="text-sm font-medium mb-2 block">Country <span className='text-red-500'>*</span></span> */}
-                    <SfSelect name="country" className={`h-[50px] ${formik.errors.country ? '!ring-red-500/50 text-red-500 !ring-2' : '!ring-lightgray text-darkgray'} !px-6 !rounded-xl`} disabled={isSaving} wrapperClassName='!bg-neutral-50' placeholder="ประเทศ *" onChange={formik.handleChange} value={formik.values.country} invalid={formik.errors.country}>
-                        {countries.map((countryName) => (
-                            <option key={countryName} value={countryName}>{countryName}</option>
+                    <SfSelect 
+                        name="country" 
+                        className={`h-[50px] ${formik.errors.country ? '!ring-red-500/50 text-red-500 !ring-2' : '!ring-lightgray text-darkgray'} !px-6 !rounded-xl`} 
+                        disabled={isSaving} 
+                        wrapperClassName='!bg-neutral-50' 
+                        placeholder="ประเทศ *" 
+                        onChange={(event) => {
+                            formik.setFieldValue('country', event.target.value);
+                            if(formik.values.state !== "")
+                            {
+                                formik.setFieldValue('state', '')
+                            }
+                            if(formik.values.city !== "")
+                            {
+                                formik.setFieldValue('city', '')
+                            }
+                            get_states({'country' : event.target.value})
+                            get_cities({'country' : event.target.value})
+                          }}
+                        value={formik.values.country} 
+                        invalid={formik.errors.country}>
+
+                        {countries?.message.map((countryName) => (
+                            <option key={countryName.name} value={countryName.name}>{countryName.name}</option>
                         ))}
                     </SfSelect>
                 </label>
@@ -136,10 +166,39 @@ const AddressForm = ({ onFormSubmit }) => {
             <div className="w-full flex flex-col gap-2">
                 <label>
                     {/* <span className="text-sm font-medium mb-2 block">City <span className='text-red-500'>*</span></span> */}
-                    <SfInput name="city" 
-                    wrapperClassName={`!bg-neutral-50 ${formik.errors.city ? '!ring-red-500/50 !ring-2' : '!ring-lightgray'} h-[50px] px-6 rounded-xl`}
-                    className={`bg-neutral-50 font-medium ${formik.errors.city ? 'text-red-500' : 'text-darkgray'} `}
-                    disabled={isSaving} placeholder="เขต / อำเภอ *" onChange={formik.handleChange} value={formik.values.city} invalid={formik.errors.city} />
+                    <SfSelect 
+                        name="city" 
+                        className={`h-[50px] ${formik.errors.country ? '!ring-red-500/50 text-red-500 !ring-2' : '!ring-lightgray text-darkgray'} !px-6 !rounded-xl`} 
+                        disabled={isSaving} 
+                        wrapperClassName='!bg-neutral-50' 
+                        placeholder="เขต / อำเภอ *" 
+                        onChange={(event) => {
+                            if(event.target.value === "")
+                            {
+                                return
+                            }
+                            formik.setFieldValue('city', event.target.value)
+                            if(formik.values.state == "")
+                            {
+                                get_states({'city' : event.target.value}).then((data) => {
+                                    formik.setFieldValue('state', data.message)
+                                    get_states()
+                                })
+                            }
+                            if(formik.values.country == "")
+                            {
+                                get_countries({'city' : event.target.value}).then((data) => {
+                                    formik.setFieldValue('country', data.message)
+                                    get_countries()
+                                })
+                            }
+                        }} 
+                        value={formik.values.city} 
+                        invalid={formik.errors.city} >
+                        { city?.message.map((cityName) => (
+                            <option key={cityName.city_name} value={cityName.city_name}>{cityName.city_name}</option>
+                        ))}
+                    </SfSelect>
                 </label>
                 {formik.errors.city && (
                     <strong className="text-xs text-red-500 font-semibold">{formik.errors.city}</strong>
@@ -149,9 +208,34 @@ const AddressForm = ({ onFormSubmit }) => {
             <div className='w-full flex flex-col gap-3 md:flex-row md:justify-between'>
                 <label className="w-full flex flex-col gap-2 flex-grow">
                     {/* <span className="text-sm font-medium mb-2 block">State</span> */}
-                    <SfSelect name="state" className={`h-[50px] ${formik.errors.state ? '!ring-red-500/50 text-red-500 !ring-2' : '!ring-lightgray text-darkgray'} !px-6 !rounded-xl`} disabled={isSaving} wrapperClassName='!bg-neutral-50' placeholder="จังหวัด *" onChange={formik.handleChange} value={formik.values.state}>
-                        {states.map((stateName) => (
-                            <option key={stateName} value={stateName}>{stateName}</option>
+                    <SfSelect 
+                        name="state" 
+                        className={`h-[50px] ${formik.errors.state ? '!ring-red-500/50 text-red-500 !ring-2' : '!ring-lightgray text-darkgray'} !px-6 !rounded-xl`} 
+                        disabled={isSaving} 
+                        wrapperClassName='!bg-neutral-50' 
+                        placeholder="จังหวัด *" 
+                        onChange={(event) => {
+                            if(event.target.value === "")
+                            {
+                                return
+                            }
+                            formik.setFieldValue('state', event.target.value)
+                            if(formik.values.city !== "")
+                            {
+                                formik.setFieldValue('city', '')
+                            }
+                            get_cities({'state' : event.target.value})
+                            if(formik.values.country == "")
+                            {
+                                get_countries({'state' : event.target.value}).then((data) => {
+                                    formik.setFieldValue('country', data.message)
+                                    get_countries()
+                                })
+                            }
+                        }} 
+                        value={formik.values.state}>
+                        { states?.message.map((stateName) => (
+                            <option key={stateName.state_name1} value={stateName.state_name1}>{stateName.state_name1}</option>
                         ))}
                     </SfSelect>
                     {formik.errors.state && (
