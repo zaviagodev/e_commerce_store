@@ -110,6 +110,7 @@ const AddressForm = ({ onFormSubmit }) => {
                         onChange={(event) => {
                             formik.setFieldValue('country', event.target.value);
                             get_states({'country' : event.target.value})
+                            get_cities({'country' : event.target.value})
                           }}
                         value={formik.values.country} 
                         invalid={formik.errors.country}>
@@ -163,7 +164,24 @@ const AddressForm = ({ onFormSubmit }) => {
                         disabled={isSaving} 
                         wrapperClassName='!bg-neutral-50' 
                         placeholder="เขต / อำเภอ *" 
-                        onChange={formik.handleChange} 
+                        onChange={(event) => {
+                            formik.setFieldValue('city', event.target.value)
+                            if(formik.values.state === "")
+                            {
+                                get_states({'city' : event.target.value}).then((data) => {
+                                    formik.setFieldValue('state', data.message)
+                                    get_states()
+                                })
+                            }
+                            if(formik.values.country === "")
+                            {
+                                get_countries({'city' : event.target.value}).then((data) => {
+                                    formik.setFieldValue('country', data.message)
+                                    get_countries()
+                                })
+                            }
+
+                        }} 
                         value={formik.values.city} 
                         invalid={formik.errors.city} >
                         { city?.message.map((cityName) => (
@@ -187,7 +205,7 @@ const AddressForm = ({ onFormSubmit }) => {
                         placeholder="จังหวัด *" 
                         onChange={(event) => {
                             formik.setFieldValue('state', event.target.value)
-                            
+                            get_cities({'state' : event.target.value})
                             if(formik.values.country === "")
                             {
                                 get_countries({'state' : event.target.value}).then((data) => {
@@ -198,7 +216,7 @@ const AddressForm = ({ onFormSubmit }) => {
                         }} 
                         value={formik.values.state}>
                         { states?.message.map((stateName) => (
-                            <option key={stateName.state_name} value={stateName.state_name}>{stateName.state_name}</option>
+                            <option key={stateName.name} value={stateName.name}>{stateName.name}</option>
                         ))}
                     </SfSelect>
                     {formik.errors.state && (
