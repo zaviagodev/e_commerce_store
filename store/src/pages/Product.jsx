@@ -145,7 +145,7 @@ const Product = () => {
                                 className="h-[134px] w-[134px] min-w-[134px] object-cover fade-in"
                                 aria-label={image}
                                 alt={image}
-                                onClick={() => scrollToImage(index)}
+                                onClick={() => scrollToImage(index + 1)}
                             />
                         ))}
                     </SfScrollable>

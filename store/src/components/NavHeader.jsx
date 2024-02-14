@@ -71,6 +71,8 @@ import Modal from './drawers/Modal';
       {
         navigate('/login');
       }
+
+    setIsMobileMenuOpen(false)
   }
 
   const [actionItems, setActionItems] = useState([
@@ -222,28 +224,9 @@ import Modal from './drawers/Modal';
     setMobileMenuStep(mobileMenuStep + 1)
   }
 
-  const LogoutModal = () => {
-    const clickToLogout = () => {
-      logout();
-      navigate(`/`);
-    }
-    return (
-      <Modal isOpen={isLogoutOpen} close={closeLogout} open={openLogout}>
-        <div className='flex flex-col gap-y-6'>
-            <h1 className='text-black text-2xl font-semibold'>ออกจากระบบ ?</h1>
-            <p className='text-darkgray'>คุณสามารถกลับเข้าสู่ระบบได้ตลอดเวลา <br/>โดยรายละเอียด บัญชีหรือ การสั่งซื้อสินค้ายังคงอยู่</p>
-        </div>
-
-        <div className='flex gap-x-3 w-full'>
-          <SfButton variant='tertiary' className='w-full btn-secondary h-[50px] rounded-xl' onClick={closeLogout}>
-            ยกเลิก
-          </SfButton>
-          <SfButton variant='tertiary' className='w-full btn-primary h-[50px] rounded-xl' onClick={clickToLogout}>
-            ออกจากระบบ
-          </SfButton>
-        </div>
-      </Modal>
-    )
+  const clickToLogout = () => {
+    logout();
+    navigate(`/`);
   }
 
   const handleMobileGoBack = (label) => {
@@ -251,6 +234,11 @@ import Modal from './drawers/Modal';
     if (mobileMenuStep > 0){
       setMobileMenuStep(mobileMenuStep - 1)
     }
+  }
+
+  const handleLogoutMobile = () => {
+    openLogout()
+    setIsMobileMenuOpen(false)
   }
 
   const productList = (name) => 
@@ -414,6 +402,21 @@ import Modal from './drawers/Modal';
 
   return (
     <div className="w-full h-full">
+      <Modal isOpen={isLogoutOpen} close={closeLogout} open={openLogout}>
+        <div className='flex flex-col gap-y-6'>
+            <h1 className='text-black text-2xl font-semibold'>ออกจากระบบ ?</h1>
+            <p className='text-darkgray'>คุณสามารถกลับเข้าสู่ระบบได้ตลอดเวลา <br/>โดยรายละเอียด บัญชีหรือ การสั่งซื้อสินค้ายังคงอยู่</p>
+        </div>
+
+        <div className='flex gap-x-3 w-full'>
+          <SfButton variant='tertiary' className='w-full btn-secondary h-[50px] rounded-xl' onClick={closeLogout}>
+            ยกเลิก
+          </SfButton>
+          <SfButton variant='tertiary' className='w-full btn-primary h-[50px] rounded-xl' onClick={clickToLogout}>
+            ออกจากระบบ
+          </SfButton>
+        </div>
+      </Modal>
       <MobileHeaderDrawer isOpen={isMobileMenuOpen} setIsOpen={setIsMobileMenuOpen}>
         <section className='flex flex-col justify-between h-full'>
           <div className='flex flex-col gap-y-9'>
@@ -462,12 +465,9 @@ import Modal from './drawers/Modal';
             </nav>
           </div>
           {user?.name && 
-            <div className='flex items-center gap-x-[10px] font-semibold' onClick={() => {
-              logout();
-              navigate(`/`);
-            }}>
-            <Icons.login className='w-[22px] h-[22px]'/>
-              Logout
+            <div className='flex items-center gap-x-[10px] font-semibold' onClick={handleLogoutMobile}>
+              <Icons.login className='w-[22px] h-[22px]'/>
+              ออกจากระบบ
             </div>
           }
         </section>
@@ -546,7 +546,6 @@ import Modal from './drawers/Modal';
                               <p className="inline-flex whitespace-nowrap font-semibold text-sm" onClick={handlLoginClick}>{user?.name ?? 'เข้าสู่ระบบ'}</p>
                                 {user?.name && <>
                                   <Icons.login onClick={openLogout} className='w-[22px] h-[22px]'/>
-                                  <LogoutModal />
                                 </>}
                             </div>
                           )}

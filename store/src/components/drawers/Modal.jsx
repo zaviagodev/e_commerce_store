@@ -18,7 +18,7 @@ export default function Modal({children, isOpen, close, open}){
             exitActive: 'opacity-0 transition duration-200 ease-out',
             }}
         >
-            <div ref={backdropRef} className="fixed inset-0 bg-neutral-700 bg-opacity-50 z-99" />
+            <div ref={backdropRef} className="fixed inset-0 bg-neutral-700 bg-opacity-50 z-[100]" />
         </CSSTransition>
         <CSSTransition
             in={isOpen}
@@ -37,7 +37,7 @@ export default function Modal({children, isOpen, close, open}){
                 ref={modalRef}
                 as="section"
                 role="alertdialog"
-                className="max-w-[90%] md:max-w-[456px] w-full z-100 flex flex-col gap-y-8 items-center text-center !p-8"
+                className="max-w-[90%] md:max-w-[456px] w-full z-[100] flex flex-col gap-y-8 items-center text-center !p-8"
             >
                 {children}
             </SfModal>

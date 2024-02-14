@@ -1,5 +1,6 @@
 import { SfButton } from "@storefront-ui/react";
 import { Icons } from "../components/icons";
+import { Link } from "react-router-dom";
 
 export default function NotFound(){
     return (
@@ -13,9 +14,11 @@ export default function NotFound(){
 
             <div className="mt-[60px] flex flex-col gap-y-6 items-center">
                 <h2 className="text-secgray font-semibold text-lg">ไม่พบหน้าหน้าที่คุณตามหาในขณะนี้</h2>
-                <SfButton variant='tertiary' className="btn-primary w-3/4 h-[50px] rounded-xl">
-                    กลับไปหน้าหลัก
-                </SfButton>
+                <Link to='/home/all items' className="w-full">
+                    <SfButton variant='tertiary' className="btn-primary w-3/4 h-[50px] rounded-xl">
+                        กลับไปหน้าหลัก
+                    </SfButton>
+                </Link>
             </div>
         </main>
     )

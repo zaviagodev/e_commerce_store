@@ -17,8 +17,6 @@ const AddressForm = ({ onFormSubmit }) => {
     // Fetch all countries
     useEffect(() => {
         get_countries()
-        get_states()
-        get_cities({"country": "Thailand"})
     }, [])
         
     const { call, isCompleted } = useFrappePostCall('e_commerce_store.api.add_address')
@@ -118,7 +116,6 @@ const AddressForm = ({ onFormSubmit }) => {
                                 formik.setFieldValue('city', '')
                             }
                             get_states({'country' : event.target.value})
-                            get_cities({'country' : event.target.value})
                           }}
                         value={formik.values.country} 
                         invalid={formik.errors.country}>
@@ -169,7 +166,7 @@ const AddressForm = ({ onFormSubmit }) => {
                     <SfSelect 
                         name="city" 
                         className={`h-[50px] ${formik.errors.country ? '!ring-red-500/50 text-red-500 !ring-2' : '!ring-lightgray text-darkgray'} !px-6 !rounded-xl`} 
-                        disabled={isSaving} 
+                        disabled={isSaving || !city} 
                         wrapperClassName='!bg-neutral-50' 
                         placeholder="เขต / อำเภอ *" 
                         onChange={(event) => {
@@ -178,20 +175,6 @@ const AddressForm = ({ onFormSubmit }) => {
                                 return
                             }
                             formik.setFieldValue('city', event.target.value)
-                            if(formik.values.state == "")
-                            {
-                                get_states({'city' : event.target.value}).then((data) => {
-                                    formik.setFieldValue('state', data.message)
-                                    get_states()
-                                })
-                            }
-                            if(formik.values.country == "")
-                            {
-                                get_countries({'city' : event.target.value}).then((data) => {
-                                    formik.setFieldValue('country', data.message)
-                                    get_countries()
-                                })
-                            }
                         }} 
                         value={formik.values.city} 
                         invalid={formik.errors.city} >
@@ -211,7 +194,7 @@ const AddressForm = ({ onFormSubmit }) => {
                     <SfSelect 
                         name="state" 
                         className={`h-[50px] ${formik.errors.state ? '!ring-red-500/50 text-red-500 !ring-2' : '!ring-lightgray text-darkgray'} !px-6 !rounded-xl`} 
-                        disabled={isSaving} 
+                        disabled={isSaving || !states} 
                         wrapperClassName='!bg-neutral-50' 
                         placeholder="จังหวัด *" 
                         onChange={(event) => {
@@ -225,13 +208,6 @@ const AddressForm = ({ onFormSubmit }) => {
                                 formik.setFieldValue('city', '')
                             }
                             get_cities({'state' : event.target.value})
-                            if(formik.values.country == "")
-                            {
-                                get_countries({'state' : event.target.value}).then((data) => {
-                                    formik.setFieldValue('country', data.message)
-                                    get_countries()
-                                })
-                            }
                         }} 
                         value={formik.values.state}>
                         { states?.message.map((stateName) => (
