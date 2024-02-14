@@ -17,8 +17,6 @@ const AddressForm = ({ onFormSubmit }) => {
     // Fetch all countries
     useEffect(() => {
         get_countries()
-        get_states()
-        get_cities({"country": "Thailand"})
     }, [])
         
     const { call, isCompleted } = useFrappePostCall('e_commerce_store.api.add_address')
