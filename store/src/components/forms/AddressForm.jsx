@@ -166,7 +166,7 @@ const AddressForm = ({ onFormSubmit }) => {
                     <SfSelect 
                         name="city" 
                         className={`h-[50px] ${formik.errors.country ? '!ring-red-500/50 text-red-500 !ring-2' : '!ring-lightgray text-darkgray'} !px-6 !rounded-xl`} 
-                        disabled={isSaving} 
+                        disabled={isSaving || !city} 
                         wrapperClassName='!bg-neutral-50' 
                         placeholder="เขต / อำเภอ *" 
                         onChange={(event) => {
@@ -194,7 +194,7 @@ const AddressForm = ({ onFormSubmit }) => {
                     <SfSelect 
                         name="state" 
                         className={`h-[50px] ${formik.errors.state ? '!ring-red-500/50 text-red-500 !ring-2' : '!ring-lightgray text-darkgray'} !px-6 !rounded-xl`} 
-                        disabled={isSaving} 
+                        disabled={isSaving || !states} 
                         wrapperClassName='!bg-neutral-50' 
                         placeholder="จังหวัด *" 
                         onChange={(event) => {
