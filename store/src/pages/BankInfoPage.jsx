@@ -189,12 +189,12 @@ const BankInfoPage = () => {
                 <Modal open={openModal} isOpen={isModalOpen} close={closeModal}>
                     <div className='flex flex-col gap-y-6'>
                         <h1 className='text-black text-2xl font-semibold'>ออกจากขั้นตอนการชำระเงิน ?</h1>
-                        <p className='text-darkgray px-5'>เมื่อคุณออกจากขั้นตอนการชำระเงิน ระบบจะบันทึกสถานะคำสั่งซื้อว่า “ยังไม่ได้ชำระเงิน” คุณต้องการออกจากขั้นตอนการชำระเงินหรือไม่</p>
+                        <p className='text-darkgray px-5'>ออเดอร์ของคุณ “ยังชำระเงินไม่สำเร็จ” คุณสามารถชำระเงินอีกครั้งได้ที่หน้าประวัติคำสั่งซื้อหรืออยู่ในหน้านี้ต่อ เพื่อยืนยันการชำระเงิน</p>
                     </div>
 
                     <div className='flex gap-x-3 w-full'>
                         <SfButton variant='tertiary' className='w-full btn-secondary h-[50px] rounded-xl' onClick={closeModal}>
-                            ดำเนินการต่อ
+                            อยู่ในหน้านี้
                         </SfButton>
                         <SfButton variant='tertiary' className='w-full btn-primary h-[50px] rounded-xl' onClick={() => navigate('/home/all items')}>
                             ออกจากการชำระเงิน

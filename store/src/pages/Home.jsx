@@ -23,7 +23,6 @@ const Home = () => {
         if(page_no){
             setpageno(page_no);
         }
-        
     }, [page_no]);
 
     const [sortOptions, setSortOptions] = useState([
@@ -59,7 +58,7 @@ const Home = () => {
         <>
             <main className='main-section'>
                 {pageData[pageno]?.length > 0 ? (
-                    <h1 className="mb-6 lg:mb-[53px] text-primary text-center text-2xl lg:text-4xl font-semibold">{idFromUrl}</h1>
+                    <h1 className="mb-6 lg:mb-[53px] text-primary text-center text-2xl lg:text-4xl font-semibold">สินค้าทั้งหมด</h1>
                 ): (
                     <Skeleton className='h-10 w-[200px] mx-auto mb-[53px]'/>
                 )}
