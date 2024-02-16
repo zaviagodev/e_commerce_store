@@ -1,4 +1,4 @@
-import React, {useEffect,useRef, useState} from 'react'
+import React, {useContext, useEffect,useRef, useState} from 'react'
 import { SfButton, SfDrawer, useTrapFocus, SfIconAdd, SfIconRemove, SfLoaderCircular, SfSelect, SfIconFavorite } from '@storefront-ui/react'
 import { CSSTransition } from 'react-transition-group';
 import { useWish } from '../hooks/useWishe'
@@ -12,11 +12,13 @@ import { useFrappePostCall } from 'frappe-react-sdk';
 import { useFrappeAuth } from 'frappe-react-sdk';
 import { useSetting } from '../hooks/useWebsiteSettings';
 import { getToken } from '../utils/helper';
+import { useUser } from '../hooks/useUser';
 
 const Cart = () => {
     const { cart, cartCount, addToCart, removeFromCart, getTotal, isOpen, setIsOpen, loading } = useCart()
     const { Wish, removeFromWish, isOpen: isWishOpen, setIsOpen: setWishOpen } = useWish()
     const nodeRef = useRef(null);
+    const {user} = useUser()
     const drawerRef = useRef(null);
     const { getByItemCode, isLoading } = useProducts()
     const navigate = useNavigate()
@@ -77,14 +79,12 @@ const Cart = () => {
     };
 
     const handlecheckout = () => {
-        console.log(getToken());
-        
         setIsOpen(false);
-         if(!getToken()){
+         if(!user){
              navigate("/login");
          }
          else{
-        //      //call({"cart":cart});
+        //call({"cart":cart});
          navigate("/checkout");
         }
     };
