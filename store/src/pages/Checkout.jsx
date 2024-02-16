@@ -37,6 +37,7 @@ export default function Checkout(){
     const [showOrders, setShowOrders] = useState(false)
     const [moreAddresses, setMoreAddresses] = useState(false)
     const [morePayments, setMorePayments] = useState(false)
+    const [saveLoading, setSaveLoading] = useState(false)
 
     const {appName, appLogo,defaultTaxe ,hideLogin, hideCheckout, navbarSearch, topBarItems, hideWish, isLoading} = useSetting()
     const { cart, cartCount, getTotal, resetCart } = useCart();
@@ -85,8 +86,6 @@ export default function Checkout(){
        // ApplyDeliveryFee({'shipping_rule' : "" })
       }, [shippingRules]);
 
-      
-      
       useEffect(() => {
         clearTimeout(positiveTimer.current);
         positiveTimer.current = window.setTimeout(() => setPositiveAlert(false), 5000);
@@ -125,7 +124,6 @@ export default function Checkout(){
 
     const { getByItemCode, isLoading:isProductLoading, settingPage } = useProducts()
 
-
     const cartContents = useMemo(() => {
         return Object.entries(cart).reduce((acc, [item_code]) => {
             const product = getByItemCode(item_code);
@@ -161,7 +159,8 @@ export default function Checkout(){
         validationSchema: orderSchema,
         validateOnChange: false,
         onSubmit: call
-    });
+        }
+    );
 
     useEffect(() => {
         formik.setFieldValue('items', Object.entries(cart).map(([item_code, qty]) => ({ item_code, qty })))
@@ -175,7 +174,7 @@ export default function Checkout(){
                 navigate(`/payment?order_id=${result.message.name}&amount=${result.message.grand_total}&payment_method=${result.message.custom_payment_method}`)
             }
         }
-        if(error) { setErrorAlert(JSON.parse(JSON.parse(error?._server_messages)[0]).message) }
+        if(error) { setErrorAlert(JSON.parse(JSON.parse(error?._server_messages)[0]).message);setSaveLoading(false) }
         if(deliveryError) { setErrorAlert(JSON.parse(JSON.parse(deliveryError?._server_messages)[0]).message) }
         if(codeError) { setErrorAlert(JSON.parse(JSON.parse(codeError?._server_messages)[0]).message) }
         if(PromoCompleted) { setPositiveAlert(true) }
@@ -222,6 +221,11 @@ export default function Checkout(){
     const handleSelectAddress = () => {
         setMoreAddresses(false);
         setAddNewAddress(false)
+    }
+
+    const handleSubmitCheckout = () => {
+        setSaveLoading(true);
+        formik.handleSubmit();
     }
 
     const ProductLists = () => {
@@ -431,7 +435,7 @@ export default function Checkout(){
                                                     <div className='flex flex-col gap-y-2 mt-8'>
                                                         <h2 className="font-semibold text-secgray">ที่อยู่ <span className='text-red-500'>*</span></h2>
                                                         <div className='border border-lightgray rounded-xl bg-neutral-50 overflow-hidden'>
-                                                            <a className='p-6 pb-5 flex items-center justify-between w-full cursor-pointer' onClick={() => setMoreAddresses(true)}>
+                                                            <a className='p-6 pb-5 flex items-center justify-between w-full cursor-pointer' onClick={() => {!saveLoading && setMoreAddresses(true)}}>
                                                                 <div className='flex items-center gap-x-2'>
                                                                     <Icons.marketPin04 color='#666666' className='min-w-6'/>
                                                                     <span className=' font-bold text-darkgray'>{formik.values.billing_address ? addressList?.message?.find(address => address.name === formik.values.billing_address).address_title : 'เพิ่ม / เลือกที่อยู่การจัดส่ง'}</span>
@@ -507,7 +511,7 @@ export default function Checkout(){
                                     <legend className="mb-2 font-semibold text-secgray">ตัวเลือกการจัดส่ง <span className='text-red-500'>*</span></legend>
                                     <div className='border border-lightgray rounded-xl bg-neutral-50 overflow-hidden'>
                                         {shippingRules?.length > 0 ? (
-                                            <a className='px-6 py-[18px] flex items-center justify-between w-full cursor-pointer' onClick={() => setMorePayments(true)}>
+                                            <a className='px-6 py-[18px] flex items-center justify-between w-full cursor-pointer' onClick={() => {!saveLoading && setMorePayments(true)}}>
                                                 <div className='flex items-start justify-between w-full'>
                                                     <div className='flex flex-col'>
                                                         <span className='font-semibold text-darkgray'>{checkedState ? checkedState : 'รูปแบบการจัดส่ง'}</span>
@@ -572,13 +576,13 @@ export default function Checkout(){
                                 )}
                             {!shippingRuleLoading && addressList ? (
                                 <>
-                                    <PaymentMethods onChange={value => formik.setFieldValue('payment_method', value)} value={formik.values.payment_method} error={formik.errors.payment_method} />
+                                    <PaymentMethods onChange={value => {!saveLoading && formik.setFieldValue('payment_method', value)}} value={formik.values.payment_method} error={formik.errors.payment_method} />
                                     <div className='lg:hidden'>
                                         <CheckoutDetails addCoupon={<CouponForm />}/>
                                     </div>
                                     <div className='w-full pt-[11px] lg:pt-0'>
-                                        <SfButton size="lg" className="w-full btn-primary text-base h-[50px] rounded-xl" onClick={formik.handleSubmit} disabled={(formik.values.billing_address === undefined || "") || (formik.values.payment_method === "") || (checkedState === "") || undefined}>
-                                            ชำระเงิน
+                                        <SfButton size="lg" className="w-full btn-primary text-base h-[50px] rounded-xl" onClick={handleSubmitCheckout} disabled={(formik.values.billing_address === undefined || "") || (formik.values.payment_method === "") || (checkedState === "") || undefined || saveLoading}>
+                                            {saveLoading ? <SfLoaderCircular /> : 'ชำระเงิน'}
                                         </SfButton>
                                         <div className="mt-3 text-sm text-secgray">
                                             เมื่อคลิกปุ่ม 'ชำระเงิน' แสดงว่าคุณยินยอมและยอมรับ <SfLink href="#" className='text-linkblack no-underline'>นโยบายความเป็นส่วนตัว</SfLink> และ <SfLink href="#" className='text-linkblack no-underline'>เงื่อนไขการให้บริการ</SfLink> ของทางร้าน

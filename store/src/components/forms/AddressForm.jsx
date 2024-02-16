@@ -12,8 +12,8 @@ import { Skeleton } from '../Skeleton';
 
 const AddressForm = ({ onFormSubmit }) => {
     const { result: countries,call : get_countries } = useFrappePostCall('e_commerce_store.api.get_countries')
-    const { result: states, call : get_states} = useFrappePostCall('e_commerce_store.api.get_states')
-    const {result : city, call : get_cities} = useFrappePostCall('e_commerce_store.api.get_cities')
+    const { result: states, call : get_states, reset : reset_get_states} = useFrappePostCall('e_commerce_store.api.get_states')
+    const {result : city, call : get_cities, reset : reset_get_cities} = useFrappePostCall('e_commerce_store.api.get_cities')
     // Fetch all countries
     useEffect(() => {
         get_countries()
@@ -107,6 +107,7 @@ const AddressForm = ({ onFormSubmit }) => {
                         placeholder="ประเทศ *" 
                         onChange={(event) => {
                             formik.setFieldValue('country', event.target.value);
+                            reset_get_cities()
                             if(formik.values.state !== "")
                             {
                                 formik.setFieldValue('state', '')
