@@ -46,14 +46,6 @@ export default function BaseMegaMenu() {
   const [menu ,setMenu] = useState({item : null, prevItem : null})
   const [mobileMenuStep, setMobileMenuStep] = useState(0)
 
-  const [activeLink, setActiveLink] = useState(location.pathname)
-  const accountMenus = [
-    {name:'รายละเอียดบัญชี',children : [], label :'รายละเอียดบัญชี', url:'/profile', icon:<Icons.user01 color={activeLink.includes('/profile') ? '#111111' : '#595959'}/>},
-    {name:'ที่อยู่',children : [],label:'ที่อยู่', url:'/my-addresses', icon:<Icons.marketPin04 className='w-5 h-5' color={activeLink.includes('/my-addresses') ? '#111111' : '#595959'}/>},
-    {name:'คำสั่งซื้อ',children : [],label:'คำสั่งซื้อ', url:'/order-history', icon:<Icons.file06 color={activeLink.includes('/order-history') ? '#111111' : '#595959'}/>},
-  ]
-
-
   const {mainGroup} = useProducts()
   const { isOpen:isLogoutOpen, open:openLogout, close:closeLogout } = useDisclosure({ initialValue: false });
 
@@ -65,8 +57,7 @@ export default function BaseMegaMenu() {
         {
           if (window.innerWidth <= 768)  // 768px is a common breakpoint for mobile devices
           {
-            setMobileMenuStep((prev) => prev + 1)
-            setMenu({item : {name: 'Profile', label : 'Profile', children : accountMenus} , prevItem : menu.item})
+            navigate('/profile/true');
           }else{
             navigate('/profile');
           }
@@ -74,9 +65,9 @@ export default function BaseMegaMenu() {
       else 
         {
           navigate('/login');
-          setIsMobileMenuOpen(false)
+          
         }
-
+        setIsMobileMenuOpen(false)
     }
 
   const [actionItems, setActionItems] = useState([

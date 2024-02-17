@@ -6,7 +6,7 @@ import { useFrappeAuth } from 'frappe-react-sdk';
 import { Link, useLocation } from 'react-router-dom'
 import { Icons } from './icons';
 
-const MyAccountSection = ({children}) => {
+const MyAccountSection = ({children, phone}) => {
   const { user, logout } = useUser()
   const { currentUser } = useFrappeAuth()
   const location = useLocation()
@@ -19,6 +19,14 @@ const MyAccountSection = ({children}) => {
 
   return (
     <main className='main-section-my-account'>
+      {phone ?
+      accountMenus.map(menu => (
+        <Link to={menu.link} className={` flex font-bold items-center gap-x-[10px] leading-[10px] h-[50px] hover:text-linkblack ${activeLink.includes(menu.link) ? 'text-linkblack' : 'text-darkgray'}`}>
+          {menu.icon}
+          {menu.title}
+        </Link>
+      ))
+      :
       <div className='grid grid-cols-1 lg:grid-cols-5 gap-12'>
         <div className='col-span-1 lg:flex flex-col py-[50px] hidden'>
           <div className='flex flex-col gap-y-4'>
@@ -46,6 +54,7 @@ const MyAccountSection = ({children}) => {
           </div>
         </div>
       </div>
+      }
     </main>
   )
 }
