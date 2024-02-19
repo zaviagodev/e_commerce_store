@@ -113,7 +113,7 @@ export default function Login() {
             </form>
             <div className='flex flex-col gap-y-5'>
                 <h2 className="text-darkgray text-lg lg:text-2xl font-semibold">ลูกค้าใหม่</h2>
-                <p className='text-secgray'>ลงทะเบียนเพื่อเข้าถึง การสินค้าสุดพิเศษพร้อมกับสินค้ามาใหม่ เทรนด์ที่มาแรง ส่วนลดและโปรโมชั่นมากมายสำหรับสมาชิก</p>
+                <p className='text-secgray'>สมัครสมาชิกเพื่อซื้อสินค้าที่คุณชื่นชอบ ผ่านระบบการชำระเงินที่สะดวกรวดเร็ว</p>
                 <Link to='/register' className='w-fit'>
                     <SfButton className='w-fit mt-5 btn-primary h-[50px] rounded-xl'>
                         สมัครสมาชิก
