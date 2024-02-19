@@ -55,6 +55,9 @@ export default {
         checkout: '-17px 4px 28.8px 0px rgba(0, 0, 0, 0.03)',
         toast: '0px 4px 18.4px 0px rgba(0, 0, 0, 0.07)'
       },
+      transitionDuration: {
+        '400': '400ms',
+      },
       colors: {
         maingray: '#858585',
         secgray: '#979797',

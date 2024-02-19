@@ -130,26 +130,27 @@ export default function BaseMegaMenu() {
     close();
   });
 
-  function BuildDesktop (itemTop){
+  function BuildDesktop(itemTop){
     return(
     <div key={itemTop.name} className="pt-0">
       <Link to={`/home/${itemTop.name}`}   
         role="presentation"
-        className="text-sm font-bold text-neutral-900 whitespace-nowrap p-4 md:py-1.5"
+        className="text-base font-semibold text-neutral-900 whitespace-nowrap p-4 md:py-1.5 mb-3 inline-block"
+        onClick={() => setIsMobileMenuOpen(false)}
         >
         {itemTop.name}
         </Link>
-      <hr className="mb-3.5" />
+      {/* <hr className="mb-3.5" /> */}
       <ul>
         {
         itemTop.children?.map((subItem) => 
-        <Link to={`/home/${subItem?.name}`}   >
+        <Link to={`/home/${subItem?.name}`} onClick={() => setIsMobileMenuOpen(false)}>
           <li key={subItem?.name}>
             <SfListItem
               as="div"
               size="sm"
               role="none"
-              className="py-4 md:py-1.5 rounded-lg active:font-bold text-sm font-bold"
+              className="py-4 md:py-1.5 rounded-lg active:font-bold font-semibold text-[#909090] hover:text-black"
             >
               {subItem?.name}
             </SfListItem>
@@ -201,8 +202,6 @@ export default function BaseMegaMenu() {
     setIsMobileMenuOpen(false)
   }
 
-
-
   const handlePhoneMenuClick = (item, product = false) => {
     if (item.is_product_list) {
       setMobileMenuStep((prev) => prev + 1)
@@ -211,18 +210,19 @@ export default function BaseMegaMenu() {
     }
     if (item.children.length === 0 && product) {
       resetPhoneMenu()
+      setIsMobileMenuOpen(false)
       navigate(`/home/${item.name}`)
       return
     }
     if (item.children.length === 0 && !product) {
       resetPhoneMenu()
+      setIsMobileMenuOpen(false)
       handleClick(item.url)
       return
     }
     setMobileMenuStep((prev) => prev + 1)
     setMenu({item : item, prevItem : menu.item})
   }
-
 
   function MobileProductMenu (){
     return <>
@@ -232,7 +232,7 @@ export default function BaseMegaMenu() {
             {mainGroup.map((item) => 
               <button onClick={() => handlePhoneMenuClick(item, true)} className="flex justify-between items-center">
                 {item?.name}
-                <SfIconChevronRight/>
+                {item?.children?.length > 0 ? <SfIconChevronRight/> : null}
               </button>
             )}
           </div>
@@ -243,7 +243,7 @@ export default function BaseMegaMenu() {
             {menu.item?.children.map((item) => 
               <button onClick={() => handlePhoneMenuClick(item, !item?.label && true)} className="flex justify-between items-center">
                 {item?.name}
-                <SfIconChevronRight/>
+                {item?.children?.length > 0 ? <SfIconChevronRight/> : null}
               </button>
             )}
           </div>
@@ -283,7 +283,7 @@ export default function BaseMegaMenu() {
                 open
                 disableClickAway
                 placement="top"
-                className="grid grid-cols-1 lg:gap-x-6 lg:grid-cols-4 bg-white shadow-lg p-0 max-h-screen overflow-y-auto lg:!absolute lg:!top-[57px] max-w-[376px] lg:max-w-full lg:p-6 mr-[50px] lg:mr-0 z-99"
+                className="bg-white shadow-lg p-0 max-h-screen overflow-y-auto lg:!absolute lg:!top-[57px] max-w-[376px] lg:max-w-full lg:px-10 lg:pt-10 lg:pb-[100px] mr-[50px] lg:mr-0 z-99"
               >
                 <div className="sticky top-0 flex items-center justify-between p-2 bg-primary lg:hidden">
                   <div className="flex items-center font-bold text-black typography-text-lg">{menu.item?.name}</div>
@@ -297,27 +297,29 @@ export default function BaseMegaMenu() {
                     <SfIconClose />
                   </SfButton>
                 </div>
-                    {
-                      mainGroup.map(
-                        (item) => 
-                        {
-                          return(
-                            <div className="lg:block hidden">
-                              {BuildDesktop(item)}
-                            </div>
-                          )
-                        }
-                      )
-                    }
-                <SfButton
+                <div className='max-w-[1400px] mx-auto grid grid-cols-1 lg:gap-y-20 lg:grid-cols-4'>
+                  {
+                    mainGroup.map(
+                      (item) => 
+                      {
+                        return(
+                          <div className="lg:block hidden border-r px-6">
+                            {BuildDesktop(item)}
+                          </div>
+                        )
+                      }
+                    )
+                  }
+                </div>
+                {/* <SfButton
                   square
                   variant="tertiary"
                   aria-label="Close navigation menu"
                   onClick={close}
-                  className="hidden md:block md:absolute md:right-0 hover:bg-white active:bg-white"
+                  className="hidden md:block md:absolute md:right-0 hover:bg-white active:bg-white md:top-0"
                 >
                   <SfIconClose />
-                </SfButton>
+                </SfButton> */}
               </SfDrawer>
             </CSSTransition>
           </li>
@@ -372,6 +374,17 @@ export default function BaseMegaMenu() {
               </div>
             ) : (
               <div className='flex items-center gap-x-[10px]' onClick={handlLoginClick}>
+                {user?.name ? (
+                  <img
+                    className="rounded-full bg-neutral-100 group-hover:shadow-xl group-active:shadow-none w-6 h-6 object-cover"
+                    src={user?.user?.user_image ? `${import.meta.env.VITE_ERP_URL || ""}${user.user.user_image}` : defaultAvatar}
+                    width="24"
+                    height="24"
+                    alt="User Image"
+                  />
+                ) : (
+                  <Icons.user01 />
+                )}
                 <p className="inline-flex whitespace-nowrap font-semibold">{user?.name ?? 'เข้าสู่ระบบ'}</p>
               </div>
             )}
@@ -379,12 +392,12 @@ export default function BaseMegaMenu() {
               <ul className='flex flex-col gap-4 font-semibold'>
                 {!isLoading ? (
                   <>{mobileMenuStep == 0 ? topBarItems.map((item) => {
-                          return(
-                            <button onClick={() => handlePhoneMenuClick(item)} className="flex justify-between items-center">
-                              {item?.name}
-                              <SfIconChevronRight/>
-                            </button>
-                          )
+                      return(
+                        <button onClick={() => handlePhoneMenuClick(item)} className="flex justify-between items-center">
+                          {item?.name}
+                          {item?.children?.length > 0 || item?.is_product_list ? <SfIconChevronRight/> : null}
+                        </button>
+                      )
                     }
                   ) : 
                   <MobileProductMenu/>

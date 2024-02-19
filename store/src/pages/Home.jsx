@@ -10,7 +10,7 @@ import Pagination from '../components/Pagination';
 
 const Home = () => {
     const { updateCurrentUser } = useFrappeAuth();
-    const {  mainGroup, settingPage,totalitems,setpageno,mutateItemsList,pageData,setProducts,pageno} = useProducts()
+    const { products, mainGroup, settingPage,totalitems,setpageno,mutateItemsList,pageData,setProducts,pageno} = useProducts()
     const navigate = useNavigate();
     const idFromUrl = useParams().itemsgroup;
     const page_no = useParams().pageno;
@@ -58,7 +58,7 @@ const Home = () => {
         <>
             <main className='main-section'>
                 {pageData[pageno]?.length > 0 ? (
-                    <h1 className="mb-6 lg:mb-[53px] text-primary text-center text-2xl lg:text-4xl font-semibold">สินค้าทั้งหมด</h1>
+                    <h1 className="mb-6 lg:mb-[53px] text-primary text-center text-2xl lg:text-4xl font-semibold">{idFromUrl === "all items" ? "สินค้าทั้งหมด" : idFromUrl}</h1>
                 ): (
                     <Skeleton className='h-10 w-[200px] mx-auto mb-[53px]'/>
                 )}
