@@ -58,7 +58,7 @@ function OrderHistory() {
                       <table className="w-full">
                         <tbody>
                           <tr>
-                            <td className="text-secgray text-sm py-[7px]">เลขคำสั่งซื้อ</td>
+                            <td className="text-secgray text-sm py-[7px]">เลขที่คำสั่งซื้อ</td>
                             <td className="text-linkblack text-sm font-semibold text-right py-[7px]">{name}-{}{company}</td>
                           </tr>
                           <tr>
@@ -70,7 +70,7 @@ function OrderHistory() {
                             <td className="text-linkblack text-sm font-semibold text-right py-[7px]">{items.length}</td>
                           </tr>
                           <tr>
-                            <td className="text-secgray text-sm py-[7px]">ยอดรวมทั้งหมด</td>
+                            <td className="text-secgray text-sm py-[7px]">ยอดรวมทั้งสิ้น</td>
                             <td className="text-linkblack text-sm font-semibold text-right py-[7px]">฿ {grand_total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</td>
                           </tr>
                         </tbody>
@@ -114,10 +114,10 @@ function OrderHistory() {
                       <table className="text-left w-full">
                         <thead>
                           <tr className="border-b">
-                            <th className="py-6 text-xs w-1/3">เลขคำสั่งซื้อ</th>
+                            <th className="py-6 text-xs w-1/3">เลขที่คำสั่งซื้อ</th>
                             <th className="py-6 text-xs w-1/6 text-center">วันที่</th>
                             <th className="py-6 text-xs w-1/6 text-center">จำนวนสินค้า</th>
-                            <th className="py-6 text-xs w-1/6 text-right">ยอดรวมทั้งหมด</th>
+                            <th className="py-6 text-xs w-1/6 text-right">ยอดรวมทั้งสิ้น</th>
                             <th className="py-6 w-1/6"></th>
                           </tr>
                         </thead>

@@ -80,7 +80,7 @@ export default function MyAccountForm(onSuccess = () => { },){
               onChange={formik.handleChange}
               value={formik.values.first_name}
               invalid={formik.errors.first_name}
-              placeholder="ชื่อ *"
+              placeholder="ชื่อ"
             />
           </label>
           {formik.errors.first_name && (
@@ -124,7 +124,7 @@ export default function MyAccountForm(onSuccess = () => { },){
 
       <div className="w-full">
           <SfButton type='submit' className="w-full btn-primary text-base h-[50px] rounded-xl mt-3" disabled={!editedState || loading}>
-            {loading ? <SfLoaderCircular /> : 'อัพเดทข้อมูล'}
+            {loading ? <SfLoaderCircular /> : 'อัปเดตข้อมูล'}
           </SfButton>
       </div>
     </form>
@@ -132,8 +132,8 @@ export default function MyAccountForm(onSuccess = () => { },){
       <div className="flex items-start gap-x-[18px]">
         <Icons.checkCircle />
         <div className="flex flex-col gap-y-4">
-          <h3 className="text-baselg leading-3 font-medium">อัพเดทข้อมูล</h3>
-          <p className="text-secgray  leading-[10px]">อัพเดทข้อมูลเรียบร้อยแล้ว</p>
+          <h3 className="text-baselg leading-3 font-medium">อัปเดตข้อมูล</h3>
+          <p className="text-secgray  leading-[10px]">อัปเดตข้อมูลเรียบร้อยแล้ว</p>
         </div>
       </div>
       <SfButton
@@ -149,8 +149,8 @@ export default function MyAccountForm(onSuccess = () => { },){
       <div className="flex items-start gap-x-[18px]">
         <Icons.xcircle color="#EF4444"/>
         <div className="flex flex-col gap-y-4">
-          <h3 className="text-baselg leading-3 font-medium">อัพเดทข้อมูลไม่สำเร็จ</h3>
-          <p className="text-secgray  leading-[10px]">เกิดปัญหาในการอัพเดทข้อมูล</p>
+          <h3 className="text-baselg leading-3 font-medium">อัปเดตข้อมูลไม่สำเร็จ</h3>
+          <p className="text-secgray  leading-[10px]">เกิดปัญหาในการอัปเดตข้อมูล</p>
         </div>
       </div>
       <SfButton

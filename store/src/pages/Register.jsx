@@ -75,7 +75,7 @@ export default function Register() {
         <h2 className="mb-[41px] lg:mb-[85px] text-primary text-center text-2xl lg:text-4xl font-semibold">สมัครสมาชิก</h2>
             <section className={`grid grid-cols-1 gap-[70px] mx-auto max-w-[410px] w-full`}>
             <form className="flex gap-3 flex-wrap text-neutral-900 text-start text-big" onSubmit={formik.handleSubmit}>
-                <h2 className="text-darkgray text-lg lg:text-2xl font-semibold">ลงทะเบียนสมาชิกใหม่</h2>
+                <h2 className="text-darkgray text-lg lg:text-2xl font-semibold">สร้างบัญชีสมาชิก</h2>
 
                 {apiResponse == 'อีเมลหรือรหัสผ่านไม่ถูกต้อง' && <h2 className="text-xs text-red-500 font-semibold w-full">{apiResponse}</h2>}
 
@@ -126,7 +126,7 @@ export default function Register() {
                     ฉันยอมรับ <SfLink href="#" className='text-linkblack no-underline'>ข้อตกลงและเงื่อนไข</SfLink> รวมถึงการประมวลผลข้อมูลของฉันตามจุดประสงค์ดังที่ระบุไว้ใน <SfLink href="#" className='text-linkblack no-underline'>นโยบายความเป็นส่วนตัวและการใช้งานคุ้กกี้</SfLink>
                 </div>
 
-                <SfButton variant='tertiary' className={`btn-primary rounded-xl h-[50px] w-full ${saveLoading || validRegister  ? '!bg-[#F3F3F3]' : ''}`} type='submit' disabled={saveLoading || validRegister}>{saveLoading ? <SfLoaderCircular /> : 'ลงทะเบียน'}</SfButton>
+                <SfButton variant='tertiary' className={`btn-primary rounded-xl h-[50px] w-full ${saveLoading || validRegister  ? '!bg-[#F3F3F3]' : ''}`} type='submit' disabled={saveLoading || validRegister}>{saveLoading ? <SfLoaderCircular /> : 'สมัครสมาชิก'}</SfButton>
 
                 <div className='flex flex-col gap-y-3 mt-[14px] w-full'>
                     <p className='text-secgray text-sm'>หากเป็นสมาชิกอยู่แล้ว คลิกที่นี่เพื่อเข้าสู่ระบบ</p>
@@ -146,8 +146,8 @@ export default function Register() {
             </div>
 
             <div className='flex flex-col gap-y-6'>
-                <h1 className='text-black text-2xl font-semibold'>ลงทะเบียนสำเร็จ</h1>
-                <p className='text-darkgray'>ขอบคุณสำหรับการสมัครสมาชิก คุณสามารถตรวจสอบข้อมูลส่วนตัวของคุณได้ที่ “รายละเอียดบัญชี”</p>
+                <h1 className='text-black text-2xl font-semibold'>สมัครสมาชิกสำเร็จ</h1>
+                <p className='text-darkgray'>ขอบคุณสำหรับการสมัครสมาชิก คลิกที่ปุ่มด้านล่างนี้เพื่อเริ่มต้นการซื้อสินค้า</p>
             </div>
 
             <SfButton className='w-full btn-primary h-[50px] rounded-xl' onClick={() => navigate('/home/all items')}>
