@@ -32,22 +32,26 @@ export default function SelectDropdownPreselected({options, dropdowndame, submen
     initialFocusContainerFallback: true,
   });
 
-  function handleClick(url, openInNewTab) {
-    if (!url) return;
-  
+  function handleClick(url,openInNewTab=0) {
+    if (url === null || typeof url === 'undefined') return;
     if (openInNewTab) {
-      window.open(url, '_blank');
-    } else {
       if (!url.startsWith('/') && !url.startsWith('http')) {
-        window.location.href = `https://${url}`;
+        window.open('https://' + url, '_blank')
       } else if (url.startsWith('http')) {
-        window.location.href = url;
+        window.location.assign( url, '_blank')
+      } else {
+        window.open(window.location.origin + url, '_blank');
+      }
+    }else {
+      if (!url.startsWith('/') && !url.startsWith('http')) {
+        window.location.assign('https://' + url)
+      } else if (url.startsWith('http')) {
+        window.location.assign( url)
       } else {
         navigate(url);
       }
     }
   }
-  
 
   const handleTriggerKeyDown = (event) => {
     if (event.key === ' ') toggle();

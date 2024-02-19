@@ -164,17 +164,23 @@ export default function BaseMegaMenu() {
 
    function handleClick(url,openInNewTab=0) {
     if (url === null || typeof url === 'undefined') return;
-    if(!url.startsWith('/')){  
-      if (openInNewTab) {
-        window.open(url, '_blank');
+    if (openInNewTab) {
+      if (!url.startsWith('/') && !url.startsWith('http')) {
+        window.open('https://' + url, '_blank')
+      } else if (url.startsWith('http')) {
+        window.location.assign( url, '_blank')
+      } else {
+        window.open(window.location.origin + url, '_blank');
       }
-      else{
+    }else {
+      if (!url.startsWith('/') && !url.startsWith('http')) {
         window.location.assign('https://' + url)
-      }  
+      } else if (url.startsWith('http')) {
+        window.location.assign( url)
+      } else {
+        navigate(url);
+      }
     }
-    else {
-      navigate(url)
-    };
   }
 
   const clickToLogout = () => {
@@ -217,7 +223,7 @@ export default function BaseMegaMenu() {
     if (item.children.length === 0 && !product) {
       resetPhoneMenu()
       setIsMobileMenuOpen(false)
-      handleClick(item.url)
+      handleClick(item.url, item.open_in_new_tab === 1)
       return
     }
     setMobileMenuStep((prev) => prev + 1)
