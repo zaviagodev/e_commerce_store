@@ -56,7 +56,7 @@ const router = createBrowserRouter(
       <Route path="my-addresses" element={<MyAddresses />} />
       <Route path="loyality-program" element={<LoyaltyProgram />} />
       <Route path="payment" element={<BankInfoPage />} />
-      <Route path="profile" element={<Profile />} />
+      <Route path="profile/:phone?" element={<Profile />} />
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
       <Route path='order-history/:id' element={<SingleOrderHistory />} />
