@@ -28,7 +28,6 @@ export default function PaymentMethods({
                             </label>
                         )) : (
                             <div className='rounded-xl border border-lightgray px-6 py-[18px] bg-neutral-50 flex items-center gap-x-2'>
-                                <Icons.wallet04 color='#595959'/>
                                 <p className={`text-secgray font-semibold text-sm`}>ไม่มีช่องทางการชำระเงิน กรุณาติดต่อร้านค้าโดยตรง</p>
                             </div>
                         )}
