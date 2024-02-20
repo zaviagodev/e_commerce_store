@@ -22,6 +22,7 @@ import { useClickAway } from 'react-use';
 import { CSSTransition } from 'react-transition-group';
 import { useProducts } from '../hooks/useProducts';
 import { Skeleton } from './Skeleton';
+import defaultAvatar from "../assets/default-avatar.svg"
 
 import SearchWithIcon from './SearchBar';
 import SelectDropdownPreselected from './dropDown';
