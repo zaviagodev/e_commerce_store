@@ -9,6 +9,42 @@ const setToken = (token) => Cookies.set(TokenKey, token);
 const removeToken = () => Cookies.remove(TokenKey);
 
 
+function IsInProductList(topbarItems, name){
+    let result = topbarItems.some((item) => {
+        if(item.name === name){
+            return true;
+        }
+        if(item.children && item.children.length > 0){
+            return IsInProductList(item.children, name);
+        }
+        return false;
+    });
+    return result;
+}
+
+
+function handleClick(url,openInNewTab=0, navigate) {
+    if (url === null || typeof url === 'undefined') return;
+    if (openInNewTab) {
+      if (!url.startsWith('/') && !url.startsWith('http')) {
+        window.open('https://' + url, '_blank')
+      } else if (url.startsWith('http')) {
+        window.location.assign( url, '_blank')
+      } else {
+        window.open(window.location.origin + url, '_blank');
+      }
+    }else {
+      if (!url.startsWith('/') && !url.startsWith('http')) {
+        window.location.assign('https://' + url)
+      } else if (url.startsWith('http')) {
+        window.location.assign( url)
+      } else {
+        navigate(url);
+      }
+    }
+  }
+
+
 const getRGBColor = (hex, type) => {
     let color = hex.replace(/#/g, "")
     // rgb values
@@ -79,5 +115,6 @@ export {
     getRGBColor,
     getAccessibleColor,
     getUserId,
-
+    handleClick,
+    IsInProductList
 };

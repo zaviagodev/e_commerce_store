@@ -31,6 +31,7 @@ import SelectDropdownPreselected from './dropDown';
 import { Icons } from './icons';
 import MobileHeaderDrawer from './drawers/MobileHeaderDrawer';
 import Modal from './drawers/Modal';
+import { IsInProductList, handleClick } from '../utils/helper';
 
 export default function BaseMegaMenu() {
 
@@ -163,26 +164,6 @@ export default function BaseMegaMenu() {
     )
   }
 
-   function handleClick(url,openInNewTab=0) {
-    if (url === null || typeof url === 'undefined') return;
-    if (openInNewTab) {
-      if (!url.startsWith('/') && !url.startsWith('http')) {
-        window.open('https://' + url, '_blank')
-      } else if (url.startsWith('http')) {
-        window.location.assign( url, '_blank')
-      } else {
-        window.open(window.location.origin + url, '_blank');
-      }
-    }else {
-      if (!url.startsWith('/') && !url.startsWith('http')) {
-        window.location.assign('https://' + url)
-      } else if (url.startsWith('http')) {
-        window.location.assign( url)
-      } else {
-        navigate(url);
-      }
-    }
-  }
 
   const clickToLogout = () => {
     logout();
@@ -215,16 +196,17 @@ export default function BaseMegaMenu() {
       setMenu({item : item, prevItem : menu.item})
       return
     }
-    if (item.children.length === 0 && product) {
+    if ((product || IsInProductList(mainGroup, item.name)) && (mobileMenuStep > 1 || item.children.length == 0)) {
       resetPhoneMenu()
       setIsMobileMenuOpen(false)
       navigate(`/home/${item.name}`)
       return
+      
     }
     if (item.children.length === 0 && !product) {
       resetPhoneMenu()
       setIsMobileMenuOpen(false)
-      handleClick(item.url, item.open_in_new_tab === 1)
+      handleClick(item.url, item.open_in_new_tab === 1, navigate)
       return
     }
     setMobileMenuStep((prev) => prev + 1)
@@ -236,10 +218,11 @@ export default function BaseMegaMenu() {
       {menu.item?.is_product_list ?  
         <div className='flex flex-col gap-y-6'>
           <div className='flex flex-col gap-y-4'>
+            {topBarItems.filter((item) => item.is_product_list).name}
             {mainGroup.map((item) => 
               <button onClick={() => handlePhoneMenuClick(item, true)} className="flex justify-between items-center">
                 {item?.name}
-                {item?.children?.length > 0 ? <SfIconChevronRight/> : null}
+                <SfIconChevronRight/>
               </button>
             )}
           </div>
@@ -247,10 +230,11 @@ export default function BaseMegaMenu() {
         :
         <div className='flex flex-col gap-y-6'>
           <div className='flex flex-col gap-y-4'>
+            <Link to={`/home/${menu.item?.name}`}>{IsInProductList(mainGroup, menu.item?.name) && menu.item?.name}</Link>
             {menu.item?.children.map((item) => 
               <button onClick={() => handlePhoneMenuClick(item, !item?.label && true)} className="flex justify-between items-center">
                 {item?.name}
-                {item?.children?.length > 0 ? <SfIconChevronRight/> : null}
+                <SfIconChevronRight/> 
               </button>
             )}
           </div>
@@ -343,7 +327,7 @@ export default function BaseMegaMenu() {
             aria-label={item.label}
             variant="tertiary"
             square
-            onClick={() => handleClick(item.url, item.open_in_new_tab === 1)}
+            onClick={() => handleClick(item.url, item.open_in_new_tab === 1, navigate)}
           >
             {item.label}
             <SfIconChevronRight className='lg:hidden'/>
