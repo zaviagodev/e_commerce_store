@@ -142,7 +142,7 @@ export default function BaseMegaMenu() {
         {itemTop.name}
         </Link>
       {/* <hr className="mb-3.5" /> */}
-      <ul>
+      <ul className='flex flex-col gap-y-3'>
         {
         itemTop.children?.map((subItem) => 
         <Link to={`/home/${subItem?.name}`} onClick={() => setIsMobileMenuOpen(false)}>
@@ -304,13 +304,13 @@ export default function BaseMegaMenu() {
                     <SfIconClose />
                   </SfButton>
                 </div>
-                <div className='max-w-[1400px] mx-auto grid grid-cols-1 lg:gap-y-20 lg:grid-cols-4'>
+                <div className='max-w-[1400px] mx-auto grid grid-cols-1 lg:gap-y-[46px] lg:grid-cols-4'>
                   {
                     mainGroup.map(
                       (item) => 
                       {
                         return(
-                          <div className="lg:block hidden border-r px-6">
+                          <div className="lg:block hidden px-6">
                             {BuildDesktop(item)}
                           </div>
                         )

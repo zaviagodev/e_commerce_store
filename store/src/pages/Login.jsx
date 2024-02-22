@@ -7,6 +7,7 @@ import { useUser } from '../hooks/useUser';
 import { getToken } from '../utils/helper';
 import * as Yup from 'yup';
 import { Icons } from '../components/icons';
+import Modal from '../components/drawers/Modal';
 
 export default function Login() {
     const { login } = useUser();
@@ -15,6 +16,7 @@ export default function Login() {
     const [showPassword, setShowPassword] = useState(false)
     const [forgotPassword, setForgotPassword] = useState(false)
     const [saveLoading, setSaveLoading] = useState(false)
+    const { isOpen:isForgotPassSubmitted, open:openSubmittedForgotPass, close:closeSubmittedForgotPass } = useDisclosure({ initialValue: false });
 
     const navigate = useNavigate();
     const {
@@ -23,9 +25,14 @@ export default function Login() {
         error
     } = useFrappeAuth();
 
+    const confirmEmailForgotPass = () => {
+        openSubmittedForgotPass()
+    }
+
     const getValidationSchema = () => {
         let schema = {};
 
+        if (forgotPassword){schema['email'] = Yup.string().email('รูปแบบอีเมลไม่ถูกต้อง').required('จำเป็นต้องกรอกอีเมล');}
         schema['usr'] = Yup.string().equals([Yup.ref('usr')], 'enter username').required('จำเป็นต้องกรอกข้อมูล');
         schema['pwd'] = Yup.string().equals([Yup.ref('pwd')], 'Passwords must match').required('จำเป็นต้องกรอกรหัสผ่าน');
         return Yup.object().shape(schema);
@@ -35,6 +42,7 @@ export default function Login() {
         initialValues: {
             usr: '',
             pwd: '',
+            email: ''
         },
         validationSchema: getValidationSchema(),
         onSubmit: (values) => {
@@ -79,12 +87,12 @@ export default function Login() {
                 {apiResponse == 'อีเมลหรือรหัสผ่านไม่ถูกต้อง' && <h2 className="text-xs text-red-500 font-semibold w-full">{apiResponse}</h2>}
 
                 <label className="w-full flex flex-col">
-                    <SfInput name="usr" autoComplete="usr" onChange={formik.handleChange} value={formik.values.usr} 
-                        wrapperClassName={`!bg-neutral-50 ${formik.errors.usr ? '!ring-red-500/50' : '!ring-lightgray'} h-[50px] px-6 rounded-xl`}
-                        className={`bg-neutral-50 font-medium ${formik.errors.usr ? 'text-red-500' : 'text-darkgray'} `}
+                    <SfInput name={forgotPassword ? "email" : "usr"} autoComplete={forgotPassword ? "email" : "usr"} onChange={formik.handleChange} value={forgotPassword ? formik.values.email : formik.values.usr} 
+                        wrapperClassName={`!bg-neutral-50 ${(forgotPassword ? formik.errors.email : formik.errors.usr) ? '!ring-red-500/50' : '!ring-lightgray'} h-[50px] px-6 rounded-xl`}
+                        className={`bg-neutral-50 font-medium ${(forgotPassword ? formik.errors.email : formik.errors.usr) ? 'text-red-500' : 'text-darkgray'} `}
                         placeholder='อีเมล *'
                     />
-                    <p className='text-red-500 text-xs font-semibold mt-2'>{formik.errors.usr}</p>
+                    <p className='text-red-500 text-xs font-semibold mt-2'>{forgotPassword ? formik.errors.email : formik.errors.usr}</p>
                 </label>
 
                 {!forgotPassword && (
@@ -101,7 +109,7 @@ export default function Login() {
 
                 {forgotPassword ? (
                     <div className="w-full flex mt-6 gap-3">
-                        <SfButton variant='tertiary' className={`btn-primary rounded-xl h-[50px] ${loginState === false ? 'w-full' : 'w-[100px]'} ${saveLoading ? '!bg-[#F3F3F3]' : ''}`} type='submit' disabled={saveLoading}>{saveLoading ? <SfLoaderCircular /> : 'ยืนยัน'}</SfButton>
+                        <SfButton variant='tertiary' className={`btn-primary rounded-xl h-[50px] ${loginState === false ? 'w-full' : 'w-[100px]'} ${saveLoading ? '!bg-[#F3F3F3]' : ''}`} type='submit' onClick={confirmEmailForgotPass} disabled={saveLoading}>{saveLoading ? <SfLoaderCircular /> : 'ยืนยัน'}</SfButton>
                         <SfButton variant='tertiary' className={`btn-secondary rounded-xl h-[50px] ${loginState === false ? 'w-full' : 'w-[120px]'} ${saveLoading ? '!bg-[#F3F3F3]' : ''}`} onClick={handleForgotPass} disabled={saveLoading}>{saveLoading ? <SfLoaderCircular /> : `ยกเลิก`}</SfButton>
                     </div>
                 ) : (
@@ -122,6 +130,22 @@ export default function Login() {
             </div>
             </section>
         </main>
+
+        <Modal isOpen={isForgotPassSubmitted} close={closeSubmittedForgotPass} open={openSubmittedForgotPass}>
+            <div className='bg-black rounded-full h-[53px] w-[53px] flex items-center justify-center'>
+                <Icons.check color='white' className='w-6 h-6'/>
+            </div>
+            <div className='flex flex-col gap-y-6'>
+                <h1 className='text-black text-2xl font-semibold'>ส่งข้อมูลไปยังอีเมลเรียบร้อยแล้ว</h1>
+                <p className='text-darkgray'>เราได้ส่งข้อมูลเกี่ยวกับการรีเซ็ตรหัสผ่านไปยังอีเมลของคุณเรีนยร้อยแล้ว </p>
+            </div>
+
+            <div className='flex gap-x-3 w-full'>
+            <SfButton variant='tertiary' className='w-full btn-primary h-[50px] rounded-xl' onClick={closeSubmittedForgotPass}>
+                ยืนยัน
+            </SfButton>
+            </div>
+        </Modal>
         </>
     );
 }

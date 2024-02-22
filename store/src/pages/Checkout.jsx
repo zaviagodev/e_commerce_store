@@ -581,7 +581,7 @@ export default function Checkout(){
                                         <CheckoutDetails addCoupon={<CouponForm />}/>
                                     </div>
                                     <div className='w-full pt-[11px] lg:pt-0'>
-                                        <SfButton size="lg" className="w-full btn-primary text-base h-[50px] rounded-xl" onClick={handleSubmitCheckout} disabled={(formik.values.billing_address === undefined || "") || (formik.values.payment_method === "") || (checkedState === "") || undefined || saveLoading}>
+                                        <SfButton size="lg" className="w-full btn-primary text-base h-[50px] rounded-xl" onClick={handleSubmitCheckout} disabled={(formik.values.billing_address === undefined || "") || (formik.values.payment_method === "") || (checkedState === "") || undefined || saveLoading || isProductLoading || !deliveryResult?.message?.doc?.grand_total}>
                                             {saveLoading ? <SfLoaderCircular /> : 'ชำระเงิน'}
                                         </SfButton>
                                         <div className="mt-3 text-sm text-secgray">

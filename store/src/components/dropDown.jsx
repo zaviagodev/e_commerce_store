@@ -71,7 +71,7 @@ export default function SelectDropdownPreselected({options, dropdowndame, submen
           aria-controls={listboxId}
           aria-expanded={isOpen}
           aria-label="Select one option"
-          className={classNames("flex gap-2 justify-between items-center relative px-3 py-2 cursor-pointer transparent text-sm", {'text-black w-max !p-2': !submenu})}
+          className={classNames("flex gap-2 justify-between items-center relative px-3 py-2 cursor-pointer transparent text-base", {'text-sm text-black w-max !p-2': !submenu})}
           tabIndex={0}
           onKeyDown={handleTriggerKeyDown}
           onClick={toggle}
@@ -84,7 +84,7 @@ export default function SelectDropdownPreselected({options, dropdowndame, submen
           ref={refs.setFloating}
           role="listbox"
           aria-label="Select one option"
-          className={classNames('w-[250px] p-4 rounded-md shadow-main border border-neutral-100 bg-white z-10', {hidden: !isOpen})}
+          className={classNames('w-[250px] flex flex-col gap-y-[6px] p-4 rounded-md shadow-main border border-neutral-100 bg-white z-10', {hidden: !isOpen})}
           style={submenu ? submenuStyle : dropdownStyle}
         >
           {options.map((option) => (
@@ -93,7 +93,7 @@ export default function SelectDropdownPreselected({options, dropdowndame, submen
               key={option.label}
               role="option"
               tabIndex={0}
-              className={`${option.children.length > 0 ? 'p-[0!important]' : 'block !px-3'} text-maingray hover:text-black text-sm`}
+              className={`${option.children.length > 0 ? 'p-[0!important]' : 'block !px-3'} text-maingray !bg-transparent hover:text-black text-base`}
               onClick={() => handleClick(option.url, option.open_in_new_tab === 1)}
               onKeyDown={(event) => handleOptionItemKeyDown(event, option)}
             >
