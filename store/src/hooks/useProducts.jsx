@@ -6,6 +6,7 @@ const ProductsContext = createContext([])
 
 export const ProductsProvider = ({ children }) => {
     const [products, setProducts] = useState([])
+    const [allProducts, setAllProducts] = useState([])
     const [newP, setNewP] = useState(null)
     const [mainGroup, setMainGroup] = useState([])
     const [settingPage, setsettingPage] = useState([])
@@ -33,6 +34,24 @@ export const ProductsProvider = ({ children }) => {
         }
         
     })
+
+    const [start, setStart] = useState(0);
+    const {  mutate : mutateAllItemsList, error : itemAllListError, isLoading : itemAllIsLoading} = useFrappeGetCall('webshop.webshop.api.get_product_filter_data', {
+        query_args: { "field_filters": {}, "attribute_filters": {},"start":start*8 , "item_group": null, "from_filters": false }
+    }, `products-all`, {    
+        isOnline: () => products.length === 0,
+        onSuccess: (data) => {
+            setAllProducts((prev) => [...prev , ...data.message.items]);
+            if(start <= Math.floor(data.message.items_count / 8)+1)
+            {
+                setStart((prev) => prev + 1);
+            }  
+        }      
+    })
+
+    useEffect(() => {
+        mutateAllItemsList();
+      }, [start]); // Re-fetch the data whenever start changes
 
 
 
@@ -95,9 +114,9 @@ export const ProductsProvider = ({ children }) => {
                 }
             }
         }
-    
+        console.log(allProducts)
         // If pageData is null or the product is not found in any page, search within products
-        const productInProducts = products.find((product) => product.item_code === itemCode);
+        const productInProducts = allProducts.find((product) => product.item_code === itemCode);
     
         // Return the product found in products or null if not found
         return productInProducts || null;
@@ -138,7 +157,11 @@ export const ProductsProvider = ({ children }) => {
             pageno,
             setpageno,
             getGroupedProducts,
-            getProductsCodeInCart
+            getProductsCodeInCart,
+            allProducts,
+            mutateAllItemsList,
+            itemAllListError,
+            itemAllIsLoading
             }}>
             {children}
         </ProductsContext.Provider>

@@ -26,11 +26,11 @@ import { Icons } from './icons';
 const delay = () => new Promise((resolve) => setTimeout(resolve, Math.random() * 1000));
 
 export default function SearchWithIcon( {className}) {
-    const { products } = useProducts();
+    const { allProducts } = useProducts();
     const navigate = useNavigate();
     const mockAutocompleteRequest = async (phrase) => {
     await delay();
-    const results = products
+    const results = allProducts
       .filter((product) => product.web_item_name.toLowerCase().startsWith(phrase.toLowerCase()))
       .map((product) => {
         const highlight = product.web_item_name.substring(0, phrase.length);

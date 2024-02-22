@@ -19,7 +19,7 @@ function SingleorderHistory(randomKey = 0) {
     const id = useParams().id;
     const {getOrderByOrderCode, Order} = useOrder();
     const {defaultTaxe,paymentmethods} = useSetting()
-    const {getByItemCode, products, settingPage, isLoading:isProductLoading} = useProducts();
+    const {getByItemCode, products, settingPage, itemAllIsLoading:isProductLoading} = useProducts();
     const { cart, cartCount, getTotal, resetCart, loading:cartLoading } = useCart();
     const [loading, setLoading] = useState(true)
     const [order, setOrder] = useState({})
@@ -120,9 +120,9 @@ function SingleorderHistory(randomKey = 0) {
                 const temp = getOrderByOrderCode(id)
                 setOrder(temp)
                 setSelectedMethod(temp.custom_payment_method)
-                // console.log(temp);
                 setItemsList([]);
                 temp.items.forEach((item) => {
+                    console.log(item.item_code ,getByItemCode(item.item_code));
                     setItemsList((prev) => [...prev, getByItemCode(item.item_code)])
                 })
                 setLoading(false)
@@ -174,7 +174,6 @@ function SingleorderHistory(randomKey = 0) {
                                         {paymentmethods?.map((method) => (
                                             <option value={method.key} key={method.key}>{method.name}</option>
                                         ))}
-                                    {console.log(paymentmethods)}
                                     </SfSelect>
                                 )}
                                 {order.status === "Unpaid" && (

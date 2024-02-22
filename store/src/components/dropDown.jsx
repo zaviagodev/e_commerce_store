@@ -11,6 +11,7 @@ import {
   SfIconChevronRight,
 } from '@storefront-ui/react';
 import { useNavigate } from 'react-router-dom';
+import { handleClick } from '../utils/helper';
 
 export default function SelectDropdownPreselected({options, dropdowndame, submenu}) {
   const { close, toggle, isOpen } = useDisclosure({ initialValue: false });
@@ -32,26 +33,6 @@ export default function SelectDropdownPreselected({options, dropdowndame, submen
     initialFocusContainerFallback: true,
   });
 
-  function handleClick(url,openInNewTab=0) {
-    if (url === null || typeof url === 'undefined') return;
-    if (openInNewTab) {
-      if (!url.startsWith('/') && !url.startsWith('http')) {
-        window.open('https://' + url, '_blank')
-      } else if (url.startsWith('http')) {
-        window.location.assign( url, '_blank')
-      } else {
-        window.open(window.location.origin + url, '_blank');
-      }
-    }else {
-      if (!url.startsWith('/') && !url.startsWith('http')) {
-        window.location.assign('https://' + url)
-      } else if (url.startsWith('http')) {
-        window.location.assign( url)
-      } else {
-        navigate(url);
-      }
-    }
-  }
 
   const handleTriggerKeyDown = (event) => {
     if (event.key === ' ') toggle();
@@ -94,7 +75,7 @@ export default function SelectDropdownPreselected({options, dropdowndame, submen
               role="option"
               tabIndex={0}
               className={`${option.children.length > 0 ? 'p-[0!important]' : 'block !px-3'} text-maingray !bg-transparent hover:text-black text-base`}
-              onClick={() => handleClick(option.url, option.open_in_new_tab === 1)}
+              onClick={() => handleClick(option.url, option.open_in_new_tab === 1, navigate)}
               onKeyDown={(event) => handleOptionItemKeyDown(event, option)}
             >
               {option.children.length > 0 ?  <SelectDropdownPreselected submenu={true} options={option.children} dropdowndame={option.label} />  : option.label }
