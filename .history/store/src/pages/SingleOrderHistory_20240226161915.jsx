@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useOrder } from "../hooks/useOrders";
 import ProductCard from "../components/ProductCard";
 import { useEffect, useState } from "react";
-import { SfButton, SfLoaderCircular,SfSelect, SfThumbnail  } from "@storefront-ui/react";
+import { SfButton, SfLoaderCircular,SfSelect  } from "@storefront-ui/react";
 import { useProducts } from "../hooks/useProducts";
 import { useCart } from "../hooks/useCart";
 import AddressCard from "../components/AddressCard";
@@ -25,7 +25,7 @@ function SingleorderHistory(randomKey = 0) {
     const [order, setOrder] = useState({})
     const [selectedmethod, setSelectedMethod] = useState({})
     const [itemsList, setItemsList] = useState([])
-    const [addressParts, setAddress] = useState([])
+    const [adressParts, setAdress] = useState([])
     const { data } = useFrappeGetCall('e_commerce_store.api.get_addresses', null, `addresses`)
     const day = (creation) => new Date(creation).getDate()
     const month = (creation) => new Date(creation).getMonth() + 1
@@ -66,7 +66,7 @@ function SingleorderHistory(randomKey = 0) {
     const PurchasedList = ({name, company, status, creation, image, price, qty}) => {
         return (
           <div className="w-full flex gap-x-4">
-              {image ? <img src={image} className="min-w-[53px] h-[53px] object-cover fade-in"/> : <SfThumbnail size="lg" className="bg-gray-100 h-[53px] min-w-[53px]"/>}
+              {image && !isProductLoading ? <img src={image} className="min-w-[53px] h-[53px] object-cover fade-in"/> : <SfThumbnail size="lg" className="bg-gray-100 h-[53px] min-w-[53px]"/>}
               <div className="flex flex-col gap-y-1 w-full">
                 <div className="flex items-center justify-between text-sm">
                   <div className="flex flex-col gap-y-1">
@@ -116,21 +116,22 @@ function SingleorderHistory(randomKey = 0) {
 
     useEffect(() => {
         if(Order.length > 0){
-            if(products.length > 0 && isProductLoading === false){
+            if(products.length > 0){
                 const temp = getOrderByOrderCode(id)
                 setOrder(temp)
                 setSelectedMethod(temp.custom_payment_method)
                 setItemsList([]);
                 temp.items.forEach((item) => {
+                    console.log(item.item_code ,getByItemCode(item.item_code));
                     setItemsList((prev) => [...prev, getByItemCode(item.item_code)])
                 })
                 setLoading(false)
             }
         }
-        if(addressParts.length === 0 && order.address_display){
-            setAddress(order.address_display.split('<br>'))
+        if(adressParts.length === 0 && order.address_display){
+            setAdress(order.address_display.split('<br>'))
         }
-    }, [Order, products,order, isProductLoading, addressParts.length, getByItemCode, getOrderByOrderCode, id])
+    }, [Order, products,order])
 
     return (  
         <MyAccountSection>
@@ -141,7 +142,7 @@ function SingleorderHistory(randomKey = 0) {
                         {!loading ? (
                             <>
                                 {orderDetails?.map(detail => (
-                                    <div key={detail.title} className="flex items-center justify-between">
+                                    <div className="flex items-center justify-between">
                                         <h3 className="text-sm text-secgray">{detail.title}</h3>
                                         <p className="text-sm font-semibold">{detail.value ? detail.value : '-'}</p>
                                     </div>
@@ -150,7 +151,7 @@ function SingleorderHistory(randomKey = 0) {
                         ) : (
                             <>
                                 {orderDetails?.map(d => (
-                                    <div key={d.title} className="flex items-center justify-between">
+                                    <div className="flex items-center justify-between">
                                         <Skeleton className='h-4 w-[100px]'/>
                                         <Skeleton className='h-4 w-[160px]'/>
                                     </div>
@@ -199,7 +200,6 @@ function SingleorderHistory(randomKey = 0) {
                                 .filter((addressz) => addressz?.name === order.shipping_address_name)
                                 .map((address, index) => (
                                     <AddressCard
-                                        key={index}
                                         title={address.address_title}
                                         addressLine1={address.address_line1}
                                         city={address.city}
@@ -220,8 +220,8 @@ function SingleorderHistory(randomKey = 0) {
                     <div className="flex flex-col gap-y-4">
                         {itemsList.length > 0 ? <h2 className='font-semibold text-darkgray'>รายละเอียดสินค้า</h2> : null}
                         <div className="grid grid-cols-1 gap-4 place-items-center">
-                            {itemsList.length > 0 && !isProductLoading ? itemsList?.map((product, index) => (
-                                <PurchasedList key={index} qty={order.items[index].qty} name={product?.web_item_name} image={product?.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product?.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`} price={product?.formatted_price}/>
+                            {itemsList.length > 0 ? itemsList?.map((product, index) => (
+                                <PurchasedList qty={order.items[index].qty} name={product?.web_item_name} image={product?.website_image ? `${import.meta.env.VITE_ERP_URL || ""}${product?.website_image}` : `${import.meta.env.VITE_ERP_URL || ""}${settingPage.default_product_image}`} price={product?.formatted_price}/>
                             )) : null}
                         </div>
                     </div>

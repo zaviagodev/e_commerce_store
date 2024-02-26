@@ -45,21 +45,18 @@ export const ProductsProvider = ({ children }) => {
             setAllProducts((prev) => [...prev , ...data.message.items]);
             if(start <= Math.floor(data.message.items_count / 8)+1)
             {
-                setAllItemsLoading(true)
+
                 setStart((prev) => prev + 1);
-            } else
-            {
+            } else {
+                console.log('false')
                 setAllItemsLoading(false);
             } 
         }      
     })
 
     useEffect(() => {
-        console.log(allItemsLoading)
-    },[allItemsLoading])
-
-    useEffect(() => {
         if (itemAllIsLoading) {
+            console.log('loading')
             setAllItemsLoading(itemAllIsLoading)
         }
     },[itemAllIsLoading, setAllItemsLoading])
