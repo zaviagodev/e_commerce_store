@@ -152,7 +152,7 @@ export default function BaseMegaMenu() {
               as="div"
               size="sm"
               role="none"
-              className="py-4 md:py-1.5 rounded-lg active:font-bold font-semibold text-[#909090] hover:text-black"
+              className="py-4 md:py-1.5 rounded-lg active:font-bold font-semibold text-[#909090] hover:text-black hover:bg-white active:bg-white"
             >
               {subItem?.name}
             </SfListItem>
@@ -220,9 +220,9 @@ export default function BaseMegaMenu() {
           <div className='flex flex-col gap-y-4'>
             {topBarItems.filter((item) => item.is_product_list).name}
             {mainGroup.map((item) => 
-              <button onClick={() => handlePhoneMenuClick(item, true)} className="flex justify-between items-center">
+              <button onClick={() => handlePhoneMenuClick(item, true)} className={`${mobileMenuStep == 2 ? 'text-[#909090] px-4' : ''} flex justify-between items-center`}>
                 {item?.name}
-                <SfIconChevronRight/>
+                {item?.children?.length > 0 ? <SfIconChevronRight/> : null}
               </button>
             )}
           </div>
@@ -230,13 +230,15 @@ export default function BaseMegaMenu() {
         :
         <div className='flex flex-col gap-y-6'>
           <div className='flex flex-col gap-y-4'>
-            <Link to={`/home/${menu.item?.name}`}>{IsInProductList(mainGroup, menu.item?.name) && menu.item?.name}</Link>
-            {menu.item?.children.map((item) => 
-              <button onClick={() => handlePhoneMenuClick(item, !item?.label && true)} className="flex justify-between items-center">
-                {item?.name}
-                <SfIconChevronRight/> 
-              </button>
-            )}
+            <Link className={`${mobileMenuStep == 2 ? 'text-xl' : ''}`} to={`/home/${menu.item?.name}`} onClick={() => setIsMobileMenuOpen(false)}>{IsInProductList(mainGroup, menu.item?.name) && menu.item?.name}</Link>
+            <div className='flex flex-col gap-y-4 mt-6'>
+              {menu.item?.children.map((item) => 
+                <button onClick={() => handlePhoneMenuClick(item, !item?.label && true)} className={`${mobileMenuStep == 2 ? 'text-[#909090] px-4' : ''} flex justify-between items-center`}>
+                  {item?.name}
+                  {/* {item?.children?.length > 0 ? <SfIconChevronRight/> : null} */}
+                </button>
+              )}
+            </div>
           </div>
         </div>
       }
