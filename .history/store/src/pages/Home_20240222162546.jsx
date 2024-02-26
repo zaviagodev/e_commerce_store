@@ -1,20 +1,19 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ProductCard from '../components/ProductCard'
 import { useProducts } from '../hooks/useProducts'
 import { useFrappeAuth } from 'frappe-react-sdk';
-import { SfSelect } from '@storefront-ui/react';
-import {  useParams, useNavigate } from 'react-router-dom';
+import { SfButton, SfIconTune, SfLoaderCircular, SfSelect } from '@storefront-ui/react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Skeleton } from '../components/Skeleton';
 import { Icons } from '../components/icons'
 import Pagination from '../components/Pagination';
 
 const Home = () => {
     const { updateCurrentUser } = useFrappeAuth();
-    const { settingPage,totalItems,setPageNo,pageData,pageNo, getGroupedProducts} = useProducts()
+    const { products, mainGroup, settingPage,totalItems,setPageNo,mutateItemsList,pageData,setProducts,pageNo} = useProducts()
     const navigate = useNavigate();
     const idFromUrl = useParams().itemsgroup;
     const page_no = useParams().pageNo;
-
 
     useEffect(() => {
         updateCurrentUser();

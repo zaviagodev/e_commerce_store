@@ -21,7 +21,6 @@ import LoadingImg from '../components/LoadingImg';
 import { useState, useRef, useEffect } from 'react';
 import { Skeleton } from '../components/Skeleton';
 import { Icons } from '../components/icons';
-import { handleClick } from '../utils/helper';
 
 const Product = () => {
     const { id } = useParams();
@@ -66,10 +65,11 @@ const Product = () => {
     }
 
     function handleClickCart() {
-        if(hideCheckout == 1){
-            handleClick(buttonLink, navigate)
-        } else {
-            addToCart(product?.item_code, cart[product?.item_code] ? cart[product?.item_code] + value : value)
+        addToCart(product?.item_code, cart[product?.item_code] ? cart[product?.item_code] + value : value)
+        if(hideCheckout){
+            if(!buttonLink.startsWith('/')) window.location.href = `https://${buttonLink}`
+            else navigate(buttonLink)
+            return
         }
         setIsOpen(true)
     }
@@ -272,12 +272,12 @@ const Product = () => {
                                     <p className='text-[13px] text-center lg:text-left'>รับ Cashback สูงถึง ฿ 105 เมื่อเป็นสมาชิก</p>                           
                                     <div className='flex items-center gap-x-[10px] w-full'>
                                         
-    
+                                        {hideCheckout != 1 && (
                                                 <SfButton disabled={loading || !product?.in_stock}  onClick={handleClickCart} type="button" size="lg" className="w-full btn-primary flex items-center gap-x-[10px] rounded-xl h-[50px]">
                                                     <Icons.shoppingBag01 color={loading || !product?.in_stock ? '#a1a1aa' : 'white'} className='w-[22px] h-[22px]'/>
                                                     {product?.in_stock ? buttonLabel : 'สินค้าหมด'}
                                                 </SfButton>
-                                            
+                                            )}
 
 
                                         {!hideWish && <SfButton

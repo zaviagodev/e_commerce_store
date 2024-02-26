@@ -15,6 +15,7 @@ const Home = () => {
     const idFromUrl = useParams().itemsgroup;
     const page_no = useParams().pageNo;
 
+    getGroupedProducts(idFromUrl)
 
     useEffect(() => {
         updateCurrentUser();

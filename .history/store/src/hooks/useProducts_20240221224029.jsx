@@ -1,21 +1,20 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import React, { createContext, useContext, useState, useEffect } from 'react'
 import {   useFrappeGetCall} from 'frappe-react-sdk';
-import PropTypes from 'prop-types';
+
 
 const ProductsContext = createContext([])
-
-
 
 export const ProductsProvider = ({ children }) => {
     const [products, setProducts] = useState([])
     const [allProducts, setAllProducts] = useState([])
+    const [newP, setNewP] = useState(null)
     const [mainGroup, setMainGroup] = useState([])
-    const [settingPage, setSettingPage] = useState([])
+    const [settingPage, setsettingPage] = useState([])
     const [totalItems, setTotalItems] = useState(0)
     const [pageNo, setPageNo] = useState(1)
-    const [productInfo] = useState([])
+    const [realtedproducts, setrealtedProducts] = useState(1)
+    const [productInfo, setproductInfo] = useState([])
     const [pageData, setPageData] = useState({});
-    const [allItemsLoading, setAllItemsLoading] = useState(true);
 
     const {mutate : mutateItemsList, error : itemListError, isLoading} = useFrappeGetCall('webshop.webshop.api.get_product_filter_data', {
         query_args: { "field_filters": {}, "attribute_filters": {}, "item_group": null, "start": Math.max(0, (pageNo - 1) * 8), "from_filters": false }
@@ -30,7 +29,7 @@ export const ProductsProvider = ({ children }) => {
 
             setProducts(data.message.items);
 
-            setSettingPage(data.message.settings);
+            setsettingPage(data.message.settings);
             setTotalItems(data.message.total_items);
         }
         
@@ -45,28 +44,14 @@ export const ProductsProvider = ({ children }) => {
             setAllProducts((prev) => [...prev , ...data.message.items]);
             if(start <= Math.floor(data.message.items_count / 8)+1)
             {
-                setAllItemsLoading(true)
                 setStart((prev) => prev + 1);
-            } else
-            {
-                setAllItemsLoading(false);
-            } 
+            }  
         }      
     })
 
     useEffect(() => {
-        console.log(allItemsLoading)
-    },[allItemsLoading])
-
-    useEffect(() => {
-        if (itemAllIsLoading) {
-            setAllItemsLoading(itemAllIsLoading)
-        }
-    },[itemAllIsLoading, setAllItemsLoading])
-
-    useEffect(() => {
         mutateAllItemsList();
-      }, [mutateAllItemsList, start]); // Re-fetch the data whenever start changes
+      }, [start]); // Re-fetch the data whenever start changes
 
 
 
@@ -95,6 +80,11 @@ export const ProductsProvider = ({ children }) => {
         });
         return swrResult.data?.message?.items[0];
     };
+    
+
+    const getItemByCategorie = (categorie) => {
+        return products.filter((product) => product.item_group === categorie)
+    }
 
 
     const getGroupedProducts = (groupname) => {
@@ -171,16 +161,11 @@ export const ProductsProvider = ({ children }) => {
             allProducts,
             mutateAllItemsList,
             itemAllListError,
-            allItemsLoading
+            itemAllIsLoading
             }}>
             {children}
         </ProductsContext.Provider>
     )
 }
-
-
-ProductsProvider.propTypes = {
-    children: PropTypes.node.isRequired,
-  };
 
 export const useProducts = () => useContext(ProductsContext)

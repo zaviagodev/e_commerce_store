@@ -25,7 +25,7 @@ function SingleorderHistory(randomKey = 0) {
     const [order, setOrder] = useState({})
     const [selectedmethod, setSelectedMethod] = useState({})
     const [itemsList, setItemsList] = useState([])
-    const [addressParts, setAddress] = useState([])
+    const [adressParts, setAdress] = useState([])
     const { data } = useFrappeGetCall('e_commerce_store.api.get_addresses', null, `addresses`)
     const day = (creation) => new Date(creation).getDate()
     const month = (creation) => new Date(creation).getMonth() + 1
@@ -116,21 +116,22 @@ function SingleorderHistory(randomKey = 0) {
 
     useEffect(() => {
         if(Order.length > 0){
-            if(products.length > 0 && isProductLoading === false){
+            if(products.length > 0){
                 const temp = getOrderByOrderCode(id)
                 setOrder(temp)
                 setSelectedMethod(temp.custom_payment_method)
                 setItemsList([]);
                 temp.items.forEach((item) => {
+                    console.log(item.item_code ,getByItemCode(item.item_code));
                     setItemsList((prev) => [...prev, getByItemCode(item.item_code)])
                 })
                 setLoading(false)
             }
         }
-        if(addressParts.length === 0 && order.address_display){
-            setAddress(order.address_display.split('<br>'))
+        if(adressParts.length === 0 && order.address_display){
+            setAdress(order.address_display.split('<br>'))
         }
-    }, [Order, products,order, isProductLoading, addressParts.length, getByItemCode, getOrderByOrderCode, id])
+    }, [Order, products,order])
 
     return (  
         <MyAccountSection>

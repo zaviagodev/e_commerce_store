@@ -1,13 +1,12 @@
 import React from 'react'
 import { useState } from "react";
 import PropTypes from 'prop-types'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { SfButton, SfRating, SfCounter, SfLink, SfIconShoppingCart, SfIconFavorite, SfLoaderCircular, SfIconSell, SfIconFavoriteFilled } from '@storefront-ui/react';
 import { useCart } from '../hooks/useCart';
 import { useWish } from '../hooks/useWishe';
 import { useSetting } from '../hooks/useWebsiteSettings';
 import { Skeleton } from '../components/Skeleton';
-import { handleClick } from '../utils/helper';
 
 const ProductCard = ({
     title,
@@ -24,7 +23,6 @@ const ProductCard = ({
     const { cart, addToCart, loading, setIsOpen } = useCart()
     const {hideCheckout, buttonLabel, buttonLink, hideWish} = useSetting();
     const [loaded, setLoaded] = useState(false);
-    const navigate = useNavigate()
 
     const handleWish = (e) => {
         e.preventDefault();
@@ -60,22 +58,17 @@ const ProductCard = ({
                     )}
                 </Link>
 
-     
+                {hideCheckout != 1 && (
                     <div className='p-2 w-full absolute bottom-0 add_to_cart'>
                         <SfButton disabled={loading} className={`btn-secondary w-full h-10 py-3 font-semibold shadow-custom !text-base ${loading ? '!bg-neutral-50' : ''}`} type="button" size="sm" onClick={(e) => {
                             e.preventDefault();
-                            if (hideCheckout != 1)
-                            {
-                                addToCart(itemCode, cart[itemCode] ? cart[itemCode] + 1 : 1);
-                                setIsOpen(true)
-                            } else {
-                                handleClick(buttonLink, navigate)
-                            }
-
+                            addToCart(itemCode, cart[itemCode] ? cart[itemCode] + 1 : 1);
+                            setIsOpen(true)
                         }}>
                         {loading ? <SfLoaderCircular/> : buttonLabel}
                         </SfButton>
                     </div>
+                )}
 
             </div>
             <div className="py-6 flex flex-col justify-between">

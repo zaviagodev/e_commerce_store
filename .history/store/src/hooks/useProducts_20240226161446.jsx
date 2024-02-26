@@ -47,8 +47,8 @@ export const ProductsProvider = ({ children }) => {
             {
                 setAllItemsLoading(true)
                 setStart((prev) => prev + 1);
-            } else
-            {
+            } else {
+                console.log('false')
                 setAllItemsLoading(false);
             } 
         }      
@@ -60,6 +60,7 @@ export const ProductsProvider = ({ children }) => {
 
     useEffect(() => {
         if (itemAllIsLoading) {
+            console.log('loading')
             setAllItemsLoading(itemAllIsLoading)
         }
     },[itemAllIsLoading, setAllItemsLoading])

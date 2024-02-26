@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from "react";
 import PropTypes from 'prop-types'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { SfButton, SfRating, SfCounter, SfLink, SfIconShoppingCart, SfIconFavorite, SfLoaderCircular, SfIconSell, SfIconFavoriteFilled } from '@storefront-ui/react';
 import { useCart } from '../hooks/useCart';
 import { useWish } from '../hooks/useWishe';
@@ -24,7 +24,6 @@ const ProductCard = ({
     const { cart, addToCart, loading, setIsOpen } = useCart()
     const {hideCheckout, buttonLabel, buttonLink, hideWish} = useSetting();
     const [loaded, setLoaded] = useState(false);
-    const navigate = useNavigate()
 
     const handleWish = (e) => {
         e.preventDefault();
@@ -69,7 +68,7 @@ const ProductCard = ({
                                 addToCart(itemCode, cart[itemCode] ? cart[itemCode] + 1 : 1);
                                 setIsOpen(true)
                             } else {
-                                handleClick(buttonLink, navigate)
+                                handleClick(buttonLink)
                             }
 
                         }}>
