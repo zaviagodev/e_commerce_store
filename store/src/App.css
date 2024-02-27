@@ -236,44 +236,6 @@ li[data-list=bullet] > .ql-ui:before {
   }
 }
 
-.slide-next {
-  animation:mobileSlideNext 500ms 1;
-}
-
-.slide-back {
-  animation:mobileSlideBack 500ms 1;
-}
-
-@keyframes mobileSlideNext {
-  0% {
-    transform:translateX(0);
-  }
-  33% {
-    transform:translateX(-150%)
-  }
-  67% {
-    transform:translateX(150%)
-  }
-  100% {
-    transform:translateX(0)
-  }
-}
-
-@keyframes mobileSlideBack {
-  0% {
-    transform:translateX(0);
-  }
-  33% {
-    transform:translateX(150%)
-  }
-  67% {
-    transform:translateX(-150%)
-  }
-  100% {
-    transform:translateX(0)
-  }
-}
-
 /* Fix the background colour of autofill */
 
 input:-webkit-autofill,
