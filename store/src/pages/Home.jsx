@@ -10,11 +10,18 @@ import Pagination from '../components/Pagination';
 
 const Home = () => {
     const { updateCurrentUser } = useFrappeAuth();
-    const { settingPage,totalItems,setPageNo,pageData,pageNo, getGroupedProducts} = useProducts()
+    const { settingPage,totalItems,setPageNo,pageData,pageNo, getCategory } = useProducts()
     const navigate = useNavigate();
     const idFromUrl = useParams().itemsgroup;
     const page_no = useParams().pageNo;
 
+
+    useEffect(() => {
+        if (idFromUrl !== "all items") {
+            //getCategory(idFromUrl);
+        }
+    }
+    , [idFromUrl, getCategory])
 
     useEffect(() => {
         updateCurrentUser();

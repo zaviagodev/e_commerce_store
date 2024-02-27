@@ -86,7 +86,7 @@ export const SettingProvider = ({ children }) => {
             setPaymentmethods(data.message.payment_settings);
             setHideWish(data.message.settings.hide_wish == 1 ? true : false);
             setFavicon(data.message.settings.app_logo);
-            setButtonLabel(data.message.settings.button_label);
+            setButtonLabel(data.message.settings.hide_checkout == 1 ? data.message.settings.button_label : 'เพิ่มลงตะกร้า');
             setButtonLink(data.message.settings.button_link);
             setTopBarItems(buildTopBarItems([...data.message.settings.top_bar_items].sort((a, b) => a.idx - b.idx)));
             setDefaultTaxe(data.message.settings.default_taxe);
