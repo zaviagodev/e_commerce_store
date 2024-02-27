@@ -136,7 +136,12 @@ function SingleorderHistory(randomKey = 0) {
         <MyAccountSection>
             <div className="flex flex-col gap-y-8">
                 <div className="flex flex-col gap-y-10">
-                    <h2 className='font-semibold text-darkgray'>รายละเอียดคำสั่งซื้อ</h2>
+                    <div className="flex items-center gap-[10px]">
+                        <Link to='/order-history'>
+                            <Icons.flipBackward color="#A9A9A9"/>
+                        </Link>
+                        <h2 className='font-semibold text-darkgray'>รายละเอียดคำสั่งซื้อ</h2>
+                    </div>
                     <div className="flex flex-col gap-y-2">
                         {!loading ? (
                             <>
