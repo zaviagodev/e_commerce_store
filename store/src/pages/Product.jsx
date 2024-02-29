@@ -66,12 +66,12 @@ const Product = () => {
     }
 
     function handleClickCart() {
-        if(hideCheckout == 1){
+        if (hideCheckout == 1) {
             handleClick(buttonLink, navigate)
         } else {
             addToCart(product?.item_code, cart[product?.item_code] ? cart[product?.item_code] + value : value)
+            setIsOpen(true)
         }
-        setIsOpen(true)
     }
 
     const { Wish,addToWish, removeFromWish, setIsOpen:setWishOpen } = useWish()

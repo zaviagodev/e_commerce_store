@@ -16,9 +16,10 @@ export const ProductsProvider = ({ children }) => {
     const [productInfo] = useState([])
     const [pageData, setPageData] = useState({});
     const [allItemsLoading, setAllItemsLoading] = useState(true);
+    const [category, setCategory] = useState(null)
 
     const {mutate : mutateItemsList, error : itemListError, isLoading} = useFrappeGetCall('webshop.webshop.api.get_product_filter_data', {
-        query_args: { "field_filters": {}, "attribute_filters": {}, "item_group": null, "start": Math.max(0, (pageNo - 1) * 8), "from_filters": false }
+        query_args: { "field_filters": {'category' : category }, "attribute_filters": {}, "item_group": null, "start": Math.max(0, (pageNo - 1) * 8), "from_filters": false }
     }, `products-${pageNo}`, {
         isOnline: () => products.length === 0,
         onSuccess: (data) => {
@@ -35,6 +36,17 @@ export const ProductsProvider = ({ children }) => {
         }
         
     })
+
+    const getCategory = (name) => {
+        setCategory(name)
+    }
+
+    useEffect(() => {
+        if (category)
+        {
+            mutateItemsList()
+        }
+    }, [category, mutateItemsList])
 
     const [start, setStart] = useState(0);
     const {  mutate : mutateAllItemsList, error : itemAllListError, isLoading : itemAllIsLoading} = useFrappeGetCall('webshop.webshop.api.get_product_filter_data', {
@@ -88,7 +100,7 @@ export const ProductsProvider = ({ children }) => {
             
         // }
         // return p;
-        const swrResult =  useFrappeGetCall('webshop.webshop.api.get_product_filter_data', {
+        const swrResult = useFrappeGetCall('webshop.webshop.api.get_product_filter_data', {
             query_args: { "field_filters": {"name": name}, "attribute_filters": {}, "item_group": null, "start": 0, "from_filters": false }
         }, `products-${name}`, {
             isOnline: () => true,
@@ -147,31 +159,33 @@ export const ProductsProvider = ({ children }) => {
 
     return (
         <ProductsContext.Provider value={        
-{            
-            products,
-            setProducts,
-            get,
-            getByItemCode,
-            getProductGroups,
-            mutateGeneralList,
-            groupeError,
-            mutateItemsList,
-            itemListError,
-            isLoading,
-            getWishedProducts,
-            mainGroup,
-            settingPage,
-            pageData,
-            totalItems,
-            productInfo,
-            pageNo,
-            setPageNo,
-            getGroupedProducts,
-            getProductsCodeInCart,
-            allProducts,
-            mutateAllItemsList,
-            itemAllListError,
-            allItemsLoading
+        {            
+                products,
+                setProducts,
+                get,
+                getByItemCode,
+                getProductGroups,
+                mutateGeneralList,
+                groupeError,
+                mutateItemsList,
+                itemListError,
+                isLoading,
+                getWishedProducts,
+                mainGroup,
+                settingPage,
+                pageData,
+                totalItems,
+                productInfo,
+                pageNo,
+                setPageNo,
+                getGroupedProducts,
+                getProductsCodeInCart,
+                allProducts,
+                mutateAllItemsList,
+                itemAllListError,
+                allItemsLoading,
+                setCategory,
+                getCategory
             }}>
             {children}
         </ProductsContext.Provider>
