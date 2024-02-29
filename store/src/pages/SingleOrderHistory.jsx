@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useOrder } from "../hooks/useOrders";
 import ProductCard from "../components/ProductCard";
 import { useEffect, useState } from "react";
@@ -66,9 +66,9 @@ function SingleorderHistory(randomKey = 0) {
     const PurchasedList = ({name, company, status, creation, image, price, qty}) => {
         return (
           <div className="w-full flex gap-x-4">
-              {image ? <img src={image} className="min-w-[53px] h-[53px] object-cover fade-in"/> : <SfThumbnail size="lg" className="bg-gray-100 h-[53px] min-w-[53px]"/>}
+              {image ? <img src={image} className="min-w-[53px] w-[53px] h-[53px] object-cover fade-in"/> : <SfThumbnail size="lg" className="bg-gray-100 h-[53px] min-w-[53px] w-[53px]"/>}
               <div className="flex flex-col gap-y-1 w-full">
-                <div className="flex items-center justify-between text-sm">
+                <div className="flex justify-between text-sm">
                   <div className="flex flex-col gap-y-1">
                     <h2>{name}</h2>
                     <p className="font-semibold">{qty} ชิ้น</p>
