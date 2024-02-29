@@ -69,7 +69,7 @@ function SingleorderHistory(randomKey = 0) {
               {image ? <img src={image} className="min-w-[53px] w-[53px] h-[53px] object-cover fade-in"/> : <SfThumbnail size="lg" className="bg-gray-100 h-[53px] min-w-[53px] w-[53px]"/>}
               <div className="flex flex-col gap-y-1 w-full">
                 <div className="flex justify-between text-sm">
-                  <div className="flex flex-col gap-y-1">
+                  <div className="flex flex-col gap-y-1 w-[60%]">
                     <h2>{name}</h2>
                     <p className="font-semibold">{qty} ชิ้น</p>
                   </div>
@@ -213,6 +213,7 @@ function SingleorderHistory(randomKey = 0) {
                                         country={address.country}
                                         phone={address.phone}
                                         deletebtn={false}
+                                        active={true}
                                     />
                                 ))
                             )}
