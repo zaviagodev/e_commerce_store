@@ -236,6 +236,52 @@ li[data-list=bullet] > .ql-ui:before {
   }
 }
 
+.slide-next {
+  animation:mobileSlideNext 600ms;
+}
+
+.slide-back {
+  animation:mobileSlideBack 600ms;
+}
+
+@keyframes mobileSlideBack {
+  0% {
+    transform:translateX(0);
+    opacity:1;
+  }
+  48% {
+    transform:translateX(150%);
+    opacity:0;
+  }
+  52% {
+    transform:translateX(-150%);
+    opacity:0;
+  }
+  100% {
+    transform:translateX(0);
+    opacity:1;
+  }
+}
+
+@keyframes mobileSlideNext {
+  0% {
+    transform:translateX(0);
+    opacity:1;
+  }
+  48% {
+    transform:translateX(-150%);
+    opacity:0;
+  }
+  52% {
+    transform:translateX(150%);
+    opacity:0;
+  }
+  100% {
+    transform:translateX(0);
+    opacity:1;
+  }
+}
+
 /* Fix the background colour of autofill */
 
 input:-webkit-autofill,
