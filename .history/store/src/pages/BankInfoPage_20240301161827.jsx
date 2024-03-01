@@ -32,38 +32,27 @@ const BankInfoPage = () => {
     const [selectedBank, setSelectedBank] = useState(null)
     const { user } = useUser();
     const { isOpen: isModalOpen, open: openModal, close: closeModal } = useDisclosure({ initialValue: false });
+    const location = useLocation();
 
+    const [modalOpen, setModalOpen] = useState(false);
 
-        
-
-
+    console.log('here')
+    
     useEffect(() => {
-        const onBackButtonEvent = (e) => {
-            e.preventDefault();
-            openModal()
+        console.log('here')
+        if (location.state?.from) {
+            setModalOpen(true);
         }
-            
-        const onBeforeUnloadEvent = (e) => {
-            e.preventDefault();
-            e.returnValue = ''; // Chrome requires returnValue to be set.
-        }
-        window.history.pushState(null, 'null', window.location.pathname);
-        window.addEventListener('popstate', onBackButtonEvent);
-        window.addEventListener('beforeunload', onBeforeUnloadEvent);
-        
-        return () => {
-            window.removeEventListener('popstate', onBackButtonEvent);
-            window.removeEventListener('beforeunload', onBeforeUnloadEvent);
-        }
-      }, [openModal]);
-
+    }, [location]);
     
     const handleContinue = () => {
-        closeModal();
-        navigate('home/all items');
+        setModalOpen(false);
+        navigate(-1);
     };
 
-
+    const handleStay = () => {
+        setModalOpen(false);
+    };
 
 
 
@@ -216,6 +205,13 @@ const BankInfoPage = () => {
 
     return (
         <div className='py-10 w-full'>
+            {modalOpen && (
+                <dialog>
+                    <p>Are you sure you want to navigate away?</p>
+                    <button onClick={handleStay}>Stay</button>
+                    <button onClick={handleContinue}>Continue</button>
+                </dialog>
+            )}
             <div className='max-w-[513px] mx-auto flex flex-col gap-y-12 p-8 rounded-[30px]'>
                 <div className='flex justify-center'>
                     <picture className='cursor-pointer' onClick={openModal}>
@@ -237,7 +233,7 @@ const BankInfoPage = () => {
                         <SfButton variant='tertiary' className='w-full btn-secondary h-[50px] rounded-xl' onClick={closeModal}>
                             อยู่ในหน้านี้
                         </SfButton>
-                        <SfButton variant='tertiary' className='w-full btn-primary h-[50px] rounded-xl' onClick={handleContinue}>
+                        <SfButton variant='tertiary' className='w-full btn-primary h-[50px] rounded-xl' onClick={() => navigate('/home/all items')}>
                             ออกจากการชำระเงิน
                         </SfButton>
                     </div>

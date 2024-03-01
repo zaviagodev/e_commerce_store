@@ -35,32 +35,20 @@ const BankInfoPage = () => {
 
 
         
-
+    const onBackButtonEvent = (e) => {
+        e.preventDefault();
+            openModal()
+    }
 
     useEffect(() => {
-        const onBackButtonEvent = (e) => {
-            e.preventDefault();
-            openModal()
-        }
-            
-        const onBeforeUnloadEvent = (e) => {
-            e.preventDefault();
-            e.returnValue = ''; // Chrome requires returnValue to be set.
-        }
         window.history.pushState(null, 'null', window.location.pathname);
         window.addEventListener('popstate', onBackButtonEvent);
-        window.addEventListener('beforeunload', onBeforeUnloadEvent);
-        
-        return () => {
-            window.removeEventListener('popstate', onBackButtonEvent);
-            window.removeEventListener('beforeunload', onBeforeUnloadEvent);
-        }
-      }, [openModal]);
+      }, []);
 
     
     const handleContinue = () => {
         closeModal();
-        navigate('home/all items');
+        navigate(-1);
     };
 
 

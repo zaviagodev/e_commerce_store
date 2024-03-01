@@ -427,6 +427,7 @@ export default  function Checkout(){
                 <form className="w-full flex flex-col gap-10 text-neutral-900 p-4 lg:p-[60px] lg:pt-[7em] min-h-screen lg:shadow-checkout">
                     {cartContents.hasNormalItem ? (
                         <>
+                            {console.log('is rendereing')}
                             {addressList ? (
                                 <>{addressList?.message?.length > 0 ? (
                                     <>

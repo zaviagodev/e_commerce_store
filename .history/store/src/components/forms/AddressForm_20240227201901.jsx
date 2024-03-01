@@ -4,24 +4,20 @@ import { useFormik } from 'formik';
 import { useFrappePostCall } from 'frappe-react-sdk';
 import { addressSchema } from './addressFormSchema';
 import { Skeleton } from '../Skeleton';
-import { memo } from 'react';
 
 
 // Here you should provide a list of countries you want to support
 // or use an up-to-date country list like: https://www.npmjs.com/package/country-list
 
 
-const AddressForm = memo(function AddressForm({ onFormSubmit }) { 
-
+const AddressForm = ({ onFormSubmit }) => { 
     const { result: countries,call : get_countries } = useFrappePostCall('e_commerce_store.api.get_countries')
     const { result: states, call : get_states, reset : reset_get_states} = useFrappePostCall('e_commerce_store.api.get_states')
     const {result : city, call : get_cities, reset : reset_get_cities} = useFrappePostCall('e_commerce_store.api.get_cities')
     // Fetch all countries
     useEffect(() => {
-    if (!countries) {
         get_countries()
-    }
-    }, [countries, get_countries])
+    }, [])
         
     const { call, isCompleted } = useFrappePostCall('e_commerce_store.api.add_address')
     const [isSaving, setIsSaving] = useState(false)
@@ -38,6 +34,7 @@ const AddressForm = memo(function AddressForm({ onFormSubmit }) {
             is_primary_address: 1,
             is_shipping_address: 0,
         },
+        onReset: () => {console.log("reset")}
         validationSchema: addressSchema,
         validateOnChange: false,
     });
@@ -253,6 +250,6 @@ const AddressForm = memo(function AddressForm({ onFormSubmit }) {
             </div>
         </form>
     )
-})
+}
 
 export default AddressForm;

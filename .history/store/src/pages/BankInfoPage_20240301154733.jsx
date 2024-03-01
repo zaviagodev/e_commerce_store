@@ -11,7 +11,6 @@ import { Skeleton } from '../components/Skeleton';
 import { useUser } from '../hooks/useUser';
 import Modal from '../components/drawers/Modal';
 
-
 const BankInfoPage = () => {
     const [searchParams] = useSearchParams();
     const navigate = useNavigate()
@@ -31,41 +30,7 @@ const BankInfoPage = () => {
     const [isTextCopied, setIsTextCopied] = useState(false)
     const [selectedBank, setSelectedBank] = useState(null)
     const { user } = useUser();
-    const { isOpen: isModalOpen, open: openModal, close: closeModal } = useDisclosure({ initialValue: false });
-
-
-        
-
-
-    useEffect(() => {
-        const onBackButtonEvent = (e) => {
-            e.preventDefault();
-            openModal()
-        }
-            
-        const onBeforeUnloadEvent = (e) => {
-            e.preventDefault();
-            e.returnValue = ''; // Chrome requires returnValue to be set.
-        }
-        window.history.pushState(null, 'null', window.location.pathname);
-        window.addEventListener('popstate', onBackButtonEvent);
-        window.addEventListener('beforeunload', onBeforeUnloadEvent);
-        
-        return () => {
-            window.removeEventListener('popstate', onBackButtonEvent);
-            window.removeEventListener('beforeunload', onBeforeUnloadEvent);
-        }
-      }, [openModal]);
-
-    
-    const handleContinue = () => {
-        closeModal();
-        navigate('home/all items');
-    };
-
-
-
-
+    const { isOpen:isModalOpen, open:openModal, close:closeModal } = useDisclosure({ initialValue: false });
 
     const { call, isCompleted } = useFrappePostCall('webshop.webshop.api.payment_entry')
     const formik = useFormik({
@@ -237,7 +202,7 @@ const BankInfoPage = () => {
                         <SfButton variant='tertiary' className='w-full btn-secondary h-[50px] rounded-xl' onClick={closeModal}>
                             อยู่ในหน้านี้
                         </SfButton>
-                        <SfButton variant='tertiary' className='w-full btn-primary h-[50px] rounded-xl' onClick={handleContinue}>
+                        <SfButton variant='tertiary' className='w-full btn-primary h-[50px] rounded-xl' onClick={() => navigate('/home/all items')}>
                             ออกจากการชำระเงิน
                         </SfButton>
                     </div>

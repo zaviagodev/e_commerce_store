@@ -430,6 +430,7 @@ export default  function Checkout(){
                             {addressList ? (
                                 <>{addressList?.message?.length > 0 ? (
                                     <>
+                                        {console.log('is rendereing')}
                                         <div className='w-full flex flex-col gap-y-2'>
                                             <label className="w-full">
                                                 <legend className="font-bold text-darkgray text-base hidden lg:block">ข้อมูลการจัดส่ง</legend>

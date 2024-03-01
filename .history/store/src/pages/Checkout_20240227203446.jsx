@@ -434,7 +434,7 @@ export default  function Checkout(){
                                             <label className="w-full">
                                                 <legend className="font-bold text-darkgray text-base hidden lg:block">ข้อมูลการจัดส่ง</legend>
                                                 
-                                                {!addNewAddress ? <div className='flex flex-col gap-y-2 mt-8'>
+                                                <div style={{ display: addNewAddress ? 'none' : 'block' }} className='flex flex-col gap-y-2 mt-8'>
                                                     <h2 className="font-semibold text-secgray">ที่อยู่ <span className='text-red-500'>*</span></h2>
                                                     <div className='border border-lightgray rounded-xl bg-neutral-50 overflow-hidden'>
                                                         <a className='p-6 pb-5 flex items-center justify-between w-full cursor-pointer' onClick={() => { !saveLoading && setMoreAddresses(true) }}>
@@ -463,11 +463,9 @@ export default  function Checkout(){
                                                         )}
                                                     </div>
                                                 </div>
-                                                    :
-                                                    <div className='mt-8'>
-                                                        <NewAddressForm />
-                                                    </div>
-                                                }
+                                                <div style={{ display: addNewAddress ? 'block' : 'none' }} className='mt-8'>
+                                                    <NewAddressForm />
+                                                </div>
                                             </label>
                                         </div>
                                         <AddressDrawer isOpen={moreAddresses} setIsOpen={setMoreAddresses} title='เลือกที่อยู่'>

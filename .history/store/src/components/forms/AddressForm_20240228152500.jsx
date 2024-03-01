@@ -13,6 +13,8 @@ import { memo } from 'react';
 
 const AddressForm = memo(function AddressForm({ onFormSubmit }) { 
 
+    console.log('is rendereing')
+
     const { result: countries,call : get_countries } = useFrappePostCall('e_commerce_store.api.get_countries')
     const { result: states, call : get_states, reset : reset_get_states} = useFrappePostCall('e_commerce_store.api.get_states')
     const {result : city, call : get_cities, reset : reset_get_cities} = useFrappePostCall('e_commerce_store.api.get_cities')

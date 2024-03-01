@@ -21,9 +21,8 @@ import { Icons } from '../components/icons';
 import classNames from 'classnames'
 import AddressDrawer from '../components/drawers/AddressDrawer';
 import MobileCheckoutDrawer from '../components/drawers/MobileCheckoutDrawer';
-import { memo } from 'react';
 
-export default  function Checkout(){
+export default function Checkout(){
     const errorTimer = useRef(0);
     const positiveTimer = useRef(0);
     const informationTimer = useRef(0);
@@ -54,6 +53,7 @@ export default  function Checkout(){
 
     const { data:addressList, isLoading:loadingAddress } = useFrappeGetCall('e_commerce_store.api.get_addresses', null, `addresses-${randomKey}`)
     const [addNewAddress, setAddNewAddress] = useState(false);
+
 
 
 
@@ -200,7 +200,7 @@ export default  function Checkout(){
         setMoreAddresses(true);
     }
 
-    const NewAddressForm = memo(function NewAddressForm() {
+    const NewAddressForm = () => {
         return (
             <label className="w-full">
                 {addressList?.message?.length > 0 ? (<div className='flex items-center justify-between mb-2'>
@@ -213,7 +213,7 @@ export default  function Checkout(){
                 <AddressForm onFormSubmit={() => UpdateAddresses() }/>
             </label>
         )
-    })
+    }
 
     const handleAddNewAddress = () => {
         setAddNewAddress(true);
@@ -433,46 +433,45 @@ export default  function Checkout(){
                                         <div className='w-full flex flex-col gap-y-2'>
                                             <label className="w-full">
                                                 <legend className="font-bold text-darkgray text-base hidden lg:block">ข้อมูลการจัดส่ง</legend>
-                                                
-                                                {!addNewAddress ? <div className='flex flex-col gap-y-2 mt-8'>
-                                                    <h2 className="font-semibold text-secgray">ที่อยู่ <span className='text-red-500'>*</span></h2>
-                                                    <div className='border border-lightgray rounded-xl bg-neutral-50 overflow-hidden'>
-                                                        <a className='p-6 pb-5 flex items-center justify-between w-full cursor-pointer' onClick={() => { !saveLoading && setMoreAddresses(true) }}>
-                                                            <div className='flex items-center gap-x-2'>
-                                                                <Icons.marketPin04 color='#666666' className='min-w-6' />
-                                                                <span className=' font-bold text-darkgray'>{formik.values.billing_address ? addressList?.message?.find(address => address.name === formik.values.billing_address).address_title : 'เพิ่ม / เลือกที่อยู่การจัดส่ง'}</span>
-                                                            </div>
-                                                            <SfIconArrowForward />
-                                                        </a>
-                                                        {(formik.values.billing_address && !addNewAddress) && (
-                                                            <>
-                                                                <div className='p-6 pt-0'>
-                                                                    {addressList?.message?.filter(address => address.name === formik.values.billing_address).map(a => (
-                                                                        <div key={a.phone} className='flex flex-col gap-y-1'>
-                                                                            <p className='font-normal text-sm text-neutral-700'>{a.address_line1}</p>
-                                                                            <p className='font-normal text-sm text-neutral-700'>{a.address_line2}</p>
-                                                                            <p className='font-normal text-sm text-neutral-700'>{a.city}</p>
-                                                                            <p className='font-normal text-sm text-neutral-700'>{a.state}</p>
-                                                                            <p className='font-normal text-sm text-neutral-700'>{a.country}</p>
-                                                                            <p className='font-normal text-sm text-neutral-700'>{a.phone}</p>
-                                                                        </div>
-                                                                    ))}
+                                                {!addNewAddress ? (
+                                                    <div className='flex flex-col gap-y-2 mt-8'>
+                                                        <h2 className="font-semibold text-secgray">ที่อยู่ <span className='text-red-500'>*</span></h2>
+                                                        <div className='border border-lightgray rounded-xl bg-neutral-50 overflow-hidden'>
+                                                            <a className='p-6 pb-5 flex items-center justify-between w-full cursor-pointer' onClick={() => {!saveLoading && setMoreAddresses(true)}}>
+                                                                <div className='flex items-center gap-x-2'>
+                                                                    <Icons.marketPin04 color='#666666' className='min-w-6'/>
+                                                                    <span className=' font-bold text-darkgray'>{formik.values.billing_address ? addressList?.message?.find(address => address.name === formik.values.billing_address).address_title : 'เพิ่ม / เลือกที่อยู่การจัดส่ง'}</span>
                                                                 </div>
-                                                                <div className='h-[9px] w-full post-gradient mt-[5px]' />
-                                                            </>
-                                                        )}
+                                                                <SfIconArrowForward />
+                                                            </a>
+                                                            {(formik.values.billing_address && !addNewAddress) && (
+                                                                <>
+                                                                    <div className='p-6 pt-0'>
+                                                                        {addressList?.message?.filter(address => address.name === formik.values.billing_address).map(a => (
+                                                                            <div key={a.phone} className='flex flex-col gap-y-1'>
+                                                                                <p className='font-normal text-sm text-neutral-700'>{a.address_line1}</p>
+                                                                                <p className='font-normal text-sm text-neutral-700'>{a.address_line2}</p>
+                                                                                <p className='font-normal text-sm text-neutral-700'>{a.city}</p>
+                                                                                <p className='font-normal text-sm text-neutral-700'>{a.state}</p>
+                                                                                <p className='font-normal text-sm text-neutral-700'>{a.country}</p>
+                                                                                <p className='font-normal text-sm text-neutral-700'>{a.phone}</p>
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                    <div className='h-[9px] w-full post-gradient mt-[5px]'/>
+                                                                </>
+                                                            )}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                    :
-                                                    <div className='mt-8'>
-                                                        <NewAddressForm />
-                                                    </div>
-                                                }
+                                                ) : <div className='mt-8'>
+                                                        {console.log('addNewAddress', addNewAddress)}
+                                                    <NewAddressForm />
+                                                </div>}
                                             </label>
                                         </div>
                                         <AddressDrawer isOpen={moreAddresses} setIsOpen={setMoreAddresses} title='เลือกที่อยู่'>
                                             <AddressOptions
-                                                onChange={value => { formik.setFieldValue('billing_address', value); }}
+                                                onChange={value => {formik.setFieldValue('billing_address', value); }}
                                                 value={formik.values.billing_address}
                                                 error={formik.errors.billing_address}
                                                 randomKey={randomKey}
@@ -483,7 +482,7 @@ export default  function Checkout(){
                                             </div>
                                         </AddressDrawer>
                                     </>
-                                ) : <>  <NewAddressForm /> </>}</>
+                                ) : <NewAddressForm />}</>
                             ) : (
                                 <div>
                                     <Skeleton className='h-5 w-[100px] mb-8'/>
