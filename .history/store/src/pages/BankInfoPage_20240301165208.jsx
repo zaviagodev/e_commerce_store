@@ -39,7 +39,7 @@ const BankInfoPage = () => {
 
     useEffect(() => {
         const onBackButtonEvent = (e) => {
-            e.preventDefault();
+        e.preventDefault();
             openModal()
         }
             

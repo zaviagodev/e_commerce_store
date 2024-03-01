@@ -132,6 +132,7 @@ export const ProductsProvider = ({ children }) => {
                 }
             }
         }
+        console.log(allProducts)
         // If pageData is null or the product is not found in any page, search within products
         const productInProducts = allProducts.find((product) => product.item_code === itemCode);
     

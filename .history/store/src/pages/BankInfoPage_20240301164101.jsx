@@ -33,37 +33,28 @@ const BankInfoPage = () => {
     const { user } = useUser();
     const { isOpen: isModalOpen, open: openModal, close: closeModal } = useDisclosure({ initialValue: false });
 
-
+    const [modalOpen, setModalOpen] = useState(false);
         
-
+    const onBackButtonEvent = (e) => {
+        e.preventDefault();
+            setModalOpen(true)
+    }
 
     useEffect(() => {
-        const onBackButtonEvent = (e) => {
-            e.preventDefault();
-            openModal()
-        }
-            
-        const onBeforeUnloadEvent = (e) => {
-            e.preventDefault();
-            e.returnValue = ''; // Chrome requires returnValue to be set.
-        }
+        console.log('useEffect')
         window.history.pushState(null, 'null', window.location.pathname);
         window.addEventListener('popstate', onBackButtonEvent);
-        window.addEventListener('beforeunload', onBeforeUnloadEvent);
-        
-        return () => {
-            window.removeEventListener('popstate', onBackButtonEvent);
-            window.removeEventListener('beforeunload', onBeforeUnloadEvent);
-        }
-      }, [openModal]);
+      }, []);
 
     
     const handleContinue = () => {
-        closeModal();
-        navigate('home/all items');
+        setModalOpen(false);
+        navigate(-1);
     };
 
-
+    const handleStay = () => {
+        setModalOpen(false);
+    };
 
 
 
@@ -216,6 +207,13 @@ const BankInfoPage = () => {
 
     return (
         <div className='py-10 w-full'>
+            {modalOpen && (
+                <Modal open={openModal} isOpen={modalOpen} >
+                    <p>Are you sure you want to navigate away?</p>
+                    <SfButton onClick={handleStay}>Stay</button>
+                    <SfButton onClick={handleContinue}>Continue</button>
+                </Modal>
+            )}
             <div className='max-w-[513px] mx-auto flex flex-col gap-y-12 p-8 rounded-[30px]'>
                 <div className='flex justify-center'>
                     <picture className='cursor-pointer' onClick={openModal}>
@@ -227,7 +225,7 @@ const BankInfoPage = () => {
                     />
                     </picture>
                 </div>
-                <Modal open={openModal} isOpen={isModalOpen} close={closeModal}>
+                <Modal open={setModalOpen} isOpen={isModalOpen} close={()=> setModalOpen(false)}>
                     <div className='flex flex-col gap-y-6'>
                         <h1 className='text-black text-2xl font-semibold'>ออกจากขั้นตอนการชำระเงิน ?</h1>
                         <p className='text-darkgray px-5'>ออเดอร์ของคุณ “ยังชำระเงินไม่สำเร็จ” คุณสามารถชำระเงินอีกครั้งได้ที่หน้าประวัติคำสั่งซื้อหรืออยู่ในหน้านี้ต่อ เพื่อยืนยันการชำระเงิน</p>
@@ -237,7 +235,7 @@ const BankInfoPage = () => {
                         <SfButton variant='tertiary' className='w-full btn-secondary h-[50px] rounded-xl' onClick={closeModal}>
                             อยู่ในหน้านี้
                         </SfButton>
-                        <SfButton variant='tertiary' className='w-full btn-primary h-[50px] rounded-xl' onClick={handleContinue}>
+                        <SfButton variant='tertiary' className='w-full btn-primary h-[50px] rounded-xl' onClick={() => navigate('/home/all items')}>
                             ออกจากการชำระเงิน
                         </SfButton>
                     </div>
