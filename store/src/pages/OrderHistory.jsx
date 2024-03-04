@@ -83,7 +83,7 @@ function OrderHistory() {
                     </div>
                   ))}</>
                 ) : (
-                  <p className="text-xs text-darkgray">คุณยังไม่มีคำสั่งซื้อ</p>
+                  <p className="text-base text-darkgray">คุณยังไม่มีคำสั่งซื้อ</p>
                 )}</>
               ) : (
                 <div className="flex flex-col gap-y-4">
@@ -139,7 +139,7 @@ function OrderHistory() {
                         </tbody>
                       </table>
                     ) : (
-                      <p className="text-xs text-darkgray">คุณยังไม่มีคำสั่งซื้อ</p>
+                      <p className="text-sm text-darkgray">คุณยังไม่มีคำสั่งซื้อ</p>
                     )}
                   </>
                 ) : (
