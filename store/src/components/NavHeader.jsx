@@ -47,7 +47,6 @@ export default function BaseMegaMenu() {
 
   const [menu ,setMenu] = useState({item : null, prevItem : null})
   const [mobileMenuStep, setMobileMenuStep] = useState(0)
-  const [changingMenu, setChangingMenu] = useState('')
 
   const {mainGroup} = useProducts()
   const { isOpen:isLogoutOpen, open:openLogout, close:closeLogout } = useDisclosure({ initialValue: false });
@@ -165,15 +164,6 @@ export default function BaseMegaMenu() {
     )
   }
 
-  const handleChangeMenu = (anim, func) => {
-    setChangingMenu(anim);
-    setTimeout(() => {
-      func()
-    }, 300)
-    setTimeout(() => {
-      setChangingMenu('')
-    }, 600)
-  }
 
   const clickToLogout = () => {
     logout();
@@ -186,15 +176,13 @@ export default function BaseMegaMenu() {
   }
 
   const handleMobileGoBack = () => {
-    handleChangeMenu('slide-back', () => {
-      if (mobileMenuStep == 1){
-        resetPhoneMenu()
-      }
-      if (mobileMenuStep > 1){
-        setMenu({item : menu.prevItem, prevItem : null})
-        setMobileMenuStep(mobileMenuStep - 1)
-      }
-    })
+    if (mobileMenuStep == 1){
+      resetPhoneMenu()
+    }
+    if (mobileMenuStep > 1){
+      setMenu({item : menu.prevItem, prevItem : null})
+      setMobileMenuStep(mobileMenuStep - 1)
+    }
   }
 
   const handleLogoutMobile = () => {
@@ -203,37 +191,36 @@ export default function BaseMegaMenu() {
   }
 
   const handlePhoneMenuClick = (item, product = false) => {
-    handleChangeMenu('slide-next', () => {
-      if (item.is_product_list) {
-        setMobileMenuStep((prev) => prev + 1)
-        setMenu({item : item, prevItem : menu.item})
-        return
-      }
-      if ((product || IsInProductList(mainGroup, item.name)) && (mobileMenuStep > 1 || item.children.length == 0)) {
-        resetPhoneMenu()
-        setIsMobileMenuOpen(false)
-        navigate(`/home/${item.name}`)
-        return
-      }
-      if (item.children.length === 0 && !product) {
-        resetPhoneMenu()
-        setIsMobileMenuOpen(false)
-        handleClick(item.url, item.open_in_new_tab === 1, navigate)
-        return
-      }
+    if (item.is_product_list) {
       setMobileMenuStep((prev) => prev + 1)
       setMenu({item : item, prevItem : menu.item})
-    })
+      return
+    }
+    if ((product || IsInProductList(mainGroup, item.name)) && (mobileMenuStep > 1 || item.children.length == 0)) {
+      resetPhoneMenu()
+      setIsMobileMenuOpen(false)
+      navigate(`/home/${item.name}`)
+      return
+      
+    }
+    if (item.children.length === 0 && !product) {
+      resetPhoneMenu()
+      setIsMobileMenuOpen(false)
+      handleClick(item.url, item.open_in_new_tab === 1, navigate)
+      return
+    }
+    setMobileMenuStep((prev) => prev + 1)
+    setMenu({item : item, prevItem : menu.item})
   }
 
   function MobileProductMenu (){
     return <>
       {menu.item?.is_product_list ?  
         <div className='flex flex-col gap-y-6'>
-          <div className='flex flex-col gap-y-8'>
+          <div className='flex flex-col gap-y-4'>
             {topBarItems.filter((item) => item.is_product_list).name}
             {mainGroup.map((item) => 
-              <button onClick={() => handlePhoneMenuClick(item, true)} className={`${mobileMenuStep == 2 ? 'text-[#343434] px-4' : ''} text-[24px] flex justify-between items-center`}>
+              <button onClick={() => handlePhoneMenuClick(item, true)} className={`${mobileMenuStep == 2 ? 'text-[#909090] px-4' : ''} flex justify-between items-center`}>
                 {item?.name}
                 {item?.children?.length > 0 ? <SfIconChevronRight/> : null}
               </button>
@@ -243,10 +230,10 @@ export default function BaseMegaMenu() {
         :
         <div className='flex flex-col gap-y-6'>
           <div className='flex flex-col gap-y-4'>
-            <Link className={`${mobileMenuStep == 2 ? 'text-[24px] mb-6' : ''}`} to={`/home/${menu.item?.name}`} onClick={() => setIsMobileMenuOpen(false)}>{IsInProductList(mainGroup, menu.item?.name) && menu.item?.name}</Link>
-            <div className='flex flex-col gap-y-8'>
+            <Link className={`${mobileMenuStep == 2 ? 'text-xl' : ''}`} to={`/home/${menu.item?.name}`} onClick={() => setIsMobileMenuOpen(false)}>{IsInProductList(mainGroup, menu.item?.name) && menu.item?.name}</Link>
+            <div className='flex flex-col gap-y-4 mt-6'>
               {menu.item?.children.map((item) => 
-                <button onClick={() => handlePhoneMenuClick(item, !item?.label && true)} className={`${mobileMenuStep == 2 ? 'text-[#343434] px-4' : ''} flex justify-between items-center`}>
+                <button onClick={() => handlePhoneMenuClick(item, !item?.label && true)} className={`${mobileMenuStep == 2 ? 'text-[#909090] px-4' : ''} flex justify-between items-center`}>
                   {item?.name}
                   {/* {item?.children?.length > 0 ? <SfIconChevronRight/> : null} */}
                 </button>
@@ -372,7 +359,7 @@ export default function BaseMegaMenu() {
 
       <MobileHeaderDrawer isOpen={isMobileMenuOpen} setIsOpen={setIsMobileMenuOpen}>
         <section className='flex flex-col justify-between h-full'>
-          <div className={`flex flex-col gap-y-9 ${changingMenu}`}>
+          <div className='flex flex-col gap-y-9'>
             {mobileMenuStep > 0 ? (
               <div className='flex items-center gap-x-[10px]'>
                 <SfIconChevronLeft onClick={handleMobileGoBack}/>
@@ -395,11 +382,11 @@ export default function BaseMegaMenu() {
               </div>
             )}
             <nav>
-              <ul className='flex flex-col gap-8 font-semibold'>
+              <ul className='flex flex-col gap-4 font-semibold'>
                 {!isLoading ? (
                   <>{mobileMenuStep == 0 ? topBarItems.map((item) => {
                       return(
-                        <button onClick={() => handlePhoneMenuClick(item)} className="text-[24px] flex justify-between items-center">
+                        <button onClick={() => handlePhoneMenuClick(item)} className="flex justify-between items-center">
                           {item?.name}
                           {item?.children?.length > 0 || item?.is_product_list ? <SfIconChevronRight/> : null}
                         </button>

@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useOrder } from "../hooks/useOrders";
 import ProductCard from "../components/ProductCard";
 import { useEffect, useState } from "react";
@@ -66,10 +66,10 @@ function SingleorderHistory(randomKey = 0) {
     const PurchasedList = ({name, company, status, creation, image, price, qty}) => {
         return (
           <div className="w-full flex gap-x-4">
-              {image ? <img src={image} className="min-w-[53px] w-[53px] h-[53px] object-cover fade-in"/> : <SfThumbnail size="lg" className="bg-gray-100 h-[53px] min-w-[53px] w-[53px]"/>}
+              {image ? <img src={image} className="min-w-[53px] h-[53px] object-cover fade-in"/> : <SfThumbnail size="lg" className="bg-gray-100 h-[53px] min-w-[53px]"/>}
               <div className="flex flex-col gap-y-1 w-full">
-                <div className="flex justify-between text-sm">
-                  <div className="flex flex-col gap-y-1 w-[60%]">
+                <div className="flex items-center justify-between text-sm">
+                  <div className="flex flex-col gap-y-1">
                     <h2>{name}</h2>
                     <p className="font-semibold">{qty} ชิ้น</p>
                   </div>
@@ -136,12 +136,7 @@ function SingleorderHistory(randomKey = 0) {
         <MyAccountSection>
             <div className="flex flex-col gap-y-8">
                 <div className="flex flex-col gap-y-10">
-                    <div className="flex items-center gap-[10px]">
-                        <Link to='/order-history'>
-                            <Icons.flipBackward color="#A9A9A9"/>
-                        </Link>
-                        <h2 className='font-semibold text-darkgray'>รายละเอียดคำสั่งซื้อ</h2>
-                    </div>
+                    <h2 className='font-semibold text-darkgray'>รายละเอียดคำสั่งซื้อ</h2>
                     <div className="flex flex-col gap-y-2">
                         {!loading ? (
                             <>
@@ -213,7 +208,6 @@ function SingleorderHistory(randomKey = 0) {
                                         country={address.country}
                                         phone={address.phone}
                                         deletebtn={false}
-                                        active={true}
                                     />
                                 ))
                             )}
