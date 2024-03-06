@@ -26,7 +26,9 @@ export default function Login() {
     } = useFrappeAuth();
 
     const confirmEmailForgotPass = () => {
-        openSubmittedForgotPass()
+        if (formik.errors.email === undefined && formik.values.email !== ""){
+            openSubmittedForgotPass()
+        }
     }
 
     const getValidationSchema = () => {
