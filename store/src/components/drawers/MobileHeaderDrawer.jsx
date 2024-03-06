@@ -54,7 +54,7 @@ export default function MobileHeaderDrawer({isOpen, setIsOpen, children, title})
                             </div>
                             <h2 className="text-base font-medium text-gray-900 text-center whitespace-pre" id="slide-over-title">{title}</h2>
                         </div> */}
-                        <div className="flow-root p-6 h-screen">
+                        <div className="flow-root p-6 pb-12 h-screen">
                             {children}
                         </div>
                     </div>
