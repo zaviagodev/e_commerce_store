@@ -25,6 +25,7 @@ import ProductCard from "@/components/ProductCard";
 import ProductListSkeleton from "@/components/skeletons/ProductListSkeleton";
 import { useSearchParams } from "react-router-dom";
 import usePagenation from "@/hooks/usePagenation";
+import { useConfig } from "@/hooks/useConfig";
 
 export const ProductList: React.FC<IResourceComponentsProps> = () => {
   const {
@@ -32,6 +33,7 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
   } = useParsed();
   const [_, SetURLSearchParams] = useSearchParams();
   const t = useTranslate();
+  const { config } = useConfig();
 
   const {
     tableQueryResult: { data: tableData, isFetching, isLoading, isRefetching },
@@ -40,11 +42,15 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
     pageCount,
     filters: appliedFilters,
     setFilters,
-  } = useTable({
-    pagination: {
-      pageSize: 2,
-    },
-  });
+    setPageSize,
+  } = useTable();
+
+  // set the page size from the config for pagination
+  useEffect(() => {
+    if (config?.products_per_page) {
+      setPageSize(config.products_per_page);
+    }
+  }, [config?.products_per_page]);
 
   const numberOfLastPageLinks = 4;
 
@@ -77,6 +83,7 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
         <div>
           <strong>{t("All products")}</strong> ({tableData?.total})
         </div>
+        {/* TODO: integrate it later 
         <div className="flex items-center gap-4">
           <strong>{t("Sort by")}</strong>
           <Select>
@@ -89,7 +96,7 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
               <SelectItem value="system">{t("Price Low to High")}</SelectItem>
             </SelectContent>
           </Select>
-        </div>
+        </div> */}
       </div>
       {isFetching || isLoading || isRefetching ? (
         <ProductListSkeleton />

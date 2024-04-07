@@ -7,7 +7,7 @@ import {
   UpdateParams,
   UpdateResponse,
 } from "@refinedev/core";
-import apis, { auth, cart, checkout } from "../client/api";
+import apis, { auth, cart, checkout, misc } from "../client/api";
 import { transformArgs } from "./transformArgs";
 import { transformRes } from "./transformRes";
 
@@ -62,6 +62,7 @@ export const storeProvider: DataProvider = {
       update_cart_address: cart.updateCartAddress,
       payment_methods: checkout.getPaymentMethods,
       confirm_payment: checkout.confirmPayment,
+      get_config: misc.getConfig,
     };
     return await customMap[url as keyof typeof customMap]?.(payload);
   },

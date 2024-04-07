@@ -189,6 +189,11 @@ export const wishlist = {
   delete: null,
 };
 
+export const misc = {
+  getConfig: () =>
+    api.get("method/webshop.webshop.api.get_config").then((res) => res.data),
+};
+
 export default {
   products,
   address,
