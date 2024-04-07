@@ -1,300 +1,42 @@
-/* src/style.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-::-webkit-scrollbar {
-  display:none;
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
 }
 
-.shadow-main {
-  box-shadow:0 5px 15px #00000012;
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
-@layer base {
-  @font-face {
-    font-family:'SF Pro Text';
-    src: url('../src/fonts/SF Pro/SFProTHDisplay_light.woff2');
-    font-weight:300;
-    font-display:swap
-  }
-  @font-face {
-    font-family:'SF Pro Text';
-    src: url('../src/fonts/SF Pro/sf-pro-text_light.woff2');
-    font-weight:300;
-    font-display:swap
-  }
-  @font-face {
-    font-family:'SF Pro Text';
-    src: url('../src/fonts/SF Pro/SFProTHDisplay_regular.woff2');
-    font-weight:400;
-    font-display:swap
-  }
-  @font-face {
-    font-family:'SF Pro Text';
-    src: url('../src/fonts/SF Pro/sf-pro-text_regular.woff2');
-    font-weight:400;
-    font-display:swap
-  }
-  @font-face {
-    font-family:'SF Pro Text';
-    src: url('../src/fonts/SF Pro/SFProTHDisplay_semibold.woff2');
-    font-weight:600;
-    font-display:swap
-  }
-  @font-face {
-    font-family:'SF Pro Text';
-    src: url('../src/fonts/SF Pro/sf-pro-text_semibold.woff2');
-    font-weight:600;
-    font-display:swap
-  }
-
-  * {
-    scroll-behavior: smooth;
-    @apply font-sfpro
-  }
-
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --primary: #000000; /* #323334 */
-    --secondary: #4176FF;
-    --text-tag: #111111;
-    --button-primary: #000000;
-    --button-primary-foreground: #FFFFFF;
-    --button-primary-hover: #393939;
-    --button-primary-hover-foreground: #FFFFFF;
-    --button-secondary: #FFFFFF;
-    --button-secondary-foreground: #000000;
-    --button-secondary-hover: #9F9F9F;
-    --button-secondary-hover-foreground: #000000;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: #DD5260;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 5.9% 10%;
-    --radius: 0.5rem;
-  }
-}
-
-.loading {
-  filter: blur(10px);
-  clip-path: inset(0);
-}
-.loaded {
-  filter: blur(0px);
-  transition: filter 0.5s linear;
-}
-
-/* .grid-cols-auto {
-  grid-template-columns: auto auto auto
-} */
-
-.main-section {
-  @apply max-w-[1400px] m-auto px-4 lg:px-10 py-6 lg:py-[50px] box-content
-}
-
-.main-section-single-product {
-  @apply max-w-[1218px] m-auto mb-[120px] lg:mb-0 lg:px-10 py-4 lg:py-[50px] box-content
-}
-
-.main-section-small {
-  @apply max-w-[1113px] m-auto lg:px-10 box-content
-}
-
-.main-section-login {
-  @apply max-w-[1100px] m-auto p-4 lg:p-[60px] box-content
-}
-
-.main-section-my-account {
-  @apply max-w-[1480px] px-4 py-6 lg:py-0 lg:px-10 m-auto
-}
-
-.primary-heading {
-  @apply text-2xl font-bold
-}
-
-.btn-primary {
-  @apply text-btn-primary-foreground bg-btn-primary font-semibold rounded-xl
-}
-
-.btn-primary:hover {
-  @apply text-btn-primary-hover-foreground bg-btn-primary-hover
-}
-
-.btn-secondary {
-  @apply border border-neutral-100 bg-neutral-50 text-btn-secondary-foreground font-semibold rounded-xl /* text-btn-secondary-foreground bg-btn-secondary */
-}
-/* 
-.btn-secondary:hover {
-  @apply text-btn-secondary-hover-foreground bg-btn-secondary-hover
-} */
-
-.search_bar {
-  animation:expand_search_bar .3s forwards;
-  overflow:hidden;
-}
-
-.add_to_cart {
-  opacity:0;
-  transition:opacity 200ms;
-}
-
-.product_card:hover .add_to_cart {
-  opacity:1;
-  transition:opacity 200ms;
-}
-
-.fade-in {
-  animation:fadeIn 500ms forwards;
-}
-
-.product-title {
-  @apply overflow-x-clip text-ellipsis pr-3 font-semibold whitespace-pre
-}
-
-.product-desc {
-  @apply text-sm font-semibold overflow-x-clip text-ellipsis pr-3 whitespace-pre
-}
-
-.product-price {
-  @apply font-normal text-sm lg:text-base
-}
-
-.product_card:hover .product-title, .product_card:hover .product-desc, .product_card:hover .product-price {
-  @apply text-black
-}
-
-.product_card:hover .product-price {
-  @apply font-semibold
-}
-
-.post-gradient {
-  background: linear-gradient(45deg, 
-rgba(50,50,102,1) 0% 5%, 
-rgba(255,255,255,1) 5% 10%, 
-rgba(229,30,38,1) 10% 15%, 
-rgba(255,255,255,1) 15% 20%, 
-rgba(50,50,102,1) 20% 25%, 
-rgba(255,255,255,1) 25% 30%, 
-rgba(229,30,38,1) 30% 35%, 
-rgba(255,255,255,1) 35% 40%, 
-rgba(50,50,102,1) 40% 45%,
-rgba(255,255,255,1) 45% 50%, 
-rgba(229,30,38,1) 50% 55%, 
-rgba(255,255,255,1) 55% 60%, 
-rgba(50,50,102,1) 60% 65%, 
-rgba(255,255,255,1) 65% 70%, 
-rgba(229,30,38,1) 70% 75%, 
-rgba(255,255,255,1) 75% 80%, 
-rgba(50,50,102,1) 80% 85%, 
-rgba(255,255,255,1) 85% 90%,
-rgba(229,30,38,1) 90% 95%,
-rgba(255,255,255,1) 95% 100%)
-}
-
-@keyframes expand_search_bar {
+@keyframes logo-spin {
   from {
-    width:0%;
+    transform: rotate(0deg);
   }
   to {
-    width:100%;
-  }
-}
-li[data-list=bullet] > .ql-ui:before {
-  content: "\2022";
-}
-.ql-ui:before {
-    display: inline-block;
-    margin-left: -1.5em;
-    margin-right: 0.3em;
-    text-align: right;
-    white-space: nowrap;
-    width: 1.2em;
-}
-.ql-editor .ql-ui {
-    position: absolute;
-}
-.ql-editor ol {
-    padding-left: 1.5em;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity:0;
-  }
-  to {
-    opacity:1;
+    transform: rotate(360deg);
   }
 }
 
-.slide-next {
-  animation:mobileSlideNext 600ms;
-}
-
-.slide-back {
-  animation:mobileSlideBack 600ms;
-}
-
-@keyframes mobileSlideBack {
-  0% {
-    transform:translateX(0);
-    opacity:1;
-  }
-  48% {
-    transform:translateX(150%);
-    opacity:0;
-  }
-  52% {
-    transform:translateX(-150%);
-    opacity:0;
-  }
-  100% {
-    transform:translateX(0);
-    opacity:1;
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
   }
 }
 
-@keyframes mobileSlideNext {
-  0% {
-    transform:translateX(0);
-    opacity:1;
-  }
-  48% {
-    transform:translateX(-150%);
-    opacity:0;
-  }
-  52% {
-    transform:translateX(150%);
-    opacity:0;
-  }
-  100% {
-    transform:translateX(0);
-    opacity:1;
-  }
+.card {
+  padding: 2em;
 }
 
-/* Fix the background colour of autofill */
-
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus
-input:-webkit-autofill,
-textarea:-webkit-autofill,
-textarea:-webkit-autofill:hover
-textarea:-webkit-autofill:focus,
-select:-webkit-autofill,
-select:-webkit-autofill:hover,
-select:-webkit-autofill:focus {
-  border:none !important;
-  -webkit-text-fill-color: inherit !important;
-  transition: background-color 5000s ease-in-out 0s;
+.read-the-docs {
+  color: #888;
 }
