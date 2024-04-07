@@ -72,7 +72,7 @@ function App() {
   };
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/store">
       <RefineKbarProvider>
         <DevtoolsProvider>
           <Refine
