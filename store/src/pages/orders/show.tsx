@@ -49,7 +49,7 @@ const OrderDetail = () => {
     queryOptions: {
       enabled:
         order?.status && !["Completed", "Shipped"].includes(order.status),
-      onSuccess: (data: any) => setPaymentMethod(data.message[0].name),
+      onSuccess: (data: any) => setPaymentMethod(data?.message[0].name),
     },
   });
 
