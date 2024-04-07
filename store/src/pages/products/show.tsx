@@ -37,10 +37,12 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
       <ProductImages
         images={[
           {
-            imageThumbSrc: `${import.meta.env.VITE_BACKEND_URL}${
+            imageThumbSrc: `${import.meta.env.VITE_BACKEND_URL ?? ""}${
               product.thumbnail
             }`,
-            imageSrc: `${import.meta.env.VITE_BACKEND_URL}${product.thumbnail}`,
+            imageSrc: `${import.meta.env.VITE_BACKEND_URL ?? ""}${
+              product.thumbnail
+            }`,
             alt: `${product.web_item_name} image`,
           },
         ]}

@@ -20,7 +20,7 @@ const CheckoutItem = ({ itemCode, qty }: CheckoutItemProps) => {
     <div key={itemCode} className="flex items-center gap-x-4">
       <div className="w-12 h-12 bg-gray-300 rounded-md flex items-center justify-center">
         <img
-          src={`${import.meta.env.VITE_BACKEND_URL}${item.thumbnail}`}
+          src={`${import.meta.env.VITE_BACKEND_URL ?? ""}${item.thumbnail}`}
           alt="มินิบราวนี่ 18 ชิ้น | Mini-brownie 18 ps."
           className="object-cover object-center"
         />

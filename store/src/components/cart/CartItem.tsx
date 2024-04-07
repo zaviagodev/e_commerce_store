@@ -27,7 +27,7 @@ const CartItem = ({ itemCode }: CartItemProps) => {
       <div className="h-[90px] min-w-[90px] max-w-[90px]">
         <Link to={`/product/${itemCode}`}>
           <img
-            src={`${import.meta.env.VITE_BACKEND_URL}BACKEND_URL}${
+            src={`${import.meta.env.VITE_BACKEND_URL ?? ""}BACKEND_URL}${
               item.thumbnail
             }`}
             alt="มินิบราวนี่ 18 ชิ้น | Mini-brownie 18 ps."

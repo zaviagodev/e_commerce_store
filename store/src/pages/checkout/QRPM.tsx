@@ -34,7 +34,7 @@ export const QRPMDetail = () => {
           <strong>{orderId}</strong>
         </div>
         <img
-          src={`${import.meta.env.VITE_BACKEND_URL}${
+          src={`${import.meta.env.VITE_BACKEND_URL ?? ""}${
             selectedPaymentMethod.promptpay_qr_image
           }`}
           alt="QR Code"
@@ -70,7 +70,7 @@ export const QRPMDetail = () => {
             onClick={() => {
               const link = document.createElement("a");
               link.target = "_blank";
-              link.href = `${import.meta.env.VITE_BACKEND_URL}${
+              link.href = `${import.meta.env.VITE_BACKEND_URL ?? ""}${
                 selectedPaymentMethod.promptpay_qr_image
               }`;
               link.download = "QR Code";
@@ -162,7 +162,7 @@ export const QRUploadSlip = () => {
           >
             <div className="flex items-center p-2 bg-secondary rounded-lg">
               <img
-                src={`${import.meta.env.VITE_BACKEND_URL}${
+                src={`${import.meta.env.VITE_BACKEND_URL ?? ""}${
                   selectedPaymentMethod.promptpay_qr_image
                 }`}
                 alt={selectedPaymentMethod.name}

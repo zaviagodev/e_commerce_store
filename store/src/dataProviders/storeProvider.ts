@@ -53,7 +53,7 @@ export const storeProvider: DataProvider = {
   deleteOne: async ({ resource, id, meta }) => {
     return await apis[resource as keyof typeof apis]?.delete?.(id as string);
   },
-  getApiUrl: () => `${import.meta.env.VITE_BACKEND_URL}/api`,
+  getApiUrl: () => `${import.meta.env.VITE_BACKEND_URL ?? ""}/api`,
   custom: async ({ url, payload }) => {
     const customMap = {
       update_profile: auth.updateProfile,
