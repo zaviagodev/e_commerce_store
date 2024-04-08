@@ -22,11 +22,13 @@ import { AppNavigationMenu } from "./AppNavigationMenu";
 import Cart from "../cart/Cart";
 import Wishlist from "../wishlist/Wishlist";
 import MobileNavigationMenu from "./MobileNavigationMenu";
+import { useConfig } from "@/hooks/useConfig";
 
 const Header = () => {
   const t = useTranslate();
   const navigate = useNavigate();
   const { data: authState } = useIsAuthenticated();
+  const { config } = useConfig();
   const {
     data: profile,
     isLoading,
@@ -43,10 +45,17 @@ const Header = () => {
           to="/"
           className="flex items-center gap-2 text-lg font-semibold md:text-base"
         >
-          <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
+          {config?.brand_logo ? (
+            <img
+              src={`${import.meta.env.VITE_BACKEND_URL ?? ""}${
+                config?.brand_logo
+              }`}
+              alt={config?.company}
+              className="min-h-[40px] h-[40px] w-auto max-w-[200px]"
+            />
+          ) : (
+            <h2>{config?.company}</h2>
+          )}
         </Link>
         <AppNavigationMenu />
       </nav>

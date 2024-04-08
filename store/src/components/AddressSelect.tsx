@@ -4,7 +4,7 @@ import {
   useList,
   useTranslate,
 } from "@refinedev/core";
-import { ArrowLeftRight, Undo2 } from "lucide-react";
+import { ArrowLeftRight, CirclePlus, Undo2 } from "lucide-react";
 import {
   Sheet,
   SheetClose,
@@ -16,6 +16,8 @@ import {
 import AddressCard from "./AddressCard";
 import { Label } from "./ui/label";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
+import { Button } from "./ui/button";
+import { useNavigate } from "react-router-dom";
 
 type AddressSelectProps = {
   onSelect: (address: any) => void;
@@ -23,6 +25,7 @@ type AddressSelectProps = {
 
 const AddressSelect = ({ onSelect, ...props }: AddressSelectProps) => {
   const t = useTranslate();
+  const navigate = useNavigate();
   const { data, isLoading, isFetching, isRefetching } = useList({
     dataProviderName: "storeProvider",
     resource: "address",
@@ -94,6 +97,13 @@ const AddressSelect = ({ onSelect, ...props }: AddressSelectProps) => {
             </div>
           ))}
         </RadioGroup>
+        <Button
+          variant="outline"
+          className="w-full px-6 justify-start text-base text-gray-500"
+          onClick={() => navigate("/account/addresses/new")}
+        >
+          <CirclePlus className="h-4 w-4 mr-2" /> {t("Add Address")}
+        </Button>
       </SheetContent>
     </Sheet>
   );

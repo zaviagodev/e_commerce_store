@@ -28,7 +28,7 @@ const CartItem = ({ itemCode }: CartItemProps) => {
         <Link to={`/product/${itemCode}`}>
           <img
             src={`${import.meta.env.VITE_BACKEND_URL ?? ""}${item.thumbnail}`}
-            alt="มินิบราวนี่ 18 ชิ้น | Mini-brownie 18 ps."
+            alt={item.web_item_name}
             className="h-full w-full object-cover object-center rounded-lg"
           />
         </Link>

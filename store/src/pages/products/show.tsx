@@ -57,9 +57,9 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
             <span className="block typography-headline-3 font-bold text-base text-red-500">
               {product.price?.formatted_price}
             </span>
-            <span className="block text-maingray typography-headline-3 line-through font-normal text-sm">
+            {/* <span className="block text-maingray typography-headline-3 line-through font-normal text-sm">
               ฿ 15,000.00
-            </span>
+            </span> */}
           </span>
         </div>
         <div className="text-sm leading-6 pb-[60px] font-normal">

@@ -103,7 +103,7 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
       ) : (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-1 my-4">
-            {tableData?.data.map((item) => (
+            {(tableData?.data ?? []).map((item) => (
               <ProductCard
                 key={item.item_code}
                 itemCode={item.item_code}
