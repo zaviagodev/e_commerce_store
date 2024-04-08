@@ -9,6 +9,7 @@ import {
   Loader2,
   MessageCircleQuestion,
   QrCode,
+  ArrowLeftRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -29,6 +30,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import AddressSelect from "@/components/AddressSelect";
 
 export const paymentMethodIconMap: { [key: string]: React.ReactNode } = {
   "2": <Landmark className="mr-2 h-4 w-4" />,
@@ -58,7 +60,7 @@ const Checkout = () => {
 
   const form = useForm({
     resolver: yupResolver(checkoutSchema),
-    defaultValues: {
+    values: {
       paymentMethod: paymentMethod ?? "",
       shippingRule: serverCart?.message.doc.shipping_rule,
       address: serverCart?.message.doc.shipping_address_name,
@@ -213,7 +215,28 @@ const Checkout = () => {
               className="mt-6 flex flex-col gap-y-4"
               onSubmit={form.handleSubmit(onSubmit)}
             >
-              <Label>{t("Address")}</Label>
+              <FormField
+                control={form.control}
+                name="address"
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <div className="flex items-center justify-between">
+                        <FormLabel>{t("Address")}</FormLabel>
+                        <FormControl>
+                          <AddressSelect
+                            {...field}
+                            onSelect={(value) =>
+                              form.setValue("address", value.name)
+                            }
+                          />
+                        </FormControl>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              />
               {addressLoading &&
                 !!serverCart?.message.doc.shipping_address_name && (
                   <div>Loading...</div>
