@@ -16,9 +16,11 @@ import { useCart } from "@/hooks/useCart";
 import { useWishlist } from "@/hooks/useWishlist";
 import ProductImages from "@/components/ProductImages";
 import ProductSkeleton from "@/components/skeletons/ProductSkeleton";
+import { useConfig } from "@/hooks/useConfig";
 
 export const ProductShow: React.FC<IResourceComponentsProps> = () => {
   const t = useTranslate();
+  const { config } = useConfig();
   const { addToCart } = useCart();
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
   const { queryResult, showId } = useShow({});
@@ -74,17 +76,19 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
                   <ShoppingBag size={18} className="mr-1" />
                   {t("Add to Cart")}
                 </Button>
-                <Button
-                  variant="outline"
-                  className={`${inWishlist ? "text-red-500" : "text-black"}`}
-                  onClick={() =>
-                    inWishlist
-                      ? removeFromWishlist(itemCode)
-                      : addToWishlist(itemCode)
-                  }
-                >
-                  <Heart />
-                </Button>
+                {config?.enable_wishlist == 1 && (
+                  <Button
+                    variant="outline"
+                    className={`${inWishlist ? "text-red-500" : "text-black"}`}
+                    onClick={() =>
+                      inWishlist
+                        ? removeFromWishlist(itemCode)
+                        : addToWishlist(itemCode)
+                    }
+                  >
+                    <Heart />
+                  </Button>
+                )}
               </div>
             </div>
           </div>

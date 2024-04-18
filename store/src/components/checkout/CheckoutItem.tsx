@@ -1,3 +1,5 @@
+import { useConfig } from "@/hooks/useConfig";
+import { getFileURL } from "@/lib/utils";
 import { useOne } from "@refinedev/core";
 
 type CheckoutItemProps = {
@@ -6,6 +8,7 @@ type CheckoutItemProps = {
 };
 
 const CheckoutItem = ({ itemCode, qty }: CheckoutItemProps) => {
+  const { config } = useConfig();
   const { data, isLoading } = useOne({
     resource: "products",
     id: itemCode,
@@ -20,7 +23,11 @@ const CheckoutItem = ({ itemCode, qty }: CheckoutItemProps) => {
     <div key={itemCode} className="flex items-center gap-x-4">
       <div className="w-12 h-12 bg-gray-300 rounded-md flex items-center justify-center">
         <img
-          src={`${import.meta.env.VITE_BACKEND_URL ?? ""}${item.thumbnail}`}
+          src={
+            getFileURL(item.thumbnail) ??
+            getFileURL(config?.default_product_image) ??
+            ""
+          }
           alt="มินิบราวนี่ 18 ชิ้น | Mini-brownie 18 ps."
           className="object-cover object-center"
         />

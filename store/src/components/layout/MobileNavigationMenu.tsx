@@ -10,10 +10,13 @@ import {
   CollapsibleTrigger,
 } from "../ui/collapsible";
 import { useState } from "react";
+import { getFileURL } from "@/lib/utils";
+import { useConfig } from "@/hooks/useConfig";
 
 const MobileNavigationMenu = () => {
   const [open, setOpen] = useState(false);
   const t = useTranslate();
+  const { config } = useConfig();
   const go = useGo();
   const { data } = useMany({
     dataProviderName: "storeProvider",
@@ -33,19 +36,44 @@ const MobileNavigationMenu = () => {
       </SheetTrigger>
       <SheetContent side="left">
         <nav className="grid gap-6 text-lg font-medium">
-          <Link
-            to="#"
-            className="flex items-center gap-2 text-lg font-semibold"
+          <button
+            onClick={() =>
+              go({
+                to: `/`,
+                query: {
+                  filters: [],
+                  resetPagenation: 1,
+                },
+                type: "push",
+              })
+            }
+            className="flex items-center gap-2 text-lg font-semibold -mt-2"
           >
-            <Avatar>
-              <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-            <span className="sr-only">Acme Inc</span>
-          </Link>
-          <Link to="/" className="hover:text-foreground">
+            {config?.brand_logo ? (
+              <img
+                src={getFileURL(config?.brand_logo) ?? ""}
+                alt={config?.company}
+                className="min-h-[30px] h-[30px] w-auto max-w-[200px]"
+              />
+            ) : (
+              <h2>{config?.company}</h2>
+            )}
+          </button>
+          <button
+            onClick={() =>
+              go({
+                to: `/`,
+                query: {
+                  filters: [],
+                  resetPagenation: 1,
+                },
+                type: "push",
+              })
+            }
+            className="hover:text-foreground text-left"
+          >
             {t("Home")}
-          </Link>
+          </button>
           <Link
             to="/account/orders"
             className="text-muted-foreground hover:text-foreground"

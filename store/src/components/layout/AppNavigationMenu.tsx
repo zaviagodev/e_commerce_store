@@ -1,6 +1,4 @@
-import * as React from "react";
-
-import { cn } from "@/lib/utils";
+import { cn, getCategories } from "@/lib/utils";
 // import { Icons } from "@/components/icons";
 import {
   NavigationMenu,
@@ -12,6 +10,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { useGo, useMany, useTranslate } from "@refinedev/core";
+import React, { useMemo } from "react";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -59,7 +58,15 @@ export function AppNavigationMenu() {
     resource: "categories",
     ids: [],
   });
-  const categories = data?.message.results;
+
+  const categories = useMemo(() => {
+    if (!data?.message.results) {
+      return {};
+    }
+    return getCategories(data?.message.results ?? []);
+  }, [data?.message.results]);
+
+  console.log("categories", categories);
 
   return (
     <NavigationMenu>
@@ -68,7 +75,8 @@ export function AppNavigationMenu() {
           <NavigationMenuTrigger>{t("Categories")}</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-              {categories?.map((category: any) => (
+              <RecursiveComponent data={{ ...categories, Trap: {} }} />
+              {/* {Object.keys(categories)?.map((category: any) => (
                 <ListItem
                   key={category.name}
                   title={category.name}
@@ -88,7 +96,7 @@ export function AppNavigationMenu() {
                     })
                   }
                 />
-              ))}
+              ))} */}
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
@@ -129,3 +137,27 @@ const ListItem = React.forwardRef<
   );
 });
 ListItem.displayName = "ListItem";
+
+const RecursiveComponent = ({ data }) => {
+  const isObject = (x) =>
+    typeof x === "object" && x !== null && Object.keys(x).length > 0;
+
+  // if (!isObject(data)) {
+  //   return <li>null</li>;
+  // }
+
+  const pairs = Object.entries(data);
+
+  return (
+    <>
+      {pairs.map(([key, value]) => (
+        <li key={key} className="ml-2">
+          {key}
+          <ul>
+            <RecursiveComponent data={value} />
+          </ul>
+        </li>
+      ))}
+    </>
+  );
+};

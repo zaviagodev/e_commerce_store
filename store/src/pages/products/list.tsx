@@ -26,6 +26,7 @@ import ProductListSkeleton from "@/components/skeletons/ProductListSkeleton";
 import { useSearchParams } from "react-router-dom";
 import usePagenation from "@/hooks/usePagenation";
 import { useConfig } from "@/hooks/useConfig";
+import { getFileURL } from "@/lib/utils";
 
 export const ProductList: React.FC<IResourceComponentsProps> = () => {
   const {
@@ -109,7 +110,11 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
                 itemCode={item.item_code}
                 name={item.item_name}
                 price={item.formatted_price}
-                image={item.website_image ?? "https://via.placeholder.com/341"}
+                image={
+                  getFileURL(item.website_image) ??
+                  getFileURL(config?.default_product_image) ??
+                  ""
+                }
                 width={341}
                 height={341}
               />

@@ -4,6 +4,8 @@ import { useOne } from "@refinedev/core";
 import { useWishlist } from "@/hooks/useWishlist";
 import { Link } from "react-router-dom";
 import WishlistItemSkeleton from "../skeletons/WishlistItemSkeleton";
+import { getFileURL } from "@/lib/utils";
+import { useConfig } from "@/hooks/useConfig";
 
 type WishlistItemProps = {
   itemCode: string;
@@ -11,6 +13,7 @@ type WishlistItemProps = {
 
 const WishlistItem = ({ itemCode }: WishlistItemProps) => {
   const { removeFromWishlist } = useWishlist();
+  const { config } = useConfig();
   const { data, isLoading, isFetching, isRefetching } = useOne({
     resource: "products",
     id: itemCode,
@@ -27,7 +30,11 @@ const WishlistItem = ({ itemCode }: WishlistItemProps) => {
       <div className="h-[90px] min-w-[90px] max-w-[90px]">
         <Link to={`/product/${itemCode}`}>
           <img
-            src={`${import.meta.env.VITE_BACKEND_URL ?? ""}${item.thumbnail}`}
+            src={
+              getFileURL(item.thumbnail) ??
+              getFileURL(config?.default_product_image) ??
+              ""
+            }
             alt="มินิบราวนี่ 18 ชิ้น | Mini-brownie 18 ps."
             className="h-full w-full object-cover object-center rounded-lg"
           />
