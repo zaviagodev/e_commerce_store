@@ -169,7 +169,7 @@ const Header = () => {
                     <Input
                       name="search"
                       placeholder="Search products..."
-                      className="pl-12 w-full focus:outline-none bg-neutral-100 rounded-full border-neutral-100"
+                      className="pl-12 w-full focus-visible:ring-0 focus-visible:ring-offset-0 bg-neutral-100 rounded-full border-neutral-100"
                       onChange={(e) => setSearchInput(e.target.value)}
                       value={searchInput}
                     />
