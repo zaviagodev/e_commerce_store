@@ -1,4 +1,4 @@
-import { CircleUser, Search } from "lucide-react";
+import { CircleUser, Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -25,7 +25,8 @@ import MobileNavigationMenu from "./MobileNavigationMenu";
 import { useConfig } from "@/hooks/useConfig";
 import { getFileURL } from "@/lib/utils";
 import HeaderSearchbar from "../customComponents/HeaderSearchbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Separator } from "@/components/ui/separator";
 
 const Header = () => {
   const t = useTranslate();
@@ -43,6 +44,11 @@ const Header = () => {
 
   {/* Create the state in case the searchbar sheet will close if users have searched or clicked on the 'cancel' button */}
   const [isSearching, setIsSearching] = useState(false)
+  const [searchInput, setSearchInput] = useState("")
+
+  useEffect(() => {
+    isSearching && setSearchInput("")
+  }, [isSearching])
 
   {/* Create a logo component to use it on the searchbar sheet and the header */}
   const Logo = () => {
@@ -84,54 +90,8 @@ const Header = () => {
 
       {/* reduce the gap from 1rem to 0.5rem */}
       <div className="flex ml-auto items-center gap-2 md:ml-auto">
-        {config?.is_search_enabled == 1 && (
-          <HeaderSearchbar open={isSearching} onOpenChange={setIsSearching}> {/* This is the searchbar sheet */}
 
-            <section className="flex items-center w-full justify-between gap-x-10">
-              <Logo />
-
-              <form
-                className="flex-1 sm:flex-initial w-full"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  go({
-                    to: `/`,
-                    query: {
-                      filters: [
-                        {
-                          field: "search",
-                          operator: "eq",
-                          value: e.currentTarget.search.value,
-                        },
-                      ],
-                      resetPagenation: 1,
-                    },
-                    type: "push",
-                  });
-                  setIsSearching(false)
-                }}
-              >
-                <div className="relative flex items-center">
-                  <Search className="absolute left-4 h-5 w-5 text-muted-foreground" />
-                  <Input
-                    type="search"
-                    name="search"
-                    placeholder="Search products..."
-                    className="pl-12 w-full focus:outline-none bg-neutral-100 rounded-full border-neutral-100"
-                  />
-                </div>
-              </form>
-
-              <Button onClick={() => setIsSearching(false)} variant="ghost">
-                Cancel
-              </Button>
-            </section>
-
-          </HeaderSearchbar>
-        )}
-
-        {config?.enable_wishlist == 1 && <Wishlist />}
-        <Cart />
+        {/* Move the account button to the left side */}
         <DropdownMenu>
           <DropdownMenuTrigger
             asChild
@@ -172,6 +132,73 @@ const Header = () => {
             </DropdownMenuContent>
           )}
         </DropdownMenu>
+        {/* End of the account button */}
+
+        <Separator className="h-6 w-[1px] bg-[#F0F0F0]"/>
+
+        {/* This is the searchbar sheet */}
+        {config?.is_search_enabled == 1 && (
+          <HeaderSearchbar open={isSearching} onOpenChange={setIsSearching}>
+
+            <section className="flex items-start w-full justify-between gap-x-10 pt-3 py-10">
+              <Logo />
+
+              <div className="w-full flex flex-col gap-y-10">
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    setIsSearching(false)
+                    go({
+                      to: `/`,
+                      query: {
+                        filters: [
+                          {
+                            field: "search",
+                            operator: "eq",
+                            value: e.currentTarget.search.value,
+                          },
+                        ],
+                        resetPagenation: 1,
+                      },
+                      type: "push",
+                    });
+                  }}
+                >
+                  <div className="relative flex items-center">
+                    <Search className="absolute left-4 h-5 w-5 text-muted-foreground" />
+                    <Input
+                      name="search"
+                      placeholder="Search products..."
+                      className="pl-12 w-full focus:outline-none bg-neutral-100 rounded-full border-neutral-100"
+                      onChange={(e) => setSearchInput(e.target.value)}
+                      value={searchInput}
+                    />
+                    {searchInput !== "" && <X className="absolute right-4 h-5 w-5" onClick={() => setSearchInput("")}/>}
+                  </div>
+                </form>
+
+                <div className="flex flex-col gap-y-6">
+                  <h2 className="text-[#909090]">Popular searches</h2>
+
+                  {/* These are popular searches which I statically mock them up */}
+                  <ul>
+                    <li>Long Hair</li>
+                    <li>Liner</li>
+                    <li>OPTP</li>
+                  </ul>
+                </div>
+              </div>
+
+              <Button onClick={() => setIsSearching(false)} variant="ghost">
+                Cancel
+              </Button>
+            </section>
+
+          </HeaderSearchbar>
+        )}
+
+        {config?.enable_wishlist == 1 && <Wishlist />}
+        <Cart />
       </div>
     </header>
   );
