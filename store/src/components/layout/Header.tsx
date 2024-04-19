@@ -110,7 +110,7 @@ const Header = () => {
               authState?.authenticated ? undefined : navigate("/login");
             }}
           >
-            <Button variant="secondary" size="icon" className="rounded-full">
+            <Button variant="ghost" size="icon" className="rounded-full">
               {!isLoading &&
               !isFetching &&
               !isRefetching &&

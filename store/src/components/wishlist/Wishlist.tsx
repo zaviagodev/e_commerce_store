@@ -20,7 +20,7 @@ const Wishlist = () => {
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
         <Button
-          variant="secondary"
+          variant="ghost"
           size="icon"
           className="rounded-full relative"
         >

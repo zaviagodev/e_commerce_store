@@ -25,7 +25,7 @@ const Cart = () => {
     <Sheet>
       <SheetTrigger asChild>
         <Button
-          variant="secondary"
+          variant="ghost"
           size="icon"
           className="rounded-full relative"
         >
