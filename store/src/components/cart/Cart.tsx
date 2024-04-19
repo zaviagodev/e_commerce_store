@@ -24,10 +24,12 @@ const Cart = () => {
   return (
     <Sheet>
       <SheetTrigger asChild>
+
+        {/* change the variant from secondary to ghost */}
         <Button
           variant="ghost"
           size="icon"
-          className="rounded-full relative"
+          className="rounded-full relative bg-transparent"
         >
           <ShoppingBag className="h-5 w-5" />
           {cartCount > 0 && (
