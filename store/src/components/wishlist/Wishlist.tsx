@@ -35,8 +35,10 @@ const Wishlist = () => {
       </SheetTrigger>
       <SheetContent className="flex flex-col h-full">
         <SheetHeader className="bg-white -m-6 flex flex-row items-center justify-between z-10 px-4 py-3 border-b">
+
+          {/* Set Undo2 as absolute to make the title centred */}
           <SheetClose asChild>
-            <Undo2 className="h-5 w-5 cursor-pointer hover:opacity-75" />
+            <Undo2 className="h-5 w-5 cursor-pointer hover:opacity-75 absolute" />
           </SheetClose>
 
           <SheetTitle className="!mx-auto !my-0 text-base">{t("Favorites")}</SheetTitle>
