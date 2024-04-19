@@ -29,11 +29,11 @@ const Cart = () => {
         <Button
           variant="ghost"
           size="icon"
-          className="rounded-full relative bg-transparent"
+          className="rounded-full relative hover:bg-transparent"
         >
           <ShoppingBag className="h-5 w-5" />
           {cartCount > 0 && (
-            <span className="absolute -top-1 -right-1 flex items-center justify-center h-4 w-4 bg-primary text-xs text-white rounded-full">
+            <span className="absolute top-0.5 right-0.5 flex items-center justify-center h-4 w-4 bg-primary text-xs text-white rounded-full">
               {cartCount}
             </span>
           )}
@@ -41,19 +41,19 @@ const Cart = () => {
         </Button>
       </SheetTrigger>
       <SheetContent className="flex flex-col justify-between h-full">
-        <SheetHeader className="bg-white -mt-4 flex flex-row items-center justify-between z-10 -mr-2 -ml-2">
+        <SheetHeader className="bg-white -m-6 flex flex-row items-center justify-between z-10 px-4 py-3 border-b">
           <SheetClose asChild>
             <Undo2 className="h-5 w-5 cursor-pointer hover:opacity-75" />
           </SheetClose>
 
-          <SheetTitle className="!m-0">{t("Shopping Cart")}</SheetTitle>
+          <SheetTitle className="!m-0 text-base">{t("Shopping Cart")}</SheetTitle>
 
           <HeartIcon
-            className="h-5 w-5 cursor-pointer hover:opacity-75"
+            className="h-5 w-5 cursor-pointer hover:opacity-75 !m-0"
             onClick={() => setIsOpen(true)}
           />
         </SheetHeader>
-        <ul className="my-3 flex flex-col gap-y-3">
+        <ul className="my-3 flex flex-col gap-y-3 pt-3">
           {Object.entries(cart).map(([itemCode, quantity]) => {
             if (!quantity) {
               return null;

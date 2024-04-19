@@ -99,7 +99,7 @@ const Header = () => {
               authState?.authenticated ? undefined : navigate("/login");
             }}
           >
-            <Button variant="ghost" size="icon" className="rounded-full">
+            <Button variant="ghost" size="icon" className="rounded-full hover:bg-transparent">
               {!isLoading &&
               !isFetching &&
               !isRefetching &&
@@ -132,7 +132,6 @@ const Header = () => {
             </DropdownMenuContent>
           )}
         </DropdownMenu>
-        {/* End of the account button */}
 
         <Separator className="h-6 w-[1px] bg-[#F0F0F0]"/>
 

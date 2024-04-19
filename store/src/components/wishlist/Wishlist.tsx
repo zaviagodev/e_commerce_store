@@ -22,11 +22,11 @@ const Wishlist = () => {
         <Button
           variant="ghost"
           size="icon"
-          className="rounded-full relative"
+          className="rounded-full relative hover:bg-transparent"
         >
-          <HeartIcon className="h-5 w-5 " />
+          <HeartIcon className="h-5 w-5" />
           {wishlistCount > 0 && (
-            <span className="absolute -top-1 -right-1 flex items-center justify-center h-4 w-4 bg-primary text-xs text-white rounded-full">
+            <span className="absolute top-0.5 -right-0.5 flex items-center justify-center h-4 w-4 bg-primary text-xs text-white rounded-full">
               {wishlistCount}
             </span>
           )}
@@ -34,14 +34,14 @@ const Wishlist = () => {
         </Button>
       </SheetTrigger>
       <SheetContent className="flex flex-col h-full">
-        <SheetHeader className="bg-white -mt-4 flex flex-row items-center  z-10 -mr-2 -ml-2">
+        <SheetHeader className="bg-white -m-6 flex flex-row items-center justify-between z-10 px-4 py-3 border-b">
           <SheetClose asChild>
             <Undo2 className="h-5 w-5 cursor-pointer hover:opacity-75" />
           </SheetClose>
 
-          <SheetTitle className="!mx-auto !my-0">{t("Favorites")}</SheetTitle>
+          <SheetTitle className="!mx-auto !my-0 text-base">{t("Favorites")}</SheetTitle>
         </SheetHeader>
-        <ul className="my-3 flex flex-col gap-y-3">
+        <ul className="my-3 flex flex-col gap-y-3 pt-3">
           {wishlist.map((itemCode) => (
             <WishlistItem key={itemCode} itemCode={itemCode} />
           ))}
