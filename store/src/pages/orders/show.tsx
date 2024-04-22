@@ -101,7 +101,7 @@ const OrderDetail = () => {
           <span className="text-sm font-bold">{order.status}</span>
         </li>
       </ul>
-      {order?.status && !["Completed", "Shipped"].includes(order.status) && (
+      {/* {order?.status && !["Completed", "Shipped"].includes(order.status) && (
         <div className="mt-6">
           <Label>{t("Payment Method")}</Label>
           <div className="flex justify-between items-center mt-2">
@@ -138,7 +138,7 @@ const OrderDetail = () => {
             </Button>
           </div>
         </div>
-      )}
+      )} */}
       <div className="mt-6">
         <Label>{t("Shipping Address")}</Label>
         {addressLoading || addressFetching || addressRefetching ? (

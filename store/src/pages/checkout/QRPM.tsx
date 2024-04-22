@@ -98,7 +98,7 @@ export const QRUploadSlip = () => {
   const form = useForm({
     resolver: yupResolver(confirmPaymentSchema),
     defaultValues: {
-      order_name: orderId,
+      invoice_name: orderId,
       payment_info: {
         payment_method_key: selectedPaymentMethod.key,
         bank: selectedPaymentMethod.account_name,
@@ -112,7 +112,7 @@ export const QRUploadSlip = () => {
 
   const onSubmit = (data: any) => {
     const formData = new FormData();
-    formData.append("order_name", data.order_name);
+    formData.append("invoice_name", data.invoice_name);
     formData.append("payment_info", JSON.stringify(data.payment_info));
     formData.append("file", data.file);
 
