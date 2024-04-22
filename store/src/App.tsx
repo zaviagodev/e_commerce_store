@@ -19,12 +19,6 @@ import {
   BlogPostList,
   BlogPostShow,
 } from "./pages/blog-posts";
-import {
-  CategoryCreate,
-  CategoryEdit,
-  CategoryList,
-  CategoryShow,
-} from "./pages/categories";
 import { ForgotPassword } from "./pages/forgotPassword";
 import { Login } from "./pages/login";
 import { Register } from "./pages/register";
@@ -54,6 +48,8 @@ import LangSelect from "./components/LangSelect";
 import OrderList from "./pages/orders/list";
 import OrderDetail from "./pages/orders/show";
 import { PaymentProvider } from "./pages/checkout/Payment";
+import { ConfigProvider, useConfig } from "./hooks/useConfig";
+import { useEffect } from "react";
 
 const providerConfig = {
   url: import.meta.env.VITE_BACKEND_URL,
@@ -61,6 +57,13 @@ const providerConfig = {
 
 function App() {
   const { t, i18n } = useTranslation();
+  const { config } = useConfig();
+
+  useEffect(() => {
+    if (!localStorage.getItem("locale") && config?.default_language) {
+      i18n.changeLanguage(config.default_language);
+    }
+  }, [config]);
 
   const i18nProvider = {
     translate: (key: string, params: Record<string, string>) => t(key, params),
@@ -230,7 +233,9 @@ function App() {
               </WishlistProvider>
             </CartProvider>
             <RefineKbar />
-            <LangSelect className="fixed bottom-16 right-4 w-max max-w-[180px] z-30" />
+            {config?.enable_i18n && (
+              <LangSelect className="fixed bottom-16 right-4 w-max max-w-[180px] z-30" />
+            )}
             <UnsavedChangesNotifier />
             <DocumentTitleHandler />
             <ToastContainer />
@@ -243,4 +248,12 @@ function App() {
   );
 }
 
-export default App;
+function AppWrapper() {
+  return (
+    <ConfigProvider>
+      <App />
+    </ConfigProvider>
+  );
+}
+
+export default AppWrapper;

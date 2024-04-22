@@ -14,9 +14,11 @@ import { HeartIcon, ShoppingBag, Undo2 } from "lucide-react";
 import CartItem from "./CartItem";
 import { useNavigate } from "react-router-dom";
 import { useWishlist } from "@/hooks/useWishlist";
+import useConfig from "@/hooks/useConfig";
 
 const Cart = () => {
   const t = useTranslate();
+  const { config } = useConfig();
   const navigate = useNavigate();
   const { cart, cartCount, cartTotal, serverCart } = useCart();
   const { setIsOpen } = useWishlist();
@@ -74,14 +76,26 @@ const Cart = () => {
               </p>
             </div>
             <SheetClose asChild>
-              <Button
-                className="inset-2 w-full"
-                size="lg"
-                onClick={() => navigate("/checkout")}
-              >
-                {t("Checkout")}
-                <ShoppingBag className="ml-2 h-5 w-5" />
-              </Button>
+              {config?.show_contact_us_button ? (
+                <Button
+                  disabled={cartCount === 0}
+                  className="inset-2 w-full"
+                  size="lg"
+                  onClick={() => window.open(config?.contact_us_url, "_blank")}
+                >
+                  {config?.contact_us_label}
+                </Button>
+              ) : (
+                <Button
+                  disabled={cartCount === 0}
+                  className="inset-2 w-full"
+                  size="lg"
+                  onClick={() => navigate("/checkout")}
+                >
+                  {t("Checkout")}
+                  <ShoppingBag className="ml-2 h-5 w-5" />
+                </Button>
+              )}
             </SheetClose>
           </div>
         </SheetFooter>

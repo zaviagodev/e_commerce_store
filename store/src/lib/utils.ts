@@ -11,10 +11,11 @@ export function getCategories(categories: any[]) {
     const route = category.route.split("/");
     let temp: any = result;
     route.forEach((r: string) => {
-      if (!temp[r]) {
-        temp[r] = {};
+      const name = categories.find((c) => c.route.endsWith(r))?.name;
+      if (!temp[name]) {
+        temp[name] = {};
       }
-      temp = temp[r];
+      temp = temp[name];
     });
   });
   return result;

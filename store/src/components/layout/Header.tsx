@@ -95,7 +95,7 @@ const Header = () => {
               <Input
                 type="search"
                 name="search"
-                placeholder="Search products..."
+                placeholder={t("Search products...")}
                 className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
               />
             </div>
