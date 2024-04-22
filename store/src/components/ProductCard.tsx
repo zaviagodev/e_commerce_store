@@ -27,7 +27,7 @@ const ProductCard = ({
   const t = useTranslate();
   const { addToCart } = useCart();
   return (
-    <Link to={`/product/${itemCode}`}>
+    <Link to={`/product/${itemCode}`} className="group">
       <div className={cn("space-y-3", className)} {...props}>
         <div className="overflow-hidden rounded-md">
           <div className="aspect-square relative">
@@ -37,12 +37,17 @@ const ProductCard = ({
               width={width}
               height={height}
               className={cn(
-                "mx-auto object-cover transition-all hover:scale-105",
+                "mx-auto object-cover transition-all group-hover:scale-105",
                 "aspect-square"
               )}
             />
+
+            {/* I added the className of translate-y-[150%] group-hover:translate-y-0 transition-transform 
+                to make the 'add to cart' button appear when hovering on the products and hide when unhovering   
+            */}
             <Button
-              className="w-64 absolute bottom-2 left-1/2 transform -translate-x-1/2"
+              variant="ghost"
+              className="translate-y-[150%] group-hover:translate-y-0 transition-transform w-[calc(100%_-_16px)] absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-white text-black shadow-sm"
               onClick={(e) => {
                 e.preventDefault();
                 addToCart(itemCode);

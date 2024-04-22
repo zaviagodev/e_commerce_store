@@ -134,6 +134,8 @@
     "New Password": "New Password",
     "Order placed successfully": "Order placed successfully",
     "changeLang": "changeLang",
+    "Item": "item",
+    "Items": "items",
     "language": {
         "en": "English",
         "th": "Thai"

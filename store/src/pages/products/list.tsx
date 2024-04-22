@@ -76,14 +76,17 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
   }, [filters, resetPagenation]);
 
   return (
-    <div style={{ padding: "16px" }}>
+    <div className="flex flex-col gap-y-12">
       <h1 className="text-3xl font-semibold text-center">
         {t("All products")}
       </h1>
       <div className="flex justify-between items-center">
-        <div>
-          <strong>{t("All products")}</strong> ({tableData?.total})
-        </div>
+        {tableData ? (
+          <div>
+            <strong>{t("All products")}</strong> 
+            <span className="text-darkgray"> ({tableData?.total} {t(tableData?.total === 1 ? "Item" : "Items")})</span>
+          </div>
+        ) : null}
         {/* TODO: integrate it later 
         <div className="flex items-center gap-4">
           <strong>{t("Sort by")}</strong>
@@ -103,7 +106,7 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
         <ProductListSkeleton />
       ) : (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-1 my-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mx-1 my-4">
             {(tableData?.data ?? []).map((item) => (
               <ProductCard
                 key={item.item_code}

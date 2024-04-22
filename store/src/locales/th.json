@@ -4,7 +4,7 @@
   "Continue": "ดำเนินต่อ",
   "Shopping Cart": "ตะกร้าสินค้า",
   "Total": "ทั้งหมด",
-  "Checkout": "เช็คเอาต์",
+  "Checkout": "ชำระเงิน",
   "Coupon code": "รหัสคูปอง",
   "Apply": "ใช้",
   "Coupon code is too short or empty": "รหัสคูปองสั้นเกินไปหรือว่าว่างเปล่า",
@@ -115,7 +115,7 @@
   "Pay via bank": "ชำระผ่านธนาคาร",
   "Pay": "ชำระ",
   "Shipping Address": "ที่อยู่จัดส่ง",
-  "All products": "ทุกสินค้า",
+  "All products": "สินค้าทั้งหมด",
   "Sort by": "เรียงตาม",
   "Default": "ค่าเริ่มต้น",
   "Price High to Low": "ราคา สูงไปต่ำ",
@@ -128,6 +128,8 @@
   "New Password": "รหัสผ่านใหม่",
   "Order placed successfully": "การสั่งซื้อเสร็จสิ้น",
   "changeLang": "เปลี่ยนภาษา",
+  "Item": "ไอเทม",
+  "Items": "ไอเทม",
   "language": {
     "en": "อังกฤษ",
     "th": "ไทย"

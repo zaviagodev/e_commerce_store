@@ -33,8 +33,8 @@ const Wishlist = () => {
           <span className="sr-only">{t("View wishlist")}</span>
         </Button>
       </SheetTrigger>
-      <SheetContent className="flex flex-col h-full">
-        <SheetHeader className="bg-white -m-6 flex flex-row items-center justify-between z-10 px-4 py-3 border-b">
+      <SheetContent className="flex flex-col h-full p-5">
+        <SheetHeader className="bg-white -m-5 flex flex-row items-center justify-between z-10 px-4 py-3 border-b">
 
           {/* Set Undo2 as absolute to make the title centred */}
           <SheetClose asChild>

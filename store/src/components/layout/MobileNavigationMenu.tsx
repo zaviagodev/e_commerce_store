@@ -29,7 +29,7 @@ const MobileNavigationMenu = () => {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="outline" size="icon" className="shrink-0 md:hidden">
+        <Button variant="outline" size="icon" className="shrink-0 md:hidden border-0">
           <Menu className="h-5 w-5" />
           <span className="sr-only">{t("Toggle navigation menu")}</span>
         </Button>

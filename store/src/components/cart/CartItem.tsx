@@ -42,8 +42,8 @@ const CartItem = ({ itemCode }: CartItemProps) => {
       </div>
       <div className="ml-[10px] flex flex-1 flex-col justify-between">
         <div>
-          <div className="flex justify-between text-gray-900">
-            <h3 className="text-texttag hover:underline text-[13px] leading-[17px]">
+          <div className="flex justify-between">
+            <h3 className="text-sm">
               <Link to={`/product/${itemCode}`}>{item.web_item_name}</Link>
             </h3>
             <p className="ml-4 whitespace-pre text-sm font-semibold">

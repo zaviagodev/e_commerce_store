@@ -40,8 +40,8 @@ const Cart = () => {
           <span className="sr-only">View cart</span>
         </Button>
       </SheetTrigger>
-      <SheetContent className="flex flex-col justify-between h-full">
-        <SheetHeader className="bg-white -m-6 flex flex-row items-center justify-between z-10 px-4 py-3 border-b">
+      <SheetContent className="flex flex-col justify-between h-full p-5">
+        <SheetHeader className="bg-white -m-5 flex flex-row items-center justify-between z-10 px-4 py-3 border-b">
           <SheetClose asChild>
             <Undo2 className="h-5 w-5 cursor-pointer hover:opacity-75" />
           </SheetClose>
@@ -63,7 +63,7 @@ const Cart = () => {
         </ul>
         <SheetFooter className="block sm:justify-center mt-auto">
           <div className="flex flex-col gap-y-4">
-            <div className="flex justify-between items-center text-lg font-medium">
+            <div className="flex justify-between items-center text-base font-semibold">
               <h5>{t("Total")}</h5>
               <p>
                 {typeof cartTotal === "string"
