@@ -30,7 +30,7 @@ const Cart = () => {
         <Button
           variant="ghost"
           size="icon"
-          className="rounded-full relative hover:bg-transparent"
+          className="rounded-full relative hover:bg-transparent "
         >
           <ShoppingBag className="h-5 w-5" />
           {cartCount > 0 && (
@@ -96,7 +96,7 @@ const Cart = () => {
                 </Button>
               </SheetClose>
 
-              <p className="text-darkgray-500 text-xs text-center">ค่าจัดส่งและภาษีคำนวณเมื่อชำระเงิน</p>
+              <p className="text-darkgray-600 text-xs text-center">ค่าจัดส่งและภาษีคำนวณเมื่อชำระเงิน</p>
             </div>
           </div>
         </SheetFooter>

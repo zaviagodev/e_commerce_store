@@ -76,15 +76,15 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
   }, [filters, resetPagenation]);
 
   return (
-    <div className="flex flex-col gap-y-12">
-      <h1 className="text-4xl font-semibold text-center">
+    <div className="flex flex-col gap-y-6">
+      <h1 className="text-4xl font-semibold text-center mb-6">
         {t("All products")}
       </h1>
       <div className="flex justify-between items-center">
         {tableData ? (
           <div>
             <strong>{t("All products")}</strong> 
-            <span className="text-darkgray-200"> ({tableData?.total} {t(tableData?.total === 1 ? "Item" : "Items")})</span>
+            <span className="text-darkgray-300"> ({tableData?.total} {t(tableData?.total === 1 ? "Item" : "Items")})</span>
           </div>
         ) : null}
         {/* TODO: integrate it later 
@@ -106,13 +106,14 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
         <ProductListSkeleton />
       ) : (
         <>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-12 mx-1 my-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-12">
             {(tableData?.data ?? []).map((item) => (
               <ProductCard
                 key={item.item_code}
                 itemCode={item.item_code}
                 name={item.item_name}
                 price={item.formatted_price}
+                fullPrice={item.formatted_mrp}
                 image={
                   getFileURL(item.website_image) ??
                   getFileURL(config?.default_product_image) ??

@@ -83,7 +83,7 @@ const Header = () => {
     <header className="sticky top-0 flex h-[57px] items-center gap-4 border-b bg-background z-20">
 
       {/* Create a new div to set the max width when resizing the browser */}
-      <div className="max-w-[1400px] m-auto w-full grid grid-cols-3 md:flex px-4">
+      <div className="max-w-[1400px] m-auto w-full grid grid-cols-3 md:flex pl-4">
         <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
           <Logo />
 

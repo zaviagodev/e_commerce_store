@@ -43,10 +43,10 @@ const ProductImages = ({ images }: ProductImagesProps) => {
     }
   };
   return (
-    <div className="relative flex w-full max-h-[600px] aspect-[4/3] pr-4 lg:pr-0">
+    <div className="relative flex w-full max-h-[600px] aspect-[4/3]">
       <SfScrollable
         ref={thumbsRef}
-        className="items-center w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+        className="sticky top-[calc(57px_+_16px)] items-center w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         direction="vertical"
         activeIndex={activeIndex}
         prevDisabled={activeIndex === 0}

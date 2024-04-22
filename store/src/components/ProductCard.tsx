@@ -8,6 +8,7 @@ interface ProductProps extends React.HTMLAttributes<HTMLDivElement> {
   itemCode: string;
   name: string;
   price: string;
+  fullPrice?: string;
   image: string;
 
   width?: number;
@@ -19,6 +20,7 @@ const ProductCard = ({
   itemCode,
   name,
   price,
+  fullPrice,
   image,
   width,
   height,
@@ -57,9 +59,22 @@ const ProductCard = ({
             </Button>
           </div>
         </div>
-        <div className="space-y-3 text-base text-darkgray-300 group-hover:text-black font-semibold">
-          <h3>{name}</h3>
-          <p>{price}</p>
+        <div className="space-y-3 text-darkgray-400 group-hover:text-black group-hover:font-semibold">
+          <h3 className="text-lg whitespace-pre overflow-hidden text-ellipsis">{name}</h3>
+          
+          {/* Full price is created when some products have the discounted price 
+            If there is the discounted price, "price" will be shown as discounted price, and the full price is the regular price before discount
+            If not, "price" will be shown as regular price
+          */}
+
+          {fullPrice ? (
+            <span className="text-base flex items-center gap-x-2">
+              <p className="text-red-500">{price}</p>
+              <p className="line-through text-darkgray-300">{fullPrice}</p>
+            </span>
+          ) : (
+            <p className="text-base">{price}</p>
+          )}
         </div>
       </div>
     </Link>
