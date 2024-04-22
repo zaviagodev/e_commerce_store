@@ -14,6 +14,7 @@ import { HeartIcon, ShoppingBag, Undo2 } from "lucide-react";
 import CartItem from "./CartItem";
 import { useNavigate } from "react-router-dom";
 import { useWishlist } from "@/hooks/useWishlist";
+import EmptyList from "../customComponents/EmptyList";
 
 const Cart = () => {
   const t = useTranslate();
@@ -53,14 +54,22 @@ const Cart = () => {
             onClick={() => setIsOpen(true)}
           />
         </SheetHeader>
-        <ul className="my-3 flex flex-col gap-y-3 pt-3">
-          {Object.entries(cart).map(([itemCode, quantity]) => {
-            if (!quantity) {
-              return null;
-            }
-            return <CartItem key={itemCode} itemCode={itemCode} />;
-          })}
-        </ul>
+        {cartCount > 0 ? (
+          <ul className="my-3 flex flex-col gap-y-3 pt-3">
+            {Object.entries(cart).map(([itemCode, quantity]) => {
+              if (!quantity) {
+                return null;
+              }
+              return <CartItem key={itemCode} itemCode={itemCode} />;
+            })}
+          </ul>
+        ) : (
+          <EmptyList 
+            icon={<ShoppingBag className="text-white w-[30px] h-[30px]"/>}
+            title={t("Empty_cart.title")}
+            desc={t("Empty_cart.desc")}
+          />
+        )}
         <SheetFooter className="block sm:justify-center mt-auto">
           <div className="flex flex-col gap-y-4">
             <div className="flex justify-between items-center text-base font-semibold">

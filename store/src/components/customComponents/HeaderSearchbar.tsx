@@ -29,8 +29,10 @@ const HeaderSearchbar = ({
           <Search className="h-5 w-5"/>
         </Button>
       </SheetTrigger>
-      <SheetContent side="top" className="lg:px-64 py-0">
-        {children}
+      <SheetContent side="top" className="py-0">
+        <div className="max-w-[1400px] mx-auto w-full">
+          {children}
+        </div>
       </SheetContent>
     </Sheet>
   )

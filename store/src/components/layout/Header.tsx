@@ -80,10 +80,10 @@ const Header = () => {
   }
 
   return (
-    <header className="sticky top-0 flex h-[57px] items-center gap-4 border-b bg-background px-4 z-20">
+    <header className="sticky top-0 flex h-[57px] items-center gap-4 border-b bg-background z-20">
 
       {/* Create a new div to set the max width when resizing the browser */}
-      <div className="max-w-[1400px] m-auto w-full grid grid-cols-3 md:flex">
+      <div className="max-w-[1400px] m-auto w-full grid grid-cols-3 md:flex px-4">
         <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
           <Logo />
 
@@ -145,7 +145,7 @@ const Header = () => {
           {/* This is the searchbar sheet */}
           {config?.is_search_enabled == 1 && (
             <HeaderSearchbar open={isSearching} onOpenChange={setIsSearching}>
-              <section className="flex items-start w-full justify-between gap-x-10 pt-3 py-10">
+              <section className="flex items-start w-full justify-between gap-x-10 px-4 pt-3 py-10">
                 <Logo />
 
                 <div className="w-full flex flex-col gap-y-10">

@@ -47,7 +47,7 @@ const ProductCard = ({
             */}
             <Button
               variant="ghost"
-              className="translate-y-[150%] group-hover:translate-y-0 transition-transform w-[calc(100%_-_16px)] absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-white text-black shadow-sm"
+              className="translate-y-[150%] group-hover:translate-y-0 transition-transform w-[calc(100%_-_16px)] absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-white text-black shadow-sm text-base font-semibold"
               onClick={(e) => {
                 e.preventDefault();
                 addToCart(itemCode);

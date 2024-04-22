@@ -8,9 +8,10 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useTranslate } from "@refinedev/core";
-import { HeartIcon, Undo2 } from "lucide-react";
+import { Heart, HeartIcon, Undo2 } from "lucide-react";
 import WishlistItem from "./WishlistItem";
 import { useWishlist } from "@/hooks/useWishlist";
+import EmptyList from "../customComponents/EmptyList";
 
 const Wishlist = () => {
   const t = useTranslate();
@@ -43,11 +44,19 @@ const Wishlist = () => {
 
           <SheetTitle className="!mx-auto !my-0 text-base">{t("Favorites")}</SheetTitle>
         </SheetHeader>
-        <ul className="my-3 flex flex-col gap-y-3 pt-3">
-          {wishlist.map((itemCode) => (
-            <WishlistItem key={itemCode} itemCode={itemCode} />
-          ))}
-        </ul>
+        {wishlistCount > 0 ? (
+          <ul className="my-3 flex flex-col gap-y-3 pt-3">
+            {wishlist.map((itemCode) => (
+              <WishlistItem key={itemCode} itemCode={itemCode} />
+            ))}
+          </ul>
+        ) : (
+          <EmptyList 
+            icon={<Heart className="text-white w-[30px] h-[30px]"/>}
+            title={t("Empty_wishlist.title")}
+            desc={t("Empty_wishlist.desc")}
+          />
+        )}
       </SheetContent>
     </Sheet>
   );

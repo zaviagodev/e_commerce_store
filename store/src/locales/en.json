@@ -136,6 +136,14 @@
     "changeLang": "changeLang",
     "Item": "item",
     "Items": "items",
+    "Empty_cart": {
+        "title": "Your cart is empty",
+        "desc": "When the products are added to cart, they will appear here."
+    },
+    "Empty_wishlist": {
+        "title": "Your wishlist is empty",
+        "desc": "When the products are added to wishlist, they will appear here."
+    },
     "language": {
         "en": "English",
         "th": "Thai"
