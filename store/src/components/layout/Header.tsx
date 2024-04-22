@@ -182,11 +182,11 @@ const Header = () => {
                     </div>
                   </form>
 
-                  <div className="flex flex-col gap-y-6">
-                    <h2 className="text-[#909090]">Popular searches</h2>
+                  <div className="space-y-6 font-semibold">
+                    <h2 className="text-darkgray-300">Popular searches</h2>
 
                     {/* These are popular searches which I statically mock them up */}
-                    <ul>
+                    <ul className="space-y-6">
                       <li>Long Hair</li>
                       <li>Liner</li>
                       <li>OPTP</li>

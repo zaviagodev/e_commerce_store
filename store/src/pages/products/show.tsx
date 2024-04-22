@@ -36,7 +36,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
   const inWishlist = wishlist.includes(itemCode);
 
   return (
-    <section className="space-y-[100px]">
+    <section className="space-y-[100px] pb-20">
       <div className="flex flex-col lg:flex-row gap-[18px] lg:gap-[33px]">
         <ProductImages
           images={[
@@ -51,9 +51,9 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
             },
           ]}
         />
-        <section className="w-full px-4 lg:px-10 lg:py-[30px] lg:max-w-[536px] h-full sticky top-0 z-10">
+        <section className="w-full lg:px-10 lg:py-[30px] lg:max-w-[536px] h-full sticky top-0 z-10">
           <div className="flex flex-col gap-y-3 lg:gap-y-[10px]">
-            <h2 className="text-secgray text-sm">{product.item_group}</h2>
+            <h2 className="text-darkgray-200 text-sm">{product.item_group}</h2>
             <h1 className="font-semibold text-texttag text-[22px]">
               {product.web_item_name}
             </h1>
@@ -86,14 +86,14 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
               <ProductCounter itemCode={showId! as string} size="sm" />
               <div className="fixed bottom-0 left-0 bg-white lg:bg-inherit p-4 lg:p-0 lg:static flex lg:flex-col w-full gap-y-[14px] flex-col-reverse z-10">
                 <div className="flex items-center gap-x-[10px] w-full">
-                  <Button className="w-full h-12.5 font-semibold" onClick={() => addToCart(itemCode)}>
+                  <Button className="w-full rounded-xl h-12.5 font-semibold" onClick={() => addToCart(itemCode)}>
                     <ShoppingBag size={18} className="mr-2.5" />
                     {t("Add to Cart")}
                   </Button>
                   {config?.enable_wishlist == 1 && (
                     <Button
                       variant="outline"
-                      className={`border-primary border-2 h-12.5`}
+                      className={`border-primary border-2 h-12.5 rounded-xl`}
                       onClick={() =>
                         inWishlist
                           ? removeFromWishlist(itemCode)

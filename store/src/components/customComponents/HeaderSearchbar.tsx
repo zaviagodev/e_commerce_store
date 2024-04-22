@@ -26,7 +26,7 @@ const HeaderSearchbar = ({
     <Sheet onOpenChange={onOpenChange} open={open}>
       <SheetTrigger>
         <Button variant="ghost" size="icon" className="rounded-full flex justify-center hover:bg-transparent">
-          <Search className="h-5 w-5"/>
+          <Search className="h-[22px] w-[22px]"/>
         </Button>
       </SheetTrigger>
       <SheetContent side="top" className="py-0">

@@ -25,7 +25,7 @@ const Wishlist = () => {
           size="icon"
           className="rounded-full relative hover:bg-transparent"
         >
-          <HeartIcon className="h-5 w-5" />
+          <HeartIcon className="h-[22px] w-[22px]" />
           {wishlistCount > 0 && (
             <span className="absolute top-0.5 -right-0.5 flex items-center justify-center h-4 w-4 bg-primary text-xs text-white rounded-full">
               {wishlistCount}

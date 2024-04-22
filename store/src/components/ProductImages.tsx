@@ -106,7 +106,6 @@ const ProductImages = ({ images }: ProductImagesProps) => {
           >
             <img
               alt={alt}
-              className="border border-neutral-200"
               width="78"
               height="78"
               src={imageThumbSrc}
