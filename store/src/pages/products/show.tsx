@@ -69,17 +69,17 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
         </div>
         <div className="pb-6 border-gray-200 border-b">
           <div className="items-start flex flex-col gap-y-[14px]">
-            <ProductCounter itemCode={showId! as string} size="lg" />
+            <ProductCounter itemCode={showId! as string} size="sm" />
             <div className="fixed bottom-0 left-0 bg-white lg:bg-inherit p-4 lg:p-0 lg:static flex lg:flex-col w-full gap-y-[14px] flex-col-reverse z-10">
               <div className="flex items-center gap-x-[10px] w-full">
                 <Button className="w-full" onClick={() => addToCart(itemCode)}>
-                  <ShoppingBag size={18} className="mr-1" />
+                  <ShoppingBag size={18} className="mr-2.5" />
                   {t("Add to Cart")}
                 </Button>
                 {config?.enable_wishlist == 1 && (
                   <Button
                     variant="outline"
-                    className={`${inWishlist ? "text-red-500" : "text-black"}`}
+                    className={`${inWishlist ? "text-red-500" : "text-black"} border-primary border-2`}
                     onClick={() =>
                       inWishlist
                         ? removeFromWishlist(itemCode)

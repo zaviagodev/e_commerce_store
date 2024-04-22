@@ -84,7 +84,7 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
         {tableData ? (
           <div>
             <strong>{t("All products")}</strong> 
-            <span className="text-darkgray-100"> ({tableData?.total} {t(tableData?.total === 1 ? "Item" : "Items")})</span>
+            <span className="text-darkgray-200"> ({tableData?.total} {t(tableData?.total === 1 ? "Item" : "Items")})</span>
           </div>
         ) : null}
         {/* TODO: integrate it later 

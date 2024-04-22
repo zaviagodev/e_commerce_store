@@ -71,8 +71,8 @@ const Cart = () => {
           />
         )}
         <SheetFooter className="block sm:justify-center mt-auto">
-          <div className="flex flex-col gap-y-4">
-            <div className="flex justify-between items-center text-base font-semibold">
+          <div className="flex flex-col gap-y-6">
+            <div className="flex justify-between items-center text-sm font-semibold">
               <h5>{t("Total")}</h5>
               <p>
                 {typeof cartTotal === "string"
@@ -84,16 +84,20 @@ const Cart = () => {
                     }).format(cartTotal)}
               </p>
             </div>
-            <SheetClose asChild>
-              <Button
-                className="inset-2 w-full"
-                size="lg"
-                onClick={() => navigate("/checkout")}
-              >
-                {t("Checkout")}
-                <ShoppingBag className="ml-2 h-5 w-5" />
-              </Button>
-            </SheetClose>
+            <div className="flex flex-col gap-y-2">
+              <SheetClose asChild>
+                <Button
+                  className="inset-2 w-full"
+                  size="lg"
+                  onClick={() => navigate(cartCount > 0 ? "/checkout" : "/")}
+                >
+                  {t(cartCount > 0 ? "Checkout" : "Shop now")}
+                  <ShoppingBag className="ml-2 h-5 w-5" />
+                </Button>
+              </SheetClose>
+
+              <p className="text-darkgray-500 text-xs text-center">ค่าจัดส่งและภาษีคำนวณเมื่อชำระเงิน</p>
+            </div>
           </div>
         </SheetFooter>
       </SheetContent>

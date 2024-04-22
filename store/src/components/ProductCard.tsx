@@ -57,9 +57,9 @@ const ProductCard = ({
             </Button>
           </div>
         </div>
-        <div className="space-y-1 text-sm">
-          <h3 className="font-medium leading-none">{name}</h3>
-          <p className="text-xs text-muted-foreground">{price}</p>
+        <div className="space-y-3 text-base text-darkgray-300 group-hover:text-black font-semibold">
+          <h3>{name}</h3>
+          <p>{price}</p>
         </div>
       </div>
     </Link>

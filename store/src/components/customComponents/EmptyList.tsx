@@ -14,7 +14,7 @@ const EmptyList = ({ icon, title, desc } : EmptyListProps) => {
       </div>
 
       <h1 className="text-2xl font-semibold px-2">{title}</h1>
-      <p className="text-darkgray-200">{desc}</p>
+      <p className="text-darkgray-400">{desc}</p>
     </div>
   )
 }

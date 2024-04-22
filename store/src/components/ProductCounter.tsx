@@ -10,7 +10,7 @@ type ProductCounterProps = {
 const ProductCounter = ({ itemCode, size = "sm" }: ProductCounterProps) => {
   const { cart, addToCart } = useCart();
   return (
-    <div className="flex items-center rounded-lg bg-slate-50">
+    <div className="flex items-center rounded-lg bg-darkgray-100">
       <Button
         variant="ghost"
         size={size}
