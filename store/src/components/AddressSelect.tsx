@@ -54,24 +54,24 @@ const AddressSelect = ({ onSelect, ...props }: AddressSelectProps) => {
         <ArrowLeftRight className="h-4 w-4" />
       </SheetTrigger>
       <SheetContent>
-        <SheetHeader className="bg-white -mt-4 flex flex-row items-center z-10 -mr-2 -ml-2">
+        <SheetHeader className="bg-white -m-5 flex flex-row items-center justify-between z-10 px-4 py-3 border-b">
           <SheetClose asChild>
-            <Undo2 className="h-5 w-5 cursor-pointer hover:opacity-75" />
+            <Undo2 className="h-5 w-5 cursor-pointer hover:opacity-75 absolute" />
           </SheetClose>
 
-          <SheetTitle className="!mx-auto !my-0">
+          <SheetTitle className="!mx-auto !my-0 text-base">
             {t("Address List")}
           </SheetTitle>
         </SheetHeader>
         <RadioGroup
           {...props}
-          className="my-3 flex flex-col gap-y-3"
+          className="flex flex-col gap-y-3 pt-10"
           value={props?.value}
         >
           {data?.data.map((address: any) => (
             <div
               className={`cursor-pointer rounded-lg ${
-                props?.value === address.name ? "outline" : ""
+                props?.value === address.name ? "outline outline-1" : ""
               }`}
               onClick={() => {
                 mutate({
@@ -98,11 +98,10 @@ const AddressSelect = ({ onSelect, ...props }: AddressSelectProps) => {
           ))}
         </RadioGroup>
         <Button
-          variant="outline"
-          className="w-full px-6 justify-start text-base text-gray-500"
+          className="w-full px-4 text-base rounded-xl h-12.5 mt-9"
           onClick={() => navigate("/account/addresses/new")}
         >
-          <CirclePlus className="h-4 w-4 mr-2" /> {t("Add Address")}
+          {t("Add Address")}
         </Button>
       </SheetContent>
     </Sheet>

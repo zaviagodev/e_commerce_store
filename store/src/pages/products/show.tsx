@@ -36,7 +36,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
   const inWishlist = wishlist.includes(itemCode);
 
   return (
-    <section className="space-y-[100px] pb-20 max-w-[1200px] mx-auto">
+    <section className="space-y-10 lg:space-y-[140px] pb-20 max-w-[1200px] mx-auto">
       <div className="flex flex-col lg:flex-row gap-y-[18px]">
         <ProductImages
           images={[
@@ -78,7 +78,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
               </span> */}
             </span>
           </div>
-          <div className="text-sm leading-6 pb-[60px] font-normal">
+          <div className="text-sm leading-6 pb-12 lg:pb-[60px] font-normal">
             <p>{product.short_description}</p>
           </div>
           <div className="pb-6 border-b">

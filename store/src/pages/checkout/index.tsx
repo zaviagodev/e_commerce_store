@@ -105,7 +105,7 @@ const Checkout = () => {
   const CartList = () => {
     return (
       <>
-        <div className="flex flex-col rounded-lg gap-y-6">
+        <div className="flex flex-col rounded-lg gap-y-4">
           <div className="flex items-center justify-between text-sm text-darkgray-200">
             <p>{t("Grand total")}</p>
             <p>{cartCount} {t(cartCount === 1 ? "Item" : "Items")}</p>
@@ -123,7 +123,7 @@ const Checkout = () => {
         {/* <h2 className="font-semibold text-darkgray">
           {t("Order summary")}
         </h2> */}
-        <div className="mt-12 flex flex-col gap-y-4">
+        <div className="mt-12 flex flex-col gap-y-4 lg:mr-5">
           <ul className="my-3 flex flex-col gap-y-8">
             {Object.entries(cart).map(([itemCode, quantity]) => {
               if (!quantity) {
@@ -140,10 +140,10 @@ const Checkout = () => {
           </ul>
         </div>
 
-        <section className="md:ml-16">
-          <Separator className="my-4" />
+        <section className="lg:ml-[69px] lg:mr-5">
+          <Separator className="my-4 bg-[#E3E3E3]" />
           <div className="flex flex-col gap-y-4">
-            <div className="w-full flex justify-between">
+            <div className="w-full flex justify-between text-sm">
               <p>{t("Subtotal")}</p>
               <strong>
                 {typeof cartTotal === "string"
@@ -155,27 +155,27 @@ const Checkout = () => {
               </strong>
             </div>
             {checkoutSummary.totalShipping > 0 && (
-              <div className="w-full flex justify-between text-darkgray-200">
+              <div className="w-full flex justify-between text-darkgray-200 text-sm">
                 <p>{t("Shipping Cost")}</p>
-                <strong>
+                <span>
                   {new Intl.NumberFormat("th-TH", {
                     style: "currency",
                     currency: "THB",
                   }).format(checkoutSummary.totalShipping)}
-                </strong>
+                </span>
               </div>
             )}
-            <div className="w-full flex justify-between text-darkgray-200">
+            <div className="w-full flex justify-between text-darkgray-200 text-sm">
               <p>{t("Tax")}</p>
-              <strong>
+              <span>
                 {new Intl.NumberFormat("th-TH", {
                   style: "currency",
                   currency: "THB",
                 }).format(checkoutSummary.totalTax)}
-              </strong>
+              </span>
             </div>
             {checkoutSummary.totalDiscount > 0 && (
-              <div className="w-full flex justify-between text-darkgray-200">
+              <div className="w-full flex justify-between text-darkgray-200 text-sm">
                 <p>{t("Discount")}</p>
                 <strong>
                   {new Intl.NumberFormat("th-TH", {
@@ -186,7 +186,7 @@ const Checkout = () => {
               </div>
             )}
             {serverCart?.message.doc.coupon_code && (
-              <div className="w-full flex justify-between text-darkgray-200">
+              <div className="w-full flex justify-between text-darkgray-200 text-sm">
                 <p className="text-muted-foreground">
                   {t("Coupon Code")}
                 </p>
@@ -197,8 +197,8 @@ const Checkout = () => {
             )}
             <CouponCodeInput />
           </div>
-          <Separator className="my-4" />
-          <div className="w-full flex justify-between font-semibold">
+          <Separator className="my-4 bg-[#E3E3E3]" />
+          <div className="w-full flex justify-between font-semibold text-sm">
             <p>{t("Grand total")}</p>
             <strong>
               {new Intl.NumberFormat("th-TH", {
@@ -213,32 +213,32 @@ const Checkout = () => {
   }
 
   return (
-    <div className="flex flex-col md:gap-y-8 md:flex-row max-w-[1200px] mx-auto">
-      <div className="w-full md:w-1/2 md:p-20 md:pt-5 md:h-screen">
-        <div className="flex items-center gap-x-4 border-b md:border-0 p-4 md:p-0 justify-between">
+    <div className="flex flex-col justify-center lg:gap-y-8 lg:flex-row mx-auto">
+      <div className="w-full lg:max-w-[494px] lg:pl-0 lg:p-20 lg:pt-5 lg:h-screen box-content">
+        <div className="flex items-center gap-x-4 border-b lg:border-0 p-4 lg:p-0 justify-between">
           <div className="flex items-center gap-x-2.5">
             <Undo2 className="h-5 w-5 cursor-pointer hover:opacity-75" onClick={() => navigate("/")}/>
-            <h2 className="md:hidden font-semibold">{t("Order details")}</h2>
+            <h2 className="lg:hidden font-semibold">{t("Order details")}</h2>
 
-            <div className="hidden md:block">
+            <div className="hidden lg:block">
               <Logo />
             </div>
           </div>
 
           {/* CartList MOBILE VERSION */}
           <TopSheet trigger={
-            <h2 className="md:hidden text-darkgray-200">ข้อมูลตะกร้า</h2>
+            <h2 className="lg:hidden text-darkgray-200">ข้อมูลตะกร้า</h2>
           }>
             <CartList />
           </TopSheet>
         </div>
 
         {/* CartList DESKTOP VERSION */}
-        <div className="hidden md:block w-full md:mt-[60px] px-4 md:p-0">
+        <div className="hidden lg:block w-full lg:mt-[60px] px-4 lg:p-0 lg:pl-5 ml-2">
           <CartList />
         </div>
       </div>
-      <div className="w-full md:w-1/2 md:shadow-checkout p-4 md:px-[60px] md:pt-[120px]">
+      <div className="w-full lg:max-w-[536px] lg:shadow-checkout p-4 lg:px-[60px] lg:pt-[120px]">
         <div className="w-full">
           <h2 className="font-semibold text-darkgray-500 text-lg">
             {t("Shipping Information")}
@@ -276,17 +276,17 @@ const Checkout = () => {
                     <Skeleton className="h-40 rounded-xl w-full"/>
                   )}
                 {address && <AddressCard {...address?.message} />}
+                {!address && (
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="w-full justify-start text-gray-500 border-darkgray-100 bg-accent !text-darkgray-500 rounded-xl px-4"
+                    onClick={() => navigate("/account/addresses/new")}
+                  >
+                    <CirclePlus className="mr-2" /> {t("Add Address")}
+                  </Button>
+                )}
               </section>
-              {!address && (
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="w-full justify-start text-gray-500 border-darkgray-100 bg-accent !text-darkgray-500 rounded-xl px-4"
-                  onClick={() => navigate("/account/addresses/new")}
-                >
-                  <CirclePlus className="mr-2" /> {t("Add Address")}
-                </Button>
-              )}
               <ShippingRuleSelect
                 initialShippingRule={serverCart?.message.shipping_rules?.find(
                   ({ name }: { name: string }) =>

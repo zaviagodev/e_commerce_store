@@ -10,6 +10,7 @@
   "Coupon code is too short or empty": "รหัสคูปองสั้นเกินไปหรือว่าว่างเปล่า",
   "Shipping Rule": "กฎการจัดส่ง",
   "Update Address": "อัปเดตที่อยู่",
+  "Add Address": "เพิ่มที่อยู่ใหม่",
   "Title is required": "ต้องระบุชื่อเรื่อง",
   "Address is required": "ที่อยู่จำเป็น",
   "City is required": "เมืองจำเป็น",

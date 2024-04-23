@@ -59,7 +59,7 @@ const ProductCard = ({
             </Button>
           </div>
         </div>
-        <div className="space-y-3 text-darkgray-400 group-hover:text-black group-hover:font-semibold">
+        <div className="space-y-1 md:space-y-3 text-darkgray-400 group-hover:text-black group-hover:font-semibold">
           <h3 className="text-lg whitespace-pre overflow-hidden text-ellipsis">{name}</h3>
           
           {/* Full price is created when some products have the discounted price 

@@ -19,7 +19,7 @@ const RelatedProducts = () => {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-semibold">Related Products</h1>
+      <h1 className="text-2xl lg:text-3xl font-semibold">Related Products</h1>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-12 mx-1 my-4">
       {isFetching || isLoading || isRefetching ? (

@@ -68,7 +68,7 @@ const CouponCodeInput = () => {
                   <FormItem className="w-full">
                     <FormControl>
                       <Input
-                        className="rounded-xl"
+                        className="rounded-xl focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none"
                         placeholder={t("Add coupon")}
                         {...field}
                         onBlur={(e) => e.target.value === "" && setAddCoupon(false)}

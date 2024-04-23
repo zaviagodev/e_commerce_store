@@ -22,7 +22,7 @@ const CheckoutItem = ({ itemCode, qty }: CheckoutItemProps) => {
 
   return (
     <div key={itemCode} className="flex gap-x-4">
-      <div className="w-12 h-12 bg-gray-300 rounded-md flex items-center justify-center">
+      <div className="w-[53px] h-[53px] bg-gray-300 rounded-md overflow-hidden flex items-center justify-center">
         <img
           src={
             getFileURL(item.thumbnail) ??
@@ -30,7 +30,7 @@ const CheckoutItem = ({ itemCode, qty }: CheckoutItemProps) => {
             ""
           }
           alt={item.web_item_name || "product-item"}
-          className="object-cover object-center"
+          className="object-cover w-full h-full"
         />
       </div>
       <div className="flex-1">
