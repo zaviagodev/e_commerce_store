@@ -28,6 +28,7 @@ import { useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "../ui/skeleton";
 import TopSheet from "../customComponents/TopSheet";
+import Logo from "../customComponents/Logo";
 
 const Header = () => {
   const t = useTranslate();
@@ -51,8 +52,7 @@ const Header = () => {
     isSearching && setSearchInput("")
   }, [isSearching])
 
-  {/* Create a logo component to use it on the searchbar sheet and the header */}
-  const Logo = () => {
+  const LogoButton = () => {
     return (
       <button
         onClick={() =>
@@ -67,15 +67,8 @@ const Header = () => {
         }
         className="flex items-center gap-2 text-lg font-semibold md:text-base"
       >
-        {config?.brand_logo ? (
-          <img
-            src={getFileURL(config?.brand_logo) ?? ""}
-            alt={config?.company}
-            className="md:min-h-[40px] md:h-[40px] w-auto max-w-[200px] min-h-[30px] h-[30px]"
-          />
-        ) : (
-          <h2>{config?.company}</h2>
-        )}
+        {/* Create the Logo component file onto the customComponent folder */}
+        <Logo />
       </button>
     )
   }
@@ -84,14 +77,14 @@ const Header = () => {
     <header className="sticky top-0 flex h-[57px] items-center gap-4 border-b bg-background z-20">
       <div className="max-w-[1400px] m-auto w-full grid grid-cols-3 md:flex pl-4">
         <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
-          <Logo />
+          <LogoButton />
           <AppNavigationMenu />
         </nav>
         <MobileNavigationMenu />
 
         {/* Mobile logo: I have made it on the centre of the header */}
         <div className="md:hidden justify-center flex">
-          <Logo />
+          <LogoButton />
         </div>
 
         <div className="flex ml-auto items-center gap-2">

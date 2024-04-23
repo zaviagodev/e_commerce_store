@@ -3,7 +3,7 @@ import { Skeleton } from "../ui/skeleton";
 
 const ProductSkeleton = () => {
   return (
-    <div className="flex flex-col lg:flex-row gap-[18px] lg:gap-[33px]">
+    <div className="flex flex-col lg:flex-row gap-[18px] lg:gap-[33px] max-w-[1100px] mx-auto">
       <div className="relative flex w-full max-h-[600px] aspect-[4/3] pr-4 lg:pr-0">
         <div className="items-center relative flex-col h-full inline-flex">
           <div className="inline-flex items-center justify-center disabled:shadow-none p-1.5 gap-1.5 hover:shadow-md absolute z-10 top-4">

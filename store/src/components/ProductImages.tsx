@@ -116,10 +116,10 @@ const ProductImages = ({ images }: ProductImagesProps) => {
         ))}
       </SfScrollable>
       <SfScrollable
-        className="w-full h-full snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+        className="w-full snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         activeIndex={activeIndex}
         direction="vertical"
-        wrapperClassName="h-full m-auto"
+        wrapperClassName="h-full w-full"
         buttonsPlacement="none"
         isActiveIndexCentered
         drag={{ containerWidth: true }}
@@ -133,7 +133,7 @@ const ProductImages = ({ images }: ProductImagesProps) => {
             <img
               aria-label={alt}
               aria-hidden={activeIndex !== index}
-              className="object-contain w-auto h-full"
+              className="object-contain w-full h-full"
               alt={alt}
               src={imageSrc}
             />

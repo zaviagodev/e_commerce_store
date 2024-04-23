@@ -35,6 +35,7 @@ import AddressSelect from "@/components/AddressSelect";
 import { useConfig } from "@/hooks/useConfig";
 import { getFileURL } from "@/lib/utils";
 import TopSheet from "@/components/customComponents/TopSheet";
+import Logo from "@/components/customComponents/Logo";
 
 export const paymentMethodIconMap: { [key: string]: React.ReactNode } = {
   "2": <Landmark className="mr-2 h-4 w-4" />,
@@ -101,22 +102,6 @@ const Checkout = () => {
       values: {},
     });
   };
-
-  const Logo = () => {
-    return (
-      <div className="hidden md:block">
-        {config?.brand_logo ? (
-          <img
-            src={getFileURL(config?.brand_logo) ?? ""}
-            alt={config?.company}
-            className="md:min-h-[40px] md:h-[40px] w-auto min-h-[30px] h-[30px]"
-          />
-        ) : (
-          <h2>{config?.company}</h2>
-        )}
-      </div>
-    )
-  }
 
   {/* Create the CartList component to use it on the sheet on the mobile version */}
   const CartList = () => {
@@ -201,7 +186,7 @@ const Checkout = () => {
               </div>
             )}
             {serverCart?.message.doc.coupon_code && (
-              <div className="w-full flex justify-between">
+              <div className="w-full flex justify-between text-darkgray-200">
                 <p className="text-muted-foreground">
                   {t("Coupon Code")}
                 </p>
@@ -235,10 +220,12 @@ const Checkout = () => {
             <Undo2 className="h-5 w-5 cursor-pointer hover:opacity-75" onClick={() => navigate("/")}/>
             <h2 className="md:hidden font-semibold">{t("Order details")}</h2>
 
-            <Logo />
+            <div className="hidden md:block">
+              <Logo />
+            </div>
           </div>
 
-          {/* This one is displayed on the mobile version */}
+          {/* MOBILE VERSION */}
           <TopSheet trigger={
             <h2 className="md:hidden text-darkgray-200">ข้อมูลตะกร้า</h2>
           }>
@@ -246,6 +233,7 @@ const Checkout = () => {
           </TopSheet>
         </div>
 
+        {/* DESKTOP VERSION */}
         <div className="hidden md:block w-full md:mt-[60px] px-4 md:p-0">
           <CartList />
         </div>
