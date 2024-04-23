@@ -98,24 +98,28 @@ const Checkout = () => {
   };
 
   return (
-    <div className="py-7 px-4 flex flex-col gap-x-0 gap-y-8 md:flex-row md:gap-x-8">
-      <div className="w-full md:w-1/2">
-        <div className="w-full lg:max-w-[450px] mx-auto">
-          <div className="flex flex-col bg-secondary p-6 rounded-lg">
-            <p className=" text-xs">{t("Grand total")}</p>
-            <h2 className="text-2xl font-semibold text-primary">
+    <div className="flex flex-col gap-y-8 md:flex-row">
+      <div className="w-full md:w-1/2 p-4 md:p-20 md:h-screen">
+        <div className="w-full">
+          <div className="flex flex-col rounded-lg gap-y-6">
+            <div className="flex items-center justify-between text-sm text-darkgray-200">
+              <p>{t("Grand total")}</p>
+              <p>{cartCount} {t(cartCount === 1 ? "Item" : "Items")}</p>
+            </div>
+
+            <h2 className="text-4xl font-semibold text-primary">
               {new Intl.NumberFormat("th-TH", {
                 style: "currency",
                 currency: "THB",
               }).format(serverCart?.message.doc.grand_total)}
             </h2>
           </div>
-          <div className="mt-6">
-            <h2 className="font-semibold text-darkgray">
+          <div className="mt-12">
+            {/* <h2 className="font-semibold text-darkgray">
               {t("Order summary")}
-            </h2>
+            </h2> */}
             <div className="mt-6 flex flex-col gap-y-4">
-              <ul className="my-3 flex flex-col gap-y-3">
+              <ul className="my-3 flex flex-col gap-y-8">
                 {Object.entries(cart).map(([itemCode, quantity]) => {
                   if (!quantity) {
                     return null;
@@ -130,83 +134,86 @@ const Checkout = () => {
                 })}
               </ul>
             </div>
-            <Separator className="my-4" />
-            <div className="flex flex-col">
-              <div className="w-full flex justify-between">
-                <p className="text-sm text-muted-foreground">{t("Subtotal")}</p>
-                <strong className="text-darkgray">
-                  {typeof cartTotal === "string"
-                    ? t("Loading...")
-                    : new Intl.NumberFormat("th-TH", {
+            
+            <section className="md:ml-16">
+              <Separator className="my-4" />
+              <div className="flex flex-col gap-y-4">
+                <div className="w-full flex justify-between">
+                  <p className="text-sm">{t("Subtotal")}</p>
+                  <strong>
+                    {typeof cartTotal === "string"
+                      ? t("Loading...")
+                      : new Intl.NumberFormat("th-TH", {
+                          style: "currency",
+                          currency: "THB",
+                        }).format(cartTotal)}
+                  </strong>
+                </div>
+                {checkoutSummary.totalShipping > 0 && (
+                  <div className="w-full flex justify-between text-darkgray-200">
+                    <p className="text-sm">
+                      {t("Shipping Cost")}
+                    </p>
+                    <strong>
+                      {new Intl.NumberFormat("th-TH", {
                         style: "currency",
                         currency: "THB",
-                      }).format(cartTotal)}
-                </strong>
-              </div>
-              {checkoutSummary.totalShipping > 0 && (
-                <div className="w-full flex justify-between">
-                  <p className="text-sm text-muted-foreground">
-                    {t("Shipping Cost")}
-                  </p>
-                  <strong className="text-muted-foreground">
+                      }).format(checkoutSummary.totalShipping)}
+                    </strong>
+                  </div>
+                )}
+                <div className="w-full flex justify-between text-darkgray-200">
+                  <p className="text-sm">{t("Tax")}</p>
+                  <strong>
                     {new Intl.NumberFormat("th-TH", {
                       style: "currency",
                       currency: "THB",
-                    }).format(checkoutSummary.totalShipping)}
+                    }).format(checkoutSummary.totalTax)}
                   </strong>
                 </div>
-              )}
-              <div className="w-full flex justify-between">
-                <p className="text-sm text-muted-foreground">{t("Tax")}</p>
-                <strong className="text-muted-foreground">
+                {checkoutSummary.totalDiscount > 0 && (
+                  <div className="w-full flex justify-between text-darkgray-200">
+                    <p className="text-sm">
+                      {t("Discount")}
+                    </p>
+                    <strong>
+                      {new Intl.NumberFormat("th-TH", {
+                        style: "currency",
+                        currency: "THB",
+                      }).format(checkoutSummary.totalDiscount?.toFixed(2) ?? 0)}
+                    </strong>
+                  </div>
+                )}
+                {serverCart?.message.doc.coupon_code && (
+                  <div className="w-full flex justify-between">
+                    <p className="text-sm text-muted-foreground">
+                      {t("Coupon Code")}
+                    </p>
+                    <strong className="text-muted-foreground">
+                      {serverCart?.message.doc.coupon_code}
+                    </strong>
+                  </div>
+                )}
+                <CouponCodeInput />
+              </div>
+              <Separator className="my-4" />
+              <div className="w-full flex justify-between font-semibold">
+                <p className="text-sm">
+                  {t("Grand total")}
+                </p>
+                <strong>
                   {new Intl.NumberFormat("th-TH", {
                     style: "currency",
                     currency: "THB",
-                  }).format(checkoutSummary.totalTax)}
+                  }).format(serverCart?.message.doc.grand_total)}
                 </strong>
               </div>
-              {checkoutSummary.totalDiscount > 0 && (
-                <div className="w-full flex justify-between">
-                  <p className="text-sm text-muted-foreground">
-                    {t("Discount")}
-                  </p>
-                  <strong className="text-muted-foreground">
-                    {new Intl.NumberFormat("th-TH", {
-                      style: "currency",
-                      currency: "THB",
-                    }).format(checkoutSummary.totalDiscount?.toFixed(2) ?? 0)}
-                  </strong>
-                </div>
-              )}
-              {serverCart?.message.doc.coupon_code && (
-                <div className="w-full flex justify-between">
-                  <p className="text-sm text-muted-foreground">
-                    {t("Coupon Code")}
-                  </p>
-                  <strong className="text-muted-foreground">
-                    {serverCart?.message.doc.coupon_code}
-                  </strong>
-                </div>
-              )}
-              <CouponCodeInput />
-            </div>
-            <Separator className="my-4" />
-            <div className="w-full flex justify-between">
-              <p className="text-sm text-muted-foreground">
-                {t("Grand total")}
-              </p>
-              <strong className="text-darkgray">
-                {new Intl.NumberFormat("th-TH", {
-                  style: "currency",
-                  currency: "THB",
-                }).format(serverCart?.message.doc.grand_total)}
-              </strong>
-            </div>
+            </section>
           </div>
         </div>
       </div>
-      <div className="w-full md:w-1/2">
-        <div className="w-full lg:max-w-[450px] mx-auto">
+      <div className="w-full md:w-1/2 md:shadow-checkout p-4 md:p-[60px]">
+        <div className="w-full">
           <h2 className="font-semibold text-darkgray">
             {t("Shipping Information")}
           </h2>

@@ -19,8 +19,9 @@ const CheckoutItem = ({ itemCode, qty }: CheckoutItemProps) => {
   }
 
   const item = data?.message.product_info;
+
   return (
-    <div key={itemCode} className="flex items-center gap-x-4">
+    <div key={itemCode} className="flex gap-x-4">
       <div className="w-12 h-12 bg-gray-300 rounded-md flex items-center justify-center">
         <img
           src={
@@ -28,18 +29,18 @@ const CheckoutItem = ({ itemCode, qty }: CheckoutItemProps) => {
             getFileURL(config?.default_product_image) ??
             ""
           }
-          alt="มินิบราวนี่ 18 ชิ้น | Mini-brownie 18 ps."
+          alt={item.web_item_name || "product-item"}
           className="object-cover object-center"
         />
       </div>
       <div className="flex-1">
-        <p className="text-sm text-muted-foreground">{item.web_item_name}</p>
-        <strong className="text-darkgray">
+        <p className="text-sm text-darkgray-500">{item.web_item_name}</p>
+        <strong className="text-sm">
           {qty} {`${item.uom}${(qty ?? 0) > 1 ? "s" : ""}`}
         </strong>
       </div>
       <div>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm font-semibold">
           {item.price?.formatted_price}
         </p>
       </div>

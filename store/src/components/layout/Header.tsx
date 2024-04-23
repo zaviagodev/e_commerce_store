@@ -1,4 +1,4 @@
-import { CircleUser, Search, X } from "lucide-react";
+import { CircleUser, LogIn, Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -27,6 +27,7 @@ import { getFileURL } from "@/lib/utils";
 import HeaderSearchbar from "../customComponents/HeaderSearchbar";
 import { useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "../ui/skeleton";
 
 const Header = () => {
   const t = useTranslate();
@@ -86,7 +87,6 @@ const Header = () => {
       <div className="max-w-[1400px] m-auto w-full grid grid-cols-3 md:flex pl-4">
         <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
           <Logo />
-
           <AppNavigationMenu />
         </nav>
         <MobileNavigationMenu />
@@ -97,9 +97,11 @@ const Header = () => {
         </div>
 
         <div className="flex ml-auto items-center gap-2">
-
-          {/* Move the account button to the left side */}
-          <DropdownMenu>
+          {/* Move the account button to the left side
+              I have hidden the dropdown menu because I changed to menu and this dropdown may be used later
+              If not, please consider removing it
+          */}
+          {/* <DropdownMenu>
             <DropdownMenuTrigger
               asChild
               onClick={() => {
@@ -111,7 +113,7 @@ const Header = () => {
                 !isFetching &&
                 !isRefetching &&
                 profile?.user?.user_image ? (
-                  <Avatar>
+                  <Avatar className="h-7 w-7">
                     <AvatarImage
                       src={profile.user?.user_image}
                       alt={`${profile.user?.full_name} profile image`}
@@ -138,7 +140,33 @@ const Header = () => {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             )}
-          </DropdownMenu>
+          </DropdownMenu> */}
+
+          {/* Set the menu instead of dropdown when users would like to access account page or log out if they have logged in */}
+          {!isLoading &&
+          !isFetching &&
+          !isRefetching ? (
+            <>
+              {authState?.authenticated ?
+                (
+                  <div className="flex items-center">
+                    <Button className="rounded-full !bg-transparent p-0 font-semibold text-base" variant="ghost" onClick={() => navigate("/account")}>
+                      {profile?.user?.name}
+                    </Button>
+                    <Button size="icon" onClick={() => logout()} className="rounded-full !bg-transparent" variant="ghost">
+                      <LogIn className="h-[22px] w-[22px]"/>
+                    </Button>
+                  </div>
+                ) : (
+                  <Button size="icon" onClick={() => navigate("/login")} className="rounded-full !bg-transparent" variant="ghost">
+                    <CircleUser className="h-[22px] w-[22px]" />
+                  </Button> 
+                )
+              }
+            </>
+          ) : (
+            <Skeleton className="h-6 w-[100px]"/>
+          )}
 
           <Separator className="h-6 w-[1px] bg-[#F0F0F0]"/>
 

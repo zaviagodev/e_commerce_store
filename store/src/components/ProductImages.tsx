@@ -46,15 +46,17 @@ const ProductImages = ({ images }: ProductImagesProps) => {
     <div className="relative flex w-full max-h-[600px] aspect-[4/3]">
       <SfScrollable
         ref={thumbsRef}
-        className="sticky top-[calc(57px_+_16px)] items-center w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+        className="hidden md:flex sticky top-[calc(57px_+_16px)] items-center w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         direction="vertical"
         activeIndex={activeIndex}
         prevDisabled={activeIndex === 0}
         nextDisabled={activeIndex === images.length - 1}
+
+        // Button arrows may be used later, so I added 'hidden' class to them.
         slotPreviousButton={
           <SfButton
             className={classNames(
-              "absolute !rounded-full z-10 top-4 rotate-90 bg-white",
+              "absolute !rounded-full z-10 top-4 rotate-90 bg-white hidden",
               {
                 hidden: firstThumbVisible?.isIntersecting,
               }
@@ -68,7 +70,7 @@ const ProductImages = ({ images }: ProductImagesProps) => {
         slotNextButton={
           <SfButton
             className={classNames(
-              "absolute !rounded-full z-10 bottom-4 rotate-90 bg-white",
+              "absolute !rounded-full z-10 bottom-4 rotate-90 bg-white hidden",
               {
                 hidden: lastThumbVisible?.isIntersecting,
               }

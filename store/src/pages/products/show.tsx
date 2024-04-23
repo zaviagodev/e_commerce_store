@@ -93,7 +93,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
                   {config?.enable_wishlist == 1 && (
                     <Button
                       variant="outline"
-                      className={`border-primary border-2 h-12.5 rounded-xl`}
+                      className={`border-primary border-2 h-12.5 rounded-xl !bg-transparent`}
                       onClick={() =>
                         inWishlist
                           ? removeFromWishlist(itemCode)
