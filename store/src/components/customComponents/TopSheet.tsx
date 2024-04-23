@@ -7,35 +7,33 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Search } from "lucide-react";
 import { ReactNode } from "react"
-import { Button } from "../ui/button";
 
 type SearchbarProps = {
+  trigger: string | ReactNode
   children: ReactNode
   onOpenChange?: (open: boolean) => void
   open?: boolean
+  contentClassName?: string
 }
 
-const HeaderSearchbar = ({ 
+const TopSheet = ({ 
+  trigger,
   children,
   onOpenChange,
-  open
+  open,
+  contentClassName
 } : SearchbarProps) => {
   return (
     <Sheet onOpenChange={onOpenChange} open={open}>
       <SheetTrigger>
-        <Button variant="ghost" size="icon" className="rounded-full flex justify-center hover:bg-transparent">
-          <Search className="h-[22px] w-[22px]"/>
-        </Button>
+        {trigger}
       </SheetTrigger>
-      <SheetContent side="top" className="py-0">
-        <div className="max-w-[1400px] mx-auto w-full">
-          {children}
-        </div>
+      <SheetContent side="top" className={contentClassName}>
+        {children}
       </SheetContent>
     </Sheet>
   )
 }
 
-export default HeaderSearchbar
+export default TopSheet

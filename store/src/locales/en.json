@@ -137,6 +137,7 @@
     "Item": "item",
     "Items": "items",
     "Shop now": "Shop now",
+    "Order details": "Order details",
     "Empty_cart": {
         "title": "Your cart is empty",
         "desc": "When the products are added to cart, they will appear here."

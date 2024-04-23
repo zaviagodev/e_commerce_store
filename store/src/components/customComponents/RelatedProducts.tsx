@@ -37,6 +37,7 @@ const RelatedProducts = () => {
               itemCode={item.item_code}
               name={item.item_name}
               price={item.formatted_price}
+              fullPrice={item.formatted_mrp}
               image={
                 getFileURL(item.website_image) ??
                 getFileURL(config?.default_product_image) ??

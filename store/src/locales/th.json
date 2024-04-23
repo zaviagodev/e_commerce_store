@@ -65,11 +65,11 @@
   "Shipping Information": "ข้อมูลการจัดส่ง",
   "Address": "ที่อยู่",
   "Payment Method": "วิธีการชำระเงิน",
-  "Continue to Payment": "ดำเนินการชำระเงินต่อ",
-  "By continuing, you agree to our": "โดยกดตกลง คุณยอมรับกฎ",
+  "Continue to Payment": "ชำระเงิน",
+  "By continuing, you agree to our": "เมื่อคลิก 'ชำระเงิน' คุณยินยอมให้ทำการชำระเงินตาม",
   "Privacy Policy": "นโยบายความเป็นส่วนตัว",
   "and": "และ",
-  "Terms of Service": "ข้อกำหนดและเงื่อนไขการให้บริการ",
+  "Terms of Service": "เงื่อนไขการให้บริการ",
   "Ask for help": "ขอความช่วยเหลือ",
   "Email": "อีเมล",
   "Phone": "โทรศัพท์",
@@ -131,6 +131,7 @@
   "Item": "ไอเทม",
   "Items": "ไอเทม",
   "Shop now": "ช้อปปิ้งเลย",
+  "Order details": "ทำการสั่งซื้อ",
   "Empty_cart": {
     "title": "ตะกร้าของคุณว่างเปล่า",
     "desc": "เมื่อเพิ่มสินค้าแล้ว รายการสินค้าจะปรากฏขึ้นที่นี่"

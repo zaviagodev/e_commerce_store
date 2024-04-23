@@ -10,6 +10,7 @@ import {
   MessageCircleQuestion,
   QrCode,
   ArrowLeftRight,
+  Undo2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -31,6 +32,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import AddressSelect from "@/components/AddressSelect";
+import { useConfig } from "@/hooks/useConfig";
+import { getFileURL } from "@/lib/utils";
+import TopSheet from "@/components/customComponents/TopSheet";
 
 export const paymentMethodIconMap: { [key: string]: React.ReactNode } = {
   "2": <Landmark className="mr-2 h-4 w-4" />,
@@ -39,6 +43,7 @@ export const paymentMethodIconMap: { [key: string]: React.ReactNode } = {
 
 const Checkout = () => {
   const [paymentMethod, setpaymentMethod] = useState<string | null>(null);
+  const { config } = useConfig()
   const t = useTranslate();
   const navigate = useNavigate();
   const { cart, serverCart, cartTotal, cartCount, resetCart } = useCart();
@@ -97,124 +102,157 @@ const Checkout = () => {
     });
   };
 
-  return (
-    <div className="flex flex-col gap-y-8 md:flex-row">
-      <div className="w-full md:w-1/2 p-4 md:p-20 md:h-screen">
-        <div className="w-full">
-          <div className="flex flex-col rounded-lg gap-y-6">
-            <div className="flex items-center justify-between text-sm text-darkgray-200">
-              <p>{t("Grand total")}</p>
-              <p>{cartCount} {t(cartCount === 1 ? "Item" : "Items")}</p>
-            </div>
+  const Logo = () => {
+    return (
+      <div className="hidden md:block">
+        {config?.brand_logo ? (
+          <img
+            src={getFileURL(config?.brand_logo) ?? ""}
+            alt={config?.company}
+            className="md:min-h-[40px] md:h-[40px] w-auto min-h-[30px] h-[30px]"
+          />
+        ) : (
+          <h2>{config?.company}</h2>
+        )}
+      </div>
+    )
+  }
 
-            <h2 className="text-4xl font-semibold text-primary">
-              {new Intl.NumberFormat("th-TH", {
-                style: "currency",
-                currency: "THB",
-              }).format(serverCart?.message.doc.grand_total)}
-            </h2>
+  {/* Create the CartList component to use it on the sheet on the mobile version */}
+  const CartList = () => {
+    return (
+      <>
+        <div className="flex flex-col rounded-lg gap-y-6">
+          <div className="flex items-center justify-between text-sm text-darkgray-200">
+            <p>{t("Grand total")}</p>
+            <p>{cartCount} {t(cartCount === 1 ? "Item" : "Items")}</p>
           </div>
-          <div className="mt-12">
-            {/* <h2 className="font-semibold text-darkgray">
-              {t("Order summary")}
-            </h2> */}
-            <div className="mt-6 flex flex-col gap-y-4">
-              <ul className="my-3 flex flex-col gap-y-8">
-                {Object.entries(cart).map(([itemCode, quantity]) => {
-                  if (!quantity) {
-                    return null;
-                  }
-                  return (
-                    <CheckoutItem
-                      key={itemCode}
-                      itemCode={itemCode}
-                      qty={quantity}
-                    />
-                  );
-                })}
-              </ul>
-            </div>
-            
-            <section className="md:ml-16">
-              <Separator className="my-4" />
-              <div className="flex flex-col gap-y-4">
-                <div className="w-full flex justify-between">
-                  <p className="text-sm">{t("Subtotal")}</p>
-                  <strong>
-                    {typeof cartTotal === "string"
-                      ? t("Loading...")
-                      : new Intl.NumberFormat("th-TH", {
-                          style: "currency",
-                          currency: "THB",
-                        }).format(cartTotal)}
-                  </strong>
-                </div>
-                {checkoutSummary.totalShipping > 0 && (
-                  <div className="w-full flex justify-between text-darkgray-200">
-                    <p className="text-sm">
-                      {t("Shipping Cost")}
-                    </p>
-                    <strong>
-                      {new Intl.NumberFormat("th-TH", {
-                        style: "currency",
-                        currency: "THB",
-                      }).format(checkoutSummary.totalShipping)}
-                    </strong>
-                  </div>
-                )}
-                <div className="w-full flex justify-between text-darkgray-200">
-                  <p className="text-sm">{t("Tax")}</p>
-                  <strong>
-                    {new Intl.NumberFormat("th-TH", {
+
+          <h2 className="text-4xl font-semibold text-primary">
+            {new Intl.NumberFormat("th-TH", {
+              style: "currency",
+              currency: "THB",
+            }).format(serverCart?.message.doc.grand_total)}
+          </h2>
+        </div>
+        {/* <h2 className="font-semibold text-darkgray">
+          {t("Order summary")}
+        </h2> */}
+        <div className="mt-12 flex flex-col gap-y-4">
+          <ul className="my-3 flex flex-col gap-y-8">
+            {Object.entries(cart).map(([itemCode, quantity]) => {
+              if (!quantity) {
+                return null;
+              }
+              return (
+                <CheckoutItem
+                  key={itemCode}
+                  itemCode={itemCode}
+                  qty={quantity}
+                />
+              );
+            })}
+          </ul>
+        </div>
+
+        <section className="md:ml-16">
+          <Separator className="my-4" />
+          <div className="flex flex-col gap-y-4">
+            <div className="w-full flex justify-between">
+              <p>{t("Subtotal")}</p>
+              <strong>
+                {typeof cartTotal === "string"
+                  ? t("Loading...")
+                  : new Intl.NumberFormat("th-TH", {
                       style: "currency",
                       currency: "THB",
-                    }).format(checkoutSummary.totalTax)}
-                  </strong>
-                </div>
-                {checkoutSummary.totalDiscount > 0 && (
-                  <div className="w-full flex justify-between text-darkgray-200">
-                    <p className="text-sm">
-                      {t("Discount")}
-                    </p>
-                    <strong>
-                      {new Intl.NumberFormat("th-TH", {
-                        style: "currency",
-                        currency: "THB",
-                      }).format(checkoutSummary.totalDiscount?.toFixed(2) ?? 0)}
-                    </strong>
-                  </div>
-                )}
-                {serverCart?.message.doc.coupon_code && (
-                  <div className="w-full flex justify-between">
-                    <p className="text-sm text-muted-foreground">
-                      {t("Coupon Code")}
-                    </p>
-                    <strong className="text-muted-foreground">
-                      {serverCart?.message.doc.coupon_code}
-                    </strong>
-                  </div>
-                )}
-                <CouponCodeInput />
-              </div>
-              <Separator className="my-4" />
-              <div className="w-full flex justify-between font-semibold">
-                <p className="text-sm">
-                  {t("Grand total")}
-                </p>
+                    }).format(cartTotal)}
+              </strong>
+            </div>
+            {checkoutSummary.totalShipping > 0 && (
+              <div className="w-full flex justify-between text-darkgray-200">
+                <p>{t("Shipping Cost")}</p>
                 <strong>
                   {new Intl.NumberFormat("th-TH", {
                     style: "currency",
                     currency: "THB",
-                  }).format(serverCart?.message.doc.grand_total)}
+                  }).format(checkoutSummary.totalShipping)}
                 </strong>
               </div>
-            </section>
+            )}
+            <div className="w-full flex justify-between text-darkgray-200">
+              <p>{t("Tax")}</p>
+              <strong>
+                {new Intl.NumberFormat("th-TH", {
+                  style: "currency",
+                  currency: "THB",
+                }).format(checkoutSummary.totalTax)}
+              </strong>
+            </div>
+            {checkoutSummary.totalDiscount > 0 && (
+              <div className="w-full flex justify-between text-darkgray-200">
+                <p>{t("Discount")}</p>
+                <strong>
+                  {new Intl.NumberFormat("th-TH", {
+                    style: "currency",
+                    currency: "THB",
+                  }).format(checkoutSummary.totalDiscount?.toFixed(2) ?? 0)}
+                </strong>
+              </div>
+            )}
+            {serverCart?.message.doc.coupon_code && (
+              <div className="w-full flex justify-between">
+                <p className="text-muted-foreground">
+                  {t("Coupon Code")}
+                </p>
+                <strong className="text-muted-foreground">
+                  {serverCart?.message.doc.coupon_code}
+                </strong>
+              </div>
+            )}
+            <CouponCodeInput />
           </div>
+          <Separator className="my-4" />
+          <div className="w-full flex justify-between font-semibold">
+            <p>{t("Grand total")}</p>
+            <strong>
+              {new Intl.NumberFormat("th-TH", {
+                style: "currency",
+                currency: "THB",
+              }).format(serverCart?.message.doc.grand_total)}
+            </strong>
+          </div>
+        </section>
+      </>
+    )
+  }
+
+  return (
+    <div className="flex flex-col md:gap-y-8 md:flex-row">
+      <div className="w-full md:w-1/2 md:p-20 md:pt-5 md:h-screen">
+        <div className="flex items-center gap-x-4 border-b md:border-0 p-4 md:p-0 justify-between">
+          <div className="flex items-center gap-x-2.5">
+            <Undo2 className="h-5 w-5 cursor-pointer hover:opacity-75" onClick={() => navigate("/")}/>
+            <h2 className="md:hidden font-semibold">{t("Order details")}</h2>
+
+            <Logo />
+          </div>
+
+          {/* This one is displayed on the mobile version */}
+          <TopSheet trigger={
+            <h2 className="md:hidden text-darkgray-200">ข้อมูลตะกร้า</h2>
+          }>
+            <CartList />
+          </TopSheet>
+        </div>
+
+        <div className="hidden md:block w-full md:mt-[60px] px-4 md:p-0">
+          <CartList />
         </div>
       </div>
-      <div className="w-full md:w-1/2 md:shadow-checkout p-4 md:p-[60px]">
+      <div className="w-full md:w-1/2 md:shadow-checkout p-4 md:px-[60px] md:pt-[120px]">
         <div className="w-full">
-          <h2 className="font-semibold text-darkgray">
+          <h2 className="font-semibold text-darkgray-500">
             {t("Shipping Information")}
           </h2>
           <Form {...form}>

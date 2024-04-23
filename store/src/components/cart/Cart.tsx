@@ -72,18 +72,20 @@ const Cart = () => {
         )}
         <SheetFooter className="block sm:justify-center mt-auto">
           <div className="flex flex-col gap-y-6">
-            <div className="flex justify-between items-center text-sm font-semibold">
-              <h5>{t("Total")}</h5>
-              <p>
-                {typeof cartTotal === "string"
-                  ? cartTotal
-                  : new Intl.NumberFormat("th-TH", {
-                      style: "currency",
-                      currency:
-                        serverCart?.message.doc.price_list_currency ?? "THB",
-                    }).format(cartTotal)}
-              </p>
-            </div>
+            {cartCount > 0 && (
+              <div className="flex justify-between items-center text-sm font-semibold">
+                <h5>{t("Total")}</h5>
+                <p>
+                  {typeof cartTotal === "string"
+                    ? cartTotal
+                    : new Intl.NumberFormat("th-TH", {
+                        style: "currency",
+                        currency:
+                          serverCart?.message.doc.price_list_currency ?? "THB",
+                      }).format(cartTotal)}
+                </p>
+              </div>
+            )}
             <div className="flex flex-col gap-y-2">
               <SheetClose asChild>
                 <Button
