@@ -43,10 +43,10 @@ const ProductImages = ({ images }: ProductImagesProps) => {
     }
   };
   return (
-    <div className="relative flex w-full max-h-[600px] aspect-[4/3]">
+    <div className="relative flex w-full aspect-square lg:aspect-[4/3]">
       <SfScrollable
         ref={thumbsRef}
-        className="hidden md:flex sticky top-[calc(57px_+_16px)] items-center w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+        className="hidden lg:flex sticky top-[calc(57px_+_16px)] items-center w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         direction="vertical"
         activeIndex={activeIndex}
         prevDisabled={activeIndex === 0}
@@ -97,7 +97,7 @@ const ProductImages = ({ images }: ProductImagesProps) => {
             aria-current={activeIndex === index}
             key={`${alt}-${index}-thumbnail`}
             className={classNames(
-              "md:w-[78px] md:h-auto relative shrink-0 pb-1 mx-4 -mb-2 border-b-4 snap-center cursor-pointer focus-visible:outline focus-visible:outline-offset transition-colors flex-grow md:flex-grow-0",
+              "w-full h-full relative shrink-0 snap-center cursor-pointer focus-visible:outline focus-visible:outline-offset transition-colors flex-grow md:flex-grow-0",
               {
                 "border-primary-700": activeIndex === index,
                 "border-transparent": activeIndex !== index,
@@ -108,18 +108,19 @@ const ProductImages = ({ images }: ProductImagesProps) => {
           >
             <img
               alt={alt}
-              width="78"
-              height="78"
               src={imageThumbSrc}
+              width={134}
+              height={134}
+              className="object-cover w-full h-full aspect-square"
             />
           </button>
         ))}
       </SfScrollable>
       <SfScrollable
-        className="w-full snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+        className="lg:ml-8 w-full h-full snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         activeIndex={activeIndex}
         direction="vertical"
-        wrapperClassName="h-full w-full"
+        wrapperClassName="h-full m-auto"
         buttonsPlacement="none"
         isActiveIndexCentered
         drag={{ containerWidth: true }}
@@ -128,12 +129,12 @@ const ProductImages = ({ images }: ProductImagesProps) => {
         {images.map(({ imageSrc, alt }, index) => (
           <div
             key={`${alt}-${index}`}
-            className="flex justify-center h-full basis-full shrink-0 grow snap-center"
+            className="flex justify-start h-full basis-full shrink-0 grow snap-center"
           >
             <img
               aria-label={alt}
               aria-hidden={activeIndex !== index}
-              className="object-contain w-full h-full"
+              className="object-cover w-full h-full lg:min-w-[500px] lg:min-h-[500px] lg:max-w-[500px] lg:max-h-[500px]"
               alt={alt}
               src={imageSrc}
             />

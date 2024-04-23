@@ -13,7 +13,7 @@ export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
     <div className="flex min-h-screen w-full flex-col">
       {!checkIfCheckout && <Header />}
       {/* <Menu /> */}
-      <div className={`${!checkIfCheckout ? "px-4 py-10" : ""} w-full max-w-[1400px] mx-auto`}>
+      <div className={`${!checkIfCheckout ? "px-4 py-[50px]" : ""} w-full max-w-[1400px] mx-auto`}>
         {/* <Breadcrumb /> */}
         <div>{children}</div>
       </div>

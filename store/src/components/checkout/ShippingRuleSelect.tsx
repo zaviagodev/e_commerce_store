@@ -38,7 +38,7 @@ const ShippingRuleSelect = ({
 
   return (
     <div>
-      <Label>{t("Shipping Rule")}</Label>
+      <Label className="text-darkgray-200 font-semibold text-base inline-block mb-3">{t("Shipping Rule")}</Label>
       <Select
         value={shippingRule?.name}
         onValueChange={(shippingRule) => {
@@ -57,7 +57,7 @@ const ShippingRuleSelect = ({
           );
         }}
       >
-        <SelectTrigger className="w-full">
+        <SelectTrigger className="w-full bg-accent border border-darkgray-100 rounded-xl">
           <div className="flex flex-col justify-center w-full cursor-default select-none items-start rounded-sm py-1.5 px-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
             {shippingRule?.name || "Select Shipping Rule"}
           </div>

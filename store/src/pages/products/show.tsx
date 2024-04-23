@@ -36,8 +36,8 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
   const inWishlist = wishlist.includes(itemCode);
 
   return (
-    <section className="space-y-[100px] pb-20 max-w-[1100px] mx-auto">
-      <div className="flex flex-col lg:flex-row gap-[18px] lg:gap-[33px]">
+    <section className="space-y-[100px] pb-20 max-w-[1200px] mx-auto">
+      <div className="flex flex-col lg:flex-row gap-y-[18px]">
         <ProductImages
           images={[
             {
@@ -81,13 +81,13 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
           <div className="text-sm leading-6 pb-[60px] font-normal">
             <p>{product.short_description}</p>
           </div>
-          <div className="pb-6 border-gray-200 border-b">
+          <div className="pb-6 border-b">
             <div className="items-start flex flex-col gap-y-[14px]">
               <ProductCounter itemCode={showId! as string} size="sm" />
               <div className="fixed bottom-0 left-0 bg-white lg:bg-inherit p-4 lg:p-0 lg:static flex lg:flex-col w-full gap-y-[14px] flex-col-reverse z-10">
                 <div className="flex items-center gap-x-[10px] w-full">
-                  <Button className="w-full rounded-xl h-12.5 font-semibold" onClick={() => addToCart(itemCode)}>
-                    <ShoppingBag size={18} className="mr-2.5" />
+                  <Button className="w-full rounded-xl h-12.5 text-base font-semibold" onClick={() => addToCart(itemCode)}>
+                    <ShoppingBag className="mr-2.5 h-4.5 w-4.5" />
                     {t("Add to Cart")}
                   </Button>
                   {config?.enable_wishlist == 1 && (
@@ -121,7 +121,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
               </AccordionItem>
             </Accordion>
             <div className="w-full flex justify-center h-10 items-center mt-6">
-              <Button variant="link" className="font-bold">
+              <Button variant="link" className="font-bold text-base">
                 <MessageCircleQuestion size={20} className="mr-1" />{" "}
                 {t("Ask for help")}
               </Button>

@@ -51,7 +51,7 @@ const AddressCard = ({
   const navigate = useNavigate();
 
   return (
-    <Card className="w-full overflow-hidden">
+    <Card className="w-full overflow-hidden bg-accent border border-darkgray-100 rounded-xl">
       <CardHeader className="flex flex-row justify-between items-center text-gray-500 pb-2">
         <CardTitle className="text-lg flex items-center">
           <MapPinned size={20} className="mr-2" /> {name}
@@ -94,7 +94,7 @@ const AddressCard = ({
         )}
         {actions.delete && <DeletionConfirmation name={name} />}
       </CardContent>
-      <img src="/border-line.png" className="w-full h-1.5" />
+      <img src="/border-line.png" className="w-full h-2.5" />
     </Card>
   );
 };

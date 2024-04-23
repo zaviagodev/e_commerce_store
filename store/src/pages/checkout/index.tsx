@@ -32,10 +32,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import AddressSelect from "@/components/AddressSelect";
-import { useConfig } from "@/hooks/useConfig";
-import { getFileURL } from "@/lib/utils";
 import TopSheet from "@/components/customComponents/TopSheet";
 import Logo from "@/components/customComponents/Logo";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const paymentMethodIconMap: { [key: string]: React.ReactNode } = {
   "2": <Landmark className="mr-2 h-4 w-4" />,
@@ -44,7 +43,6 @@ export const paymentMethodIconMap: { [key: string]: React.ReactNode } = {
 
 const Checkout = () => {
   const [paymentMethod, setpaymentMethod] = useState<string | null>(null);
-  const { config } = useConfig()
   const t = useTranslate();
   const navigate = useNavigate();
   const { cart, serverCart, cartTotal, cartCount, resetCart } = useCart();
@@ -113,12 +111,14 @@ const Checkout = () => {
             <p>{cartCount} {t(cartCount === 1 ? "Item" : "Items")}</p>
           </div>
 
-          <h2 className="text-4xl font-semibold text-primary">
-            {new Intl.NumberFormat("th-TH", {
-              style: "currency",
-              currency: "THB",
-            }).format(serverCart?.message.doc.grand_total)}
-          </h2>
+          {serverCart?.message.doc.grand_total ? (
+            <h2 className="text-4xl font-semibold text-primary">
+              {new Intl.NumberFormat("th-TH", {
+                style: "currency",
+                currency: "THB",
+              }).format(serverCart?.message.doc.grand_total)}
+            </h2>
+          ) : <Skeleton className="h-10"/>}
         </div>
         {/* <h2 className="font-semibold text-darkgray">
           {t("Order summary")}
@@ -213,7 +213,7 @@ const Checkout = () => {
   }
 
   return (
-    <div className="flex flex-col md:gap-y-8 md:flex-row">
+    <div className="flex flex-col md:gap-y-8 md:flex-row max-w-[1200px] mx-auto">
       <div className="w-full md:w-1/2 md:p-20 md:pt-5 md:h-screen">
         <div className="flex items-center gap-x-4 border-b md:border-0 p-4 md:p-0 justify-between">
           <div className="flex items-center gap-x-2.5">
@@ -225,7 +225,7 @@ const Checkout = () => {
             </div>
           </div>
 
-          {/* MOBILE VERSION */}
+          {/* CartList MOBILE VERSION */}
           <TopSheet trigger={
             <h2 className="md:hidden text-darkgray-200">ข้อมูลตะกร้า</h2>
           }>
@@ -233,53 +233,55 @@ const Checkout = () => {
           </TopSheet>
         </div>
 
-        {/* DESKTOP VERSION */}
+        {/* CartList DESKTOP VERSION */}
         <div className="hidden md:block w-full md:mt-[60px] px-4 md:p-0">
           <CartList />
         </div>
       </div>
       <div className="w-full md:w-1/2 md:shadow-checkout p-4 md:px-[60px] md:pt-[120px]">
         <div className="w-full">
-          <h2 className="font-semibold text-darkgray-500">
+          <h2 className="font-semibold text-darkgray-500 text-lg">
             {t("Shipping Information")}
           </h2>
           <Form {...form}>
             <form
-              className="mt-6 flex flex-col gap-y-4"
+              className="mt-6 flex flex-col gap-y-6"
               onSubmit={form.handleSubmit(onSubmit)}
             >
-              <FormField
-                control={form.control}
-                name="address"
-                render={({ field }) => {
-                  return (
-                    <FormItem>
-                      <div className="flex items-center justify-between">
-                        <FormLabel>{t("Address")}</FormLabel>
-                        <FormControl>
-                          <AddressSelect
-                            {...field}
-                            onSelect={(value) =>
-                              form.setValue("address", value.name)
-                            }
-                          />
-                        </FormControl>
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  );
-                }}
-              />
-              {addressLoading &&
-                !!serverCart?.message.doc.shipping_address_name && (
-                  <div>Loading...</div>
-                )}
-              {address && <AddressCard {...address?.message} />}
+              <section className="space-y-3">
+                <FormField
+                  control={form.control}
+                  name="address"
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <div className="flex items-center justify-between">
+                          <FormLabel className="text-darkgray-200 font-semibold text-base">{t("Address")}</FormLabel>
+                          <FormControl>
+                            <AddressSelect
+                              {...field}
+                              onSelect={(value) =>
+                                form.setValue("address", value.name)
+                              }
+                            />
+                          </FormControl>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
+                />
+                {addressLoading &&
+                  !!serverCart?.message.doc.shipping_address_name && (
+                    <Skeleton className="h-40 rounded-xl w-full"/>
+                  )}
+                {address && <AddressCard {...address?.message} />}
+              </section>
               {!address && (
                 <Button
                   variant="outline"
                   size="lg"
-                  className="w-full px-6 justify-start text-lg text-gray-500"
+                  className="w-full justify-start text-gray-500 border-darkgray-100 bg-accent !text-darkgray-500 rounded-xl px-4"
                   onClick={() => navigate("/account/addresses/new")}
                 >
                   <CirclePlus className="mr-2" /> {t("Add Address")}
@@ -297,7 +299,7 @@ const Checkout = () => {
                 render={({ field }) => {
                   return (
                     <FormItem>
-                      <FormLabel>{t("Payment Method")}</FormLabel>
+                      <FormLabel className="text-darkgray-200 font-semibold text-base">{t("Payment Method")}</FormLabel>
                       <FormControl>
                         <RadioGroup
                           {...field}
@@ -316,7 +318,7 @@ const Checkout = () => {
                                 />
                                 <Label
                                   htmlFor={method.key}
-                                  className="flex items-center justify-start rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                                  className="flex items-center border border-darkgray-100 bg-popover p-4 bg-accent text-darkgray-500 font-semibold peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary rounded-xl"
                                 >
                                   {paymentMethodIconMap[method.key ?? "2"]}
                                   {method.name}
@@ -332,10 +334,10 @@ const Checkout = () => {
                 }}
               />
 
-              <div>
+              <div className="mt-4">
                 <Button
                   size="lg"
-                  className="w-full"
+                  className="w-full rounded-xl text-base font-semibold"
                   disabled={placingOrder || cartCount === 0}
                   type="submit"
                 >
