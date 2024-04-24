@@ -88,43 +88,33 @@ const Cart = () => {
                 </p>
               </div>
             )}
+
             <div className="flex flex-col gap-y-2">
               <SheetClose asChild>
-                <Button
-                  className="inset-2 w-full"
-                  size="lg"
-                  onClick={() => navigate(cartCount > 0 ? "/checkout" : "/")}
-                >
-                  {t(cartCount > 0 ? "Checkout" : "Shop now")}
-                  <ShoppingBag className="ml-2 h-5 w-5" />
-                </Button>
+                {config?.show_contact_us_button ? (
+                  <Button
+                    disabled={cartCount === 0}
+                    className="inset-2 w-full"
+                    size="lg"
+                    onClick={() => window.open(config?.contact_us_url, "_blank")}
+                  >
+                    {config?.contact_us_label}
+                  </Button>
+                ) : (
+                  <Button
+                    // disabled={cartCount === 0}
+                    className="inset-2 w-full"
+                    size="lg"
+                    onClick={() => navigate(cartCount > 0 ? "/checkout" : "/")}
+                  >
+                    {t(cartCount > 0 ? "Checkout" : "Shop now")}
+                    <ShoppingBag className="ml-2 h-5 w-5" />
+                  </Button>
+                )}
               </SheetClose>
 
               <p className="text-darkgray-600 text-xs text-center">ค่าจัดส่งและภาษีคำนวณเมื่อชำระเงิน</p>
             </div>
-
-            <SheetClose asChild>
-              {config?.show_contact_us_button ? (
-                <Button
-                  disabled={cartCount === 0}
-                  className="inset-2 w-full"
-                  size="lg"
-                  onClick={() => window.open(config?.contact_us_url, "_blank")}
-                >
-                  {config?.contact_us_label}
-                </Button>
-              ) : (
-                <Button
-                  disabled={cartCount === 0}
-                  className="inset-2 w-full"
-                  size="lg"
-                  onClick={() => navigate("/checkout")}
-                >
-                  {t("Checkout")}
-                  <ShoppingBag className="ml-2 h-5 w-5" />
-                </Button>
-              )}
-            </SheetClose>
           </div>
         </SheetFooter>
       </SheetContent>
