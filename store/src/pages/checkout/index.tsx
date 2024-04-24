@@ -11,6 +11,8 @@ import {
   QrCode,
   ArrowLeftRight,
   Undo2,
+  ChevronDown,
+  ArrowUp,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -101,29 +103,58 @@ const Checkout = () => {
     });
   };
 
+  const OrderDetailSheet = ({ trigger } : { trigger: string | React.ReactNode } ) => {
+    const [isOpen, setIsOpen] = useState(false)
+
+    return (
+      <TopSheet trigger={trigger} contentClassName="p-0 rounded-b-2xl" onOpenChange={setIsOpen} open={isOpen}>
+        <div className="p-4 border-b">
+          <AddressHeader />
+        </div>
+        <div className="p-4">
+          <CartList />
+        </div>
+
+        <button className="flex items-center p-4">
+          ซ่อนข้อมูลตะกร้า
+          <ArrowUp />
+        </button>
+      </TopSheet>
+    )
+  }
+
+  const TotalCart = () => {
+    return (
+      <div className="flex flex-col rounded-lg gap-y-4">
+        <div className="flex items-center justify-center gap-x-1 lg:justify-between text-sm text-darkgray-200">
+          <p>{t("Grand total")}</p>
+          <p>{cartCount} {t(cartCount === 1 ? "Item" : "Items")}</p>
+
+          <div className="lg:hidden flex items-center">
+            <OrderDetailSheet trigger={<ChevronDown className="h-4 w-4"/>}/>
+          </div>
+        </div>
+
+        {serverCart?.message.doc.grand_total ? (
+          <h2 className="text-4xl font-semibold text-primary text-center lg:text-left">
+            {new Intl.NumberFormat("th-TH", {
+              style: "currency",
+              currency: "THB",
+            }).format(serverCart?.message.doc.grand_total)}
+          </h2>
+        ) : <Skeleton className="h-10"/>}
+      </div>
+    )
+  }
+
   {/* Create the CartList component to use it on the sheet on the mobile version */}
   const CartList = () => {
     return (
-      <>
-        <div className="flex flex-col rounded-lg gap-y-4">
-          <div className="flex items-center justify-between text-sm text-darkgray-200">
-            <p>{t("Grand total")}</p>
-            <p>{cartCount} {t(cartCount === 1 ? "Item" : "Items")}</p>
-          </div>
-
-          {serverCart?.message.doc.grand_total ? (
-            <h2 className="text-4xl font-semibold text-primary">
-              {new Intl.NumberFormat("th-TH", {
-                style: "currency",
-                currency: "THB",
-              }).format(serverCart?.message.doc.grand_total)}
-            </h2>
-          ) : <Skeleton className="h-10"/>}
-        </div>
+      <section>
         {/* <h2 className="font-semibold text-darkgray">
           {t("Order summary")}
         </h2> */}
-        <div className="mt-12 flex flex-col gap-y-4 lg:mr-5">
+        <div className="flex flex-col gap-y-4 lg:mr-5">
           <ul className="my-3 flex flex-col gap-y-8">
             {Object.entries(cart).map(([itemCode, quantity]) => {
               if (!quantity) {
@@ -140,7 +171,7 @@ const Checkout = () => {
           </ul>
         </div>
 
-        <section className="lg:ml-[69px] lg:mr-5">
+        <div className="lg:ml-[69px] lg:mr-5">
           <Separator className="my-4 bg-[#E3E3E3]" />
           <div className="flex flex-col gap-y-4">
             <div className="w-full flex justify-between text-sm">
@@ -207,8 +238,8 @@ const Checkout = () => {
               }).format(serverCart?.message.doc.grand_total)}
             </strong>
           </div>
-        </section>
-      </>
+        </div>
+      </section>
     )
   }
 
@@ -232,29 +263,27 @@ const Checkout = () => {
           <AddressHeader />
 
           {/* CartList MOBILE VERSION */}
-          <TopSheet trigger={<h2 className="lg:hidden text-darkgray-200">{t("Cart details")}</h2>} contentClassName="p-0">
-            <div className="p-4 border-b">
-              <AddressHeader />
-            </div>
-            <div className="p-4">
-              <CartList />
-            </div>
-          </TopSheet>
+          <OrderDetailSheet trigger={<h2 className="lg:hidden text-darkgray-200">{t("Cart details")}</h2>} />
         </div>
 
         {/* CartList DESKTOP VERSION */}
-        <div className="hidden lg:block w-full lg:mt-[60px] px-4 lg:p-0 lg:pl-5 ml-2">
+        <div className="hidden lg:flex flex-col gap-y-12 w-full lg:mt-[60px] px-4 lg:p-0 lg:pl-5 ml-2">
+          <TotalCart />
           <CartList />
         </div>
       </div>
       <div className="w-full lg:max-w-[536px] lg:shadow-checkout p-4 lg:px-[60px] lg:pt-[120px] lg:h-screen">
+        <div className="mb-10 lg:hidden">
+          <TotalCart />
+        </div>
+
         <div className="w-full">
-          <h2 className="font-semibold text-darkgray-500 text-lg hidden md:block">
+          <h2 className="font-semibold text-darkgray-500 text-lg hidden lg:block">
             {t("Shipping Information")}
           </h2>
           <Form {...form}>
             <form
-              className="md:mt-6 flex flex-col gap-y-6"
+              className="lg:mt-6 flex flex-col gap-y-6"
               onSubmit={form.handleSubmit(onSubmit)}
             >
               <section className="space-y-1">
@@ -355,10 +384,10 @@ const Checkout = () => {
                   )}
                   {t("Continue to Payment")}
                 </Button>
-                <p className="mt-2 text-sm text-muted-foreground">
+                <p className="mt-2 text-sm text-darkgray-200">
                   {t("By continuing, you agree to our")}{" "}
-                  <b>{t("Privacy Policy")}</b> {t("and")}{" "}
-                  <b>{t("Terms of Service")}</b>.
+                  <b className="text-primary">{t("Privacy Policy")}</b> {t("and")}{" "}
+                  <b className="text-primary">{t("Terms of Service")}</b>.
                 </p>
               </div>
               <div className="w-full flex justify-center h-10 items-center">
