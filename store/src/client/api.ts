@@ -144,7 +144,7 @@ export const orders = {
   get: (orderName: string) =>
     api
       .get("method/webshop.webshop.api.get_order", {
-        params: { order_name: orderName },
+        params: { invoice_name: orderName },
       })
       .then((res) => res.data),
   create: (data: any) =>

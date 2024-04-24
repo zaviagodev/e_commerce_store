@@ -9,8 +9,8 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "../ui/collapsible";
-import { useState } from "react";
-import { getFileURL } from "@/lib/utils";
+import { useMemo, useState } from "react";
+import { getCategories, getFileURL } from "@/lib/utils";
 import { useConfig } from "@/hooks/useConfig";
 
 const MobileNavigationMenu = () => {
@@ -24,7 +24,12 @@ const MobileNavigationMenu = () => {
     ids: [],
   });
 
-  const categories = data?.message.results;
+  const categories = useMemo(() => {
+    if (!data?.message.results) {
+      return {};
+    }
+    return getCategories(data?.message.results ?? []);
+  }, [data?.message.results]);
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -91,36 +96,12 @@ const MobileNavigationMenu = () => {
               </div>
             </CollapsibleTrigger>
             <CollapsibleContent>
-              <div className="mt-2 flex flex-col pl-4">
-                {categories?.map((category: any) => (
-                  <button
-                    key={category.name}
-                    className={`py-1 text-left text-muted-foreground font-medium hover:text-foreground text-base border-l-2 pl-2 hover:border-foreground ${
-                      decodeURI(window.location.search).includes(category.name)
-                        ? "border-foreground !text-foreground"
-                        : ""
-                    }`}
-                    onClick={() => {
-                      go({
-                        to: `/`,
-                        query: {
-                          filters: [
-                            {
-                              field: "item_group",
-                              operator: "eq",
-                              value: category.name,
-                            },
-                          ],
-                        },
-                        type: "push",
-                      });
-                      setOpen(false);
-                    }}
-                  >
-                    {category.name}
-                  </button>
-                ))}
-              </div>
+              <ul className="mt-2 flex flex-col pl-4">
+                <RecursiveComponent
+                  data={{ ...categories }}
+                  setOpen={setOpen}
+                />
+              </ul>
             </CollapsibleContent>
           </Collapsible>
         </nav>
@@ -130,3 +111,55 @@ const MobileNavigationMenu = () => {
 };
 
 export default MobileNavigationMenu;
+
+const RecursiveComponent = ({ data, ...props }: any) => {
+  const go = useGo();
+  const pairs = Object.entries(data);
+
+  return (
+    <>
+      {pairs.map(([categoryName, value]) => (
+        <div
+          className={`ml-1 border-l-2 pl-2 hover:border-foreground hover:!text-foreground ${
+            decodeURI(window.location.search).includes(categoryName) ||
+            Object.keys(value).find((key) =>
+              decodeURI(window.location.search).includes(key)
+            )
+              ? "border-foreground !text-foreground"
+              : ""
+          }`}
+        >
+          <button
+            key={categoryName}
+            className={`py-1 text-left text-muted-foreground font-medium hover:text-foreground text-base pl-2 ${
+              decodeURI(window.location.search).includes(categoryName)
+                ? "border-foreground !text-foreground"
+                : ""
+            }`}
+            onClick={() => {
+              go({
+                to: `/`,
+                query: {
+                  filters: [
+                    {
+                      field: "item_group",
+                      operator: "eq",
+                      value: categoryName,
+                    },
+                  ],
+                },
+                type: "push",
+              });
+              props.setOpen(false);
+            }}
+          >
+            {categoryName}
+          </button>
+          <ul>
+            <RecursiveComponent data={value} {...props} />
+          </ul>
+        </div>
+      ))}
+    </>
+  );
+};
