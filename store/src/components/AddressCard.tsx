@@ -30,6 +30,7 @@ type AddressCardProps = {
   state?: string;
   pincode?: string;
   display?: string;
+  isActive?: boolean;
   actions?: AddressCardActions;
 };
 
@@ -52,8 +53,8 @@ const AddressCard = ({
 
   return (
     <Card className="w-full overflow-hidden bg-accent border border-darkgray-100 rounded-xl">
-      <CardHeader className="flex flex-row justify-between items-center text-gray-500 pb-2">
-        <CardTitle className="text-lg flex items-center">
+      <CardHeader className="flex flex-row justify-between items-center text-gray-500">
+        <CardTitle className="text-base flex items-center">
           <MapPinned size={20} className="mr-2" /> {name}
         </CardTitle>
         {actions.edit && (
@@ -67,7 +68,7 @@ const AddressCard = ({
           </Button>
         )}
       </CardHeader>
-      <CardContent className="text-gray-700 relative">
+      <CardContent className="text-gray-700 relative text-sm">
         {display ? (
           <p dangerouslySetInnerHTML={{ __html: display }} />
         ) : (

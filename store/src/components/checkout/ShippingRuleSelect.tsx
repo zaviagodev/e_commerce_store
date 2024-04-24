@@ -57,9 +57,9 @@ const ShippingRuleSelect = ({
           );
         }}
       >
-        <SelectTrigger className="w-full bg-accent border border-darkgray-100 rounded-xl h-12.5">
+        <SelectTrigger className="w-full bg-accent border border-darkgray-100 rounded-xl h-16">
           <div className="flex flex-col justify-center w-full cursor-default select-none items-start rounded-sm py-1.5 px-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
-            {shippingRule?.name || "Select Shipping Rule"}
+            <h2 className="font-semibold">{shippingRule?.name || "Select Shipping Rule"}</h2>
             
             {shippingRule?.name && (
               <p className="text-xs text-muted-foreground">{new Intl.NumberFormat("th-TH", {

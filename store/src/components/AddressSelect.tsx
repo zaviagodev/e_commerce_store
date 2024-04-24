@@ -4,7 +4,7 @@ import {
   useList,
   useTranslate,
 } from "@refinedev/core";
-import { ArrowLeftRight, CirclePlus, Undo2 } from "lucide-react";
+import { ArrowLeftRight, ArrowRight, CirclePlus, Undo2 } from "lucide-react";
 import {
   Sheet,
   SheetClose,
@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 
 type AddressSelectProps = {
   onSelect: (address: any) => void;
+  triggerClassName?: string
 };
 
 const AddressSelect = ({ onSelect, ...props }: AddressSelectProps) => {
@@ -51,7 +52,7 @@ const AddressSelect = ({ onSelect, ...props }: AddressSelectProps) => {
   return (
     <Sheet>
       <SheetTrigger>
-        <ArrowLeftRight className="h-4 w-4" />
+        <ArrowRight className="h-6 w-6" />
       </SheetTrigger>
       <SheetContent>
         <SheetHeader className="bg-white -m-5 flex flex-row items-center justify-between z-10 px-4 py-3 border-b">

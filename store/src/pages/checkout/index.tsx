@@ -212,24 +212,33 @@ const Checkout = () => {
     )
   }
 
+  const AddressHeader = () => {
+    return (
+      <div className="flex items-center gap-x-2.5">
+        <Undo2 className="h-5 w-5 cursor-pointer hover:opacity-75" onClick={() => navigate("/")}/>
+        <h2 className="lg:hidden font-semibold">{t("Order details")}</h2>
+
+        <div className="hidden lg:block">
+          <Logo />
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="flex flex-col justify-center lg:gap-y-8 lg:flex-row mx-auto">
-      <div className="w-full lg:max-w-[494px] lg:pl-0 lg:p-20 lg:pt-5 lg:h-screen box-content">
+      <div className="w-full lg:max-w-[494px] lg:pl-0 lg:p-20 lg:pt-5 box-content">
         <div className="flex items-center gap-x-4 border-b lg:border-0 p-4 lg:p-0 justify-between">
-          <div className="flex items-center gap-x-2.5">
-            <Undo2 className="h-5 w-5 cursor-pointer hover:opacity-75" onClick={() => navigate("/")}/>
-            <h2 className="lg:hidden font-semibold">{t("Order details")}</h2>
-
-            <div className="hidden lg:block">
-              <Logo />
-            </div>
-          </div>
+          <AddressHeader />
 
           {/* CartList MOBILE VERSION */}
-          <TopSheet trigger={
-            <h2 className="lg:hidden text-darkgray-200">ข้อมูลตะกร้า</h2>
-          }>
-            <CartList />
+          <TopSheet trigger={<h2 className="lg:hidden text-darkgray-200">{t("Cart details")}</h2>} contentClassName="p-0">
+            <div className="p-4 border-b">
+              <AddressHeader />
+            </div>
+            <div className="p-4">
+              <CartList />
+            </div>
           </TopSheet>
         </div>
 
@@ -238,14 +247,14 @@ const Checkout = () => {
           <CartList />
         </div>
       </div>
-      <div className="w-full lg:max-w-[536px] lg:shadow-checkout p-4 lg:px-[60px] lg:pt-[120px]">
+      <div className="w-full lg:max-w-[536px] lg:shadow-checkout p-4 lg:px-[60px] lg:pt-[120px] lg:h-screen">
         <div className="w-full">
-          <h2 className="font-semibold text-darkgray-500 text-lg">
+          <h2 className="font-semibold text-darkgray-500 text-lg hidden md:block">
             {t("Shipping Information")}
           </h2>
           <Form {...form}>
             <form
-              className="mt-6 flex flex-col gap-y-6"
+              className="md:mt-6 flex flex-col gap-y-6"
               onSubmit={form.handleSubmit(onSubmit)}
             >
               <section className="space-y-1">
@@ -318,7 +327,7 @@ const Checkout = () => {
                                 />
                                 <Label
                                   htmlFor={method.key}
-                                  className="flex items-center border border-darkgray-100 bg-popover p-4 bg-accent text-darkgray-500 font-semibold peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary rounded-xl"
+                                  className="flex items-center justify-center border border-darkgray-100 bg-popover p-4 bg-accent text-darkgray-500 font-semibold peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary rounded-xl"
                                 >
                                   {paymentMethodIconMap[method.key ?? "2"]}
                                   {method.name}
@@ -337,7 +346,7 @@ const Checkout = () => {
               <div className="mt-4">
                 <Button
                   size="lg"
-                  className="w-full rounded-xl text-base font-semibold"
+                  className="w-full rounded-xl text-base font-semibold h-12.5"
                   disabled={placingOrder || cartCount === 0}
                   type="submit"
                 >
