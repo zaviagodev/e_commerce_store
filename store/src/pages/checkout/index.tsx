@@ -115,10 +115,12 @@ const Checkout = () => {
           <CartList />
         </div>
 
-        <button className="flex items-center p-4">
-          ซ่อนข้อมูลตะกร้า
-          <ArrowUp />
-        </button>
+        <div className="flex justify-center w-full">
+          <button className="flex items-center p-4 gap-x-2 text-darkgray-200" onClick={() => setIsOpen(false)}>
+            {t("Hide cart details")}
+            <ArrowUp className="h-4 w-4"/>
+          </button>
+        </div>
       </TopSheet>
     )
   }
@@ -273,7 +275,12 @@ const Checkout = () => {
         </div>
       </div>
       <div className="w-full lg:max-w-[536px] lg:shadow-checkout p-4 lg:px-[60px] lg:pt-[120px] lg:h-screen">
+
+        {/* This is the total cart on the mobile version */}
         <div className="mb-10 lg:hidden">
+
+          {/* NEED TO FETCH THE IMAGE OF THE FIRST PRODUCT */}
+          <img src="" className="w-[120px] h-[120px] rounded-md bg-gray-100 mx-auto mb-4"/>
           <TotalCart />
         </div>
 

@@ -140,6 +140,7 @@
     "Order details": "Order details",
     "Search products": "Search products...",
     "Cart details": "Cart details",
+    "Hide cart details": "Hide cart details",
     "Empty_cart": {
         "title": "Your cart is empty",
         "desc": "When the products are added to cart, they will appear here."
