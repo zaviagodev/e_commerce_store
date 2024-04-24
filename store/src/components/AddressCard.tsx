@@ -1,5 +1,5 @@
 import { Button } from "./ui/button";
-import { MapPinned, Pencil, Trash2 } from "lucide-react";
+import { Pencil } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   AlertDialog,
@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useDelete, useTranslate } from "@refinedev/core";
 import { useNavigate } from "react-router-dom";
+import { MarkerPin04, Trash01 } from "@untitled-ui/icons-react";
 
 type AddressCardActions = {
   edit?: boolean;
@@ -55,7 +56,7 @@ const AddressCard = ({
     <Card className="w-full overflow-hidden bg-accent border border-darkgray-100 rounded-xl">
       <CardHeader className="flex flex-row justify-between items-center text-gray-500">
         <CardTitle className="text-base flex items-center">
-          <MapPinned size={20} className="mr-2" /> {name}
+          <MarkerPin04 className="mr-2 " /> {name}
         </CardTitle>
         {actions.edit && (
           <Button
@@ -116,7 +117,7 @@ export const DeletionConfirmation = ({ name }: DeletionConfirmationProps) => {
           size="icon"
           className="w-5 text-gray-500 hover:text-destructive hover:bg-transparent absolute right-6 bottom-4"
         >
-          <Trash2 size={18} />
+          <Trash01 className="h-5 w-5" />
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>

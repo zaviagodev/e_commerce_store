@@ -1,4 +1,3 @@
-import { CircleUser, LogIn, Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -29,6 +28,7 @@ import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "../ui/skeleton";
 import TopSheet from "../customComponents/TopSheet";
 import Logo from "../customComponents/Logo";
+import { LogIn02, SearchLg, UserCircle, XClose } from "@untitled-ui/icons-react";
 
 const Header = () => {
   const t = useTranslate();
@@ -145,12 +145,12 @@ const Header = () => {
                       {profile?.user?.name}
                     </Button>
                     <Button size="icon" onClick={() => logout()} className="rounded-full !bg-transparent" variant="ghost">
-                      <LogIn className="h-[22px] w-[22px]"/>
+                      <LogIn02 className="h-[22px] w-[22px]"/>
                     </Button>
                   </div>
                 ) : (
                   <Button size="icon" onClick={() => navigate("/login")} className="rounded-full !bg-transparent" variant="ghost">
-                    <CircleUser className="h-[22px] w-[22px]" />
+                    <UserCircle className="h-[22px] w-[22px]" />
                   </Button> 
                 )
               }
@@ -165,7 +165,7 @@ const Header = () => {
           {config?.is_search_enabled == 1 && (
             <TopSheet open={isSearching} onOpenChange={setIsSearching} contentClassName="py-0" trigger={
               <Button variant="ghost" size="icon" className="rounded-full flex justify-center hover:bg-transparent">
-                <Search className="h-[22px] w-[22px]"/>
+                <SearchLg className="h-[22px] w-[22px]"/>
               </Button>
             }>
               <div className="max-w-[1400px] mx-auto w-full">
@@ -194,7 +194,7 @@ const Header = () => {
                       }}
                     >
                       <div className="relative flex items-center">
-                        <Search className="absolute left-4 h-5 w-5 text-muted-foreground" />
+                        <SearchLg className="absolute left-4 h-5 w-5 text-muted-foreground" />
                         <Input
                           name="search"
                           placeholder={t("Search products")}
@@ -202,7 +202,7 @@ const Header = () => {
                           onChange={(e) => setSearchInput(e.target.value)}
                           value={searchInput}
                         />
-                        {searchInput !== "" && <X className="absolute right-4 h-5 w-5" onClick={() => setSearchInput("")}/>}
+                        {searchInput !== "" && <XClose className="absolute right-4 h-5 w-5" onClick={() => setSearchInput("")}/>}
                       </div>
                     </form>
 

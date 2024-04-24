@@ -10,12 +10,12 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useTranslate } from "@refinedev/core";
-import { HeartIcon, ShoppingBag, Undo2 } from "lucide-react";
 import CartItem from "./CartItem";
 import { useNavigate } from "react-router-dom";
 import { useWishlist } from "@/hooks/useWishlist";
 import EmptyList from "../customComponents/EmptyList";
 import useConfig from "@/hooks/useConfig";
+import { FlipBackward, Heart, ShoppingBag01 } from "@untitled-ui/icons-react";
 
 const Cart = () => {
   const t = useTranslate();
@@ -32,7 +32,7 @@ const Cart = () => {
           size="icon"
           className="rounded-full relative hover:bg-transparent "
         >
-          <ShoppingBag className="h-[22px] w-[22px]" />
+          <ShoppingBag01 className="h-[22px] w-[22px]" />
           {cartCount > 0 && (
             <span className="absolute top-0.5 right-0.5 flex items-center justify-center h-4 w-4 bg-primary text-xs text-white rounded-full">
               {cartCount}
@@ -44,12 +44,12 @@ const Cart = () => {
       <SheetContent className="flex flex-col justify-between h-full p-5">
         <SheetHeader className="bg-white -m-5 flex flex-row items-center justify-between z-10 px-4 py-3 border-b">
           <SheetClose asChild>
-            <Undo2 className="h-5 w-5 cursor-pointer hover:opacity-75" />
+            <FlipBackward className="h-5 w-5 cursor-pointer hover:opacity-75" />
           </SheetClose>
 
           <SheetTitle className="!m-0 text-base">{t("Shopping Cart")}</SheetTitle>
 
-          <HeartIcon
+          <Heart
             className="h-5 w-5 cursor-pointer hover:opacity-75 !m-0"
             onClick={() => setIsOpen(true)}
           />
@@ -65,7 +65,7 @@ const Cart = () => {
           </ul>
         ) : (
           <EmptyList 
-            icon={<ShoppingBag className="text-white w-[30px] h-[30px]"/>}
+            icon={<ShoppingBag01 className="text-white w-[30px] h-[30px]"/>}
             title={t("Empty_cart.title")}
             desc={t("Empty_cart.desc")}
           />
@@ -106,7 +106,7 @@ const Cart = () => {
                     onClick={() => navigate(cartCount > 0 ? "/checkout" : "/")}
                   >
                     {t(cartCount > 0 ? "Checkout" : "Shop now")}
-                    <ShoppingBag className="ml-2 h-5 w-5" />
+                    <ShoppingBag01 className="ml-2 h-5 w-5" />
                   </Button>
                 )}
               </SheetClose>

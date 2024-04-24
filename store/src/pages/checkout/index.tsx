@@ -7,7 +7,6 @@ import {
   CirclePlus,
   Landmark,
   Loader2,
-  MessageCircleQuestion,
   QrCode,
   ArrowLeftRight,
   Undo2,
@@ -37,6 +36,7 @@ import AddressSelect from "@/components/AddressSelect";
 import TopSheet from "@/components/customComponents/TopSheet";
 import Logo from "@/components/customComponents/Logo";
 import { Skeleton } from "@/components/ui/skeleton";
+import { FlipBackward, MessageQuestionCircle } from "@untitled-ui/icons-react";
 
 export const paymentMethodIconMap: { [key: string]: React.ReactNode } = {
   "2": <Landmark className="mr-2 h-4 w-4" />,
@@ -116,7 +116,7 @@ const Checkout = () => {
         </div>
 
         <div className="flex justify-center w-full">
-          <button className="flex items-center p-4 gap-x-2 text-darkgray-200" onClick={() => setIsOpen(false)}>
+          <button className="flex items-center p-4 gap-x-2 text-darkgray-200 text-sm" onClick={() => setIsOpen(false)}>
             {t("Hide cart details")}
             <ArrowUp className="h-4 w-4"/>
           </button>
@@ -248,7 +248,7 @@ const Checkout = () => {
   const AddressHeader = () => {
     return (
       <div className="flex items-center gap-x-2.5">
-        <Undo2 className="h-5 w-5 cursor-pointer hover:opacity-75" onClick={() => navigate("/")}/>
+        <FlipBackward className="h-5 w-5 cursor-pointer hover:opacity-75" onClick={() => navigate("/")}/>
         <h2 className="lg:hidden font-semibold">{t("Order details")}</h2>
 
         <div className="hidden lg:block">
@@ -265,7 +265,7 @@ const Checkout = () => {
           <AddressHeader />
 
           {/* CartList MOBILE VERSION */}
-          <OrderDetailSheet trigger={<h2 className="lg:hidden text-darkgray-200">{t("Cart details")}</h2>} />
+          <OrderDetailSheet trigger={<h2 className="lg:hidden text-darkgray-200 text-sm">{t("Cart details")}</h2>} />
         </div>
 
         {/* CartList DESKTOP VERSION */}
@@ -399,7 +399,7 @@ const Checkout = () => {
               </div>
               <div className="w-full flex justify-center h-10 items-center">
                 <Button variant="link" className="font-bold text-base flex items-center gap-x-2">
-                  <MessageCircleQuestion size={20} />{" "}
+                  <MessageQuestionCircle className="h-5 w-5" />{" "}
                   {t("Ask for help")}
                 </Button>
               </div>

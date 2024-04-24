@@ -10,7 +10,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { Heart, MessageCircleQuestion, ShoppingBag } from "lucide-react";
 import ProductCounter from "@/components/ProductCounter";
 import { useCart } from "@/hooks/useCart";
 import { useWishlist } from "@/hooks/useWishlist";
@@ -18,6 +17,8 @@ import ProductImages from "@/components/ProductImages";
 import ProductSkeleton from "@/components/skeletons/ProductSkeleton";
 import { useConfig } from "@/hooks/useConfig";
 import RelatedProducts from "@/components/customComponents/RelatedProducts";
+import { MessageQuestionCircle, ShoppingBag01 } from "@untitled-ui/icons-react";
+import { Heart } from "lucide-react"
 
 export const ProductShow: React.FC<IResourceComponentsProps> = () => {
   const t = useTranslate();
@@ -87,7 +88,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
               <div className="fixed bottom-0 left-0 bg-white lg:bg-inherit p-4 lg:p-0 lg:static flex lg:flex-col w-full gap-y-[14px] flex-col-reverse z-10">
                 <div className="flex items-center gap-x-[10px] w-full">
                   <Button className="w-full rounded-xl h-12.5 text-base font-semibold" onClick={() => addToCart(itemCode)}>
-                    <ShoppingBag className="mr-2.5 h-4.5 w-4.5" />
+                    <ShoppingBag01 className="mr-2.5 h-5 w-5" />
                     {t("Add to Cart")}
                   </Button>
                   {config?.enable_wishlist == 1 && (
@@ -100,7 +101,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
                           : addToWishlist(itemCode)
                       }
                     >
-                      <Heart className={`${inWishlist ? "fill-primary" : ""}`}/>
+                      <Heart className={inWishlist ? "fill-primary" : ""}/>
                     </Button>
                   )}
                 </div>
@@ -122,7 +123,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
             </Accordion>
             <div className="w-full flex justify-center h-10 items-center mt-6">
               <Button variant="link" className="font-bold text-base">
-                <MessageCircleQuestion size={20} className="mr-1" />{" "}
+                <MessageQuestionCircle className="mr-2" />{" "}
                 {t("Ask for help")}
               </Button>
             </div>

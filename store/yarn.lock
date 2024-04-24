@@ -1898,6 +1898,11 @@
   resolved "https://registry.yarnpkg.com/@ungap/structured-clone/-/structured-clone-1.2.0.tgz#756641adb587851b5ccb3e095daf27ae581c8406"
   integrity sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==
 
+"@untitled-ui/icons-react@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@untitled-ui/icons-react/-/icons-react-0.1.2.tgz#6474599a086796affaee9c1af5560ea5065b67af"
+  integrity sha512-H4Ryn622t6kNxa5ldQEKL8i2LqtPskuKROA0mgTj54R1KSTNIx5jzrfOGTP6NUOtPyVMVRSyfex3RPqba3LPqg==
+
 "@vitejs/plugin-react@^4.0.0":
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/@vitejs/plugin-react/-/plugin-react-4.2.1.tgz#744d8e4fcb120fc3dbaa471dadd3483f5a304bb9"

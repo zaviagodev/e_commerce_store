@@ -4,7 +4,6 @@ import {
   useList,
   useTranslate,
 } from "@refinedev/core";
-import { ArrowLeftRight, ArrowRight, CirclePlus, Undo2 } from "lucide-react";
 import {
   Sheet,
   SheetClose,
@@ -18,6 +17,7 @@ import { Label } from "./ui/label";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
+import { FlipBackward, ArrowRight } from "@untitled-ui/icons-react";
 
 type AddressSelectProps = {
   onSelect: (address: any) => void;
@@ -57,7 +57,7 @@ const AddressSelect = ({ onSelect, ...props }: AddressSelectProps) => {
       <SheetContent>
         <SheetHeader className="bg-white -m-5 flex flex-row items-center justify-between z-10 px-4 py-3 border-b">
           <SheetClose asChild>
-            <Undo2 className="h-5 w-5 cursor-pointer hover:opacity-75 absolute" />
+            <FlipBackward className="h-5 w-5 cursor-pointer hover:opacity-75 absolute" />
           </SheetClose>
 
           <SheetTitle className="!mx-auto !my-0 text-base">

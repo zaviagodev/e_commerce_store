@@ -61,12 +61,10 @@ const ShippingRuleSelect = ({
           <div className="flex flex-col justify-center w-full cursor-default select-none items-start rounded-sm py-1.5 px-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
             <h2 className="font-semibold">{shippingRule?.name || "Select Shipping Rule"}</h2>
             
-            {shippingRule?.name && (
-              <p className="text-xs text-muted-foreground">{new Intl.NumberFormat("th-TH", {
+            <p className="text-xs text-muted-foreground">{new Intl.NumberFormat("th-TH", {
                 style: "currency",
                 currency: "THB",
-              }).format(shippingRule?.shipping_amount)}</p>
-            )}
+              }).format(shippingRule?.shipping_amount || 0.00)}</p>
           </div>
         </SelectTrigger>
         <SelectContent>

@@ -1,4 +1,3 @@
-import { Minus, Plus, Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { useOne } from "@refinedev/core";
 import { useCart } from "@/hooks/useCart";
@@ -6,6 +5,7 @@ import { Link } from "react-router-dom";
 import CartItemSkeleton from "../skeletons/CartItemSkeleton";
 import { getFileURL } from "@/lib/utils";
 import { useConfig } from "@/hooks/useConfig";
+import { Trash01, Minus, Plus } from "@untitled-ui/icons-react";
 
 type CartItemProps = {
   itemCode: string;
@@ -58,7 +58,7 @@ const CartItem = ({ itemCode }: CartItemProps) => {
               size="sm"
               onClick={() => addToCart(itemCode, -1)}
             >
-              <Minus size={12} />
+              <Minus className="h-3 w-3" />
             </Button>
             <span className="px-2">{cart[itemCode]}</span>
             <Button
@@ -66,7 +66,7 @@ const CartItem = ({ itemCode }: CartItemProps) => {
               size="sm"
               onClick={() => addToCart(itemCode)}
             >
-              <Plus size={12} />
+              <Plus className="h-3 w-3" />
             </Button>
           </div>
           <Button
@@ -75,7 +75,7 @@ const CartItem = ({ itemCode }: CartItemProps) => {
             className="w-5 text-gray-500 hover:text-gray-900 hover:bg-transparent"
             onClick={() => removeFromCart(itemCode)}
           >
-            <Trash2 size={18} />
+            <Trash01 className="h-5 w-5" />
           </Button>
         </div>
       </div>

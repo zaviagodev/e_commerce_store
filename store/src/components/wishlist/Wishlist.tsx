@@ -8,10 +8,10 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useTranslate } from "@refinedev/core";
-import { Heart, HeartIcon, Undo2 } from "lucide-react";
 import WishlistItem from "./WishlistItem";
 import { useWishlist } from "@/hooks/useWishlist";
 import EmptyList from "../customComponents/EmptyList";
+import { FlipBackward, Heart } from "@untitled-ui/icons-react";
 
 const Wishlist = () => {
   const t = useTranslate();
@@ -25,7 +25,7 @@ const Wishlist = () => {
           size="icon"
           className="rounded-full relative hover:bg-transparent"
         >
-          <HeartIcon className="h-[22px] w-[22px]" />
+          <Heart />
           {wishlistCount > 0 && (
             <span className="absolute top-0.5 -right-0.5 flex items-center justify-center h-4 w-4 bg-primary text-xs text-white rounded-full">
               {wishlistCount}
@@ -39,7 +39,7 @@ const Wishlist = () => {
 
           {/* Set Undo2 as absolute to make the title centred */}
           <SheetClose asChild>
-            <Undo2 className="h-5 w-5 cursor-pointer hover:opacity-75 absolute" />
+            <FlipBackward className="h-5 w-5 cursor-pointer hover:opacity-75 absolute" />
           </SheetClose>
 
           <SheetTitle className="!mx-auto !my-0 text-base">{t("Favorites")}</SheetTitle>
