@@ -40,33 +40,37 @@ export const QRPMDetail = () => {
           alt="QR Code"
           className="w-full"
         />
-        <div className="flex justify-between items-center">
-          <Label>{t("Account Name")}</Label>
-          <strong>{selectedPaymentMethod.account_name}</strong>
+        
+        <div className="space-y-2">
+          <div className="flex justify-between items-center">
+            <Label className="text-darkgray-200">{t("Account Name")}</Label>
+            <strong>{selectedPaymentMethod.account_name}</strong>
+          </div>
+          <div className="flex justify-between items-center">
+            <Label className="text-darkgray-200">{t("Account Number")}</Label>
+            <strong className="flex items-center -mr-2">
+              {selectedPaymentMethod.promptpay_number}
+              <Button size="icon" variant="link" className="text-accent">
+                <Copy className="h-4 w-4 text-gray-700" />
+              </Button>
+            </strong>
+          </div>
         </div>
-        <div className="flex justify-between items-center">
-          <Label>{t("Account Number")}</Label>
-          <strong className="flex items-center -mr-2">
-            {selectedPaymentMethod.promptpay_number}
-            <Button size="icon" variant="link" className="text-accent">
-              <Copy className="h-4 w-4 text-gray-700" />
-            </Button>
-          </strong>
-        </div>
-        <div className="flex flex-col bg-secondary p-6 rounded-lg">
-          <p className=" text-xs">{t("Grand total")}</p>
-          <h2 className="text-2xl font-semibold text-primary">
+
+        <div className="flex flex-col items-center rounded-lg space-y-6">
+          <p className="text-darkgray-200">{t("Grand total")}</p>
+          <h2 className="text-4xl font-semibold text-primary text-center">
             {new Intl.NumberFormat("th-TH", {
               style: "currency",
               currency: "THB",
             }).format(order.grand_total)}
           </h2>
         </div>
-        <div>
+        <div className="space-y-4">
           <Button
             size="lg"
-            className="w-full"
-            variant="secondary"
+            className="w-full bg-accent border-darkgray-100"
+            variant="outline"
             onClick={() => {
               const link = document.createElement("a");
               link.target = "_blank";
@@ -80,7 +84,7 @@ export const QRPMDetail = () => {
             <ArrowDownCircle className="mr-2 h-4 w-4" />
             {t("Save QR Code")}
           </Button>
-          <Button size="lg" className="w-full mt-4" onClick={next}>
+          <Button size="lg" className="w-full h-12.5 text-base font-semibold" onClick={next}>
             {t("Upload Payment Slip")}
           </Button>
         </div>
@@ -160,7 +164,7 @@ export const QRUploadSlip = () => {
             className="flex flex-col gap-y-4"
             onSubmit={form.handleSubmit(onSubmit)}
           >
-            <div className="flex items-center p-2 bg-secondary rounded-lg">
+            <div className="flex items-center p-4 bg-accent border border-darkgray-100 rounded-lg">
               <img
                 src={`${import.meta.env.VITE_BACKEND_URL ?? ""}${
                   selectedPaymentMethod.promptpay_qr_image
@@ -173,7 +177,7 @@ export const QRUploadSlip = () => {
                   {selectedPaymentMethod.name}
                 </p>
                 <strong>{selectedPaymentMethod.promptpay_number}</strong>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm font-semibold text-darkgray-500">
                   {t("Account Name")}: {selectedPaymentMethod.account_name}
                 </p>
               </div>
@@ -204,7 +208,7 @@ export const QRUploadSlip = () => {
             />
             <Button
               size="lg"
-              className="w-full"
+              className="w-full h-12.5 text-base font-semibold"
               type="submit"
               disabled={!form.formState.isValid || isConfirmingPayment}
             >

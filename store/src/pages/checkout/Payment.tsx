@@ -13,6 +13,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { paymentMethodIconMap } from ".";
 import { QRPMDetail, QRUploadSlip } from "./QRPM";
 import { BankPMDetail, BankUploadSlip } from "./BankPM";
+import { Wallet04 } from "@untitled-ui/icons-react";
 
 export const PaymentProvider: React.FC = () => {
   return (
@@ -25,7 +26,7 @@ export default PaymentProvider;
 
 const Payment = () => {
   return (
-    <div className="w-full min-h-screen mx-auto flex items-center py-6 px-4 lg:w-[450px] lg:px-0">
+    <div className="w-full min-h-screen mx-auto flex py-10 px-4 lg:w-[450px] lg:px-0">
       <div className="w-full">
         <Link
           to="/"
@@ -56,8 +57,6 @@ const Summary = () => {
   const checkoutSummary = useSummary(order);
   const { data: profile } = useGetIdentity();
 
-  console.log(order?.items?.length)
-
   if (!order) {
     return <div>Loading....</div>;
   }
@@ -81,9 +80,15 @@ const Summary = () => {
       </div>
       {selectedPaymentMethod?.key && (
         <div className="mt-6">
-          <Label className="flex items-center font-semibold text-base justify-start rounded-xl border border-darkgray-100 bg-accent px-6 py-4 peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
-            {paymentMethodIconMap[selectedPaymentMethod?.key as string]}
-            {selectedPaymentMethod?.name}
+          <Label className="flex items-center justify-between font-semibold text-base rounded-xl border border-darkgray-100 bg-accent px-6 py-4 peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
+            <span className="flex items-center text-darkgray-500 gap-x-2">
+              <Wallet04 />
+              วิธีการชำระเงิน
+            </span>
+            <span className="flex items-center">
+              {paymentMethodIconMap[selectedPaymentMethod?.key as string]}
+              {selectedPaymentMethod?.name}
+            </span>
           </Label>
         </div>
       )}
@@ -100,7 +105,7 @@ const Summary = () => {
         </h2>
       </div>
       <div className="mt-9 mb-1 text-center">
-        <Button size="lg" className="w-full" onClick={next}>
+        <Button size="lg" className="w-full h-12.5 text-base font-semibold" onClick={next}>
           {t("Pay Now")}
         </Button>
         <Button
@@ -117,7 +122,7 @@ const Summary = () => {
             name={order.shipping_address_name}
             display={order.address_display}
           />
-          <div className="flex flex-col">
+          <div className="flex flex-col mt-10">
             <ul className="flex flex-col gap-y-8">
               {order.items.map(
                 ({ item_code, qty }: { item_code: string; qty: number }) => {

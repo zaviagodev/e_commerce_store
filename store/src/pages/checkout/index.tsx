@@ -36,7 +36,7 @@ import AddressSelect from "@/components/AddressSelect";
 import TopSheet from "@/components/customComponents/TopSheet";
 import Logo from "@/components/customComponents/Logo";
 import { Skeleton } from "@/components/ui/skeleton";
-import { FlipBackward, MessageQuestionCircle } from "@untitled-ui/icons-react";
+import { FlipBackward, MarkerPin04, MessageQuestionCircle } from "@untitled-ui/icons-react";
 
 export const paymentMethodIconMap: { [key: string]: React.ReactNode } = {
   "2": <Landmark className="mr-2 h-4 w-4" />,
@@ -325,10 +325,10 @@ const Checkout = () => {
                   <Button
                     variant="outline"
                     size="lg"
-                    className="w-full justify-start text-gray-500 border-darkgray-100 bg-accent !text-darkgray-500 rounded-xl px-4"
+                    className="w-full justify-start text-gray-500 border-darkgray-100 bg-accent rounded-xl px-4 font-semibold h-12.5"
                     onClick={() => navigate("/account/addresses/new")}
                   >
-                    <CirclePlus className="mr-2" /> {t("Add Address")}
+                    <MarkerPin04 className="mr-2" /> {t("Add Address")}
                   </Button>
                 )}
               </section>

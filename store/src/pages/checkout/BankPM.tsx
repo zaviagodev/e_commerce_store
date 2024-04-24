@@ -74,16 +74,16 @@ export const BankPMDetail = () => {
             </Button>
           </div>
         ))}
-        <div className="flex flex-col bg-secondary p-6 rounded-lg">
-          <p className=" text-xs">{t("Grand total")}</p>
-          <h2 className="text-2xl font-semibold text-primary">
+        <div className="flex flex-col items-center rounded-lg space-y-6">
+          <p className="text-darkgray-200">{t("Grand total")}</p>
+          <h2 className="text-4xl font-semibold text-primary text-center">
             {new Intl.NumberFormat("th-TH", {
               style: "currency",
               currency: "THB",
             }).format(order.grand_total)}
           </h2>
         </div>
-        <Button size="lg" className="w-full" onClick={next}>
+        <Button size="lg" className="w-full h-12.5 text-base font-semibold" onClick={next}>
           {t("Upload Payment Slip")}
         </Button>
       </div>
