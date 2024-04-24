@@ -197,7 +197,7 @@ const Header = () => {
                         <Search className="absolute left-4 h-5 w-5 text-muted-foreground" />
                         <Input
                           name="search"
-                          placeholder="Search products..."
+                          placeholder={t("Search products")}
                           className="pl-12 w-full focus-visible:ring-0 focus-visible:ring-offset-0 bg-neutral-100 rounded-full border-neutral-100"
                           onChange={(e) => setSearchInput(e.target.value)}
                           value={searchInput}

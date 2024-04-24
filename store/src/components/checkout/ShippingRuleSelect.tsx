@@ -38,7 +38,7 @@ const ShippingRuleSelect = ({
 
   return (
     <div>
-      <Label className="text-darkgray-200 font-semibold text-base inline-block mb-3">{t("Shipping Rule")}</Label>
+      <Label className="text-darkgray-200 font-semibold text-base inline-block mb-1">{t("Shipping Rule")}</Label>
       <Select
         value={shippingRule?.name}
         onValueChange={(shippingRule) => {
@@ -57,9 +57,16 @@ const ShippingRuleSelect = ({
           );
         }}
       >
-        <SelectTrigger className="w-full bg-accent border border-darkgray-100 rounded-xl">
+        <SelectTrigger className="w-full bg-accent border border-darkgray-100 rounded-xl h-12.5">
           <div className="flex flex-col justify-center w-full cursor-default select-none items-start rounded-sm py-1.5 px-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
             {shippingRule?.name || "Select Shipping Rule"}
+            
+            {shippingRule?.name && (
+              <p className="text-xs text-muted-foreground">{new Intl.NumberFormat("th-TH", {
+                style: "currency",
+                currency: "THB",
+              }).format(shippingRule?.shipping_amount)}</p>
+            )}
           </div>
         </SelectTrigger>
         <SelectContent>
@@ -78,14 +85,6 @@ const ShippingRuleSelect = ({
           )}
         </SelectContent>
       </Select>
-      <p className="pl-1 text-xs text-muted-foreground">
-        <b>
-          {new Intl.NumberFormat("th-TH", {
-            style: "currency",
-            currency: "THB",
-          }).format(shippingRule?.shipping_amount)}
-        </b>
-      </p>
     </div>
   );
 };

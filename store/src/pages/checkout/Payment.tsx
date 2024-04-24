@@ -56,6 +56,8 @@ const Summary = () => {
   const checkoutSummary = useSummary(order);
   const { data: profile } = useGetIdentity();
 
+  console.log(order?.items?.length)
+
   if (!order) {
     return <div>Loading....</div>;
   }
@@ -79,22 +81,25 @@ const Summary = () => {
       </div>
       {selectedPaymentMethod?.key && (
         <div className="mt-6">
-          <Label className="flex items-center justify-start rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
+          <Label className="flex items-center font-semibold text-base justify-start rounded-xl border border-darkgray-100 bg-accent px-6 py-4 peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
             {paymentMethodIconMap[selectedPaymentMethod?.key as string]}
             {selectedPaymentMethod?.name}
           </Label>
         </div>
       )}
-      <div className="mt-6 flex flex-col bg-secondary p-6 rounded-lg">
-        <p className=" text-xs">{t("Grand total")}</p>
-        <h2 className="text-2xl font-semibold text-primary">
+      <div className="mt-9 flex flex-col rounded-lg space-y-6">
+        <div className="flex items-center justify-between text-darkgray-200 text-sm">
+          <p>{t("Grand total")}</p>
+          <p>{order?.items?.length} {t(order?.items?.length === 1 ? "Item" : "Items")}</p>
+        </div>
+        <h2 className="text-4xl font-semibold text-primary text-center">
           {new Intl.NumberFormat("th-TH", {
             style: "currency",
             currency: "THB",
           }).format(order.grand_total)}
         </h2>
       </div>
-      <div className="mt-6 mb-1 text-center">
+      <div className="mt-9 mb-1 text-center">
         <Button size="lg" className="w-full" onClick={next}>
           {t("Pay Now")}
         </Button>
@@ -107,13 +112,13 @@ const Summary = () => {
         </Button>
       </div>
       {showDetails && (
-        <div className="flex flex-col gap-y-6">
+        <div className="flex flex-col gap-y-4">
           <AddressCard
             name={order.shipping_address_name}
             display={order.address_display}
           />
           <div className="flex flex-col">
-            <ul className="my-3 flex flex-col gap-y-3">
+            <ul className="flex flex-col gap-y-8">
               {order.items.map(
                 ({ item_code, qty }: { item_code: string; qty: number }) => {
                   if (!qty) {
@@ -130,11 +135,11 @@ const Summary = () => {
               )}
             </ul>
           </div>
-          <Separator className="-mt-4" />
-          <div className="flex flex-col">
-            <div className="w-full flex justify-between">
-              <p className="text-sm text-muted-foreground">{t("Subtotal")}</p>
-              <strong className="text-darkgray">
+          <Separator />
+          <div className="flex flex-col gap-y-4">
+            <div className="w-full flex justify-between text-sm">
+              <p>{t("Subtotal")}</p>
+              <strong>
                 {new Intl.NumberFormat("th-TH", {
                   style: "currency",
                   currency: "THB",
@@ -142,26 +147,24 @@ const Summary = () => {
               </strong>
             </div>
             {checkoutSummary.totalShipping > 0 && (
-              <div className="w-full flex justify-between">
-                <p className="text-sm text-muted-foreground">
-                  {t("Shipping Cost")}
-                </p>
-                <strong className="text-muted-foreground">
+              <div className="w-full flex justify-between text-sm text-darkgray-200">
+                <p>{t("Shipping Cost")}</p>
+                <span>
                   {new Intl.NumberFormat("th-TH", {
                     style: "currency",
                     currency: "THB",
                   }).format(checkoutSummary.totalShipping)}
-                </strong>
+                </span>
               </div>
             )}
-            <div className="w-full flex justify-between">
-              <p className="text-sm text-muted-foreground">{t("Tax")}</p>
-              <strong className="text-muted-foreground">
+            <div className="w-full flex justify-between text-sm text-darkgray-200">
+              <p>{t("Tax")}</p>
+              <span>
                 {new Intl.NumberFormat("th-TH", {
                   style: "currency",
                   currency: "THB",
                 }).format(checkoutSummary.totalTax)}
-              </strong>
+              </span>
             </div>
             {checkoutSummary.totalDiscount > 0 && (
               <div className="w-full flex justify-between">
@@ -186,9 +189,9 @@ const Summary = () => {
             )}
           </div>
           <Separator />
-          <div className="w-full flex justify-between">
-            <p className="text-sm text-muted-foreground">{t("Grand total")}</p>
-            <strong className="text-darkgray">
+          <div className="w-full flex justify-between text-sm">
+            <p>{t("Grand total")}</p>
+            <strong>
               {new Intl.NumberFormat("th-TH", {
                 style: "currency",
                 currency: "THB",

@@ -27,8 +27,6 @@ const Cart = () => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-
-        {/* change the variant from secondary to ghost */}
         <Button
           variant="ghost"
           size="icon"

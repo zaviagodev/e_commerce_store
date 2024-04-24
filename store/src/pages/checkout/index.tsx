@@ -248,7 +248,7 @@ const Checkout = () => {
               className="mt-6 flex flex-col gap-y-6"
               onSubmit={form.handleSubmit(onSubmit)}
             >
-              <section className="space-y-3">
+              <section className="space-y-1">
                 <FormField
                   control={form.control}
                   name="address"
@@ -303,7 +303,7 @@ const Checkout = () => {
                       <FormControl>
                         <RadioGroup
                           {...field}
-                          className="grid grid-cols-2 gap-4"
+                          className="grid grid-cols-2 gap-4 !m-0"
                           onValueChange={(value) =>
                             form.setValue("paymentMethod", value)
                           }
@@ -353,8 +353,8 @@ const Checkout = () => {
                 </p>
               </div>
               <div className="w-full flex justify-center h-10 items-center">
-                <Button variant="link" className="font-bold">
-                  <MessageCircleQuestion size={20} className="mr-1" />{" "}
+                <Button variant="link" className="font-bold text-base flex items-center gap-x-2">
+                  <MessageCircleQuestion size={20} />{" "}
                   {t("Ask for help")}
                 </Button>
               </div>
