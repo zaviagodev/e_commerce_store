@@ -29,6 +29,7 @@ export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
         <div className={`${!checkIfCheckout ? "px-4 py-[50px]" : ""} w-full max-w-[1400px] mx-auto`}>
           {/* <Breadcrumb /> */}
           <div>{children}</div>
+        </div>
       </div>
     </>
   );
