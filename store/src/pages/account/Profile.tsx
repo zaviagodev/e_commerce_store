@@ -34,10 +34,10 @@ const Profile = () => {
   }
 
   return (
-    <div className="w-full lg:w-[450px] mx-auto">
-      <h1 className="font-semibold text-darkgray">{t("Account Details")}</h1>
-      <div className="flex items-center gap-4 mt-6">
-        <Avatar className="h-20 w-20">
+    <div className="w-full lg:w-[410px] mx-auto">
+      <h1 className="font-semibold text-darkgray-500 text-lg">{t("Account Details")}</h1>
+      <div className="flex items-center gap-3 mt-10">
+        <Avatar className="h-16 w-16">
           <AvatarImage
             src={previewAvatar ?? profile.user?.user_image}
             alt={`${profile.user?.full_name} profile image`}
@@ -45,14 +45,14 @@ const Profile = () => {
           <AvatarFallback>{profile.user?.full_name[0]}</AvatarFallback>
         </Avatar>
         <div className="grid gap-1">
-          <p className="text-sm font-medium leading-none">
+          {/* <p className="text-sm font-medium leading-none">
             {profile.user?.full_name}
           </p>
-          <p className="text-sm text-muted-foreground">{profile.user?.email}</p>
+          <p className="text-sm text-muted-foreground">{profile.user?.email}</p> */}
           <Button
-            variant="outline"
+            variant="link"
             size="sm"
-            className="text-xs !px-2 h-6 w-min"
+            className="w-fit text-darkgray-500 p-0 font-semibold"
             onClick={() => avatar.current.click()}
           >
             {t("Edit Profile Picture")}
@@ -68,7 +68,7 @@ const Profile = () => {
         </div>
       </div>
       <div className="mt-6">
-        <h1 className="font-semibold text-gray-500 mb-2">
+        <h1 className="font-semibold text-darkgray-200 mb-2">
           {t("Profile information")}
         </h1>
         <ProfileForm

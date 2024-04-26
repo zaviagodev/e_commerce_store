@@ -1,5 +1,4 @@
 import { Button } from "./ui/button";
-import { Pencil } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   AlertDialog,
@@ -14,7 +13,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useDelete, useTranslate } from "@refinedev/core";
 import { useNavigate } from "react-router-dom";
-import { MarkerPin04, Trash01 } from "@untitled-ui/icons-react";
+import { Edit03, MarkerPin04, Trash01 } from "@untitled-ui/icons-react";
 
 type AddressCardActions = {
   edit?: boolean;
@@ -55,18 +54,16 @@ const AddressCard = ({
   return (
     <Card className="w-full overflow-hidden bg-accent border border-darkgray-100 rounded-xl">
       <CardHeader className="flex flex-row justify-between items-center text-gray-500">
-        <CardTitle className="text-base flex items-center">
-          <MarkerPin04 className="mr-2 " /> {name}
+        <CardTitle className="text-base flex items-center gap-x-2">
+          <MarkerPin04 /> {name}
         </CardTitle>
-        {actions.edit && (
-          <Button
-            variant="ghost"
-            size="icon"
-            className="w-5 text-gray-500 hover:text-gray-900 hover:bg-transparent"
-            onClick={() => navigate(`/account/addresses/${name}`)}
-          >
-            <Pencil size={18} />
-          </Button>
+        {actions && (
+          <div className="flex items-center gap-x-4 !m-0">
+            {actions.edit && (
+              <Edit03 className="!m-0 h-5 w-5 cursor-pointer text-gray-500" onClick={() => navigate(`/account/addresses/${name}`)}/>
+            )}
+            {actions.delete && <DeletionConfirmation name={name} />}
+          </div>
         )}
       </CardHeader>
       <CardContent className="text-gray-700 relative text-sm">
@@ -94,7 +91,6 @@ const AddressCard = ({
             )}
           </>
         )}
-        {actions.delete && <DeletionConfirmation name={name} />}
       </CardContent>
       <img src="/border-line.png" className="w-full h-2.5" />
     </Card>
@@ -112,13 +108,7 @@ export const DeletionConfirmation = ({ name }: DeletionConfirmationProps) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="w-5 text-gray-500 hover:text-destructive hover:bg-transparent absolute right-6 bottom-4"
-        >
-          <Trash01 className="h-5 w-5" />
-        </Button>
+        <Trash01 className="!m-0 h-5 w-5 hover:text-destructive cursor-pointer text-gray-500" />
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

@@ -1,7 +1,7 @@
 import { Outlet, NavLink } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useGetIdentity, useTranslate } from "@refinedev/core";
-import { FileText, MapPinned, User } from "lucide-react";
+import { File06, MarkerPin04, User01 } from "@untitled-ui/icons-react";
 
 const Account = () => {
   const t = useTranslate();
@@ -18,17 +18,17 @@ const Account = () => {
 
   //   use tailwindcss classes to style the layout
   return (
-    <div className="py-7 px-4 flex gap-x-8">
-      <div className="w-2/5 hidden md:block">
+    <div className="flex gap-x-8 px-4">
+      <div className="w-[320px] hidden md:block py-12">
         <div className="flex flex-col gap-3">
-          <Avatar className="h-24 w-24">
+          <Avatar className="h-20 w-20">
             <AvatarImage
               src={profile?.user?.user_image}
               alt={`${profile?.user?.full_name} profile image`}
             />
             <AvatarFallback>{profile?.user?.full_name[0]}</AvatarFallback>
           </Avatar>
-          <h2 className="text-2xl font-semibold text-primary">
+          <h2 className="text-xl font-semibold text-primary">
             {profile?.user.full_name}
           </h2>
         </div>
@@ -36,38 +36,38 @@ const Account = () => {
         <nav className="flex flex-col mt-12">
           <NavLink
             className={({ isActive }) =>
-              `flex font-bold items-center gap-x-[10px] leading-[10px] h-[50px] hover:text-linkblack text-linkblack ${
+              `flex font-bold items-center gap-x-[10px] h-[50px] ${
                 isActive ? "text-primary" : "text-gray-500"
               }`
             }
             end
             to="/account"
           >
-            <User size={20} /> {t("Account Details")}
+            <User01 className="h-5 w-5" /> {t("Account Details")}
           </NavLink>
           <NavLink
             className={({ isActive }) =>
-              `flex font-bold items-center gap-x-[10px] leading-[10px] h-[50px] hover:text-linkblack text-darkgray ${
+              `flex font-bold items-center gap-x-[10px] h-[50px] ${
                 isActive ? "text-primary" : "text-gray-500"
               }`
             }
             to="/account/addresses"
           >
-            <MapPinned size={20} /> {t("Addresses")}
+            <MarkerPin04 className="h-5 w-5" /> {t("Addresses")}
           </NavLink>
           <NavLink
             className={({ isActive }) =>
-              `flex font-bold items-center gap-x-[10px] leading-[10px] h-[50px] hover:text-linkblack text-darkgray ${
+              `flex font-bold items-center gap-x-[10px] h-[50px] ${
                 isActive ? "text-primary" : "text-gray-500"
               }`
             }
             to="/account/orders"
           >
-            <FileText size={20} /> {t("Orders")}
+            <File06 className="h-5 w-5" /> {t("Orders")}
           </NavLink>
         </nav>
       </div>
-      <div className="w-full">
+      <div className="w-full lg:shadow-checkout h-[calc(100vh_-_57px)] p-10">
         <Outlet />
       </div>
     </div>

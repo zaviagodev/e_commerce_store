@@ -84,7 +84,7 @@ module.exports = {
         12.5: "50px"
       },
       boxShadow: {
-        "checkout": "-17px 4px 28.8px 0px #00000008"
+        "checkout": "-17px 4px 28.8px 0px #00000008",
       }
     },
   },

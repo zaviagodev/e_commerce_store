@@ -12,8 +12,10 @@ export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
           
   const location = useLocation()
 
-  const checkIfCheckout = 
-    location.pathname === "/checkout"
+  const checkPage = {
+    checkout: location.pathname === "/checkout",
+    account: location.pathname.includes("/account")
+  }
   return (
     <>
       <Helmet>
@@ -24,9 +26,9 @@ export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
         <title>{config?.company + " " + t("Store")}</title>
       </Helmet>
       <div className="flex min-h-screen w-full flex-col">
-        {!checkIfCheckout && <Header />}
+        {!checkPage.checkout && <Header />}
         {/* <Menu /> */}
-        <div className={`${!checkIfCheckout ? "px-4 py-[50px]" : ""} w-full max-w-[1400px] mx-auto`}>
+        <div className={`${checkPage.checkout || checkPage.account ? "" : "px-4 py-[50px]"} w-full max-w-[1400px] mx-auto`}>
           {/* <Breadcrumb /> */}
           <div>{children}</div>
         </div>
