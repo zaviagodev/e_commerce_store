@@ -77,10 +77,11 @@
   "Pay Now": "ชำระเงิน",
   "Hide Details": "ซ่อนข้อมูล",
   "Show Details": "แสดงข้อมูล",
-  "Payment Confirm sent": "ยืนยันการชำระเงินแล้ว",
-  "Thank you for your oder !": "ขอบคุณสำหรับการสั่งซื้อของคุณ!",
-  "Back to Store": "กลับไปที่ร้าน",
-  "Check order details": "ตรวจสอบรายละเอียดคำสั่งซื้อ",
+  "Payment Confirm sent": "แจ้งการชำระเงิน เสร็จสิ้นแล้ว",
+  "Thank you for your oder !": "ขอบคุณสำหรับการสั่งซื้อสินค้า",
+  "You can go to your order history page to track order status": "คุณสามารถไปที่ \"คำสั่งซื้อของฉัน\" เพื่อติดตามสถานะ คำสั่งซื้อของคุณ",
+  "Back to Store": "กลับไปหน้าร้านค้า",
+  "Check order details": "ดูสถานะการสั่งซื้อ",
   "Pay with QR": "ชำระด้วย QR พร้อมเพย์",
   "Account Number": "หมายเลขบัญชี",
   "Save QR Code": "บันทึก QR",
@@ -137,6 +138,7 @@
   "Cart details": "ข้อมูลตะกร้า",
   "Hide cart details": "ซ่อนข้อมูลตะกร้า",
   "Bank Account": "บัญชีธนาคารที่โอนเข้า",
+  "Payment confirmed": "คุณสามารถไปที่ คำสั่งซื้อของฉัน เพื่อติดตามสถานะ คำสั่งซื้อของคุณ",
   "Empty_cart": {
     "title": "ตะกร้าของคุณว่างเปล่า",
     "desc": "เมื่อเพิ่มสินค้าแล้ว รายการสินค้าจะปรากฏขึ้นที่นี่"

@@ -232,29 +232,31 @@ const Thankyou = () => {
   const { orderId, order } = useCheckout();
   return (
     <>
-      <div className="mt-4 text-center">
+      <div className="mt-10 text-center">
         <h1 className="text-2xl font-bold text-primary">
           {t("Payment Confirm sent")}
         </h1>
-        <p>
+        <p className="mt-6 px-[50px]">
           {t("Thank you for your oder !")}
           <br />
-          {t("You can go to your order history page to track order status.")}
+          {t("You can go to your order history page to track order status")}
         </p>
       </div>
-      <div className="mt-6 w-full flex flex-col gap-y-6">
-        <div className="flex justify-between items-center">
-          <Label>{t("Order ID")}</Label>
-          <strong>{orderId}</strong>
-        </div>
-        <div className="flex justify-between items-center">
-          <Label>{t("Total")}</Label>
-          <strong>
-            {formatCurrency(order?.grand_total)}
-          </strong>
+      <div className="mt-12 w-full flex flex-col gap-y-6">
+        <div className="flex flex-col gap-y-2">
+          <div className="flex justify-between items-center">
+            <Label className="text-base text-darkgray-200">{t("Order ID")}</Label>
+            <strong>{orderId}</strong>
+          </div>
+          <div className="flex justify-between items-center">
+            <Label className="text-base text-darkgray-200">{t("Total")}</Label>
+            <strong>
+              {formatCurrency(order?.grand_total)}
+            </strong>
+          </div>
         </div>
         <div className="mt-6 mb-1 text-center">
-          <Button size="lg" className="w-full" onClick={() => navigate("/")}>
+          <Button size="lg" className="w-full h-12.5 rounded-xl font-semibold text-base" onClick={() => navigate("/")}>
             {t("Back to Store")}
           </Button>
           <Button

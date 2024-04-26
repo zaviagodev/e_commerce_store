@@ -198,7 +198,7 @@ export const BankUploadSlip = () => {
                       {selectedPaymentMethod.banks_list.map((bank: any) => (
                         <div
                           key={bank.bank}
-                          className="flex items-center p-4 bg-accent border border-darkgray-100 rounded-xl cursor-pointer"
+                          className={`flex items-center p-4 bg-accent border ${form.getValues("payment_info.bank") === bank.bank ? "border-primary" : "border-darkgray-100"} rounded-xl cursor-pointer`}
                           onClick={() =>
                             form.setValue("payment_info.bank", bank.bank)
                           }
