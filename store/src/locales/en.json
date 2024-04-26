@@ -54,7 +54,7 @@
     "Upload Payment Slip": "Upload Payment Slip",
     "Confirm your payment": "Confirm your payment",
     "Select the Bank Account you transfered to": "Select the Bank Account you transferred to",
-    "Payment Slip *": "Payment Slip *",
+    "Payment Slip *": "Payment Slip",
     "Order id is required": "Order id is required",
     "Payment method should be selected": "Payment method should be selected",
     "Bank is required": "Bank is required",
@@ -141,6 +141,7 @@
     "Search products": "Search products...",
     "Cart details": "Cart details",
     "Hide cart details": "Hide cart details",
+    "Bank Account": "Bank account",
     "Empty_cart": {
         "title": "Your cart is empty",
         "desc": "When the products are added to cart, they will appear here."

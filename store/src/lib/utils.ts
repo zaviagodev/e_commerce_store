@@ -32,3 +32,16 @@ export function getFileURL(url?: string) {
 
   return url;
 }
+
+export function formatCurrency(value: number){
+  const formattedValue = new Intl.NumberFormat("th-TH", {
+    style: "currency",
+    currency: "THB",
+  }).format(value);
+
+  const index = formattedValue.search(/\d/);
+  const currencySymbol = formattedValue.slice(0, index);
+  const numberValue = formattedValue.slice(index);
+
+  return `${currencySymbol} ${numberValue}`
+}

@@ -37,6 +37,7 @@ import TopSheet from "@/components/customComponents/TopSheet";
 import Logo from "@/components/customComponents/Logo";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FlipBackward, MarkerPin04, MessageQuestionCircle } from "@untitled-ui/icons-react";
+import { formatCurrency } from "@/lib/utils";
 
 export const paymentMethodIconMap: { [key: string]: React.ReactNode } = {
   "2": <Landmark className="mr-2 h-4 w-4" />,
@@ -139,10 +140,7 @@ const Checkout = () => {
 
         {serverCart?.message.doc.grand_total ? (
           <h2 className="text-4xl font-semibold text-primary text-center lg:text-left">
-            {new Intl.NumberFormat("th-TH", {
-              style: "currency",
-              currency: "THB",
-            }).format(serverCart?.message.doc.grand_total)}
+            {formatCurrency(serverCart?.message.doc.grand_total)}
           </h2>
         ) : <Skeleton className="h-10"/>}
       </div>
@@ -181,40 +179,29 @@ const Checkout = () => {
               <strong>
                 {typeof cartTotal === "string"
                   ? t("Loading...")
-                  : new Intl.NumberFormat("th-TH", {
-                      style: "currency",
-                      currency: "THB",
-                    }).format(cartTotal)}
+                  : formatCurrency(cartTotal)
+                }
               </strong>
             </div>
             {checkoutSummary.totalShipping > 0 && (
               <div className="w-full flex justify-between text-darkgray-200 text-sm">
                 <p>{t("Shipping Cost")}</p>
                 <span>
-                  {new Intl.NumberFormat("th-TH", {
-                    style: "currency",
-                    currency: "THB",
-                  }).format(checkoutSummary.totalShipping)}
+                  {formatCurrency(checkoutSummary.totalShipping)}
                 </span>
               </div>
             )}
             <div className="w-full flex justify-between text-darkgray-200 text-sm">
               <p>{t("Tax")}</p>
               <span>
-                {new Intl.NumberFormat("th-TH", {
-                  style: "currency",
-                  currency: "THB",
-                }).format(checkoutSummary.totalTax)}
+                {formatCurrency(checkoutSummary.totalTax)}
               </span>
             </div>
             {checkoutSummary.totalDiscount > 0 && (
               <div className="w-full flex justify-between text-darkgray-200 text-sm">
                 <p>{t("Discount")}</p>
                 <strong>
-                  {new Intl.NumberFormat("th-TH", {
-                    style: "currency",
-                    currency: "THB",
-                  }).format(checkoutSummary.totalDiscount?.toFixed(2) ?? 0)}
+                  {formatCurrency(checkoutSummary.totalDiscount?.toFixed(2) ?? 0)}
                 </strong>
               </div>
             )}
@@ -234,10 +221,7 @@ const Checkout = () => {
           <div className="w-full flex justify-between font-semibold text-sm">
             <p>{t("Grand total")}</p>
             <strong>
-              {new Intl.NumberFormat("th-TH", {
-                style: "currency",
-                currency: "THB",
-              }).format(serverCart?.message.doc.grand_total)}
+              {formatCurrency(serverCart?.message.doc.grand_total)}
             </strong>
           </div>
         </div>

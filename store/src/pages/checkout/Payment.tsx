@@ -14,6 +14,15 @@ import { paymentMethodIconMap } from ".";
 import { QRPMDetail, QRUploadSlip } from "./QRPM";
 import { BankPMDetail, BankUploadSlip } from "./BankPM";
 import { Wallet04 } from "@untitled-ui/icons-react";
+import { formatCurrency } from "@/lib/utils";
+
+{/* There are some currency numbers that I use formatCurrency, which was created on lib/utils.ts 
+    Because I want the currency and the amount to be separate like this 
+    
+    ฿ 1,000.00 
+
+    This was the original one, ฿1,000.00
+*/}
 
 export const PaymentProvider: React.FC = () => {
   return (
@@ -30,13 +39,12 @@ const Payment = () => {
       <div className="w-full">
         <Link
           to="/"
-          className="flex flex-col items-center justify-center gap-2 text-lg font-semibold md:text-base mx-auto"
+          className="flex flex-col items-center justify-center text-lg font-semibold md:text-base mx-auto"
         >
-          <Avatar className="h-20 w-20">
+          <Avatar className="h-[44px] w-[44px]">
             <AvatarImage src="https://github.com/shadcn.png" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
-          <h2 className="text-2xl font-semibold text-primary">ABC Company</h2>
         </Link>
 
         <StepMaintainer useStateHook={useCheckout}>
@@ -63,8 +71,10 @@ const Summary = () => {
 
   return (
     <>
-      <div className="mt-4 text-center">
-        <p>
+      {/* Move the company name to this section because I want to show it only on the first payment page */}
+      <h2 className="text-2xl font-semibold text-primary text-center mt-10">ABC Company</h2>
+      <div className="mt-6 text-center">
+        <p className="text-sm">
           {t("Email")}: <strong>{profile?.user.email}</strong>
           {profile?.mobile_no && (
             <>
@@ -72,18 +82,16 @@ const Summary = () => {
               {t("Phone")}: <strong>{profile?.mobile_no}</strong>
             </>
           )}
+          <br />
+          {t("Order ID")}: <strong>{orderId}</strong>
         </p>
       </div>
-      <div className="mt-6 flex justify-between items-center">
-        <Label>{t("Order ID")}</Label>
-        <strong>{orderId}</strong>
-      </div>
       {selectedPaymentMethod?.key && (
-        <div className="mt-6">
+        <div className="mt-10">
           <Label className="flex items-center justify-between font-semibold text-base rounded-xl border border-darkgray-100 bg-accent px-6 py-4 peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
             <span className="flex items-center text-darkgray-500 gap-x-2">
               <Wallet04 />
-              วิธีการชำระเงิน
+              {t("Payment Method")}
             </span>
             <span className="flex items-center">
               {paymentMethodIconMap[selectedPaymentMethod?.key as string]}
@@ -95,17 +103,14 @@ const Summary = () => {
       <div className="mt-9 flex flex-col rounded-lg space-y-6">
         <div className="flex items-center justify-between text-darkgray-200 text-sm">
           <p>{t("Grand total")}</p>
-          <p>{order?.items?.length} {t(order?.items?.length === 1 ? "Item" : "Items")}</p>
+          <p className="font-semibold">{order?.items?.length} {t(order?.items?.length === 1 ? "Item" : "Items")}</p>
         </div>
         <h2 className="text-4xl font-semibold text-primary text-center">
-          {new Intl.NumberFormat("th-TH", {
-            style: "currency",
-            currency: "THB",
-          }).format(order.grand_total)}
+          {formatCurrency(order.grand_total)}
         </h2>
       </div>
-      <div className="mt-9 mb-1 text-center">
-        <Button size="lg" className="w-full h-12.5 text-base font-semibold" onClick={next}>
+      <div className="mt-9 mb-6 text-center">
+        <Button size="lg" className="w-full h-12.5 text-base font-semibold rounded-xl" onClick={next}>
           {t("Pay Now")}
         </Button>
         <Button
@@ -145,40 +150,28 @@ const Summary = () => {
             <div className="w-full flex justify-between text-sm">
               <p>{t("Subtotal")}</p>
               <strong>
-                {new Intl.NumberFormat("th-TH", {
-                  style: "currency",
-                  currency: "THB",
-                }).format(order.total)}
+                {formatCurrency(order.total)}
               </strong>
             </div>
             {checkoutSummary.totalShipping > 0 && (
               <div className="w-full flex justify-between text-sm text-darkgray-200">
                 <p>{t("Shipping Cost")}</p>
                 <span>
-                  {new Intl.NumberFormat("th-TH", {
-                    style: "currency",
-                    currency: "THB",
-                  }).format(checkoutSummary.totalShipping)}
+                  {formatCurrency(checkoutSummary.totalShipping)}
                 </span>
               </div>
             )}
             <div className="w-full flex justify-between text-sm text-darkgray-200">
               <p>{t("Tax")}</p>
               <span>
-                {new Intl.NumberFormat("th-TH", {
-                  style: "currency",
-                  currency: "THB",
-                }).format(checkoutSummary.totalTax)}
+                {formatCurrency(checkoutSummary.totalTax)}
               </span>
             </div>
             {checkoutSummary.totalDiscount > 0 && (
               <div className="w-full flex justify-between">
                 <p className="text-sm text-muted-foreground">{t("Discount")}</p>
                 <strong className="text-muted-foreground">
-                  {new Intl.NumberFormat("th-TH", {
-                    style: "currency",
-                    currency: "THB",
-                  }).format(checkoutSummary.totalDiscount?.toFixed(2) ?? 0)}
+                  {formatCurrency(checkoutSummary.totalDiscount?.toFixed(2) ?? 0)}
                 </strong>
               </div>
             )}
@@ -197,10 +190,7 @@ const Summary = () => {
           <div className="w-full flex justify-between text-sm">
             <p>{t("Grand total")}</p>
             <strong>
-              {new Intl.NumberFormat("th-TH", {
-                style: "currency",
-                currency: "THB",
-              }).format(order.grand_total)}
+              {formatCurrency(order.grand_total)}
             </strong>
           </div>
         </div>
@@ -260,10 +250,7 @@ const Thankyou = () => {
         <div className="flex justify-between items-center">
           <Label>{t("Total")}</Label>
           <strong>
-            {new Intl.NumberFormat("th-TH", {
-              style: "currency",
-              currency: "THB",
-            }).format(order?.grand_total)}
+            {formatCurrency(order?.grand_total)}
           </strong>
         </div>
         <div className="mt-6 mb-1 text-center">
