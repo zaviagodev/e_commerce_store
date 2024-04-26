@@ -1,13 +1,10 @@
 import AddressCard from "@/components/AddressCard";
+import AddAddressButton from "@/components/customComponents/AddAddressButton";
 import { Button } from "@/components/ui/button";
 import { useList, useTranslate } from "@refinedev/core";
-import { PlusCircle } from "@untitled-ui/icons-react";
-import { CirclePlus } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 const Addresses = () => {
   const t = useTranslate();
-  const navigate = useNavigate();
   const { data, isLoading } = useList();
 
   if (isLoading) {
@@ -18,14 +15,9 @@ const Addresses = () => {
     <div className="w-full lg:w-[410px] mx-auto">
       <h1 className="font-semibold text-darkgray-500 text-lg">{t("Addresses")}</h1>
       <div className="flex flex-col items-center gap-10 mt-10">
-        <Button
-          variant="outline"
-          size="lg"
-          className="w-full px-4 border border-darkgray-100 bg-accent justify-start rounded-xl text-darkgray-500 flex items-center gap-x-2 h-[60px] font-semibold text-base"
-          onClick={() => navigate("/account/addresses/new")}
-        >
-          <PlusCircle /> {t("Add New Address")}
-        </Button>
+
+        {/* This 'add address' button component was created on the customComponents folder. */}
+        <AddAddressButton />
         <div className="space-y-2.5">
           {data?.data?.map((address: any) => (
             <AddressCard

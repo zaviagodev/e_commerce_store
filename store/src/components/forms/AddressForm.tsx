@@ -17,6 +17,7 @@ import CountrySelect from "../CountrySelect";
 import CitySelect from "../CitySelect";
 import StateSelect from "../StateSelect";
 import { useTranslate } from "@refinedev/core";
+import { Switch } from "../ui/switch";
 
 type AddressFormProps = {
   initialValues?: {
@@ -51,7 +52,7 @@ const AddressForm = ({
 
   return (
     <Form {...form}>
-      <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+      <form className="flex flex-col gap-y-3" onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name="address_title"
@@ -142,7 +143,7 @@ const AddressForm = ({
           )}
         />
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-3">
           <FormField
             control={form.control}
             name="city"
@@ -179,14 +180,15 @@ const AddressForm = ({
           />
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-y-6 my-7">
           <FormField
             control={form.control}
             name="is_primary_address"
             render={({ field }) => (
-              <FormItem className="flex items-end">
+              <FormItem className="flex items-center justify-between">
+                <FormLabel>{t("Primary Address")}</FormLabel>
                 <FormControl>
-                  <Checkbox
+                  {/* <Checkbox
                     {...field}
                     className="mr-2"
                     checked={form.watch("is_primary_address") === 1}
@@ -196,9 +198,19 @@ const AddressForm = ({
                         shouldTouch: true,
                       });
                     }}
+                  /> */}
+                  <Switch 
+                    {...field}
+                    className="!m-0 !bg-darkgray-100 data-[state=checked]:!bg-primary"
+                    checked={form.watch("is_primary_address") === 1}
+                    onCheckedChange={(checked) => {
+                      form.setValue("is_primary_address", checked ? 1 : 0, {
+                        shouldDirty: true,
+                        shouldTouch: true,
+                      });
+                    }}
                   />
                 </FormControl>
-                <FormLabel>{t("Primary Address")}</FormLabel>
                 <FormMessage />
               </FormItem>
             )}
@@ -207,9 +219,10 @@ const AddressForm = ({
             control={form.control}
             name="is_shipping_address"
             render={({ field }) => (
-              <FormItem className="flex items-end">
+              <FormItem className="flex items-center justify-between">
+                <FormLabel>{t("Default Shipping Address")}</FormLabel>
                 <FormControl>
-                  <Checkbox
+                  {/* <Checkbox
                     {...field}
                     className="mr-2"
                     checked={form.watch("is_shipping_address") === 1}
@@ -219,9 +232,19 @@ const AddressForm = ({
                         shouldTouch: true,
                       })
                     }
+                  /> */}
+                  <Switch 
+                    {...field}
+                    className="!m-0 !bg-darkgray-100 data-[state=checked]:!bg-primary"
+                    checked={form.watch("is_shipping_address") === 1}
+                    onCheckedChange={(checked) =>
+                      form.setValue("is_shipping_address", checked ? 1 : 0, {
+                        shouldDirty: true,
+                        shouldTouch: true,
+                      })
+                    }
                   />
                 </FormControl>
-                <FormLabel>{t("Default Shipping Address")}</FormLabel>
                 <FormMessage />
               </FormItem>
             )}

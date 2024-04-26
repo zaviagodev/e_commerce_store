@@ -1,5 +1,7 @@
 import AddressForm from "@/components/forms/AddressForm";
+import { Button } from "@/components/ui/button";
 import { useBack, useCreate, useTranslate } from "@refinedev/core";
+import { Link } from "react-router-dom";
 
 const AddressCreate = () => {
   const t = useTranslate();
@@ -15,12 +17,17 @@ const AddressCreate = () => {
   });
 
   return (
-    <div className="w-full lg:w-[450px] mx-auto">
-      <h1 className="font-semibold text-darkgray-500 text-lg">{t("New Address")}</h1>
-      <div className="mt-6">
-        <h1 className="font-semibold text-gray-500 mb-2">
-          {t("Address Details")}
-        </h1>
+    <div className="w-full lg:w-[410px] mx-auto">
+      <h1 className="font-semibold text-darkgray-500 text-lg">{t("Address")}</h1>
+      <div className="mt-10">
+        <div className="flex items-center justify-between">
+          <h1 className="font-semibold text-gray-500">
+            {t("Add New Address")}
+          </h1>
+          <Link to="/account/addresses">
+            <Button variant="link" className="text-sm p-0">{t("Cancel")}</Button>
+          </Link>
+        </div>
         <AddressForm
           isSubmitting={isLoading}
           onSubmit={(values) =>
