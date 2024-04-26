@@ -58,7 +58,7 @@ const AddressForm = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Title" {...field} />
+                <Input placeholder="Title" className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -70,7 +70,7 @@ const AddressForm = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Phone" {...field} />
+                <Input placeholder="Phone" className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -82,7 +82,7 @@ const AddressForm = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Address" {...field} />
+                <Input placeholder="Address" className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -94,7 +94,7 @@ const AddressForm = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Address Line 2" {...field} />
+                <Input placeholder="Address Line 2" className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -171,7 +171,7 @@ const AddressForm = ({
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input placeholder="Pincode" {...field} />
+                  <Input placeholder="Pincode" className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -229,7 +229,7 @@ const AddressForm = ({
         </div>
 
         <Button
-          className="w-full"
+          className="w-full h-12.5 rounded-xl font-semibold text-base"
           type="submit"
           disabled={
             isSubmitting || !form.formState.isValid || !form.formState.isDirty

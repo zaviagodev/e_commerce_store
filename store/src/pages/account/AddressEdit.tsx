@@ -45,7 +45,7 @@ export const AddressEdit: React.FC<IResourceComponentsProps> = () => {
 
   return (
     <div className="w-full lg:w-[450px] mx-auto">
-      <h1 className="font-semibold text-darkgray">{t("Update Addresses")}</h1>
+      <h1 className="font-semibold text-darkgray-500 text-lg">{t("Update Addresses")}</h1>
       <div className="mt-6">
         <h1 className="font-semibold text-gray-500 mb-2">{address.name}</h1>
         <AddressForm

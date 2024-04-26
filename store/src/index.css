@@ -74,3 +74,11 @@
     @apply bg-background text-foreground;
   }
 }
+
+.form-input {
+  @apply bg-accent border-darkgray-100 h-12.5 rounded-xl px-6
+}
+
+.main-btn {
+  @apply w-full h-12.5 rounded-xl font-semibold text-base
+}

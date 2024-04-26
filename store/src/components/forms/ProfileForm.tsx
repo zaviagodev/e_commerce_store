@@ -44,7 +44,7 @@ const ProfileForm = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Name" className="bg-accent border-darkgray-100 h-12.5 rounded-xl px-6 focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
+                <Input placeholder="Name" className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -56,7 +56,7 @@ const ProfileForm = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Surname" className="bg-accent border-darkgray-100 h-12.5 rounded-xl px-6 focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
+                <Input placeholder="Surname" className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -68,14 +68,14 @@ const ProfileForm = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input disabled placeholder="Email" className="bg-accent border-darkgray-100 h-12.5 rounded-xl px-6 focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
+                <Input disabled placeholder="Email" className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
         <Button
-          className="w-full h-12.5 rounded-xl text-base font-semibold !mt-6"
+          className="main-btn !mt-6"
           type="submit"
           disabled={
             isSubmitting || !form.formState.isValid || !form.formState.isDirty

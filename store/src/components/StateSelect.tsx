@@ -45,12 +45,14 @@ const StateSelect: React.FC<StateSelectProps> = ({
 
   return (
     <Select
-      classNamePrefix="select"
       placeholder="State"
       isLoading={overtime.elapsedTime !== undefined}
       loadingMessage={() =>
         options.length === 0 ? "No results" : "Loading..."
       }
+      classNames={{
+        control: () => "!border-darkgray-100 !bg-accent !rounded-xl px-3.5 text-sm h-12.5"
+      }}
       value={
         value === undefined
           ? ""

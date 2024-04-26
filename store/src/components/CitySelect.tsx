@@ -54,12 +54,14 @@ const CitySelect: React.FC<CitySelectProps> = ({
 
   return (
     <Select
-      classNamePrefix="select"
       placeholder="City"
       isLoading={overtime.elapsedTime !== undefined}
       loadingMessage={() =>
         options.length === 0 ? "No results" : "Loading..."
       }
+      classNames={{
+        control: () => "!border-darkgray-100 !bg-accent !rounded-xl px-3.5 text-sm h-12.5"
+      }}
       value={
         value === undefined
           ? ""
