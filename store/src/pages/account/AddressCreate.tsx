@@ -2,7 +2,7 @@ import AddressForm from "@/components/forms/AddressForm";
 import { Button } from "@/components/ui/button";
 import { useBack, useCreate, useTranslate } from "@refinedev/core";
 
-// Used for opening the modal, which was created on 'Addresses.tsx'
+// Used for opening the modal, which was created on 'Addresses.tsx', and when users click on the 'cancel' button
 type AddressCreateProps = {
   setIsOpen: (val: boolean) => void;
 }
