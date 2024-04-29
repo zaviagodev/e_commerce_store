@@ -45,6 +45,13 @@ export const products = {
         { params: { item_code: itemCode } }
       )
       .then((res) => res.data),
+  findVariant: (params: any) =>
+    api
+      .post(
+        "method/webshop.webshop.variant_selector.utils.get_next_attribute_and_values",
+        params
+      )
+      .then((res) => res.data),
   create: null,
   update: null,
   delete: null,

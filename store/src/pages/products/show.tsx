@@ -1,7 +1,9 @@
 import {
   IResourceComponentsProps,
+  useCustom,
   useShow,
   useTranslate,
+  useOne,
 } from "@refinedev/core";
 import {
   Accordion,
@@ -17,21 +19,79 @@ import { useWishlist } from "@/hooks/useWishlist";
 import ProductImages from "@/components/ProductImages";
 import ProductSkeleton from "@/components/skeletons/ProductSkeleton";
 import { useConfig } from "@/hooks/useConfig";
+import { useState } from "react";
+import { Toggle } from "@/components/ui/toggle";
 
 export const ProductShow: React.FC<IResourceComponentsProps> = () => {
+  const [selectedVariant, setSelectedVariant] = useState();
+  const [variants, setVariants] = useState({});
+  const [selectedAttributes, setSelectedAttributes] = useState({});
   const t = useTranslate();
   const { config } = useConfig();
   const { addToCart } = useCart();
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
-  const { queryResult, showId } = useShow({});
+  const { queryResult, showId } = useShow({
+    queryOptions: {
+      onSuccess: (data) => {
+        console.log("data", data);
+
+        if (data?.message.product_info?.has_variants) {
+          const attributes = {};
+          data.message.product_info.variant_attributes.forEach(
+            ({ attribute, values }) => {
+              attributes[attribute] = values[0];
+            }
+          );
+          console.log("attributes", attributes);
+
+          setSelectedAttributes(attributes);
+        }
+      },
+    },
+  });
   const { data, isFetching, isLoading, isRefetching } = queryResult;
+
+  useOne({
+    resource: "products",
+    id: selectedVariant,
+    queryOptions: {
+      enabled: !!selectedVariant,
+      onSuccess: (data) =>
+        setVariants((prev) => ({
+          ...prev,
+          [data?.message.product_info.item_code]: data,
+        })),
+    },
+  });
+
+  useCustom({
+    dataProviderName: "storeProvider",
+    url: "find_variant",
+    method: "post",
+    queryOptions: {
+      enabled: Object.keys(selectedAttributes).length > 0,
+      staleTime: 0,
+      onSuccess: (data) => {
+        if (data?.message.exact_match.length) {
+          setSelectedVariant(data.message.exact_match[0]);
+        }
+      },
+    },
+    config: {
+      payload: {
+        item_code: showId,
+        selected_attributes: selectedAttributes,
+      },
+    },
+  });
 
   if (isFetching || isLoading || isRefetching) {
     return <ProductSkeleton />;
   }
 
   const product = data?.message.product_info;
-  const itemCode = showId as string;
+  const variant = variants[selectedVariant]?.message.product_info;
+  const itemCode = selectedVariant ?? (showId as string);
   const inWishlist = wishlist.includes(itemCode);
 
   return (
@@ -40,10 +100,10 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
         images={[
           {
             imageThumbSrc: `${import.meta.env.VITE_BACKEND_URL ?? ""}${
-              product.thumbnail
+              variant?.thumbnail ?? product.thumbnail
             }`,
             imageSrc: `${import.meta.env.VITE_BACKEND_URL ?? ""}${
-              product.thumbnail
+              variant?.thumbnail ?? product.thumbnail
             }`,
             alt: `${product.web_item_name} image`,
           },
@@ -95,7 +155,37 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
             </div>
           </div>
         </div>
-        <div>
+        <div className="py-4">
+          {product.variant_attributes?.map((variant_attribute) => (
+            <div key={variant_attribute.attribute}>
+              <div className="flex items-center justify-between gap-4 my-2">
+                <span className="text-sm text-maingray">
+                  {variant_attribute.attribute}
+                </span>
+                <div className="flex items-center gap-4">
+                  {variant_attribute.values.map((value) => (
+                    <Toggle
+                      variant="outline"
+                      aria-label="Toggle italic"
+                      key={value}
+                      pressed={
+                        selectedAttributes[variant_attribute.attribute] ===
+                        value
+                      }
+                      onClick={() =>
+                        setSelectedAttributes({
+                          ...selectedAttributes,
+                          [variant_attribute.attribute]: value,
+                        })
+                      }
+                    >
+                      {value}
+                    </Toggle>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="item-1">
               <AccordionTrigger>{t("Details")}</AccordionTrigger>

@@ -115,6 +115,7 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
                   getFileURL(config?.default_product_image) ??
                   ""
                 }
+                hasVariants={item.has_variants}
                 width={341}
                 height={341}
               />

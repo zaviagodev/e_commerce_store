@@ -9,6 +9,7 @@ interface ProductProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
   price: string;
   image: string;
+  has_variants?: boolean;
 
   width?: number;
   height?: number;
@@ -20,6 +21,7 @@ const ProductCard = ({
   name,
   price,
   image,
+  has_variants = false,
   width,
   height,
   ...props
@@ -41,15 +43,21 @@ const ProductCard = ({
                 "aspect-square"
               )}
             />
-            <Button
-              className="w-64 absolute bottom-2 left-1/2 transform -translate-x-1/2"
-              onClick={(e) => {
-                e.preventDefault();
-                addToCart(itemCode);
-              }}
-            >
-              {t("Add to Cart")}
-            </Button>
+            {has_variants ? (
+              <Button className="w-64 absolute bottom-2 left-1/2 transform -translate-x-1/2">
+                <span>{t("View Variants")}</span>
+              </Button>
+            ) : (
+              <Button
+                className="w-64 absolute bottom-2 left-1/2 transform -translate-x-1/2"
+                onClick={(e) => {
+                  e.preventDefault();
+                  addToCart(itemCode);
+                }}
+              >
+                {t("Add to Cart")}
+              </Button>
+            )}
           </div>
         </div>
         <div className="space-y-1 text-sm">
