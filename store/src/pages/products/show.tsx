@@ -119,21 +119,15 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
             {product.web_item_name}
           </h1>
           <span className="flex flex-row items-center justify-start gap-2 mb-3">
-            {product.price?.formatted_mrp ? (
-              <>
-                <span className="block typography-headline-3 font-bold text-base text-red-500">
-                  {product.price?.formatted_price}
-                </span>
-                <span className="block typography-headline-3 text-base text-darkgray-400 line-through">
-                  {product.price?.formatted_mrp}
-                </span>
-              </>
-            ) : (
-              <span className="block typography-headline-3 font-bold text-base">
-                {product.price?.formatted_price}
+            <span className={`block typography-headline-3 font-bold text-base ${product.price?.formatted_mrp ? "text-red-500" : ""}`}>
+              {product.price?.formatted_price}
+            </span>
+            {product.price?.formatted_mrp && (
+              <span className="block typography-headline-3 text-base text-darkgray-400 line-through">
+                {product.price?.formatted_mrp}
               </span>
             )}
-            </span>
+          </span>
           </div>
           <div className="text-sm leading-6 pb-12 lg:pb-[60px] font-normal">
             <p>{product.short_description}</p>
@@ -164,7 +158,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
               </div>
             </div>
           </div>
-        </div>
+
         <div className="py-4">
           {product.variant_attributes?.map((variant_attribute) => (
             <div key={variant_attribute.attribute}>
@@ -214,6 +208,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
               {t("Ask for help")}
             </Button>
           </div>
+        </div>
         </section>
       </div>
 
