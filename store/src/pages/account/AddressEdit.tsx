@@ -1,4 +1,6 @@
+import AddressCard from "@/components/AddressCard";
 import AddAddressButton from "@/components/customComponents/AddAddressButton";
+import AddressCardList from "@/components/customComponents/AddressCardList";
 import AddressForm from "@/components/forms/AddressForm";
 import { Button } from "@/components/ui/button";
 import {
@@ -6,6 +8,7 @@ import {
   useBack,
   useCustomMutation,
   useInvalidate,
+  useList,
   useNavigation,
   useNotification,
   useSelect,
@@ -47,7 +50,7 @@ export const AddressEdit: React.FC<IResourceComponentsProps> = () => {
   const address = queryResult.data.message;
 
   return (
-    <div className="w-full lg:w-[410px] mx-auto">
+    <>
       <h1 className="font-semibold text-darkgray-500 text-lg">{t("Address")}</h1>
       <div className="mt-10">
         <AddAddressButton />
@@ -60,19 +63,27 @@ export const AddressEdit: React.FC<IResourceComponentsProps> = () => {
           </Link>
         </div>
         {/* <h1 className="font-semibold text-gray-500 mb-2">{address.name}</h1> */}
-        <AddressForm
-          initialValues={address}
-          isSubmitting={isLoading}
-          onSubmit={(values) =>
-            mutate({
-              id: id as string,
-              resource: "address",
-              dataProviderName: "storeProvider",
-              values,
-            })
-          }
-        />
+        <div className="space-y-10">
+          <AddressForm
+            initialValues={address}
+            isSubmitting={isLoading}
+            onSubmit={(values) =>
+              mutate({
+                id: id as string,
+                resource: "address",
+                dataProviderName: "storeProvider",
+                values,
+              })
+            }
+          />
+
+          {/* This section is the address list that users may not want to go back to the address page
+              Also, this component was created on the customComponents folder because I also want to use it
+              on AddressCreate.tsx file
+          */}
+          <AddressCardList />
+        </div>
       </div>
-    </div>
+    </>
   );
 };

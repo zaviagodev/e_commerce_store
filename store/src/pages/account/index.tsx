@@ -18,8 +18,8 @@ const Account = () => {
 
   //   use tailwindcss classes to style the layout
   return (
-    <div className="flex gap-x-8 px-4">
-      <div className="w-[320px] hidden md:block py-12">
+    <div className="grid grid-cols-1 lg:grid-cols-5 gap-x-8 px-4">
+      <div className="hidden col-span-1 lg:flex flex-col py-12">
         <div className="flex flex-col gap-3">
           <Avatar className="h-20 w-20">
             <AvatarImage
@@ -67,8 +67,10 @@ const Account = () => {
           </NavLink>
         </nav>
       </div>
-      <div className="w-full lg:shadow-checkout h-[calc(100vh_-_57px)] p-10">
-        <Outlet />
+      <div className="lg:col-span-4 mx-auto lg:shadow-checkout h-[calc(100vh_-_57px)] p-10 w-full lg:overflow-y-auto" style={{scrollbarWidth: "none"}}>
+        <div className="w-full lg:w-[410px] mx-auto">
+          <Outlet />
+        </div>
       </div>
     </div>
   );

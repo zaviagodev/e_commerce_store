@@ -1,3 +1,4 @@
+import AddressCardList from "@/components/customComponents/AddressCardList";
 import AddressForm from "@/components/forms/AddressForm";
 import { Button } from "@/components/ui/button";
 import { useBack, useCreate, useTranslate } from "@refinedev/core";
@@ -17,7 +18,7 @@ const AddressCreate = () => {
   });
 
   return (
-    <div className="w-full lg:w-[410px] mx-auto">
+    <>
       <h1 className="font-semibold text-darkgray-500 text-lg">{t("Address")}</h1>
       <div className="mt-10">
         <div className="flex items-center justify-between">
@@ -28,18 +29,26 @@ const AddressCreate = () => {
             <Button variant="link" className="text-sm p-0">{t("Cancel")}</Button>
           </Link>
         </div>
-        <AddressForm
-          isSubmitting={isLoading}
-          onSubmit={(values) =>
-            mutate({
-              resource: "address",
-              dataProviderName: "storeProvider",
-              values,
-            })
-          }
-        />
+        <div className="space-y-10">
+          <AddressForm
+            isSubmitting={isLoading}
+            onSubmit={(values) =>
+              mutate({
+                resource: "address",
+                dataProviderName: "storeProvider",
+                values,
+              })
+            }
+          />
+
+          {/* This section is the address list that users may not want to go back to the address page
+              Also, this component was created on the customComponents folder because I also want to use it
+              on AddressEdit.tsx file
+          */}
+          <AddressCardList />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

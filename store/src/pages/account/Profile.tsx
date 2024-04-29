@@ -34,7 +34,7 @@ const Profile = () => {
   }
 
   return (
-    <div className="w-full lg:w-[410px] mx-auto">
+    <>
       <h1 className="font-semibold text-darkgray-500 text-lg">{t("Account Details")}</h1>
       <div className="flex items-center gap-3 mt-10">
         <Avatar className="h-16 w-16">
@@ -88,7 +88,7 @@ const Profile = () => {
           }}
         />
       </div>
-    </div>
+    </>
   );
 };
 

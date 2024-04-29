@@ -33,7 +33,10 @@ const CountrySelect: React.FC<CountrySelectProps> = ({
         options.length === 0 ? "No results" : "Loading..."
       }
       classNames={{
-        control: () => "!border-darkgray-100 !bg-accent !rounded-xl px-3.5 text-sm h-12.5 !shadow-none"
+        control: () => "!border-darkgray-100 !bg-accent !rounded-xl px-3.5 text-sm h-12.5 !shadow-none",
+      }}
+      styles={{
+        indicatorSeparator: () => ({display: "none"})
       }}
       value={
         value === undefined
