@@ -110,17 +110,15 @@ export const DeletionConfirmation = ({ name }: DeletionConfirmationProps) => {
       <AlertDialogTrigger asChild>
         <Trash01 className="!m-0 h-5 w-5 hover:text-destructive cursor-pointer text-gray-500" />
       </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>{t("Are you absolutely sure?")}</AlertDialogTitle>
-          <AlertDialogDescription>
-            {t(
-              "This action cannot be undone. This will permanently delete your address."
-            )}
+      <AlertDialogContent className="w-[456px] p-8">
+        <AlertDialogHeader className="flex flex-col gap-y-2 items-center">
+          <AlertDialogTitle className="text-2xl font-semibold">{t("Delete address.title")}</AlertDialogTitle>
+          <AlertDialogDescription className="text-darkgray-500 text-base px-[60px] text-center">
+            {t("Delete address.desc")}
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>{t("Cancel")}</AlertDialogCancel>
+        <AlertDialogFooter className="mt-2">
+          <AlertDialogCancel className="main-btn bg-accent border-darkgray-100">{t("Cancel")}</AlertDialogCancel>
           <AlertDialogAction
             onClick={() =>
               mutate({
@@ -129,8 +127,9 @@ export const DeletionConfirmation = ({ name }: DeletionConfirmationProps) => {
                 id: name,
               })
             }
+            className="main-btn"
           >
-            {t("Continue")}
+            {t("Delete address.confirm")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

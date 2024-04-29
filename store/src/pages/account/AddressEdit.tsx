@@ -1,5 +1,3 @@
-import AddressCard from "@/components/AddressCard";
-import AddAddressButton from "@/components/customComponents/AddAddressButton";
 import AddressCardList from "@/components/customComponents/AddressCardList";
 import AddressForm from "@/components/forms/AddressForm";
 import { Button } from "@/components/ui/button";
@@ -53,7 +51,6 @@ export const AddressEdit: React.FC<IResourceComponentsProps> = () => {
     <>
       <h1 className="font-semibold text-darkgray-500 text-lg">{t("Address")}</h1>
       <div className="mt-10">
-        <AddAddressButton />
         <div className="flex items-center justify-between mt-10">
           <h1 className="font-semibold text-gray-500 mb-2">
             {t("Update Addresses")}

@@ -1,6 +1,4 @@
 {
-    "Are you absolutely sure?": "Are you absolutely sure?",
-    "This action cannot be undone": "This action cannot be undone",
     "Cancel": "Cancel",
     "Continue": "Continue",
     "Shopping Cart": "Shopping Cart",
@@ -142,6 +140,11 @@
     "Cart details": "Cart details",
     "Hide cart details": "Hide cart details",
     "Bank Account": "Bank account",
+    "Delete address": {
+        "title": "Want to delete address?",
+        "desc": "Deleting address cannot be undone.",
+        "confirm": "Delete address"
+    },
     "Empty_cart": {
         "title": "Your cart is empty",
         "desc": "When the products are added to cart, they will appear here."
