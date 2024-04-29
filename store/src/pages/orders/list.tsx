@@ -103,71 +103,75 @@ export function OrderHistoryTable({
   }
 
   return (
-    <div className="w-full">
-      <div className="rounded-md hidden lg:block">
-        <Table className="border-none">
-          <TableHeader>
-            {
-              <TableRow className="hover:bg-transparent">
-                {columns.map((column) => (
-                  <TableCell key={column.id} className="border-none py-6 font-semibold pl-0" style={{textAlign: column.align}}>
-                    <span>{column?.header ?? ("" as any)}</span>
-                  </TableCell>
+    <>
+      {(tableData?.data?.length as number) > 0 ? (
+        <div className="w-full">
+          <div className="rounded-md hidden lg:block">
+            <Table className="border-none">
+              <TableHeader>
+                {
+                  <TableRow className="hover:bg-transparent">
+                    {columns.map((column) => (
+                      <TableCell key={column.id} className="border-none py-6 font-semibold pl-0" style={{textAlign: column.align}}>
+                        <span>{column?.header ?? ("" as any)}</span>
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                }
+              </TableHeader>
+              <TableBody>
+                {tableData?.data.map((row) => (
+                  <TableRow key={row.id} className="hover:bg-transparent">
+                    {columns.map((column) => (
+                      <TableCell key={column.id} className="border-none py-6 text-darkgray-500 pl-0" style={{textAlign: column.align}}>{column?.cell({ row })}</TableCell>
+                    ))}
+                  </TableRow>
                 ))}
-              </TableRow>
-            }
-          </TableHeader>
-          <TableBody>
+              </TableBody>
+            </Table>
+          </div>
+    
+          <div className="lg:hidden mt-12">
             {tableData?.data.map((row) => (
-              <TableRow key={row.id} className="hover:bg-transparent">
+              <ul className="flex flex-col gap-3 mt-8 border-b pb-8" key={row.id}>
                 {columns.map((column) => (
-                  <TableCell key={column.id} className="border-none py-6 text-darkgray-500 pl-0" style={{textAlign: column.align}}>{column?.cell({ row })}</TableCell>
+                  <li className={`flex items-center ${column.id !== "actions" ? "justify-between" : ""}`} key={column.id}>
+                    <span className="text-sm text-darkgray-200">
+                      {column.header}
+                    </span>
+                    <span className={`text-sm font-semibold ${column.id !== "actions" ? "" : "w-full bg-accent justify-center items-center p-3 lg:p-0 rounded-xl border border-darkgray-100 lg:border-none"}`}>{column?.cell({ row })}</span>
+                  </li>
                 ))}
-              </TableRow>
+              </ul>
             ))}
-          </TableBody>
-        </Table>
-      </div>
-
-      <div className="lg:hidden mt-12">
-        {tableData?.data.map((row) => (
-          <ul className="flex flex-col gap-2 mt-6" key={row.id}>
-            {columns.map((column) => (
-              <li className={`flex items-center ${column.id !== "actions" ? "justify-between" : ""}`} key={column.id}>
-                <span className="text-sm font-semibold text-muted-foreground">
-                  {column.header}
-                </span>
-                <span className={`text-sm font-bold ${column.id !== "actions" ? "" : "w-full bg-accent justify-center items-center p-3 lg:p-0 rounded-xl border border-darkgray-100 lg:border-none"}`}>{column?.cell({ row })}</span>
-              </li>
-            ))}
-          </ul>
-        ))}
-      </div>
-
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {t("Showing")} {current} {t("of")} {pageCount} {t("pages")}
+          </div>
+    
+          <div className="flex items-center justify-end space-x-2 py-4">
+            <div className="flex-1 text-sm text-muted-foreground">
+              {t("Showing")} {current} {t("of")} {pageCount} {t("pages")}
+            </div>
+            <div className="space-x-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={previousPage}
+                disabled={!getCanPreviousPage()}
+              >
+                {t("Previous")}
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={nextPage}
+                disabled={!getCanNextPage()}
+              >
+                {t("Next")}
+              </Button>
+            </div>
+          </div>
         </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={previousPage}
-            disabled={!getCanPreviousPage()}
-          >
-            {t("Previous")}
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={nextPage}
-            disabled={!getCanNextPage()}
-          >
-            {t("Next")}
-          </Button>
-        </div>
-      </div>
-    </div>
+      ) : (<p className="mt-12 lg:m-0 text-darkgray-500 text-sm">คุณยังไม่มีคำสั่งซื้อ</p>)}
+    </>
   );
 }
 
@@ -221,7 +225,9 @@ const OrderList = () => {
       </Tabs>
 
       {/* MOBILE VERSION */}
-      <OrderHistoryTable status={labelStatusMap[mobileStatus as string] as Order["status"] | undefined}/>
+      <div className="lg:hidden">
+        <OrderHistoryTable status={labelStatusMap[mobileStatus as string] as Order["status"] | undefined}/>
+      </div>
     </div>
   );
 };
