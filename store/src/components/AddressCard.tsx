@@ -52,7 +52,7 @@ const AddressCard = ({
   const navigate = useNavigate();
 
   return (
-    <Card className="w-full overflow-hidden bg-accent border border-darkgray-100 rounded-xl">
+    <Card className="w-full overflow-hidden bg-accent border border-darkgray-100 rounded-xl shadow-none">
       <CardHeader className="flex flex-row justify-between items-center text-gray-500">
         <CardTitle className="text-base flex items-center gap-x-2">
           <MarkerPin04 /> {name}

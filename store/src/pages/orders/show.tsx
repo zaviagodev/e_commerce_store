@@ -18,6 +18,7 @@ import useSummary from "@/hooks/useSummary";
 import { useState } from "react";
 import { FlipBackward } from "@untitled-ui/icons-react"
 import { formatCurrency } from "@/lib/utils";
+import { MessageQuestionCircle, Download01 } from "@untitled-ui/icons-react"
 
 const OrderDetail = () => {
   const [paymentMethod, setPaymentMethod] = useState();
@@ -67,32 +68,29 @@ const OrderDetail = () => {
         <FlipBackward className="h-5 w-5 cursor-pointer hover:opacity-75" onClick={() => navigate("/account/orders")}/>
         <h2 className="font-semibold text-darkgray-500 text-lg">{t("Order History")}</h2>
       </div>
-      <ul className="grid gap-3 mt-6">
+      <ul className="grid gap-3 mt-10">
         <li className="flex items-center justify-between">
-          <span className="text-sm font-semibold text-darkgray-200">
+          <span className="text-sm text-darkgray-200">
             {t("Order ID")}
           </span>
           <span className="text-sm font-bold">{order?.name}</span>
         </li>
         <li className="flex items-center justify-between">
-          <span className="text-sm font-semibold text-darkgray-200">
+          <span className="text-sm text-darkgray-200">
             {t("Order Date")}
           </span>
           <span className="text-sm font-bold">{order.transaction_date}</span>
         </li>
         <li className="flex items-center justify-between">
-          <span className="text-sm font-semibold text-darkgray-200">
+          <span className="text-sm text-darkgray-200">
             {t("Grand Total")}
           </span>
           <span className="text-sm font-bold">
-            {new Intl.NumberFormat("th-TH", {
-              style: "currency",
-              currency: "THB",
-            }).format(order.grand_total)}
+            {formatCurrency(order.grand_total)}
           </span>
         </li>
         <li className="flex items-center justify-between">
-          <span className="text-sm font-semibold text-darkgray-200">
+          <span className="text-sm text-darkgray-200">
             {t("Status")}
           </span>
           <span className="text-sm font-bold">{order.status}</span>
@@ -136,16 +134,16 @@ const OrderDetail = () => {
           </div>
         </div>
       )} */}
-      <div className="mt-6">
-        <Label className="text-darkgray-500 font-semibold text-base inline-block mb-1">{t("Shipping Address")}</Label>
+      <div className="mt-10">
+        <Label className="text-darkgray-500 font-semibold text-base inline-block mb-2">{t("Shipping Address")}</Label>
         {addressLoading || addressFetching || addressRefetching ? (
           <div>Loading...</div>
         ) : (
           <AddressCard {...address?.message} />
         )}
       </div>
-      <div className="mt-6">
-        <Label className="text-darkgray-500 font-semibold text-base inline-block mb-3">{t("Order summary")}</Label>
+      <div className="mt-10">
+        <Label className="text-darkgray-500 font-semibold text-base inline-block mb-2">{t("Order summary")}</Label>
         <div className="flex flex-col gap-y-4">
           <ul className="my-3 flex flex-col gap-y-3">
             {(order.items ?? []).map(
@@ -215,8 +213,12 @@ const OrderDetail = () => {
       </div>
       <div className="w-full flex justify-center h-10 items-center mt-8">
         <Button variant="link" className="font-bold">
-          <MessageCircleQuestion size={20} className="mr-1" />{" "}
+          <MessageQuestionCircle className="mr-2 h-5 w-5" />{" "}
           {t("Ask for help")}
+        </Button>
+        <Button variant="link" className="font-bold">
+          <Download01 className="mr-2 h-5 w-5" />{" "}
+          {t("Download receipt")}
         </Button>
       </div>
     </div>

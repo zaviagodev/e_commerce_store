@@ -56,7 +56,7 @@
   "Payment method should be selected": "ควรเลือกวิธีการชำระเงิน",
   "Bank is required": "ธนาคารจำเป็น",
   "Payment proof is required": "ต้องการหลักฐานการชำระเงิน",
-  "Order summary": "สรุปคำสั่งซื้อ",
+  "Order summary": "รายละเอียดสินค้า",
   "Subtotal": "ยอดรวมย่อย",
   "Loading": "กำลังโหลด",
   "Shipping Cost": "ค่าขนส่ง",
@@ -143,6 +143,7 @@
   "Order Number": "เลขคำสั่งซื้อ",
   "Date": "วันที่",
   "Number of Items": "จำนวนสินค้า",
+  "Download receipt": "ดาวน์โหลดใบเสร็จ",
   "Delete address": {
     "title": "ต้องการลบที่อยู่",
     "desc": "หากลบที่อยู่แล้วจะไม่สามารถเรียกคืนที่อยู่ที่ลบไปแล้วกลับมาได้อีกครั้ง",
