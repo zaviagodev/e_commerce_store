@@ -9,7 +9,7 @@ interface ProductProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
   price: string;
   image: string;
-  has_variants?: boolean;
+  hasVariants?: boolean | number;
 
   width?: number;
   height?: number;
@@ -21,7 +21,7 @@ const ProductCard = ({
   name,
   price,
   image,
-  has_variants = false,
+  hasVariants = false,
   width,
   height,
   ...props
@@ -43,7 +43,7 @@ const ProductCard = ({
                 "aspect-square"
               )}
             />
-            {has_variants ? (
+            {hasVariants ? (
               <Button className="w-64 absolute bottom-2 left-1/2 transform -translate-x-1/2">
                 <span>{t("View Variants")}</span>
               </Button>
