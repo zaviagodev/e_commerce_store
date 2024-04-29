@@ -153,17 +153,17 @@ const OrderList = () => {
   };
   return (
     <div>
-      <h1 className="font-semibold text-darkgray">{t("Order History")}</h1>
+      <h1 className="font-semibold text-darkgray-500 text-lg">{t("Order History")}</h1>
       <Tabs defaultValue={t("All")} className="mt-6">
-        <TabsList className="flex justify-between">
+        <TabsList className="flex justify-between bg-transparent">
           {Object.keys(labelStatusMap).map((label) => (
-            <TabsTrigger key={label} value={label}>
+            <TabsTrigger key={label} value={label} className="w-full p-3 !shadow-none text-darkgray-500 rounded-none transition-none border-b data-[state=active]:border-b-2 data-[state=active]:border-black data-[state=active]:font-semibold">
               {label}
             </TabsTrigger>
           ))}
         </TabsList>
         {Object.keys(labelStatusMap).map((label) => (
-          <TabsContent key={label} value={label}>
+          <TabsContent key={label} value={label} className="mt-10">
             <OrderHistoryTable
               status={labelStatusMap[label] as Order["status"] | undefined}
             />

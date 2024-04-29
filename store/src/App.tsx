@@ -173,7 +173,7 @@ function App() {
                       <Route path="addresses">
                         <Route index element={<Addresses />} />
                         <Route path=":id" element={<AddressEdit />} />
-                        <Route path="new" element={<AddressCreate />} />
+                        {/* <Route path="new" element={<AddressCreate />} /> */}
                       </Route>
                       <Route path="orders">
                         <Route index element={<OrderList />} />
