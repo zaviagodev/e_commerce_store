@@ -70,7 +70,7 @@ const Account = () => {
           </NavLink>
         </nav>
       </div>
-      <div className="lg:col-span-4 mx-auto lg:shadow-checkout h-[calc(100vh_-_57px)] p-10 w-full lg:overflow-y-auto" style={{scrollbarWidth: "none"}}>
+      <div className="lg:col-span-4 mx-auto lg:shadow-checkout h-[calc(100vh_-_57px)] py-4 lg:p-10 w-full lg:overflow-y-auto" style={{scrollbarWidth: "none"}}>
         <div className={`w-full ${location.pathname.includes("/orders") ? 'lg:w-[720px]' : 'lg:w-[410px]'} mx-auto`}>
           <Outlet />
         </div>

@@ -18,7 +18,7 @@ const Addresses = () => {
   const [isAddingAddress, setIsAddingAddress] = useState(false)
 
   return (
-    <>
+    <div>
       <h1 className="font-semibold text-darkgray-500 text-lg">{t("Addresses")}</h1>
       <div className="flex flex-col items-center gap-10 mt-10">
 
@@ -32,7 +32,7 @@ const Addresses = () => {
               <PlusCircle /> {t("Add New Address")}
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="w-full h-full max-w-none">
             <AddressCreate setIsOpen={setIsAddingAddress}/>
           </DialogContent>
         </Dialog>
@@ -42,7 +42,7 @@ const Addresses = () => {
         */}
         <AddressCardList />
       </div>
-    </>
+    </div>
   );
 };
 

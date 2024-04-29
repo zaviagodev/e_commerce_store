@@ -10,7 +10,7 @@ const AddressCardList = () => {
   }
 
   return (
-    <div className="space-y-2.5">
+    <div className="space-y-2.5 w-full">
       {data?.data?.map((address: any) => (
         <AddressCard
           key={address.name}

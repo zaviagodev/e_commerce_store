@@ -21,7 +21,7 @@ const AddressCreate = ({ setIsOpen } : AddressCreateProps) => {
   });
 
   return (
-    <>
+    <div>
       <h1 className="font-semibold text-darkgray-500 text-lg">{t("Address")}</h1>
       <div className="mt-10">
         <div className="flex items-center justify-between">
@@ -44,7 +44,7 @@ const AddressCreate = ({ setIsOpen } : AddressCreateProps) => {
           />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

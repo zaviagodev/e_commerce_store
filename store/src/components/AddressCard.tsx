@@ -110,7 +110,7 @@ export const DeletionConfirmation = ({ name }: DeletionConfirmationProps) => {
       <AlertDialogTrigger asChild>
         <Trash01 className="!m-0 h-5 w-5 hover:text-destructive cursor-pointer text-gray-500" />
       </AlertDialogTrigger>
-      <AlertDialogContent className="w-[456px] p-8">
+      <AlertDialogContent className="w-[456px] p-8 !rounded-2xl">
         <AlertDialogHeader className="flex flex-col gap-y-2 items-center">
           <AlertDialogTitle className="text-2xl font-semibold">{t("Delete address.title")}</AlertDialogTitle>
           <AlertDialogDescription className="text-darkgray-500 text-base px-[60px] text-center">
