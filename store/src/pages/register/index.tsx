@@ -126,7 +126,7 @@ export const Register = () => {
                 <Button
                   type="submit"
                   className="p-5 h-12.5 text-base font-semibold rounded-xl mt-7"
-                  disabled={!form.formState.isValid}
+                  disabled={!form.formState.isValid || signingUp || loggingIn}
                 >
                   {(signingUp || loggingIn) && (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />

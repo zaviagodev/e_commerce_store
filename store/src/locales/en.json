@@ -144,6 +144,9 @@
     "New customer": "New customer",
     "Register privilege": "Register to access special and new products, trends, discounts, and other promotions for members.",
     "Accept and sign up": "Accept and sign up",
+    "Confirm": "Confirm",
+    "Send email to reset password": "We'll send you an email to reset your password.",
+    "Your email": "Your email",
     "Delete address": {
         "title": "Want to delete address?",
         "desc": "Deleting address cannot be undone.",

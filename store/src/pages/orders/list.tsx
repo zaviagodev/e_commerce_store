@@ -66,8 +66,8 @@ export function OrderHistoryTable({
       align: "right",
       cell: ({ row }: any) => {
         return (
-          <Link to={`/account/orders/${row.name}`} className="text-base lg:text-sm flex items-center gap-x-2 text-black w-full lg:w-fit justify-center lg:justify-end">
-            <File06 className="h-4 w-4"/>
+          <Link to={`/account/orders/${row.name}`} className="text-base lg:text-sm flex items-center gap-x-0.5 text-black w-full h-12.5 lg:h-fit lg:w-fit justify-center lg:justify-end">
+            <File06 className="h-4 w-4" />
             {t("Details")}
           </Link>
         );
@@ -142,7 +142,7 @@ export function OrderHistoryTable({
                     <span className="text-sm text-darkgray-200">
                       {column.header}
                     </span>
-                    <span className={`text-sm font-semibold ${column.id !== "actions" ? "" : "w-full bg-accent justify-center items-center p-3 lg:p-0 rounded-xl border border-darkgray-100 lg:border-none"}`}>{column?.cell({ row })}</span>
+                    <span className={`text-sm font-semibold ${column.id !== "actions" ? "" : "w-full bg-accent justify-center items-center p-0 rounded-xl border border-darkgray-100 lg:border-none"}`}>{column?.cell({ row })}</span>
                   </li>
                 ))}
               </ul>
@@ -199,7 +199,7 @@ const OrderList = () => {
         {/* The dropdown select will be shown on the mobile version */}
         <div className="lg:hidden">
           <Select onValueChange={setMobileStatus}>
-            <SelectTrigger className="bg-accent border-none rounded-xl">
+            <SelectTrigger className="bg-accent border-none rounded-xl focus:outline-none focus:ring-offset-0 focus:ring-0">
               <SelectValue placeholder={t("All orders")} />
             </SelectTrigger>
             <SelectContent>

@@ -74,7 +74,7 @@ export const Login = () => {
                   />
                 </div>
                 <div className="flex items-center gap-x-3 mt-7">
-                  <Button type="submit" className="p-5 h-12.5 text-base font-semibold rounded-xl">
+                  <Button type="submit" className="p-5 h-12.5 text-base font-semibold rounded-xl" disabled={loggingIn}>
                     {loggingIn && (
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     )}
