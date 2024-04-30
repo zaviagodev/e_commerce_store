@@ -1,4 +1,4 @@
-import { useGo, useMany, useTranslate } from "@refinedev/core";
+import { useGetIdentity, useGo, useIsAuthenticated, useMany, useTranslate } from "@refinedev/core";
 import { Sheet, SheetTrigger, SheetContent } from "../ui/sheet";
 import { Button } from "../ui/button";
 import { ChevronsUpDown, Menu } from "lucide-react";
@@ -23,6 +23,13 @@ const MobileNavigationMenu = () => {
     resource: "categories",
     ids: [],
   });
+  const {
+    data: profile,
+    isLoading,
+    isFetching,
+    isRefetching,
+  } = useGetIdentity();
+  const { data: authState } = useIsAuthenticated();
 
   const categories = useMemo(() => {
     if (!data?.message.results) {

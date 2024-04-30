@@ -106,6 +106,8 @@ export function OrderHistoryTable({
     <>
       {(tableData?.data?.length as number) > 0 ? (
         <div className="w-full">
+
+          {/* DESKTOP VERSION: orders table */}
           <div className="rounded-md hidden lg:block">
             <Table className="border-none">
               <TableHeader>
@@ -131,6 +133,7 @@ export function OrderHistoryTable({
             </Table>
           </div>
     
+          {/* MOBILE VERSION: orders list */}
           <div className="lg:hidden mt-12">
             {tableData?.data.map((row) => (
               <ul className="flex flex-col gap-3 mt-8 border-b pb-8" key={row.id}>
@@ -192,6 +195,8 @@ const OrderList = () => {
     <div>
       <div className="grid grid-cols-2 items-center">
         <h1 className="font-semibold text-darkgray-500 text-lg">{t("Orders")}</h1>
+
+        {/* The dropdown select will be shown on the mobile version */}
         <div className="lg:hidden">
           <Select onValueChange={setMobileStatus}>
             <SelectTrigger className="bg-accent border-none rounded-xl">

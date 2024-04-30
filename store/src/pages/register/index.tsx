@@ -31,12 +31,10 @@ export const Register = () => {
   });
 
   return (
-    <div className="w-full lg:grid min-h-screen lg:grid-cols-2">
-      <div className="flex items-center justify-center py-12">
-        <div className="mx-auto grid w-[350px] gap-6">
-          <div className="grid gap-2 text-center">
-            <h1 className="text-3xl font-bold">{t("Sign up")}</h1>
-          </div>
+    <section>
+      <div className="flex flex-col items-center justify-center gap-y-12 max-w-[410px] mx-auto">
+        <h1 className="text-4xl font-semibold text-center">{t("Sign up")}</h1>
+        <div className="w-full gap-[72px]">
           <Form {...form}>
             <form
               className="space-y-4"
@@ -50,18 +48,19 @@ export const Register = () => {
                 })
               )}
             >
-              <div className="grid gap-4">
+              <div className="grid gap-3">
+                <h2 className="font-semibold text-darkgray-500 text-lg">{t("Sign up")}</h2>
                 <div className="grid gap-2">
                   <FormField
                     control={form.control}
                     name="full_name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel htmlFor="full_name">
+                        {/* <FormLabel htmlFor="full_name">
                           {t("Full name")}
-                        </FormLabel>
+                        </FormLabel> */}
                         <FormControl>
-                          <Input placeholder="John Doe" {...field} />
+                          <Input placeholder={`${t("Full name")} *`} className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -74,11 +73,11 @@ export const Register = () => {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel htmlFor="email">
+                        {/* <FormLabel htmlFor="email">
                           {t("Email/username")}
-                        </FormLabel>
+                        </FormLabel> */}
                         <FormControl>
-                          <Input placeholder="m@example.com" {...field} />
+                          <Input placeholder={`${t("Email")} *`} className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -91,11 +90,11 @@ export const Register = () => {
                     name="password"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel htmlFor="password">
+                        {/* <FormLabel htmlFor="password">
                           {t("Password")}
-                        </FormLabel>
+                        </FormLabel> */}
                         <FormControl>
-                          <Input type="password" {...field} />
+                          <Input type="password" placeholder={`${t("Password")} *`} className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -108,45 +107,52 @@ export const Register = () => {
                     name="confirm_password"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel htmlFor="paconfirm_passwordssword">
+                        {/* <FormLabel htmlFor="paconfirm_passwordssword">
                           {t("Confirm password")}
-                        </FormLabel>
+                        </FormLabel> */}
                         <FormControl>
-                          <Input type="password" {...field} />
+                          <Input type="password" placeholder={`${t("Confirm password")} *`} className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
                 </div>
+                <p className="text-sm text-darkgray-200">ฉันยอมรับ 
+                  <span className="text-black">ข้อตกลงและเงื่อนไข</span> 
+                  รวมถึงการประมวลผลข้อมูลของฉันตามจุดประสงค์ดังที่ระบุไว้ใน 
+                  <span className="text-black">นโยบายความเป็นส่วนตัวและการใช้งานคุกกี้</span>
+                </p>
                 <Button
                   type="submit"
-                  className="w-full"
+                  className="p-5 h-12.5 text-base font-semibold rounded-xl mt-7"
                   disabled={!form.formState.isValid}
                 >
                   {(signingUp || loggingIn) && (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   )}
-                  {t("Sign up")}
+                  {t("Accept and sign up")}
                 </Button>
               </div>
             </form>
           </Form>
-          <div className="mt-4 text-center text-sm">
-            {t("Have an account?")}{" "}
-            <Link to="/login" className="underline">
-              {t("Sign in")}
+          <div className="mt-4 flex flex-col gap-y-3">
+            <p className="text-darkgray-200 text-sm">{t("Have an account?")}</p>
+            <Link to="/login">
+              <Button variant="outline" className="w-full h-12.5 text-base rounded-xl bg-accent border-darkgray-100 font-semibold">
+                {t("Sign in")}
+              </Button>
             </Link>
           </div>
         </div>
       </div>
-      <div className="hidden bg-muted lg:block">
+      {/* <div className="hidden bg-muted lg:block">
         <img
           src="https://source.unsplash.com/1600x900/?shop,onlineshop,ecommerce"
           alt="Image"
           className="h-screen w-full object-cover dark:brightness-[0.2] dark:grayscale"
         />
-      </div>
-    </div>
+      </div> */}
+    </section>
   );
 };

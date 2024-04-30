@@ -1,7 +1,11 @@
 import { useConfig } from "@/hooks/useConfig"
 import { getFileURL } from "@/lib/utils"
 
-const Logo = () => {
+type LogoProps = {
+  className?: string
+}
+
+const Logo = ({ className } : LogoProps) => {
   const { config } = useConfig()
 
   return (
@@ -10,10 +14,10 @@ const Logo = () => {
         <img
           src={getFileURL(config?.brand_logo) ?? ""}
           alt={config?.company}
-          className="md:min-h-[40px] md:h-[40px] w-auto min-h-[30px] h-[30px]"
+          className={`md:min-h-[40px] md:h-[40px] w-auto min-h-[30px] h-[30px] ${className}`}
         />
       ) : (
-        <h2>{config?.company}</h2>
+        <h2 className={className}>{config?.company}</h2>
       )}
     </>
   )

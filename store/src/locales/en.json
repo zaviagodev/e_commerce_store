@@ -90,7 +90,7 @@
     "Invalid email": "Invalid email",
     "Forgot password": "Forgot password",
     "Send reset link": "Send reset link",
-    "Have an account?": "Have an account?",
+    "Have an account?": "Already have an account? Click here to sign in.",
     "Sign in": "Sign in",
     "Login": "Login",
     "Email/username": "Email/username",
@@ -141,6 +141,9 @@
     "Hide cart details": "Hide cart details",
     "Bank Account": "Bank account",
     "Download receipt" : "Download receipt",
+    "New customer": "New customer",
+    "Register privilege": "Register to access special and new products, trends, discounts, and other promotions for members.",
+    "Accept and sign up": "Accept and sign up",
     "Delete address": {
         "title": "Want to delete address?",
         "desc": "Deleting address cannot be undone.",

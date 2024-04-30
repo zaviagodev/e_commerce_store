@@ -184,11 +184,11 @@ function App() {
                       <Route index element={<BlogPostList />} />
                       <Route path="create" element={<BlogPostCreate />} />
                       <Route path="edit/:id" element={<BlogPostEdit />} />
-                      <Route path="show/:id" element={<BlogPostShow />} />R
+                      <Route path="show/:id" element={<BlogPostShow />} />
                     </Route>
                     <Route path="/address">
                       <Route index element={<AddressList />} />
-                      <Route path="create" element={<AddressCreate />} />
+                      <Route path="create" element={<AddressCreate setIsOpen={() => {}}/>} />
                       <Route path="edit/:id" element={<AddressEdit />} />
                     </Route>
                     <Route path="*" element={<ErrorComponent />} />
@@ -210,12 +210,14 @@ function App() {
                   </Route>
                   <Route
                     element={
-                      <Authenticated
-                        key="authenticated-outer"
-                        fallback={<Outlet />}
-                      >
-                        <NavigateToResource />
-                      </Authenticated>
+                      <Layout>
+                        <Authenticated
+                          key="authenticated-outer"
+                          fallback={<Outlet />}
+                        >
+                          <NavigateToResource />
+                        </Authenticated>
+                      </Layout>
                     }
                   >
                     <Route path="/login" element={<Login />} />

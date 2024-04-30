@@ -134,45 +134,47 @@ const Header = () => {
           </DropdownMenu> */}
 
           {/* Set the menu instead of dropdown when users would like to access account page or log out if they have logged in */}
-          {!isLoading &&
-          !isFetching &&
-          !isRefetching ? (
-            <>
-              {authState?.authenticated ?
-                (
-                  <div className="flex items-center">
-                    <Button className="rounded-full !bg-transparent p-0 font-semibold text-base" variant="ghost" onClick={() => navigate("/account")}>
-                      {profile?.user?.name}
-                    </Button>
-                    <Button size="icon" onClick={() => logout()} className="rounded-full !bg-transparent" variant="ghost">
-                      <LogIn02 className="h-[22px] w-[22px]"/>
-                    </Button>
-                  </div>
-                ) : (
-                  <Button size="icon" onClick={() => navigate("/login")} className="rounded-full !bg-transparent" variant="ghost">
-                    <UserCircle className="h-[22px] w-[22px]" />
-                  </Button> 
-                )
-              }
-            </>
-          ) : (
-            <Skeleton className="h-6 w-[100px]"/>
-          )}
+          <div className="hidden md:flex items-center gap-2">
+            {!isLoading &&
+            !isFetching &&
+            !isRefetching ? (
+              <>
+                {authState?.authenticated ?
+                  (
+                    <div className="flex items-center">
+                      <Button className="rounded-full !bg-transparent p-0 font-semibold text-base" variant="ghost" onClick={() => navigate("/account")}>
+                        {profile?.user?.name}
+                      </Button>
+                      <Button size="icon" onClick={() => logout()} className="rounded-full !bg-transparent" variant="ghost">
+                        <LogIn02 className="h-[22px] w-[22px]"/>
+                      </Button>
+                    </div>
+                  ) : (
+                    <Button size="icon" onClick={() => navigate("/login")} className="rounded-full !bg-transparent" variant="ghost">
+                      <UserCircle className="h-[22px] w-[22px]" />
+                    </Button> 
+                  )
+                }
+              </>
+            ) : (
+              <Skeleton className="h-6 w-[100px]"/>
+            )}
 
-          <Separator className="h-6 w-[1px] bg-[#F0F0F0]"/>
+            <Separator className="h-6 w-[1px] bg-[#F0F0F0]"/>
+          </div>
 
           {/* This is the searchbar sheet */}
           {config?.is_search_enabled == 1 && (
-            <TopSheet open={isSearching} onOpenChange={setIsSearching} contentClassName="py-0" trigger={
+            <TopSheet open={isSearching} onOpenChange={setIsSearching} contentClassName="p-0 md:px-6" trigger={
               <Button variant="ghost" size="icon" className="rounded-full flex justify-center hover:bg-transparent">
                 <SearchLg className="h-[22px] w-[22px]"/>
               </Button>
             }>
               <div className="max-w-[1400px] mx-auto w-full">
-                <section className="flex items-start w-full justify-between gap-x-10 px-4 pt-3 py-10">
-                  <Logo />
+                <section className="flex items-start w-full justify-between md:gap-x-10 px-4 pt-3 pb-10">
+                  <Logo className="hidden md:block"/>
 
-                  <div className="w-full flex flex-col gap-y-10">
+                  <div className="w-full flex flex-col gap-y-5 md:gap-y-10">
                     <form
                       onSubmit={(e) => {
                         e.preventDefault();

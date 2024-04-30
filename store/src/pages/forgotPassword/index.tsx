@@ -73,13 +73,13 @@ export const ForgotPassword = () => {
           </div>
         </div>
       </div>
-      <div className="hidden bg-muted lg:block">
+      {/* <div className="hidden bg-muted lg:block">
         <img
           src="https://source.unsplash.com/1600x900/?shop,onlineshop,ecommerce"
           alt="Image"
           className="h-screen w-full object-cover dark:brightness-[0.2] dark:grayscale"
         />
-      </div>
+      </div> */}
     </div>
   );
 };

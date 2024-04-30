@@ -47,13 +47,16 @@ const ProductCard = ({
             />
 
             {hasVariants ? (
-              <Button className="w-64 absolute bottom-2 left-1/2 transform -translate-x-1/2">
+              <Button
+                variant="ghost"
+                className="add-to-cart-btn"
+              >
                 <span>{t("View Variants")}</span>
               </Button>
             ) : (
               <Button
                 variant="ghost"
-                className="translate-y-[150%] group-hover:translate-y-0 transition-transform w-[calc(100%_-_16px)] absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-white text-black shadow-sm text-base font-semibold"
+                className="add-to-cart-btn"
                 onClick={(e) => {
                   e.preventDefault();
                   addToCart(itemCode);
