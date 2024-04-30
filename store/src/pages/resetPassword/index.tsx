@@ -39,6 +39,7 @@ export const ResetPassword = () => {
               onSubmit={form.handleSubmit((creds) => updatePassword(creds))}
             >
               <div className="grid gap-3">
+                <h2 className="font-semibold text-darkgray-500 text-lg">{t("New Password")}</h2>
                 <div className="grid gap-2">
                   <FormField
                     control={form.control}
@@ -56,7 +57,7 @@ export const ResetPassword = () => {
                     )}
                   />
                 </div>
-                <Button type="submit" className="p-5 h-12.5 text-base font-semibold rounded-xl" disabled={isLoading}>
+                <Button type="submit" className="p-5 h-12.5 text-base font-semibold rounded-xl mt-7 w-fit" disabled={isLoading}>
                   {isLoading && (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   )}

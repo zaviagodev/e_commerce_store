@@ -50,6 +50,7 @@ import OrderDetail from "./pages/orders/show";
 import { PaymentProvider } from "./pages/checkout/Payment";
 import { ConfigProvider, useConfig } from "./hooks/useConfig";
 import { useEffect } from "react";
+import NotFound from "./pages/NotFound";
 
 const providerConfig = {
   url: import.meta.env.VITE_BACKEND_URL,
@@ -191,7 +192,7 @@ function App() {
                       <Route path="create" element={<AddressCreate setIsOpen={() => {}}/>} />
                       <Route path="edit/:id" element={<AddressEdit />} />
                     </Route>
-                    <Route path="*" element={<ErrorComponent />} />
+                    <Route path="*" element={<NotFound />} /> {/* Original component for 404 page: <ErrorComponent /> */}
                   </Route>
                   <Route
                     element={
