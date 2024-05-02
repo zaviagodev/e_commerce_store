@@ -148,10 +148,13 @@
     "Confirm": "Confirm",
     "Send email to reset password": "We'll send you an email to reset your password.",
     "Your email": "Your email",
+    "Name": "First name",
+    "Surname": "Last name",
     "Login or register": "Login / Register",
     "When make payment cart": "Shipping fee and VAT (if available) are calculated when making a payment.",
+    "This field is required": "This field is required",
     "leave payment page": {
-        "title": "Leave the payment page?",
+        "title": "Leave the payment page",
         "desc": "Your order status will be shown as \"Unpaid\". To complete the payment, you can access the order history page. If you would like to edit your orders, please repurchase the product and make a payment in a correct order."
     },
     "Delete address": {

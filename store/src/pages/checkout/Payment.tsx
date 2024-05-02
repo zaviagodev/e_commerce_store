@@ -296,14 +296,14 @@ const PaymentCancel = () => {
       </AlertDialogTrigger>
       <AlertDialogContent className="w-[456px] p-8 !rounded-2xl">
         <AlertDialogHeader className="flex flex-col gap-y-2 items-center">
-          <AlertDialogTitle className="text-2xl font-semibold text-center">{t("leave payment page.title")}</AlertDialogTitle>
+          <AlertDialogTitle className="text-2xl font-semibold text-center">{t("leave payment page.title")}?</AlertDialogTitle>
           <AlertDialogDescription className="text-darkgray-500 text-base text-center">
             {t("leave payment page.desc")}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="mt-2">
           <AlertDialogCancel className="main-btn bg-accent border-darkgray-100">{t("Cancel")}</AlertDialogCancel>
-          <AlertDialogAction className="main-btn" onClick={() => navigate("/")}>{t("Continue")}</AlertDialogAction>
+          <AlertDialogAction className="main-btn" onClick={() => navigate("/")}>{t("leave payment page.title")}</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

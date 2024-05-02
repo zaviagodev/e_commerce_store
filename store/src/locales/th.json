@@ -19,8 +19,8 @@
   "Address type must be either Billing or Shipping": "ประเภทที่อยู่ต้องเป็น การเรียกเก็บเงิน หรือ การขนส่ง",
   "Update profile": "อัปเดตข้อมูล",
   "Email is required": "ต้องระบุอีเมล",
-  "Name is required": "ชื่อจำเป็น",
-  "Surame is required": "Surame จำเป็น",
+  "Name is required": "จำเป็นต้องกรอกชื่อ",
+  "Surame is required": "จำเป็นต้องกรอกนามสกุล",
   "Categories": "หมวดหมู่",
   "Toggle user menu": "เปิด/ปิดเมนูผู้ใช้",
   "My Account": "บัญชีของฉัน",
@@ -151,10 +151,13 @@
   "Confirm": "ยืนยัน",
   "Send email to reset password": "เราจะส่งข้อมูลไปยังอีเมลของคุณเพื่อรีเซ็ตรหัสผ่าน",
   "Your email": "อีเมลของคุณ",
+  "Name": "ชื่อ",
+  "Surname": "นามสกุล",
   "Login or register": "เข้าสู่ระบบ / ลงทะเบียน",
   "When make payment cart": "ค่าจัดส่งและภาษีมูลค่าเพิ่ม (ถ้ามี) จะคำนวณเมื่อชำระเงิน",
+  "This field is required": "จำเป็นต้องกรอกข้อมูล",
   "leave payment page": {
-    "title": "ออกจากการชำระเงิน?",
+    "title": "ออกจากการชำระเงิน",
     "desc": "ออเดอร์ของคุณ “ยังชำระเงินไม่สำเร็จ” คุณสามารถชำระเงินอีกครั้งได้ที่หน้าประวัติคำสั่งซื้อหรือหากต้องการแก้ไขคำสั่งซื้อ กรุณาสั่งซื้อสินค้าอีกครั้งและชำระเงินในออเดอร์ที่ถูกต้อง"
   },
   "Delete address": {
