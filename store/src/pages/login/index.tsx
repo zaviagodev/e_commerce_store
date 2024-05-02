@@ -49,7 +49,7 @@ export const Login = () => {
                           {t("Email/username")}
                         </FormLabel> */}
                         <FormControl>
-                          <Input placeholder={t("Email")} className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" {...field} />
+                          <Input disabled={loggingIn} placeholder={t("Email")} className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -66,7 +66,7 @@ export const Login = () => {
                           {t("Password")}
                         </FormLabel> */}
                         <FormControl>
-                          <Input type="password" className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" placeholder={t("Password")} {...field} />
+                          <Input disabled={loggingIn} type="password" className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" placeholder={t("Password")} {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

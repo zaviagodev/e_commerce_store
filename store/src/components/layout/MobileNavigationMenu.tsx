@@ -1,7 +1,7 @@
 import { useGetIdentity, useGo, useIsAuthenticated, useMany, useTranslate } from "@refinedev/core";
 import { Sheet, SheetTrigger, SheetContent } from "../ui/sheet";
 import { Button } from "../ui/button";
-import { ChevronsUpDown, Menu } from "lucide-react";
+import { ChevronsUpDown, CircleUser, Menu } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Link } from "react-router-dom";
 import {
@@ -48,7 +48,27 @@ const MobileNavigationMenu = () => {
       </SheetTrigger>
       <SheetContent side="left">
         <nav className="grid gap-6 text-lg font-medium">
-          <button
+          {/* {!isLoading &&
+          !isFetching &&
+          !isRefetching &&
+          authState?.authenticated ? (
+            <Link to="/account" className="flex items-center gap-x-3 font-semibold">
+              <Avatar className="h-7 w-7">
+                <AvatarImage
+                  src={profile.user?.user_image}
+                  alt={`${profile.user?.full_name} profile image`}
+                />
+                <AvatarFallback className="text-sm">{profile.user?.full_name[0]}</AvatarFallback>
+              </Avatar>
+              {profile?.user?.name}
+            </Link>
+          ) : (
+            <Link to="/login" className="flex items-center gap-x-3 font-semibold">
+              <CircleUser className="h-7 w-7" />
+              Login
+            </Link>
+          )} */}
+          {/* <button
             onClick={() =>
               go({
                 to: `/`,
@@ -70,7 +90,7 @@ const MobileNavigationMenu = () => {
             ) : (
               <h2>{config?.company}</h2>
             )}
-          </button>
+          </button> */}
           <button
             onClick={() =>
               go({

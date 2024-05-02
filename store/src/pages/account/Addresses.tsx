@@ -32,7 +32,7 @@ const Addresses = () => {
               <PlusCircle /> {t("Add New Address")}
             </Button>
           </DialogTrigger>
-          <DialogContent className="w-full h-full max-w-none">
+          <DialogContent className="w-full h-full max-w-none lg:h-fit lg:w-fit">
             <AddressCreate setIsOpen={setIsAddingAddress}/>
           </DialogContent>
         </Dialog>

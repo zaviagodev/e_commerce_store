@@ -129,10 +129,47 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
             )}
           </span>
           </div>
+          {product.short_description && (
           <div className="text-sm leading-6 pb-12 lg:pb-[60px] font-normal">
             <p>{product.short_description}</p>
           </div>
+          )}
           <div className="pb-6 border-b">
+            {product.variant_attributes && (
+              <div className="flex flex-col gap-y-6 mt-4 mb-16">
+                {product.variant_attributes?.map((variant_attribute) => (
+                  <div key={variant_attribute.attribute}>
+                    <div className="flex flex-col gap-2">
+                      <span className="text-sm font-semibold">
+                        {variant_attribute.attribute}: <span className="font-normal">{selectedAttributes ? selectedAttributes[variant_attribute.attribute] : `Select ${variant_attribute.attribute}`}</span>
+                      </span>
+                      <div className="flex items-center gap-4">
+                        {variant_attribute.values.map((value) => (
+                          <Toggle
+                            variant="outline"
+                            aria-label="Toggle italic"
+                            key={value}
+                            pressed={
+                              selectedAttributes[variant_attribute.attribute] ===
+                              value
+                            }
+                            className={`${selectedAttributes[variant_attribute.attribute] === value ? "border-black !bg-transparent" : ""} rounded-lg`}
+                            onClick={() =>
+                              setSelectedAttributes({
+                                ...selectedAttributes,
+                                [variant_attribute.attribute]: value,
+                              })
+                            }
+                          >
+                            {value}
+                          </Toggle>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
             <div className="items-start flex flex-col gap-y-[14px]">
               <ProductCounter itemCode={showId! as string} size="sm" />
               <div className="fixed bottom-0 left-0 bg-white lg:bg-inherit p-4 lg:p-0 lg:static flex lg:flex-col w-full gap-y-[14px] flex-col-reverse z-10">
@@ -159,38 +196,8 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
             </div>
           </div>
 
-        <div className="py-4">
-          {product.variant_attributes?.map((variant_attribute) => (
-            <div key={variant_attribute.attribute}>
-              <div className="flex items-center justify-between gap-4 my-2">
-                <span className="text-sm text-maingray">
-                  {variant_attribute.attribute}
-                </span>
-                <div className="flex items-center gap-4">
-                  {variant_attribute.values.map((value) => (
-                    <Toggle
-                      variant="outline"
-                      aria-label="Toggle italic"
-                      key={value}
-                      pressed={
-                        selectedAttributes[variant_attribute.attribute] ===
-                        value
-                      }
-                      onClick={() =>
-                        setSelectedAttributes({
-                          ...selectedAttributes,
-                          [variant_attribute.attribute]: value,
-                        })
-                      }
-                    >
-                      {value}
-                    </Toggle>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ))}
-          <Accordion type="single" collapsible className="w-full">
+        <div>
+          {product.web_long_description && <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="item-1">
               <AccordionTrigger className="font-semibold">{t("Details")}</AccordionTrigger>
               <AccordionContent>
@@ -201,7 +208,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
                 />
               </AccordionContent>
             </AccordionItem>
-          </Accordion>
+          </Accordion>}
           <div className="w-full flex justify-center h-10 items-center mt-6">
             <Button variant="link" className="font-bold">
               <MessageQuestionCircle className="mr-2" />{" "}

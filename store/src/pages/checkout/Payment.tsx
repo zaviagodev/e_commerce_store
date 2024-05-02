@@ -15,6 +15,18 @@ import { QRPMDetail, QRUploadSlip } from "./QRPM";
 import { BankPMDetail, BankUploadSlip } from "./BankPM";
 import { Wallet04 } from "@untitled-ui/icons-react";
 import { formatCurrency } from "@/lib/utils";
+import Logo from "@/components/customComponents/Logo";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 {/* There are some currency numbers that I use formatCurrency, which was created on lib/utils.ts 
     Because I want the currency and the amount to be separate like this 
@@ -37,15 +49,16 @@ const Payment = () => {
   return (
     <div className="w-full min-h-screen mx-auto flex py-10 px-4 lg:w-[450px] lg:px-0">
       <div className="w-full">
-        <Link
+        {/* <Link
           to="/"
-          className="flex flex-col items-center justify-center text-lg font-semibold md:text-base mx-auto"
+          className="w-fit flex flex-col items-center justify-center mx-auto"
         >
           <Avatar className="h-[44px] w-[44px]">
             <AvatarImage src="https://github.com/shadcn.png" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
-        </Link>
+        </Link> */}
+        <PaymentCancel />
 
         <StepMaintainer useStateHook={useCheckout}>
           <Summary />
@@ -271,3 +284,28 @@ const Thankyou = () => {
     </>
   );
 };
+
+const PaymentCancel = () => {
+  const t = useTranslate()
+  const navigate = useNavigate()
+
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger className="flex justify-center w-full">
+        <Logo />
+      </AlertDialogTrigger>
+      <AlertDialogContent className="w-[456px] p-8 !rounded-2xl">
+        <AlertDialogHeader className="flex flex-col gap-y-2 items-center">
+          <AlertDialogTitle className="text-2xl font-semibold text-center">{t("leave payment page.title")}</AlertDialogTitle>
+          <AlertDialogDescription className="text-darkgray-500 text-base text-center">
+            {t("leave payment page.desc")}
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter className="mt-2">
+          <AlertDialogCancel className="main-btn bg-accent border-darkgray-100">{t("Cancel")}</AlertDialogCancel>
+          <AlertDialogAction className="main-btn" onClick={() => navigate("/")}>{t("Continue")}</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  )
+}

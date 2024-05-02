@@ -111,7 +111,7 @@ const Cart = () => {
                 )}
               </SheetClose>
 
-              <p className="text-darkgray-600 text-xs text-center">ค่าจัดส่งและภาษีคำนวณเมื่อชำระเงิน</p>
+              <p className="text-darkgray-600 text-xs text-center">{t("When make payment cart")}</p>
             </div>
           </div>
         </SheetFooter>

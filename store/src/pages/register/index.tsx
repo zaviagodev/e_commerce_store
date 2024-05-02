@@ -60,7 +60,7 @@ export const Register = () => {
                           {t("Full name")}
                         </FormLabel> */}
                         <FormControl>
-                          <Input placeholder={`${t("Full name")} *`} className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" {...field} />
+                          <Input placeholder={`${t("Full name")} *`} disabled={(signingUp || loggingIn)} className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -77,7 +77,7 @@ export const Register = () => {
                           {t("Email/username")}
                         </FormLabel> */}
                         <FormControl>
-                          <Input placeholder={`${t("Email")} *`} className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" {...field} />
+                          <Input placeholder={`${t("Email")} *`} disabled={(signingUp || loggingIn)} className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -94,7 +94,7 @@ export const Register = () => {
                           {t("Password")}
                         </FormLabel> */}
                         <FormControl>
-                          <Input type="password" placeholder={`${t("Password")} *`} className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" {...field} />
+                          <Input type="password" disabled={(signingUp || loggingIn)} placeholder={`${t("Password")} *`} className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -111,7 +111,7 @@ export const Register = () => {
                           {t("Confirm password")}
                         </FormLabel> */}
                         <FormControl>
-                          <Input type="password" placeholder={`${t("Confirm password")} *`} className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" {...field} />
+                          <Input type="password" disabled={(signingUp || loggingIn)} placeholder={`${t("Confirm password")} *`} className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

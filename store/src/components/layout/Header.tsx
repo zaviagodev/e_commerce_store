@@ -29,6 +29,7 @@ import { Skeleton } from "../ui/skeleton";
 import TopSheet from "../customComponents/TopSheet";
 import Logo from "../customComponents/Logo";
 import { LogIn02, SearchLg, UserCircle, XClose } from "@untitled-ui/icons-react";
+import ProductSearch from "./ProductSearch";
 
 const Header = () => {
   const t = useTranslate();
@@ -142,16 +143,16 @@ const Header = () => {
                 {authState?.authenticated ?
                   (
                     <div className="flex items-center">
-                      <Button className="rounded-full !bg-transparent p-0 font-semibold text-base" variant="ghost" onClick={() => navigate("/account")}>
+                      <Button className="!bg-transparent p-0 font-semibold text-base" variant="ghost" onClick={() => navigate("/account")}>
                         {profile?.user?.name}
                       </Button>
-                      <Button size="icon" onClick={() => logout()} className="rounded-full !bg-transparent" variant="ghost">
+                      <Button size="icon" onClick={() => logout()} className="!bg-transparent" variant="ghost">
                         <LogIn02 className="h-[22px] w-[22px]"/>
                       </Button>
                     </div>
                   ) : (
-                    <Button size="icon" onClick={() => navigate("/login")} className="rounded-full !bg-transparent" variant="ghost">
-                      <UserCircle className="h-[22px] w-[22px]" />
+                    <Button onClick={() => navigate("/login")} className="!bg-transparent text-sm" variant="ghost">
+                      {t("Login or register")}
                     </Button> 
                   )
                 }
