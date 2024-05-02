@@ -17,6 +17,17 @@ import {
   useLogout,
   useTranslate,
 } from "@refinedev/core";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { AppNavigationMenu } from "./AppNavigationMenu";
 import Cart from "../cart/Cart";
 import Wishlist from "../wishlist/Wishlist";
@@ -29,7 +40,6 @@ import { Skeleton } from "../ui/skeleton";
 import TopSheet from "../customComponents/TopSheet";
 import Logo from "../customComponents/Logo";
 import { LogIn02, SearchLg, UserCircle, XClose } from "@untitled-ui/icons-react";
-import ProductSearch from "./ProductSearch";
 
 const Header = () => {
   const t = useTranslate();
@@ -52,6 +62,30 @@ const Header = () => {
   useEffect(() => {
     isSearching && setSearchInput("")
   }, [isSearching])
+
+  const LogoutDialog = () => {
+    return (
+      <AlertDialog>
+        <AlertDialogTrigger>
+          <Button size="icon" className="!bg-transparent text-sm" variant="ghost">
+            <LogIn02 className="h-[22px] w-[22px]"/>
+          </Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent className="w-[456px] p-8 !rounded-2xl">
+          <AlertDialogHeader className="flex flex-col gap-y-2 items-center">
+            <AlertDialogTitle className="text-2xl font-semibold text-center">{t("Logout")}?</AlertDialogTitle>
+            <AlertDialogDescription className="text-darkgray-500 text-base text-center">
+              {t("Logout desc")}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="mt-2">
+            <AlertDialogCancel className="main-btn bg-accent border-darkgray-100">{t("Cancel")}</AlertDialogCancel>
+            <AlertDialogAction className="main-btn" onClick={() => logout()}>{t("Logout")}</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    )
+  }
 
   const LogoButton = () => {
     return (
@@ -146,9 +180,7 @@ const Header = () => {
                       <Button className="!bg-transparent p-0 font-semibold text-base" variant="ghost" onClick={() => navigate("/account")}>
                         {profile?.user?.name}
                       </Button>
-                      <Button size="icon" onClick={() => logout()} className="!bg-transparent" variant="ghost">
-                        <LogIn02 className="h-[22px] w-[22px]"/>
-                      </Button>
+                      <LogoutDialog />
                     </div>
                   ) : (
                     <Button onClick={() => navigate("/login")} className="!bg-transparent text-sm" variant="ghost">

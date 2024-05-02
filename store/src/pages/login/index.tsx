@@ -38,7 +38,7 @@ export const Login = () => {
               onSubmit={form.handleSubmit((creds) => login(creds))}
             >
               <div className="grid gap-3">
-                <h2 className="font-semibold text-darkgray-500 text-lg">{t("Login")}</h2>
+                <h2 className="font-semibold text-darkgray-500 text-lg">{t("Sign in")}</h2>
                 <div className="grid gap-2">
                   <FormField
                     control={form.control}
@@ -78,7 +78,7 @@ export const Login = () => {
                     {loggingIn && (
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     )}
-                    {t("Sign in")}
+                    {t("Login")}
                   </Button>
                   <Link
                     to="/forgot-password"

@@ -83,7 +83,7 @@ const OrderDetail = () => {
         </li>
         <li className="flex items-center justify-between">
           <span className="text-sm text-darkgray-200">
-            {t("Grand Total")}
+            {t("Grand total")}
           </span>
           <span className="text-sm font-bold">
             {formatCurrency(order.grand_total)}
