@@ -126,7 +126,7 @@
   "Details": "รายละเอียด",
   "Full name": "ชื่อเต็ม",
   "Confirm password": "ยืนยันรหัสผ่าน",
-  "Passwords must match": "รหัสผ่านต้องตรงกัน",
+  "Passwords must match": "รหัสผ่านไม่ตรงกัน",
   "Reset Password": "รีเซ็ตรหัสผ่านของคุณ",
   "New Password": "รหัสผ่านใหม่",
   "Order placed successfully": "การสั่งซื้อเสร็จสิ้น",

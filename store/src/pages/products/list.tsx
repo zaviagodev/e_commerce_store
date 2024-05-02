@@ -114,6 +114,7 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
                 name={item.item_name}
                 price={item.formatted_price}
                 fullPrice={item.formatted_mrp}
+                discount={item.discount}
                 image={
                   getFileURL(item.website_image) ??
                   getFileURL(config?.default_product_image) ??

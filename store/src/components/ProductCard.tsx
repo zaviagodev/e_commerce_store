@@ -3,6 +3,8 @@ import { Button } from "./ui/button";
 import { useTranslate } from "@refinedev/core";
 import { useCart } from "@/hooks/useCart";
 import { Link } from "react-router-dom";
+import { Badge } from "./ui/badge";
+import { Tag01 } from "@untitled-ui/icons-react";
 
 interface ProductProps extends React.HTMLAttributes<HTMLDivElement> {
   itemCode: string;
@@ -11,7 +13,7 @@ interface ProductProps extends React.HTMLAttributes<HTMLDivElement> {
   fullPrice?: string;
   image: string;
   hasVariants?: boolean | number;
-
+  discount?: string;
   width?: number;
   height?: number;
 }
@@ -22,6 +24,7 @@ const ProductCard = ({
   name,
   price,
   fullPrice,
+  discount,
   image,
   hasVariants = false,
   width,
@@ -45,6 +48,11 @@ const ProductCard = ({
                 "aspect-square"
               )}
             />
+
+            {discount && <Badge className="absolute top-4 left-4 py-1 px-1.5 flex items-center gap-x-1 rounded-md bg-red-500">
+              <Tag01 className="h-3 w-3"/>
+              {discount}
+            </Badge>}
 
             {hasVariants ? (
               <Button
