@@ -1,8 +1,7 @@
-import { Outlet, NavLink, useLocation } from "react-router-dom";
+import { Outlet, NavLink } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useGetIdentity, useTranslate } from "@refinedev/core";
 import { File06, MarkerPin04, User01 } from "@untitled-ui/icons-react";
-import { useState } from "react";
 
 const Account = () => {
   const t = useTranslate();
@@ -17,9 +16,6 @@ const Account = () => {
     return <div>Loading...</div>;
   }
 
-  const location = useLocation()
-
-  //   use tailwindcss classes to style the layout
   return (
     <div className="grid grid-cols-1 lg:grid-cols-5 gap-x-8 px-4">
       <div className="hidden col-span-1 lg:flex flex-col py-12">
@@ -70,8 +66,11 @@ const Account = () => {
           </NavLink>
         </nav>
       </div>
-      <div className="lg:col-span-4 mx-auto lg:shadow-checkout h-[calc(100vh_-_57px)] py-4 lg:p-10 w-full lg:overflow-y-auto" style={{scrollbarWidth: "none"}}>
-        <div className={`w-full ${location.pathname.includes("/orders") ? 'lg:w-[720px]' : 'lg:w-[410px]'} mx-auto`}>
+      <div
+        className="lg:col-span-4 mx-auto lg:shadow-checkout h-[calc(100vh_-_57px)] py-4 lg:p-10 w-full lg:overflow-y-auto"
+        style={{ scrollbarWidth: "none" }}
+      >
+        <div className="w-full">
           <Outlet />
         </div>
       </div>

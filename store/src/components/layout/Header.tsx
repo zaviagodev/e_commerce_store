@@ -1,15 +1,5 @@
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Input } from "@/components/ui/input";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   useGetIdentity,
   useGo,
@@ -27,19 +17,17 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+} from "@/components/ui/alert-dialog";
 import { AppNavigationMenu } from "./AppNavigationMenu";
 import Cart from "../cart/Cart";
 import Wishlist from "../wishlist/Wishlist";
 import MobileNavigationMenu from "./MobileNavigationMenu";
 import { useConfig } from "@/hooks/useConfig";
-import { getFileURL } from "@/lib/utils";
-import { useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "../ui/skeleton";
-import TopSheet from "../customComponents/TopSheet";
 import Logo from "../customComponents/Logo";
-import { LogIn02, SearchLg, UserCircle, XClose } from "@untitled-ui/icons-react";
+import { LogIn02 } from "@untitled-ui/icons-react";
+import Search from "./Search";
 
 const Header = () => {
   const t = useTranslate();
@@ -55,37 +43,39 @@ const Header = () => {
   const { mutate: logout } = useLogout();
   const go = useGo();
 
-  {/* Create the state in case the searchbar sheet will close if users have searched for the products or clicked the 'cancel' button */}
-  const [isSearching, setIsSearching] = useState(false)
-  const [searchInput, setSearchInput] = useState("")
-
-  useEffect(() => {
-    isSearching && setSearchInput("")
-  }, [isSearching])
-
   const LogoutDialog = () => {
     return (
       <AlertDialog>
         <AlertDialogTrigger>
-          <Button size="icon" className="!bg-transparent text-sm" variant="ghost">
-            <LogIn02 className="h-[22px] w-[22px]"/>
+          <Button
+            size="icon"
+            className="!bg-transparent text-sm"
+            variant="ghost"
+          >
+            <LogIn02 className="h-[22px] w-[22px]" />
           </Button>
         </AlertDialogTrigger>
         <AlertDialogContent className="w-[456px] p-8 !rounded-2xl">
           <AlertDialogHeader className="flex flex-col gap-y-2 items-center">
-            <AlertDialogTitle className="text-2xl font-semibold text-center">{t("Logout")}?</AlertDialogTitle>
+            <AlertDialogTitle className="text-2xl font-semibold text-center">
+              {t("Logout")}?
+            </AlertDialogTitle>
             <AlertDialogDescription className="text-darkgray-500 text-base text-center">
               {t("Logout desc")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="mt-2">
-            <AlertDialogCancel className="main-btn bg-accent border-darkgray-100">{t("Cancel")}</AlertDialogCancel>
-            <AlertDialogAction className="main-btn" onClick={() => logout()}>{t("Logout")}</AlertDialogAction>
+            <AlertDialogCancel className="main-btn bg-accent border-darkgray-100">
+              {t("Cancel")}
+            </AlertDialogCancel>
+            <AlertDialogAction className="main-btn" onClick={() => logout()}>
+              {t("Logout")}
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    )
-  }
+    );
+  };
 
   const LogoButton = () => {
     return (
@@ -105,8 +95,8 @@ const Header = () => {
         {/* Create the Logo component file onto the customComponent folder */}
         <Logo />
       </button>
-    )
-  }
+    );
+  };
 
   return (
     <header className="sticky top-0 flex h-[57px] items-center gap-4 border-b bg-background z-20">
@@ -170,96 +160,37 @@ const Header = () => {
 
           {/* Set the menu instead of dropdown when users would like to access account page or log out if they have logged in */}
           <div className="hidden md:flex items-center gap-2">
-            {!isLoading &&
-            !isFetching &&
-            !isRefetching ? (
+            {!isLoading && !isFetching && !isRefetching ? (
               <>
-                {authState?.authenticated ?
-                  (
-                    <div className="flex items-center">
-                      <Button className="!bg-transparent p-0 font-semibold text-base" variant="ghost" onClick={() => navigate("/account")}>
-                        {profile?.user?.name}
-                      </Button>
-                      <LogoutDialog />
-                    </div>
-                  ) : (
-                    <Button onClick={() => navigate("/login")} className="!bg-transparent text-sm" variant="ghost">
-                      {t("Login or register")}
-                    </Button> 
-                  )
-                }
+                {authState?.authenticated ? (
+                  <div className="flex items-center">
+                    <Button
+                      className="!bg-transparent p-0 font-semibold text-base"
+                      variant="ghost"
+                      onClick={() => navigate("/account")}
+                    >
+                      {profile?.user?.name}
+                    </Button>
+                    <LogoutDialog />
+                  </div>
+                ) : (
+                  <Button
+                    onClick={() => navigate("/login")}
+                    className="!bg-transparent text-sm"
+                    variant="ghost"
+                  >
+                    {t("Login or register")}
+                  </Button>
+                )}
               </>
             ) : (
-              <Skeleton className="h-6 w-[100px]"/>
+              <Skeleton className="h-6 w-[100px]" />
             )}
 
-            <Separator className="h-6 w-[1px] bg-[#F0F0F0]"/>
+            <Separator className="h-6 w-[1px] bg-[#F0F0F0]" />
           </div>
 
-          {/* This is the searchbar sheet */}
-          {config?.is_search_enabled == 1 && (
-            <TopSheet open={isSearching} onOpenChange={setIsSearching} contentClassName="p-0 md:px-6" trigger={
-              <Button variant="ghost" size="icon" className="rounded-full flex justify-center hover:bg-transparent">
-                <SearchLg className="h-[22px] w-[22px]"/>
-              </Button>
-            }>
-              <div className="max-w-[1400px] mx-auto w-full">
-                <section className="flex items-start w-full justify-between md:gap-x-10 px-4 pt-3 pb-10">
-                  <Logo className="hidden md:block"/>
-
-                  <div className="w-full flex flex-col gap-y-5 md:gap-y-10">
-                    <form
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        setIsSearching(false)
-                        go({
-                          to: `/`,
-                          query: {
-                            filters: [
-                              {
-                                field: "search",
-                                operator: "eq",
-                                value: e.currentTarget.search.value,
-                              },
-                            ],
-                            resetPagenation: 1,
-                          },
-                          type: "push",
-                        });
-                      }}
-                    >
-                      <div className="relative flex items-center">
-                        <SearchLg className="absolute left-4 h-5 w-5 text-muted-foreground" />
-                        <Input
-                          name="search"
-                          placeholder={t("Search products")}
-                          className="pl-12 w-full focus-visible:ring-0 focus-visible:ring-offset-0 bg-neutral-100 rounded-full border-neutral-100"
-                          onChange={(e) => setSearchInput(e.target.value)}
-                          value={searchInput}
-                        />
-                        {searchInput !== "" && <XClose className="absolute right-4 h-5 w-5" onClick={() => setSearchInput("")}/>}
-                      </div>
-                    </form>
-
-                    <div className="space-y-6 font-semibold">
-                      <h2 className="text-darkgray-300">Popular searches</h2>
-
-                      {/* These are popular searches which I statically mock them up */}
-                      <ul className="space-y-6">
-                        <li>Long Hair</li>
-                        <li>Liner</li>
-                        <li>OPTP</li>
-                      </ul>
-                    </div>
-                  </div>
-
-                  <Button onClick={() => setIsSearching(false)} variant="ghost">
-                    {t("Cancel")}
-                  </Button>
-                </section>
-              </div>
-            </TopSheet>
-          )}
+          {config?.is_search_enabled == 1 && <Search />}
 
           {config?.enable_wishlist == 1 && <Wishlist />}
           <Cart />

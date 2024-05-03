@@ -22,14 +22,7 @@ import { confirmPaymentSchema } from "./confirmPaymentSchema";
 import { ImagePlus, X } from "@untitled-ui/icons-react";
 import { ChangeEvent, useState, MouseEvent } from "react";
 import { formatCurrency } from "@/lib/utils";
-
-  {/* There are some currency numbers that I use formatCurrency, which was created on lib/utils.ts 
-      Because I want the currency and the amount to be separate like this 
-      
-      ฿ 1,000.00 
-
-      This was the original one, ฿1,000.00
-  */}
+import ImageInput from "@/components/forms/controls/ImageInput";
 
 export const QRPMDetail = () => {
   const t = useTranslate();
@@ -51,14 +44,18 @@ export const QRPMDetail = () => {
           alt="QR Code"
           className="w-full"
         />
-        
+
         <div className="space-y-2">
           <div className="flex justify-between items-center">
-            <Label className="text-darkgray-200 text-base">{t("Account Name")}</Label>
+            <Label className="text-darkgray-200 text-base">
+              {t("Account Name")}
+            </Label>
             <strong>{selectedPaymentMethod.account_name}</strong>
           </div>
           <div className="flex justify-between items-center">
-            <Label className="text-darkgray-200 text-base">{t("Account Number")}</Label>
+            <Label className="text-darkgray-200 text-base">
+              {t("Account Number")}
+            </Label>
             <strong className="flex items-center -mr-2">
               {selectedPaymentMethod.promptpay_number}
               <Button size="icon" variant="link" className="text-accent">
@@ -92,7 +89,11 @@ export const QRPMDetail = () => {
             <ArrowDownCircle className="h-4 w-4" />
             {t("Save QR Code")}
           </Button>
-          <Button size="lg" className="w-full h-12.5 text-base font-semibold rounded-xl" onClick={next}>
+          <Button
+            size="lg"
+            className="w-full h-12.5 text-base font-semibold rounded-xl"
+            onClick={next}
+          >
             {t("Upload Payment Slip")}
           </Button>
         </div>
@@ -115,7 +116,7 @@ export const QRUploadSlip = () => {
         payment_method_key: selectedPaymentMethod.key,
         bank: selectedPaymentMethod.account_name,
       },
-      file: {} as any,
+      file: {} as File,
     },
     mode: "onChange",
   });
@@ -146,20 +147,6 @@ export const QRUploadSlip = () => {
     });
   };
 
-  {/* This code group is used for uploading the image using the custom input */}
-  const [slip, setSlip] = useState<File>()
-  const handleUploadSlip = (e: ChangeEvent<HTMLInputElement>) => {
-    const fileTarget = e.target.files ? e.target.files[0] : null
-    form.setValue("file", fileTarget)
-
-    setSlip(fileTarget!)
-  }
-
-  const resetSlip = (e: MouseEvent) => {
-    e.preventDefault()
-    setSlip(undefined)
-  }
-
   return (
     <>
       <div className="mt-10 text-center">
@@ -170,14 +157,16 @@ export const QRUploadSlip = () => {
       <div className="mt-6 w-full flex flex-col gap-y-6">
         <div className="space-y-2">
           <div className="flex justify-between items-center">
-            <Label className="text-darkgray-200 text-base">{t("Order ID")}</Label>
+            <Label className="text-darkgray-200 text-base">
+              {t("Order ID")}
+            </Label>
             <strong>{orderId}</strong>
           </div>
           <div className="flex justify-between items-center">
-            <Label className="text-darkgray-200 text-base">{t("Grand total")}</Label>
-            <strong>
-              {formatCurrency(order?.grand_total)}
-            </strong>
+            <Label className="text-darkgray-200 text-base">
+              {t("Grand total")}
+            </Label>
+            <strong>{formatCurrency(order?.grand_total)}</strong>
           </div>
         </div>
 
@@ -213,38 +202,23 @@ export const QRUploadSlip = () => {
               name="file"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-base text-primary font-semibold">{t("Payment Slip *")} <span className="text-red-500">*</span></FormLabel>
+                  <FormLabel className="text-base text-primary font-semibold">
+                    {t("Payment Slip *")}{" "}
+                    <span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
-                    <>
-                      {/* I have hidden this input because I need to create a custom input below */}
-                      <input
-                        type="file"
-                        accept="image/*"
-                        className="hidden"
-                        id="slip"
-                        onChange={handleUploadSlip}
-                      />
-
-                      {/* This is the custom input, and it will be shown if the image has not been uploaded */}
-                      {slip ? (
-                        <label className="relative cursor-pointer flex items-center gap-x-3 py-8 px-4 gap-y-3 border border-darkgray-100 bg-accent rounded-xl" htmlFor="slip">
-                          <img src={URL.createObjectURL(slip)} className="w-16 h-16 object-cover"/>
-                          <div>
-                            <h2 className="font-semibold text-sm">{slip?.name}</h2>
-                          </div>
-
-                          <X className="absolute top-6 right-4" onClick={resetSlip}/>
-                        </label>
-                      ) : (
-                        <label className="cursor-pointer flex flex-col p-8 gap-y-3 items-center border border-darkgray-100 bg-accent rounded-xl" htmlFor="slip">
-                          <ImagePlus />
-                          <div className="flex flex-col items-center">
-                            <h2 className="font-semibold text-lg">{t("Upload Slip")}</h2>
-                            <p className="text-muted-foreground text-sm">PNG or JPG (max. 800x400px)</p>
-                          </div>
-                        </label>
-                      )}
-                    </>
+                    <ImageInput
+                      name="file"
+                      value={
+                        File.prototype.isPrototypeOf(form.watch("file"))
+                          ? (form.getValues("file") as File)
+                          : null
+                      }
+                      onChange={(files) =>
+                        form.setValue("file", files ? files[0] : {})
+                      }
+                      onRemove={() => form.setValue("file", {})}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

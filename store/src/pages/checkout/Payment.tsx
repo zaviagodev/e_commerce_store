@@ -9,7 +9,7 @@ import { CheckoutProvider, useCheckout } from "@/hooks/useCheckout";
 import useSummary from "@/hooks/useSummary";
 import { useGetIdentity, useTranslate } from "@refinedev/core";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { paymentMethodIconMap } from ".";
 import { QRPMDetail, QRUploadSlip } from "./QRPM";
 import { BankPMDetail, BankUploadSlip } from "./BankPM";
@@ -26,15 +26,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-
-{/* There are some currency numbers that I use formatCurrency, which was created on lib/utils.ts 
-    Because I want the currency and the amount to be separate like this 
-    
-    ฿ 1,000.00 
-
-    This was the original one, ฿1,000.00
-*/}
+} from "@/components/ui/alert-dialog";
+import useConfig from "@/hooks/useConfig";
 
 export const PaymentProvider: React.FC = () => {
   return (
@@ -46,6 +39,7 @@ export const PaymentProvider: React.FC = () => {
 export default PaymentProvider;
 
 const Payment = () => {
+  // const { config } = useConfig();
   return (
     <div className="w-full min-h-screen mx-auto flex py-10 px-4 lg:w-[450px] lg:px-0">
       <div className="w-full">
@@ -54,8 +48,8 @@ const Payment = () => {
           className="w-fit flex flex-col items-center justify-center mx-auto"
         >
           <Avatar className="h-[44px] w-[44px]">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarImage src={getFileURL(config?.brand_logo) ?? ""} />
+            <AvatarFallback>{config?.company.slice(0, 1)}</AvatarFallback>
           </Avatar>
         </Link> */}
         <PaymentCancel />
@@ -74,6 +68,7 @@ const Payment = () => {
 const Summary = () => {
   const t = useTranslate();
   const [showDetails, setshowDetails] = useState(true);
+  const { config } = useConfig();
   const { orderId, order, selectedPaymentMethod, next } = useCheckout();
   const checkoutSummary = useSummary(order);
   const { data: profile } = useGetIdentity();
@@ -84,8 +79,9 @@ const Summary = () => {
 
   return (
     <>
-      {/* Move the company name to this section because I want to show it only on the first payment page */}
-      <h2 className="text-2xl font-semibold text-primary text-center mt-10">ABC Company</h2>
+      <h2 className="text-2xl font-semibold text-primary text-center mt-10">
+        {config?.company}
+      </h2>
       <div className="mt-6 text-center">
         <p className="text-sm">
           {t("Email")}: <strong>{profile?.user.email}</strong>
@@ -116,14 +112,21 @@ const Summary = () => {
       <div className="mt-9 flex flex-col rounded-lg space-y-6">
         <div className="flex items-center justify-between text-darkgray-200 text-sm">
           <p>{t("Grand total")}</p>
-          <p className="font-semibold">{order?.items?.length} {t(order?.items?.length === 1 ? "Item" : "Items")}</p>
+          <p className="font-semibold">
+            {order?.items?.length}{" "}
+            {t(order?.items?.length === 1 ? "Item" : "Items")}
+          </p>
         </div>
         <h2 className="text-4xl font-semibold text-primary text-center">
           {formatCurrency(order.grand_total)}
         </h2>
       </div>
       <div className="mt-9 mb-6 text-center">
-        <Button size="lg" className="w-full h-12.5 text-base font-semibold rounded-xl" onClick={next}>
+        <Button
+          size="lg"
+          className="w-full h-12.5 text-base font-semibold rounded-xl"
+          onClick={next}
+        >
           {t("Pay Now")}
         </Button>
         <Button
@@ -162,29 +165,25 @@ const Summary = () => {
           <div className="flex flex-col gap-y-4">
             <div className="w-full flex justify-between text-sm">
               <p>{t("Subtotal")}</p>
-              <strong>
-                {formatCurrency(order.total)}
-              </strong>
+              <strong>{formatCurrency(order.total)}</strong>
             </div>
             {checkoutSummary.totalShipping > 0 && (
               <div className="w-full flex justify-between text-sm text-darkgray-200">
                 <p>{t("Shipping Cost")}</p>
-                <span>
-                  {formatCurrency(checkoutSummary.totalShipping)}
-                </span>
+                <span>{formatCurrency(checkoutSummary.totalShipping)}</span>
               </div>
             )}
             <div className="w-full flex justify-between text-sm text-darkgray-200">
               <p>{t("Tax")}</p>
-              <span>
-                {formatCurrency(checkoutSummary.totalTax)}
-              </span>
+              <span>{formatCurrency(checkoutSummary.totalTax)}</span>
             </div>
             {checkoutSummary.totalDiscount > 0 && (
               <div className="w-full flex justify-between">
                 <p className="text-sm text-muted-foreground">{t("Discount")}</p>
                 <strong className="text-muted-foreground">
-                  {formatCurrency(checkoutSummary.totalDiscount?.toFixed(2) ?? 0)}
+                  {formatCurrency(
+                    checkoutSummary.totalDiscount?.toFixed(2) ?? 0
+                  )}
                 </strong>
               </div>
             )}
@@ -202,9 +201,7 @@ const Summary = () => {
           <Separator />
           <div className="w-full flex justify-between text-sm">
             <p>{t("Grand total")}</p>
-            <strong>
-              {formatCurrency(order.grand_total)}
-            </strong>
+            <strong>{formatCurrency(order.grand_total)}</strong>
           </div>
         </div>
       )}
@@ -258,18 +255,22 @@ const Thankyou = () => {
       <div className="mt-12 w-full flex flex-col gap-y-6">
         <div className="flex flex-col gap-y-2">
           <div className="flex justify-between items-center">
-            <Label className="text-base text-darkgray-200">{t("Order ID")}</Label>
+            <Label className="text-base text-darkgray-200">
+              {t("Order ID")}
+            </Label>
             <strong>{orderId}</strong>
           </div>
           <div className="flex justify-between items-center">
             <Label className="text-base text-darkgray-200">{t("Total")}</Label>
-            <strong>
-              {formatCurrency(order?.grand_total)}
-            </strong>
+            <strong>{formatCurrency(order?.grand_total)}</strong>
           </div>
         </div>
         <div className="mt-6 mb-1 text-center">
-          <Button size="lg" className="w-full h-12.5 rounded-xl font-semibold text-base" onClick={() => navigate("/")}>
+          <Button
+            size="lg"
+            className="w-full h-12.5 rounded-xl font-semibold text-base"
+            onClick={() => navigate("/")}
+          >
             {t("Back to Store")}
           </Button>
           <Button
@@ -286,8 +287,8 @@ const Thankyou = () => {
 };
 
 const PaymentCancel = () => {
-  const t = useTranslate()
-  const navigate = useNavigate()
+  const t = useTranslate();
+  const navigate = useNavigate();
 
   return (
     <AlertDialog>
@@ -296,16 +297,22 @@ const PaymentCancel = () => {
       </AlertDialogTrigger>
       <AlertDialogContent className="w-[456px] p-8 !rounded-2xl">
         <AlertDialogHeader className="flex flex-col gap-y-2 items-center">
-          <AlertDialogTitle className="text-2xl font-semibold text-center">{t("leave payment page.title")}?</AlertDialogTitle>
+          <AlertDialogTitle className="text-2xl font-semibold text-center">
+            {t("leave payment page.title")}?
+          </AlertDialogTitle>
           <AlertDialogDescription className="text-darkgray-500 text-base text-center">
             {t("leave payment page.desc")}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="mt-2">
-          <AlertDialogCancel className="main-btn bg-accent border-darkgray-100">{t("Cancel")}</AlertDialogCancel>
-          <AlertDialogAction className="main-btn" onClick={() => navigate("/")}>{t("leave payment page.title")}</AlertDialogAction>
+          <AlertDialogCancel className="main-btn bg-accent border-darkgray-100">
+            {t("Cancel")}
+          </AlertDialogCancel>
+          <AlertDialogAction className="main-btn" onClick={() => navigate("/")}>
+            {t("leave payment page.title")}
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  )
-}
+  );
+};

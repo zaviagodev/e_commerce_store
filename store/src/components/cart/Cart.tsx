@@ -47,7 +47,9 @@ const Cart = () => {
             <FlipBackward className="h-5 w-5 cursor-pointer hover:opacity-75" />
           </SheetClose>
 
-          <SheetTitle className="!m-0 text-base">{t("Shopping Cart")}</SheetTitle>
+          <SheetTitle className="!m-0 text-base">
+            {t("Shopping Cart")}
+          </SheetTitle>
 
           <Heart
             className="h-5 w-5 cursor-pointer hover:opacity-75 !m-0"
@@ -64,10 +66,12 @@ const Cart = () => {
             })}
           </ul>
         ) : (
-          <EmptyList 
-            icon={<ShoppingBag01 className="text-white w-[30px] h-[30px]"/>}
-            title={t("Empty_cart.title")}
-            desc={t("Empty_cart.desc")}
+          <EmptyList
+            icon={<ShoppingBag01 className="text-white w-[30px] h-[30px]" />}
+            title={t("Your cart is empty")}
+            desc={t(
+              "When the products are added to cart, they will appear here."
+            )}
           />
         )}
         <SheetFooter className="block sm:justify-center mt-auto">
@@ -94,13 +98,15 @@ const Cart = () => {
                     disabled={cartCount === 0}
                     className="inset-2 w-full"
                     size="lg"
-                    onClick={() => window.open(config?.contact_us_url, "_blank")}
+                    onClick={() =>
+                      window.open(config?.contact_us_url, "_blank")
+                    }
                   >
                     {config?.contact_us_label}
                   </Button>
                 ) : (
                   <Button
-                    // disabled={cartCount === 0}
+                    disabled={cartCount === 0}
                     className="inset-2 w-full"
                     size="lg"
                     onClick={() => navigate(cartCount > 0 ? "/checkout" : "/")}
@@ -111,7 +117,9 @@ const Cart = () => {
                 )}
               </SheetClose>
 
-              <p className="text-darkgray-600 text-xs text-center">{t("When make payment cart")}</p>
+              <p className="text-darkgray-600 text-xs text-center">
+                {t("Shipping costs and taxes are calculated at checkout.")}
+              </p>
             </div>
           </div>
         </SheetFooter>

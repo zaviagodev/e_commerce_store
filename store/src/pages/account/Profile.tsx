@@ -8,7 +8,6 @@ import {
   useNotification,
   useTranslate,
 } from "@refinedev/core";
-import { SfButton, SfInput } from "@storefront-ui/react";
 import { useRef, useState } from "react";
 
 const Profile = () => {
@@ -34,8 +33,10 @@ const Profile = () => {
   }
 
   return (
-    <>
-      <h1 className="font-semibold text-darkgray-500 text-lg">{t("Account Details")}</h1>
+    <div className="lg:w-[410px] mx-auto">
+      <h1 className="font-semibold text-darkgray-500 text-lg">
+        {t("Account Details")}
+      </h1>
       <div className="flex items-center gap-3 mt-10">
         <Avatar className="h-16 w-16">
           <AvatarImage
@@ -88,7 +89,7 @@ const Profile = () => {
           }}
         />
       </div>
-    </>
+    </div>
   );
 };
 

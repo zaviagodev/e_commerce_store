@@ -4,14 +4,7 @@ import {
   useTranslate,
   useTable,
 } from "@refinedev/core";
-import React, { useCallback, useEffect } from "react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import React, { useEffect } from "react";
 import {
   Pagination,
   PaginationContent,
@@ -27,7 +20,6 @@ import { useSearchParams } from "react-router-dom";
 import usePagenation from "@/hooks/usePagenation";
 import { useConfig } from "@/hooks/useConfig";
 import { getFileURL } from "@/lib/utils";
-import { Skeleton } from "@/components/ui/skeleton";
 
 export const ProductList: React.FC<IResourceComponentsProps> = () => {
   const {
@@ -78,28 +70,22 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
 
   return (
     <div className="flex flex-col gap-y-6">
-      {isFetching || isLoading || isRefetching ? (
-        <Skeleton className="h-8 w-[200px] mx-auto"/>
-      ) : (<h1 className="text-4xl font-semibold text-center mb-6">
+      <h1 className="text-4xl font-semibold text-center mb-6">
         {t("All products")}
-      </h1>)}
+      </h1>
       <div className="flex justify-between items-center">
-        {isFetching || isLoading || isRefetching ? (
-          <div className="flex items-center gap-x-2">
-            <Skeleton className="h-5 w-20"/>
-            <Skeleton className="h-5 w-16"/>
-          </div>
-        ) : (
-          <>
-            {tableData ? (
-              <div>
-                <strong>{t("All products")}</strong> 
-                <span className="text-darkgray-300"> ({tableData?.total} {t(tableData?.total === 1 ? "Item" : "Items")})</span>
-              </div>
-            ) : null}
-          </>
-        )}
-
+        <div>
+          <strong>{t("All products")}</strong>
+          <span className="text-darkgray-300">
+            {" "}
+            {tableData?.total && (
+              <>
+                ({tableData?.total}{" "}
+                {t(tableData?.total === 1 ? "Item" : "Items")})
+              </>
+            )}
+          </span>
+        </div>
         {/* TODO: integrate it later 
         <div className="flex items-center gap-4">
           <strong>{t("Sort by")}</strong>
@@ -126,8 +112,8 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
                 itemCode={item.item_code}
                 name={item.item_name}
                 price={item.formatted_price}
-                fullPrice={item.formatted_mrp}
                 discount={item.discount}
+                originalPrice={item.formatted_mrp}
                 image={
                   getFileURL(item.website_image) ??
                   getFileURL(config?.default_product_image) ??

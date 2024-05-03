@@ -83,7 +83,7 @@ function App() {
             dataProvider={{
               default: dataProvider("https://api.fake-rest.refine.dev"),
               storeProvider: storeProvider,
-              frappeeProvider: frappeDataProvider(providerConfig),
+              frappeProvider: frappeDataProvider(providerConfig),
             }}
             i18nProvider={i18nProvider}
             routerProvider={routerBindings}
@@ -168,13 +168,15 @@ function App() {
                       index
                       element={<NavigateToResource resource="products" />}
                     />
-                    <Route path="/checkout" element={<Checkout />} />
                     <Route path="/account" element={<Account />}>
                       <Route index element={<Profile />} />
                       <Route path="addresses">
                         <Route index element={<Addresses />} />
                         <Route path=":id" element={<AddressEdit />} />
-                        <Route path="new" element={<AddressCreate setIsOpen={() => {}}/>} />
+                        <Route
+                          path="new"
+                          element={<AddressCreate setIsOpen={() => {}} />}
+                        />
                       </Route>
                       <Route path="orders">
                         <Route index element={<OrderList />} />
@@ -189,10 +191,14 @@ function App() {
                     </Route>
                     <Route path="/address">
                       <Route index element={<AddressList />} />
-                      <Route path="create" element={<AddressCreate setIsOpen={() => {}}/>} />
+                      <Route
+                        path="create"
+                        element={<AddressCreate setIsOpen={() => {}} />}
+                      />
                       <Route path="edit/:id" element={<AddressEdit />} />
                     </Route>
-                    <Route path="*" element={<NotFound />} /> {/* Original component for 404 page: <ErrorComponent /> */}
+                    <Route path="*" element={<NotFound />} />{" "}
+                    {/* Original component for 404 page: <ErrorComponent /> */}
                   </Route>
                   <Route
                     element={
@@ -204,6 +210,7 @@ function App() {
                       </Authenticated>
                     }
                   >
+                    <Route path="/checkout" element={<Checkout />} />
                     <Route
                       path="/checkout/payment"
                       element={<PaymentProvider />}

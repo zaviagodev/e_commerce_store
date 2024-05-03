@@ -9,7 +9,6 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import { addressSchema } from "./addressSchema";
 import { useForm } from "@refinedev/react-hook-form";
 import { Loader2 } from "lucide-react";
@@ -52,14 +51,21 @@ const AddressForm = ({
 
   return (
     <Form {...form}>
-      <form className="flex flex-col gap-y-3" onSubmit={form.handleSubmit(onSubmit)}>
+      <form
+        className="flex flex-col gap-y-3"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
         <FormField
           control={form.control}
           name="address_title"
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Title" className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
+                <Input
+                  placeholder="Title"
+                  className="form-input focus-visible:ring-0 focus-visible:ring-offset-0"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -71,7 +77,11 @@ const AddressForm = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Phone" className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
+                <Input
+                  placeholder="Phone"
+                  className="form-input focus-visible:ring-0 focus-visible:ring-offset-0"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -83,7 +93,11 @@ const AddressForm = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Address" className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
+                <Input
+                  placeholder="Address"
+                  className="form-input focus-visible:ring-0 focus-visible:ring-offset-0"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -95,7 +109,11 @@ const AddressForm = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Address Line 2" className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
+                <Input
+                  placeholder="Address Line 2"
+                  className="form-input focus-visible:ring-0 focus-visible:ring-offset-0"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -172,7 +190,11 @@ const AddressForm = ({
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input placeholder="Pincode" className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
+                  <Input
+                    placeholder="Pincode"
+                    className="form-input focus-visible:ring-0 focus-visible:ring-offset-0"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -188,9 +210,9 @@ const AddressForm = ({
               <FormItem className="flex items-center justify-between">
                 <FormLabel>{t("Primary Address")}</FormLabel>
                 <FormControl>
-                  {/* <Checkbox
+                  <Switch
                     {...field}
-                    className="mr-2"
+                    className="!m-0 !bg-darkgray-100 data-[state=checked]:!bg-primary"
                     checked={form.watch("is_primary_address") === 1}
                     onCheckedChange={(checked) => {
                       form.setValue("is_primary_address", checked ? 1 : 0, {
@@ -198,8 +220,8 @@ const AddressForm = ({
                         shouldTouch: true,
                       });
                     }}
-                  /> */}
-                  <Switch 
+                  />
+                  <Switch
                     {...field}
                     className="!m-0 !bg-darkgray-100 data-[state=checked]:!bg-primary"
                     checked={form.watch("is_primary_address") === 1}
@@ -222,9 +244,9 @@ const AddressForm = ({
               <FormItem className="flex items-center justify-between">
                 <FormLabel>{t("Default Shipping Address")}</FormLabel>
                 <FormControl>
-                  {/* <Checkbox
+                  <Switch
                     {...field}
-                    className="mr-2"
+                    className="!m-0 !bg-darkgray-100 data-[state=checked]:!bg-primary"
                     checked={form.watch("is_shipping_address") === 1}
                     onCheckedChange={(checked) =>
                       form.setValue("is_shipping_address", checked ? 1 : 0, {
@@ -232,8 +254,8 @@ const AddressForm = ({
                         shouldTouch: true,
                       })
                     }
-                  /> */}
-                  <Switch 
+                  />
+                  <Switch
                     {...field}
                     className="!m-0 !bg-darkgray-100 data-[state=checked]:!bg-primary"
                     checked={form.watch("is_shipping_address") === 1}

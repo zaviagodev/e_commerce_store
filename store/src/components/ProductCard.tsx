@@ -10,7 +10,7 @@ interface ProductProps extends React.HTMLAttributes<HTMLDivElement> {
   itemCode: string;
   name: string;
   price: string;
-  fullPrice?: string;
+  originalPrice?: string;
   image: string;
   hasVariants?: boolean | number;
   discount?: string | number;
@@ -23,8 +23,8 @@ const ProductCard = ({
   itemCode,
   name,
   price,
-  fullPrice,
   discount,
+  originalPrice,
   image,
   hasVariants = false,
   width,
@@ -49,16 +49,15 @@ const ProductCard = ({
               )}
             />
 
-            {discount && <Badge className="absolute top-4 left-4 py-1 px-1.5 flex items-center gap-x-1 rounded-md !bg-red-500/50 group-hover:!bg-red-500">
-              <Tag01 className="h-3 w-3"/>
-              {discount}
-            </Badge>}
+            {discount && (
+              <Badge className="absolute top-4 left-4 py-1 px-1.5 flex items-center gap-x-1 rounded-md !bg-red-500/50 group-hover:!bg-red-500">
+                <Tag01 className="h-3 w-3" />
+                {discount}
+              </Badge>
+            )}
 
             {hasVariants ? (
-              <Button
-                variant="ghost"
-                className="add-to-cart-btn"
-              >
+              <Button variant="ghost" className="add-to-cart-btn">
                 <span>{t("View Variants")}</span>
               </Button>
             ) : (
@@ -76,17 +75,14 @@ const ProductCard = ({
           </div>
         </div>
         <div className="space-y-1 md:space-y-3 text-darkgray-400 group-hover:text-black group-hover:font-semibold">
-          <h3 className="text-lg whitespace-pre overflow-hidden text-ellipsis">{name}</h3>
-          
-          {/* Full price is created when some products have the discounted price 
-            If there is the discounted price, "price" will be shown as discounted price, and the full price is the regular price before discount
-            If not, "price" will be shown as regular price
-          */}
+          <h3 className="text-lg whitespace-pre overflow-hidden text-ellipsis">
+            {name}
+          </h3>
 
-          {fullPrice ? (
+          {originalPrice ? (
             <span className="text-base flex items-center gap-x-2">
               <p className="text-red-500">{price}</p>
-              <p className="line-through text-darkgray-300">{fullPrice}</p>
+              <p className="line-through text-darkgray-300">{originalPrice}</p>
             </span>
           ) : (
             <p className="text-base">{price}</p>

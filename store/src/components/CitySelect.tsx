@@ -39,7 +39,7 @@ const CitySelect: React.FC<CitySelectProps> = ({
 
   const { options, onSearch, overtime } = useSelect({
     resource: "City",
-    dataProviderName: "frappeeProvider",
+    dataProviderName: "frappeProvider",
     optionLabel: "city_name",
     optionValue: "name",
     searchField: "city_name",
@@ -60,10 +60,11 @@ const CitySelect: React.FC<CitySelectProps> = ({
         options.length === 0 ? "No results" : "Loading..."
       }
       classNames={{
-        control: () => "!border-darkgray-100 !bg-accent !rounded-xl px-3.5 text-sm h-12.5 !shadow-none",
+        control: () =>
+          "!border-darkgray-100 !bg-accent !rounded-xl px-3.5 text-sm h-12.5 !shadow-none",
       }}
       styles={{
-        indicatorSeparator: () => ({display: "none"})
+        indicatorSeparator: () => ({ display: "none" }),
       }}
       value={
         value === undefined

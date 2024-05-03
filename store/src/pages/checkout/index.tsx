@@ -3,16 +3,7 @@ import { Label } from "@/components/ui/label";
 import { useCart } from "@/hooks/useCart";
 import { useCreate, useCustom, useOne, useTranslate } from "@refinedev/core";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-  CirclePlus,
-  Landmark,
-  Loader2,
-  QrCode,
-  ArrowLeftRight,
-  Undo2,
-  ChevronDown,
-  ArrowUp,
-} from "lucide-react";
+import { Landmark, Loader2, QrCode, ChevronDown, ArrowUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import CheckoutItem from "@/components/checkout/CheckoutItem";
@@ -36,7 +27,11 @@ import AddressSelect from "@/components/AddressSelect";
 import TopSheet from "@/components/customComponents/TopSheet";
 import Logo from "@/components/customComponents/Logo";
 import { Skeleton } from "@/components/ui/skeleton";
-import { FlipBackward, MarkerPin04, MessageQuestionCircle } from "@untitled-ui/icons-react";
+import {
+  FlipBackward,
+  MarkerPin04,
+  MessageQuestionCircle,
+} from "@untitled-ui/icons-react";
 import { formatCurrency } from "@/lib/utils";
 
 export const paymentMethodIconMap: { [key: string]: React.ReactNode } = {
@@ -45,10 +40,9 @@ export const paymentMethodIconMap: { [key: string]: React.ReactNode } = {
 };
 
 const Checkout = () => {
-  const [paymentMethod, setpaymentMethod] = useState<string | null>(null);
   const t = useTranslate();
   const navigate = useNavigate();
-  const { cart, serverCart, cartTotal, cartCount, resetCart } = useCart();
+  const { cartCount, serverCart, resetCart } = useCart();
 
   const { data: address, isLoading: addressLoading } = useOne({
     resource: "address",
@@ -68,7 +62,7 @@ const Checkout = () => {
   const form = useForm({
     resolver: yupResolver(checkoutSchema),
     values: {
-      paymentMethod: paymentMethod ?? "",
+      paymentMethod: "",
       shippingRule: serverCart?.message.doc.shipping_rule,
       address: serverCart?.message.doc.shipping_address_name,
     },
@@ -94,8 +88,6 @@ const Checkout = () => {
     },
   });
 
-  const checkoutSummary = useSummary(serverCart?.message.doc);
-
   const onSubmit = (data: any) => {
     mutate({
       dataProviderName: "storeProvider",
@@ -104,152 +96,20 @@ const Checkout = () => {
     });
   };
 
-  const OrderDetailSheet = ({ trigger } : { trigger: string | React.ReactNode } ) => {
-    const [isOpen, setIsOpen] = useState(false)
-
-    return (
-      <TopSheet trigger={trigger} contentClassName="p-0 rounded-b-2xl" onOpenChange={setIsOpen} open={isOpen}>
-        <div className="p-4 border-b">
-          <AddressHeader />
-        </div>
-        <div className="p-4">
-          <CartList />
-        </div>
-
-        <div className="flex justify-center w-full">
-          <button className="flex items-center p-4 gap-x-2 text-darkgray-200 text-sm" onClick={() => setIsOpen(false)}>
-            {t("Hide cart details")}
-            <ArrowUp className="h-4 w-4"/>
-          </button>
-        </div>
-      </TopSheet>
-    )
-  }
-
-  const TotalCart = () => {
-    return (
-      <div className="flex flex-col rounded-lg gap-y-4">
-        <div className="flex items-center justify-center gap-x-1 lg:justify-between text-sm text-darkgray-200">
-          <p>{t("Grand total")}</p>
-          <p>{cartCount} {t(cartCount === 1 ? "Item" : "Items")}</p>
-
-          <div className="lg:hidden flex items-center">
-            <OrderDetailSheet trigger={<ChevronDown className="h-4 w-4"/>}/>
-          </div>
-        </div>
-
-        {serverCart?.message.doc.grand_total ? (
-          <h2 className="text-4xl font-semibold text-primary text-center lg:text-left">
-            {formatCurrency(serverCart?.message.doc.grand_total)}
-          </h2>
-        ) : <Skeleton className="h-10"/>}
-      </div>
-    )
-  }
-
-  {/* Create the CartList component to use it on the sheet on the mobile version */}
-  const CartList = () => {
-    return (
-      <section>
-        {/* <h2 className="font-semibold text-darkgray">
-          {t("Order summary")}
-        </h2> */}
-        <div className="flex flex-col gap-y-4 lg:mr-5">
-          <ul className="my-3 flex flex-col gap-y-8">
-            {Object.entries(cart).map(([itemCode, quantity]) => {
-              if (!quantity) {
-                return null;
-              }
-              return (
-                <CheckoutItem
-                  key={itemCode}
-                  itemCode={itemCode}
-                  qty={quantity}
-                />
-              );
-            })}
-          </ul>
-        </div>
-
-        <div className="lg:ml-[69px] lg:mr-5">
-          <Separator className="my-4 bg-[#E3E3E3]" />
-          <div className="flex flex-col gap-y-4">
-            <div className="w-full flex justify-between text-sm">
-              <p>{t("Subtotal")}</p>
-              <strong>
-                {typeof cartTotal === "string"
-                  ? t("Loading...")
-                  : formatCurrency(cartTotal)
-                }
-              </strong>
-            </div>
-            {checkoutSummary.totalShipping > 0 && (
-              <div className="w-full flex justify-between text-darkgray-200 text-sm">
-                <p>{t("Shipping Cost")}</p>
-                <span>
-                  {formatCurrency(checkoutSummary.totalShipping)}
-                </span>
-              </div>
-            )}
-            <div className="w-full flex justify-between text-darkgray-200 text-sm">
-              <p>{t("Tax")}</p>
-              <span>
-                {formatCurrency(checkoutSummary.totalTax)}
-              </span>
-            </div>
-            {checkoutSummary.totalDiscount > 0 && (
-              <div className="w-full flex justify-between text-darkgray-200 text-sm">
-                <p>{t("Discount")}</p>
-                <strong>
-                  {formatCurrency(checkoutSummary.totalDiscount?.toFixed(2) ?? 0)}
-                </strong>
-              </div>
-            )}
-            {serverCart?.message.doc.coupon_code && (
-              <div className="w-full flex justify-between text-darkgray-200 text-sm">
-                <p className="text-muted-foreground">
-                  {t("Coupon Code")}
-                </p>
-                <strong className="text-muted-foreground">
-                  {serverCart?.message.doc.coupon_code}
-                </strong>
-              </div>
-            )}
-            <CouponCodeInput />
-          </div>
-          <Separator className="my-4 bg-[#E3E3E3]" />
-          <div className="w-full flex justify-between font-semibold text-sm">
-            <p>{t("Grand total")}</p>
-            <strong>
-              {formatCurrency(serverCart?.message.doc.grand_total)}
-            </strong>
-          </div>
-        </div>
-      </section>
-    )
-  }
-
-  const AddressHeader = () => {
-    return (
-      <div className="flex items-center gap-x-2.5">
-        <FlipBackward className="h-5 w-5 cursor-pointer hover:opacity-75" onClick={() => navigate("/")}/>
-        <h2 className="lg:hidden font-semibold">{t("Order details")}</h2>
-
-        <div className="hidden lg:block">
-          <Logo />
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div className="flex flex-col justify-center lg:gap-y-8 lg:flex-row mx-auto">
       <div className="w-full lg:max-w-[494px] lg:pl-0 lg:p-20 lg:pt-5 box-content">
         <div className="flex items-center gap-x-4 border-b lg:border-0 p-4 lg:p-0 justify-between">
-          <AddressHeader />
+          <Header />
 
           {/* CartList MOBILE VERSION */}
-          <OrderDetailSheet trigger={<h2 className="lg:hidden text-darkgray-200 text-sm">{t("Cart details")}</h2>} />
+          <OrderDetailSheet
+            trigger={
+              <h2 className="lg:hidden text-darkgray-200 text-sm">
+                {t("Cart details")}
+              </h2>
+            }
+          />
         </div>
 
         {/* CartList DESKTOP VERSION */}
@@ -259,12 +119,13 @@ const Checkout = () => {
         </div>
       </div>
       <div className="w-full lg:max-w-[536px] lg:shadow-checkout p-4 lg:px-[60px] lg:pt-[120px] lg:h-screen">
-
         {/* This is the total cart on the mobile version */}
         <div className="mb-10 lg:hidden">
-
           {/* NEED TO FETCH THE IMAGE OF THE FIRST PRODUCT */}
-          <img src="" className="w-[120px] h-[120px] rounded-md bg-gray-100 mx-auto mb-4"/>
+          <img
+            src=""
+            className="w-[120px] h-[120px] rounded-md bg-gray-100 mx-auto mb-4"
+          />
           <TotalCart />
         </div>
 
@@ -285,7 +146,9 @@ const Checkout = () => {
                     return (
                       <FormItem>
                         <div className="flex items-center justify-between">
-                          <FormLabel className="text-darkgray-200 font-semibold text-base">{t("Address")}</FormLabel>
+                          <FormLabel className="text-darkgray-200 font-semibold text-base">
+                            {t("Address")}
+                          </FormLabel>
                           <FormControl>
                             <AddressSelect
                               {...field}
@@ -302,7 +165,7 @@ const Checkout = () => {
                 />
                 {addressLoading &&
                   !!serverCart?.message.doc.shipping_address_name && (
-                    <Skeleton className="h-40 rounded-xl w-full"/>
+                    <Skeleton className="h-40 rounded-xl w-full" />
                   )}
                 {address && <AddressCard {...address?.message} />}
                 {!address && (
@@ -328,7 +191,9 @@ const Checkout = () => {
                 render={({ field }) => {
                   return (
                     <FormItem>
-                      <FormLabel className="text-darkgray-200 font-semibold text-base">{t("Payment Method")}</FormLabel>
+                      <FormLabel className="text-darkgray-200 font-semibold text-base">
+                        {t("Payment Method")}
+                      </FormLabel>
                       <FormControl>
                         <RadioGroup
                           {...field}
@@ -347,7 +212,7 @@ const Checkout = () => {
                                 />
                                 <Label
                                   htmlFor={method.key}
-                                  className="flex items-center justify-center border border-darkgray-100 bg-popover p-4 bg-accent text-darkgray-500 font-semibold peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary rounded-xl"
+                                  className="flex items-center justify-center border border-darkgray-100 p-4 bg-accent text-darkgray-500 font-semibold peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary rounded-xl"
                                 >
                                   {paymentMethodIconMap[method.key ?? "2"]}
                                   {method.name}
@@ -377,12 +242,16 @@ const Checkout = () => {
                 </Button>
                 <p className="mt-2 text-sm text-darkgray-200">
                   {t("By continuing, you agree to our")}{" "}
-                  <b className="text-primary">{t("Privacy Policy")}</b> {t("and")}{" "}
+                  <b className="text-primary">{t("Privacy Policy")}</b>{" "}
+                  {t("and")}{" "}
                   <b className="text-primary">{t("Terms of Service")}</b>.
                 </p>
               </div>
               <div className="w-full flex justify-center h-10 items-center">
-                <Button variant="link" className="font-bold text-base flex items-center gap-x-2">
+                <Button
+                  variant="link"
+                  className="font-bold text-base flex items-center gap-x-2"
+                >
                   <MessageQuestionCircle className="h-5 w-5" />{" "}
                   {t("Ask for help")}
                 </Button>
@@ -396,3 +265,149 @@ const Checkout = () => {
 };
 
 export default Checkout;
+
+const Header = () => {
+  const t = useTranslate();
+  const navigate = useNavigate();
+  return (
+    <div className="flex items-center gap-x-2.5">
+      <FlipBackward
+        className="h-5 w-5 cursor-pointer hover:opacity-75"
+        onClick={() => navigate("/")}
+      />
+      <h2 className="lg:hidden font-semibold">{t("Order details")}</h2>
+      <div className="hidden lg:block">
+        <Logo />
+      </div>
+    </div>
+  );
+};
+
+const CartList = () => {
+  const t = useTranslate();
+  const { cart, serverCart, cartTotal, cartCount, resetCart } = useCart();
+  const checkoutSummary = useSummary(serverCart?.message.doc);
+  return (
+    <section>
+      <div className="flex flex-col gap-y-4 lg:mr-5">
+        <ul className="my-3 flex flex-col gap-y-8">
+          {Object.entries(cart).map(([itemCode, quantity]) => {
+            if (!quantity) {
+              return null;
+            }
+            return (
+              <CheckoutItem key={itemCode} itemCode={itemCode} qty={quantity} />
+            );
+          })}
+        </ul>
+      </div>
+
+      <div className="lg:ml-[69px] lg:mr-5">
+        <Separator className="my-4 bg-[#E3E3E3]" />
+        <div className="flex flex-col gap-y-4">
+          <div className="w-full flex justify-between text-sm">
+            <p>{t("Subtotal")}</p>
+            <strong>
+              {typeof cartTotal === "string"
+                ? t("Loading...")
+                : formatCurrency(cartTotal)}
+            </strong>
+          </div>
+          {checkoutSummary.totalShipping > 0 && (
+            <div className="w-full flex justify-between text-darkgray-200 text-sm">
+              <p>{t("Shipping Cost")}</p>
+              <span>{formatCurrency(checkoutSummary.totalShipping)}</span>
+            </div>
+          )}
+          <div className="w-full flex justify-between text-darkgray-200 text-sm">
+            <p>{t("Tax")}</p>
+            <span>{formatCurrency(checkoutSummary.totalTax)}</span>
+          </div>
+          {checkoutSummary.totalDiscount > 0 && (
+            <div className="w-full flex justify-between text-darkgray-200 text-sm">
+              <p>{t("Discount")}</p>
+              <strong>
+                {formatCurrency(checkoutSummary.totalDiscount?.toFixed(2) ?? 0)}
+              </strong>
+            </div>
+          )}
+          {serverCart?.message.doc.coupon_code && (
+            <div className="w-full flex justify-between text-darkgray-200 text-sm">
+              <p className="text-muted-foreground">{t("Coupon Code")}</p>
+              <strong className="text-muted-foreground">
+                {serverCart?.message.doc.coupon_code}
+              </strong>
+            </div>
+          )}
+          <CouponCodeInput />
+        </div>
+        <Separator className="my-4 bg-[#E3E3E3]" />
+        <div className="w-full flex justify-between font-semibold text-sm">
+          <p>{t("Grand total")}</p>
+          <strong>{formatCurrency(serverCart?.message.doc.grand_total)}</strong>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const OrderDetailSheet = ({
+  trigger,
+}: {
+  trigger: string | React.ReactNode;
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const t = useTranslate();
+  return (
+    <TopSheet
+      trigger={trigger}
+      contentClassName="p-0 rounded-b-2xl"
+      onOpenChange={setIsOpen}
+      open={isOpen}
+    >
+      <div className="p-4 border-b">
+        <Header />
+      </div>
+      <div className="p-4">
+        <CartList />
+      </div>
+
+      <div className="flex justify-center w-full">
+        <button
+          className="flex items-center p-4 gap-x-2 text-darkgray-200 text-sm"
+          onClick={() => setIsOpen(false)}
+        >
+          {t("Hide cart details")}
+          <ArrowUp className="h-4 w-4" />
+        </button>
+      </div>
+    </TopSheet>
+  );
+};
+
+const TotalCart = () => {
+  const t = useTranslate();
+  const { cartCount, serverCart } = useCart();
+  return (
+    <div className="flex flex-col rounded-lg gap-y-4">
+      <div className="flex items-center justify-center gap-x-1 lg:justify-between text-sm text-darkgray-200">
+        <p>{t("Grand total")}</p>
+        <p>
+          {cartCount} {cartCount === 1 ? t("Item") : t("Items")}
+        </p>
+
+        <div className="lg:hidden flex items-center">
+          <OrderDetailSheet trigger={<ChevronDown className="h-4 w-4" />} />
+        </div>
+      </div>
+
+      {serverCart?.message.doc.grand_total ? (
+        <h2 className="text-4xl font-semibold text-primary text-center lg:text-left">
+          {formatCurrency(serverCart?.message.doc.grand_total)}
+        </h2>
+      ) : (
+        <Skeleton className="h-10" />
+      )}
+    </div>
+  );
+};

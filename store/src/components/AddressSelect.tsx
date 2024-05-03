@@ -13,7 +13,6 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import AddressCard from "./AddressCard";
-import { Label } from "./ui/label";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
@@ -21,7 +20,7 @@ import { FlipBackward, ArrowRight } from "@untitled-ui/icons-react";
 
 type AddressSelectProps = {
   onSelect: (address: any) => void;
-  triggerClassName?: string
+  triggerClassName?: string;
 };
 
 const AddressSelect = ({ onSelect, ...props }: AddressSelectProps) => {

@@ -48,15 +48,19 @@ export const AddressEdit: React.FC<IResourceComponentsProps> = () => {
   const address = queryResult.data.message;
 
   return (
-    <>
-      <h1 className="font-semibold text-darkgray-500 text-lg">{t("Address")}</h1>
+    <div className="lg:w-[410px] mx-auto">
+      <h1 className="font-semibold text-darkgray-500 text-lg">
+        {t("Address")}
+      </h1>
       <div className="mt-10">
         <div className="flex items-center justify-between mt-10">
           <h1 className="font-semibold text-gray-500 mb-2">
             {t("Update Addresses")}
           </h1>
           <Link to="/account/addresses">
-            <Button variant="link" className="text-sm p-0">{t("Cancel")}</Button>
+            <Button variant="link" className="text-sm p-0">
+              {t("Cancel")}
+            </Button>
           </Link>
         </div>
         {/* <h1 className="font-semibold text-gray-500 mb-2">{address.name}</h1> */}
@@ -81,6 +85,6 @@ export const AddressEdit: React.FC<IResourceComponentsProps> = () => {
           <AddressCardList />
         </div>
       </div>
-    </>
+    </div>
   );
 };

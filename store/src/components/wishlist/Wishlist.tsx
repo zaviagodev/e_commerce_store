@@ -36,13 +36,13 @@ const Wishlist = () => {
       </SheetTrigger>
       <SheetContent className="flex flex-col h-full p-5">
         <SheetHeader className="bg-white -m-5 flex flex-row items-center justify-between z-10 px-4 py-3 border-b">
-
-          {/* Set Undo2 as absolute to make the title centred */}
           <SheetClose asChild>
             <FlipBackward className="h-5 w-5 cursor-pointer hover:opacity-75 absolute" />
           </SheetClose>
 
-          <SheetTitle className="!mx-auto !my-0 text-base">{t("Favorites")}</SheetTitle>
+          <SheetTitle className="!mx-auto !my-0 text-base">
+            {t("Favorites")}
+          </SheetTitle>
         </SheetHeader>
         {wishlistCount > 0 ? (
           <ul className="my-3 flex flex-col gap-y-3 pt-3">
@@ -51,10 +51,12 @@ const Wishlist = () => {
             ))}
           </ul>
         ) : (
-          <EmptyList 
-            icon={<Heart className="text-white w-[30px] h-[30px]"/>}
-            title={t("Empty_wishlist.title")}
-            desc={t("Empty_wishlist.desc")}
+          <EmptyList
+            icon={<Heart className="text-white w-[30px] h-[30px]" />}
+            title={t("Your wishlist is empty")}
+            desc={t(
+              "When the products are added to wishlist, they will appear here."
+            )}
           />
         )}
       </SheetContent>

@@ -1,4 +1,3 @@
-import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   AlertDialog,
@@ -57,14 +56,15 @@ const AddressCard = ({
         <CardTitle className="text-base flex items-center gap-x-2">
           <MarkerPin04 /> {name}
         </CardTitle>
-        {actions && (
-          <div className="flex items-center gap-x-4 !m-0">
-            {actions.edit && (
-              <Edit03 className="!m-0 h-5 w-5 cursor-pointer text-gray-500" onClick={() => navigate(`/account/addresses/${name}`)}/>
-            )}
-            {actions.delete && <DeletionConfirmation name={name} />}
-          </div>
-        )}
+        <div className="flex items-center gap-x-4 !m-0">
+          {actions.edit && (
+            <Edit03
+              className="!m-0 h-5 w-5 cursor-pointer text-gray-500"
+              onClick={() => navigate(`/account/addresses/${name}`)}
+            />
+          )}
+          {actions.delete && <DeletionConfirmation name={name} />}
+        </div>
       </CardHeader>
       <CardContent className="text-gray-700 relative text-sm">
         {display ? (
@@ -112,13 +112,17 @@ export const DeletionConfirmation = ({ name }: DeletionConfirmationProps) => {
       </AlertDialogTrigger>
       <AlertDialogContent className="w-[456px] p-8 !rounded-2xl">
         <AlertDialogHeader className="flex flex-col gap-y-2 items-center">
-          <AlertDialogTitle className="text-2xl font-semibold">{t("Delete address.title")}</AlertDialogTitle>
+          <AlertDialogTitle className="text-2xl font-semibold">
+            {t("Want to delete address?")}
+          </AlertDialogTitle>
           <AlertDialogDescription className="text-darkgray-500 text-base px-[60px] text-center">
-            {t("Delete address.desc")}
+            {t("Deleting address cannot be undone")}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="mt-2">
-          <AlertDialogCancel className="main-btn bg-accent border-darkgray-100">{t("Cancel")}</AlertDialogCancel>
+          <AlertDialogCancel className="main-btn bg-accent border-darkgray-100">
+            {t("Cancel")}
+          </AlertDialogCancel>
           <AlertDialogAction
             onClick={() =>
               mutate({
@@ -129,7 +133,7 @@ export const DeletionConfirmation = ({ name }: DeletionConfirmationProps) => {
             }
             className="main-btn"
           >
-            {t("Delete address.confirm")}
+            {t("Delete address")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

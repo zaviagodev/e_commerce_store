@@ -1,27 +1,21 @@
 import AddressCardList from "@/components/customComponents/AddressCardList";
 import { Button } from "@/components/ui/button";
-import { useList, useTranslate } from "@refinedev/core";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
+import { useTranslate } from "@refinedev/core";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AddressCreate from "./AddressCreate";
 import { PlusCircle } from "@untitled-ui/icons-react";
 import { useState } from "react";
 
 const Addresses = () => {
   const t = useTranslate();
-  const [isAddingAddress, setIsAddingAddress] = useState(false)
+  const [isAddingAddress, setIsAddingAddress] = useState(false);
 
   return (
-    <div>
-      <h1 className="font-semibold text-darkgray-500 text-lg">{t("Addresses")}</h1>
+    <div className="lg:w-[410px] mx-auto">
+      <h1 className="font-semibold text-darkgray-500 text-lg">
+        {t("Addresses")}
+      </h1>
       <div className="flex flex-col items-center gap-10 mt-10">
-
         <Dialog onOpenChange={setIsAddingAddress} open={isAddingAddress}>
           <DialogTrigger className="w-full">
             <Button
@@ -33,7 +27,7 @@ const Addresses = () => {
             </Button>
           </DialogTrigger>
           <DialogContent className="w-full h-full max-w-none lg:h-fit lg:w-fit">
-            <AddressCreate setIsOpen={setIsAddingAddress}/>
+            <AddressCreate setIsOpen={setIsAddingAddress} />
           </DialogContent>
         </Dialog>
 

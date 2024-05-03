@@ -30,7 +30,7 @@ const StateSelect: React.FC<StateSelectProps> = ({
 
   const { options, onSearch, overtime } = useSelect({
     resource: "State",
-    dataProviderName: "frappeeProvider",
+    dataProviderName: "frappeProvider",
     optionLabel: "state_name",
     optionValue: "name",
     searchField: "state_name",
@@ -51,10 +51,11 @@ const StateSelect: React.FC<StateSelectProps> = ({
         options.length === 0 ? "No results" : "Loading..."
       }
       classNames={{
-        control: () => "!border-darkgray-100 !bg-accent !rounded-xl px-3.5 text-sm h-12.5 !shadow-none"
+        control: () =>
+          "!border-darkgray-100 !bg-accent !rounded-xl px-3.5 text-sm h-12.5 !shadow-none",
       }}
       styles={{
-        indicatorSeparator: () => ({display: "none"})
+        indicatorSeparator: () => ({ display: "none" }),
       }}
       value={
         value === undefined

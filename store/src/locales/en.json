@@ -141,7 +141,6 @@
     "Cart details": "Cart details",
     "Hide cart details": "Hide cart details",
     "Bank Account": "Bank account",
-    "Download receipt" : "Download receipt",
     "New customer": "New customer",
     "Register privilege": "Register to access special and new products, trends, discounts, and other promotions for members.",
     "Accept and sign up": "Accept and sign up",
@@ -158,19 +157,15 @@
         "title": "Leave the payment page",
         "desc": "Your order status will be shown as \"Unpaid\". To complete the payment, you can access the order history page. If you would like to edit your orders, please repurchase the product and make a payment in a correct order."
     },
-    "Delete address": {
-        "title": "Want to delete address?",
-        "desc": "Deleting address cannot be undone.",
-        "confirm": "Delete address"
-    },
-    "Empty_cart": {
-        "title": "Your cart is empty",
-        "desc": "When the products are added to cart, they will appear here."
-    },
-    "Empty_wishlist": {
-        "title": "Your wishlist is empty",
-        "desc": "When the products are added to wishlist, they will appear here."
-    },
+    "Download receipt": "Download receipt",
+    "Want to delete address?": "Want to delete address?",
+    "Deleting address cannot be undone.": "Deleting address cannot be undone.",
+    "Delete address": "Delete address",
+    "Shipping costs and taxes are calculated at checkout.": "Shipping costs and taxes are calculated at checkout.",
+    "Your cart is empty": "Your cart is empty",
+    "When the products are added to cart, they will appear here.": "When the products are added to cart, they will appear here.",
+    "Your wishlist is empty": "Your wishlist is empty",
+    "When the products are added to wishlist, they will appear here.": "When the products are added to wishlist, they will appear here.",
     "language": {
         "en": "English",
         "th": "Thai"
