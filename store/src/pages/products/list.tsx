@@ -27,6 +27,7 @@ import { useSearchParams } from "react-router-dom";
 import usePagenation from "@/hooks/usePagenation";
 import { useConfig } from "@/hooks/useConfig";
 import { getFileURL } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const ProductList: React.FC<IResourceComponentsProps> = () => {
   const {
@@ -77,16 +78,28 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
 
   return (
     <div className="flex flex-col gap-y-6">
-      <h1 className="text-4xl font-semibold text-center mb-6">
+      {isFetching || isLoading || isRefetching ? (
+        <Skeleton className="h-8 w-[200px] mx-auto"/>
+      ) : (<h1 className="text-4xl font-semibold text-center mb-6">
         {t("All products")}
-      </h1>
+      </h1>)}
       <div className="flex justify-between items-center">
-        {tableData ? (
-          <div>
-            <strong>{t("All products")}</strong> 
-            <span className="text-darkgray-300"> ({tableData?.total} {t(tableData?.total === 1 ? "Item" : "Items")})</span>
+        {isFetching || isLoading || isRefetching ? (
+          <div className="flex items-center gap-x-2">
+            <Skeleton className="h-5 w-20"/>
+            <Skeleton className="h-5 w-16"/>
           </div>
-        ) : null}
+        ) : (
+          <>
+            {tableData ? (
+              <div>
+                <strong>{t("All products")}</strong> 
+                <span className="text-darkgray-300"> ({tableData?.total} {t(tableData?.total === 1 ? "Item" : "Items")})</span>
+              </div>
+            ) : null}
+          </>
+        )}
+
         {/* TODO: integrate it later 
         <div className="flex items-center gap-4">
           <strong>{t("Sort by")}</strong>

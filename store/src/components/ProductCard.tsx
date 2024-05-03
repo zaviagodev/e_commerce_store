@@ -13,7 +13,7 @@ interface ProductProps extends React.HTMLAttributes<HTMLDivElement> {
   fullPrice?: string;
   image: string;
   hasVariants?: boolean | number;
-  discount?: string;
+  discount?: string | number;
   width?: number;
   height?: number;
 }
@@ -49,7 +49,7 @@ const ProductCard = ({
               )}
             />
 
-            {discount && <Badge className="absolute top-4 left-4 py-1 px-1.5 flex items-center gap-x-1 rounded-md bg-red-500">
+            {discount && <Badge className="absolute top-4 left-4 py-1 px-1.5 flex items-center gap-x-1 rounded-md !bg-red-500/50 group-hover:!bg-red-500">
               <Tag01 className="h-3 w-3"/>
               {discount}
             </Badge>}
