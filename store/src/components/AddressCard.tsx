@@ -43,6 +43,7 @@ const AddressCard = ({
   state,
   pincode,
   display,
+  isActive = true,
   actions = {
     edit: false,
     delete: false,
@@ -92,7 +93,7 @@ const AddressCard = ({
           </>
         )}
       </CardContent>
-      <img src="/border-line.png" className="w-full h-2.5" />
+      {isActive && <img src="/border-line.png" className="w-full h-2.5" />}
     </Card>
   );
 };

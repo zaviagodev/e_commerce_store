@@ -1,4 +1,11 @@
-import { useGetIdentity, useGo, useIsAuthenticated, useLogout, useMany, useTranslate } from "@refinedev/core";
+import {
+  useGetIdentity,
+  useGo,
+  useIsAuthenticated,
+  useLogout,
+  useMany,
+  useTranslate,
+} from "@refinedev/core";
 import { Sheet, SheetTrigger, SheetContent } from "../ui/sheet";
 import { Button } from "../ui/button";
 import { ChevronsUpDown, CircleUser, Menu } from "lucide-react";
@@ -43,7 +50,11 @@ const MobileNavigationMenu = () => {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="outline" size="icon" className="shrink-0 md:hidden border-0">
+        <Button
+          variant="outline"
+          size="icon"
+          className="shrink-0 md:hidden border-0"
+        >
           <Menu className="h-5 w-5" />
           <span className="sr-only">{t("Toggle navigation menu")}</span>
         </Button>
@@ -51,24 +62,33 @@ const MobileNavigationMenu = () => {
       <SheetContent side="left">
         <section className="flex flex-col h-full justify-between">
           <nav className="grid gap-6 text-lg font-medium">
-
             {/* It will show an error on the incognito mode instead */}
             {!isLoading &&
             !isFetching &&
             !isRefetching &&
             authState?.authenticated ? (
-              <Link to="/account" className="flex items-center gap-x-3 font-semibold">
+              <Link
+                to="/account"
+                className="flex items-center gap-x-3 font-semibold"
+              >
                 <Avatar className="h-7 w-7">
                   <AvatarImage
-                    src={profile.user?.user_image}
-                    alt={`${profile.user?.full_name} profile image`}
+                    src={profile?.user?.user_image}
+                    alt={`${profile?.user?.full_name} profile image`}
                   />
-                  <AvatarFallback className="text-sm">{profile.user?.full_name[0]}</AvatarFallback>
+                  <AvatarFallback className="text-sm">
+                    {profile?.user?.full_name[0]}
+                  </AvatarFallback>
                 </Avatar>
-                <span className="w-2/3 overflow-hidden text-ellipsis text-sm">{profile?.user?.name}</span>
+                <span className="w-2/3 overflow-hidden text-ellipsis text-sm">
+                  {profile?.user?.name}
+                </span>
               </Link>
             ) : (
-              <Link to="/login" className="flex items-center gap-x-3 font-semibold">
+              <Link
+                to="/login"
+                className="flex items-center gap-x-3 font-semibold"
+              >
                 <CircleUser className="h-7 w-7" />
                 Login
               </Link>
@@ -139,8 +159,11 @@ const MobileNavigationMenu = () => {
           </nav>
 
           {authState?.authenticated && (
-            <button onClick={() => logout()} className="flex items-center gap-x-2 font-semibold">
-              <LogIn02 className="h-[22px] w-[22px]"/>
+            <button
+              onClick={() => logout()}
+              className="flex items-center gap-x-2 font-semibold"
+            >
+              <LogIn02 className="h-[22px] w-[22px]" />
               {t("Logout")}
             </button>
           )}

@@ -50,10 +50,10 @@ const AddressSelect = ({ onSelect, ...props }: AddressSelectProps) => {
 
   return (
     <Sheet>
-      <SheetTrigger>
+      <SheetTrigger className="-mb-24 mr-6">
         <ArrowRight className="h-6 w-6" />
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className="overflow-y-scroll">
         <SheetHeader className="bg-white -m-5 flex flex-row items-center justify-between z-10 px-4 py-3 border-b">
           <SheetClose asChild>
             <FlipBackward className="h-5 w-5 cursor-pointer hover:opacity-75 absolute" />
@@ -93,7 +93,10 @@ const AddressSelect = ({ onSelect, ...props }: AddressSelectProps) => {
                 className="peer sr-only"
               />
 
-              <AddressCard {...address} />
+              <AddressCard
+                {...address}
+                isActive={props?.value === address.name}
+              />
             </div>
           ))}
         </RadioGroup>

@@ -43,7 +43,13 @@ export function OrderHistoryTable({
       header: t("Date"),
       align: "center",
       cell: ({ row }: any) => (
-        <div className="capitalize">{row["creation"]}</div>
+        <div className="capitalize">
+          {new Intl.DateTimeFormat(["ban", "id"], {
+            year: "2-digit",
+            month: "2-digit",
+            day: "2-digit",
+          }).format(new Date(row["creation"]))}
+        </div>
       ),
     },
     {

@@ -221,17 +221,6 @@ const AddressForm = ({
                       });
                     }}
                   />
-                  <Switch
-                    {...field}
-                    className="!m-0 !bg-darkgray-100 data-[state=checked]:!bg-primary"
-                    checked={form.watch("is_primary_address") === 1}
-                    onCheckedChange={(checked) => {
-                      form.setValue("is_primary_address", checked ? 1 : 0, {
-                        shouldDirty: true,
-                        shouldTouch: true,
-                      });
-                    }}
-                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -244,17 +233,6 @@ const AddressForm = ({
               <FormItem className="flex items-center justify-between">
                 <FormLabel>{t("Default Shipping Address")}</FormLabel>
                 <FormControl>
-                  <Switch
-                    {...field}
-                    className="!m-0 !bg-darkgray-100 data-[state=checked]:!bg-primary"
-                    checked={form.watch("is_shipping_address") === 1}
-                    onCheckedChange={(checked) =>
-                      form.setValue("is_shipping_address", checked ? 1 : 0, {
-                        shouldDirty: true,
-                        shouldTouch: true,
-                      })
-                    }
-                  />
                   <Switch
                     {...field}
                     className="!m-0 !bg-darkgray-100 data-[state=checked]:!bg-primary"

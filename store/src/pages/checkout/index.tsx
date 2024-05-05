@@ -33,6 +33,7 @@ import {
   MessageQuestionCircle,
 } from "@untitled-ui/icons-react";
 import { formatCurrency } from "@/lib/utils";
+import ProductImage from "@/components/ProductImage";
 
 export const paymentMethodIconMap: { [key: string]: React.ReactNode } = {
   "2": <Landmark className="mr-2 h-4 w-4" />,
@@ -42,7 +43,7 @@ export const paymentMethodIconMap: { [key: string]: React.ReactNode } = {
 const Checkout = () => {
   const t = useTranslate();
   const navigate = useNavigate();
-  const { cartCount, serverCart, resetCart } = useCart();
+  const { cartCount, cart, serverCart, resetCart } = useCart();
 
   const { data: address, isLoading: addressLoading } = useOne({
     resource: "address",
@@ -122,8 +123,8 @@ const Checkout = () => {
         {/* This is the total cart on the mobile version */}
         <div className="mb-10 lg:hidden">
           {/* NEED TO FETCH THE IMAGE OF THE FIRST PRODUCT */}
-          <img
-            src=""
+          <ProductImage
+            itemCode={Object.keys(cart)[0]}
             className="w-[120px] h-[120px] rounded-md bg-gray-100 mx-auto mb-4"
           />
           <TotalCart />
