@@ -28,27 +28,33 @@ const ProductSkeleton = () => {
       </div>
       <section className="w-full px-4 lg:px-10 lg:py-[30px] lg:max-w-[536px] h-full top-0 z-10">
         <div className="flex flex-col gap-y-3 lg:gap-y-[10px]">
-          <Skeleton className="w-[35px] max-w-full">
+          <Skeleton className="w-[100px] max-w-full h-3">
             <br />
           </Skeleton>
 
-          <Skeleton className="w-[350px] max-w-full">
+          <Skeleton className="w-[350px] max-w-full h-7">
             <h1>
               <br />
             </h1>
           </Skeleton>
+
+          <Skeleton className="w-[100px] max-w-full h-4">
+            <p>
+              <br />
+            </p>
+          </Skeleton>
           <span className="flex flex-col justify-start gap-2 my-3">
-            <Skeleton className="w-[400px] max-w-full">
+            <Skeleton className="w-[360px] max-w-full h-4">
               <span className="block">
                 <br />
               </span>
             </Skeleton>
-            <Skeleton className="w-[400px] max-w-full">
+            <Skeleton className="w-[400px] max-w-full h-4">
               <span className="block">
                 <br />
               </span>
             </Skeleton>
-            <Skeleton className="w-[200px] max-w-full">
+            <Skeleton className="w-[300px] max-w-full h-4">
               <span className="block">
                 <br />
               </span>
@@ -58,21 +64,23 @@ const ProductSkeleton = () => {
         <div className="leading-6 pb-[60px]">
           <p></p>
         </div>
-        <div className="pb-6 border-gray-200 border-b">
+        <div className="pb-6 border-gray-100 border-b">
           <div className="items-start flex flex-col gap-y-[14px]">
-            <div className="flex items-center">
+            <div className="flex flex-col gap-y-3">
               <Skeleton className="w-[150px] max-w-full">
                 <br />
+              </Skeleton>
+              <Skeleton className="w-[250px] max-w-full h-3">
                 <br />
               </Skeleton>
             </div>
             <div className="fixed bottom-0 left-0 p-4 lg:static lg:p-0 flex lg:flex-col w-full gap-y-[14px] flex-col-reverse z-10">
               <div className="flex items-center gap-x-[10px] w-full">
-                <div className="inline-flex items-center justify-center transition-colors h-10 px-4 py-2 gap-x-4 w-full">
-                  <Skeleton className="w-full">
+                <div className="inline-flex items-center justify-center transition-colors gap-x-4 w-full">
+                  <Skeleton className="w-full h-12.5">
                     <br />
                   </Skeleton>
-                  <Skeleton className="w-[60px]">
+                  <Skeleton className="w-[60px] h-12.5">
                     <br />
                   </Skeleton>
                 </div>
@@ -82,13 +90,23 @@ const ProductSkeleton = () => {
         </div>
         <div>
           <div className="w-full">
-            <div className="border-b">
+            <div className="border-b border-darkgray-100">
               <h3 className="flex">
-                <div className="flex flex-1 items-center justify-between py-4">
-                  <Skeleton className="w-[150px] max-w-full">
+                <div className="flex flex-1 items-center justify-between p-4">
+                  <Skeleton className="w-[150px] max-w-full h-4">
                     <br />
                   </Skeleton>
-                  <SvgSkeleton className="shrink-0 w-[24px] h-[24px]" />
+                  <SvgSkeleton className="shrink-0 w-4 h-4" />
+                </div>
+              </h3>
+            </div>
+            <div className="border-b border-darkgray-100">
+              <h3 className="flex">
+                <div className="flex flex-1 items-center justify-between p-4">
+                  <Skeleton className="w-[150px] max-w-full h-4">
+                    <br />
+                  </Skeleton>
+                  <SvgSkeleton className="shrink-0 w-4 h-4" />
                 </div>
               </h3>
             </div>

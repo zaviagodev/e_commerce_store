@@ -23,6 +23,7 @@ import { MessageQuestionCircle, ShoppingBag01 } from "@untitled-ui/icons-react";
 import { Heart } from "lucide-react"
 import { useState } from "react";
 import { Toggle } from "@/components/ui/toggle";
+import { showProductSkeletons } from "@/components/skeletons/ProductListSkeleton";
 
 export const ProductShow: React.FC<IResourceComponentsProps> = () => {
   const [selectedVariant, setSelectedVariant] = useState();

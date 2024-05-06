@@ -3,6 +3,7 @@ import { getFileURL } from "@/lib/utils";
 import ProductCard from "../ProductCard";
 import { useTable, useTranslate } from "@refinedev/core";
 import ProductCardSkeleton from "../skeletons/ProductCardSkeleton";
+import { showProductSkeletons } from "../skeletons/ProductListSkeleton";
 
 const RelatedProducts = () => {
   const { config } = useConfig();
@@ -24,12 +25,7 @@ const RelatedProducts = () => {
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-12 mx-1 my-4">
         {isFetching || isLoading || isRefetching ? (
-          <>
-            <ProductCardSkeleton />
-            <ProductCardSkeleton />
-            <ProductCardSkeleton />
-            <ProductCardSkeleton />
-          </>
+          <>{showProductSkeletons(4)}</>
         ) : (
           <>
             {(tableData?.data ?? []).map((item) => (

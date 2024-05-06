@@ -16,7 +16,7 @@ const ProductCardSkeleton = () => {
           </Skeleton>
         </h3>
         <p>
-          <Skeleton className="w-[56px] max-w-full">
+          <Skeleton className="w-20 max-w-full">
             <br />
           </Skeleton>
         </p>
