@@ -38,6 +38,7 @@ import Logo from "@/components/customComponents/Logo";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FlipBackward, MarkerPin04, MessageQuestionCircle } from "@untitled-ui/icons-react";
 import { formatCurrency } from "@/lib/utils";
+import CheckoutDetailSkeleton from "@/components/skeletons/CheckoutDetailSkeleton";
 
 export const paymentMethodIconMap: { [key: string]: React.ReactNode } = {
   "2": <Landmark className="mr-2 h-4 w-4" />,
@@ -129,20 +130,31 @@ const Checkout = () => {
   const TotalCart = () => {
     return (
       <div className="flex flex-col rounded-lg gap-y-4">
-        <div className="flex items-center justify-center gap-x-1 lg:justify-between text-sm text-darkgray-200">
-          <p>{t("Grand total")}</p>
-          <p>{cartCount} {t(cartCount === 1 ? "Item" : "Items")}</p>
-
-          <div className="lg:hidden flex items-center">
-            <OrderDetailSheet trigger={<ChevronDown className="h-4 w-4"/>}/>
-          </div>
-        </div>
-
         {serverCart?.message.doc.grand_total ? (
-          <h2 className="text-4xl font-semibold text-primary text-center lg:text-left">
-            {formatCurrency(serverCart?.message.doc.grand_total)}
-          </h2>
-        ) : <Skeleton className="h-10"/>}
+          <>
+            <div className="flex items-center justify-center gap-x-1 lg:justify-between text-sm text-darkgray-200">
+              <p>{t("Grand total")}</p>
+              <p>{cartCount} {t(cartCount === 1 ? "Item" : "Items")}</p>
+
+              <div className="lg:hidden flex items-center">
+                <OrderDetailSheet trigger={<ChevronDown className="h-4 w-4"/>}/>
+              </div>
+            </div>
+
+            <h2 className="text-4xl font-semibold text-primary text-center lg:text-left">
+              {formatCurrency(serverCart?.message.doc.grand_total)}
+            </h2>
+          </>
+        ) : (
+          <div className="flex flex-col gap-y-4">
+            <div className="flex items-center justify-between">
+              <Skeleton className="h-4 w-[100px]"/>
+              <Skeleton className="h-4 w-20"/>
+            </div>
+
+            <Skeleton className="h-10 w-[120px]"/>
+          </div>
+        )}
       </div>
     )
   }
@@ -173,57 +185,63 @@ const Checkout = () => {
 
         <div className="lg:ml-[69px] lg:mr-5">
           <Separator className="my-4 bg-[#E3E3E3]" />
-          <div className="flex flex-col gap-y-4">
-            <div className="w-full flex justify-between text-sm">
-              <p>{t("Subtotal")}</p>
-              <strong>
-                {typeof cartTotal === "string"
-                  ? t("Loading...")
-                  : formatCurrency(cartTotal)
-                }
-              </strong>
-            </div>
-            {checkoutSummary.totalShipping > 0 && (
-              <div className="w-full flex justify-between text-darkgray-200 text-sm">
-                <p>{t("Shipping Cost")}</p>
-                <span>
-                  {formatCurrency(checkoutSummary.totalShipping)}
-                </span>
+          {serverCart?.message.doc.grand_total ? (
+            <>
+              <div className="flex flex-col gap-y-4">
+                <div className="w-full flex justify-between text-sm">
+                  <p>{t("Subtotal")}</p>
+                  <strong>
+                    {typeof cartTotal === "string"
+                      ? cartTotal // ? t("Loading...")
+                      : formatCurrency(cartTotal)
+                    }
+                  </strong>
+                </div>
+                {checkoutSummary.totalShipping > 0 && (
+                  <div className="w-full flex justify-between text-darkgray-200 text-sm">
+                    <p>{t("Shipping Cost")}</p>
+                    <span>
+                      {formatCurrency(checkoutSummary.totalShipping)}
+                    </span>
+                  </div>
+                )}
+                <div className="w-full flex justify-between text-darkgray-200 text-sm">
+                  <p>{t("Tax")}</p>
+                  <span>
+                    {formatCurrency(checkoutSummary.totalTax)}
+                  </span>
+                </div>
+                {checkoutSummary.totalDiscount > 0 && (
+                  <div className="w-full flex justify-between text-darkgray-200 text-sm">
+                    <p>{t("Discount")}</p>
+                    <strong>
+                      {formatCurrency(checkoutSummary.totalDiscount?.toFixed(2) ?? 0)}
+                    </strong>
+                  </div>
+                )}
+                {serverCart?.message.doc.coupon_code && (
+                  <div className="w-full flex justify-between text-darkgray-200 text-sm">
+                    <p className="text-muted-foreground">
+                      {t("Coupon Code")}
+                    </p>
+                    <strong className="text-muted-foreground">
+                      {serverCart?.message.doc.coupon_code}
+                    </strong>
+                  </div>
+                )}
+                <CouponCodeInput />
               </div>
-            )}
-            <div className="w-full flex justify-between text-darkgray-200 text-sm">
-              <p>{t("Tax")}</p>
-              <span>
-                {formatCurrency(checkoutSummary.totalTax)}
-              </span>
-            </div>
-            {checkoutSummary.totalDiscount > 0 && (
-              <div className="w-full flex justify-between text-darkgray-200 text-sm">
-                <p>{t("Discount")}</p>
+              <Separator className="my-4 bg-[#E3E3E3]" />
+              <div className="w-full flex justify-between font-semibold text-sm">
+                <p>{t("Grand total")}</p>
                 <strong>
-                  {formatCurrency(checkoutSummary.totalDiscount?.toFixed(2) ?? 0)}
+                  {formatCurrency(serverCart?.message.doc.grand_total)}
                 </strong>
               </div>
-            )}
-            {serverCart?.message.doc.coupon_code && (
-              <div className="w-full flex justify-between text-darkgray-200 text-sm">
-                <p className="text-muted-foreground">
-                  {t("Coupon Code")}
-                </p>
-                <strong className="text-muted-foreground">
-                  {serverCart?.message.doc.coupon_code}
-                </strong>
-              </div>
-            )}
-            <CouponCodeInput />
-          </div>
-          <Separator className="my-4 bg-[#E3E3E3]" />
-          <div className="w-full flex justify-between font-semibold text-sm">
-            <p>{t("Grand total")}</p>
-            <strong>
-              {formatCurrency(serverCart?.message.doc.grand_total)}
-            </strong>
-          </div>
+            </>
+          ) : (
+            <CheckoutDetailSkeleton />
+          )}
         </div>
       </section>
     )
@@ -269,124 +287,165 @@ const Checkout = () => {
         </div>
 
         <div className="w-full">
-          <h2 className="font-semibold text-darkgray-500 text-lg hidden lg:block">
-            {t("Shipping Information")}
-          </h2>
+          {addressLoading ? (
+            <Skeleton className="h-4 w-40"/>
+          ) : (
+            <h2 className="font-semibold text-darkgray-500 text-lg hidden lg:block">
+              {t("Shipping Information")}
+            </h2>
+          )}
           <Form {...form}>
             <form
               className="lg:mt-6 flex flex-col gap-y-6"
               onSubmit={form.handleSubmit(onSubmit)}
             >
-              <section className="space-y-1">
+              {/* I have changed the condition due to the skeleton creation 
+                  This is the original one : addressLoading && !!serverCart?.message.doc.shipping_address_name
+              */}
+              {addressLoading ? (
+                <div className="flex flex-col gap-y-2">
+                  <Skeleton className="h-4 w-[120px]"/>
+                  <Skeleton className="h-40 w-full"/>
+                </div>
+              ) : (
+                <section className="space-y-1">
+                  <FormField
+                    control={form.control}
+                    name="address"
+                    render={({ field }) => {
+                      return (
+                        <FormItem>
+                          <div className="flex items-center justify-between">
+                            <FormLabel className="text-darkgray-200 font-semibold text-base">{t("Address")}</FormLabel>
+                            <FormControl>
+                              <AddressSelect
+                                {...field}
+                                onSelect={(value) =>
+                                  form.setValue("address", value.name)
+                                }
+                              />
+                            </FormControl>
+                          </div>
+                          <FormMessage />
+                        </FormItem>
+                      );
+                    }}
+                  />
+                  {address ? <AddressCard {...address?.message} /> : (
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      className="w-full justify-start text-gray-500 border-darkgray-100 bg-accent rounded-xl px-4 font-semibold h-12.5"
+                      onClick={() => navigate("/account/addresses/new")}
+                    >
+                      <MarkerPin04 className="mr-2" /> {t("Add Address")}
+                    </Button>
+                  )}
+                </section>
+              )}
+              
+              {addressLoading ? (
+                <div className="flex flex-col gap-y-2">
+                  <Skeleton className="h-4 w-[120px]"/>
+                  <Skeleton className="h-16 w-full"/>
+                </div>
+              ) : (
+                <ShippingRuleSelect
+                  initialShippingRule={serverCart?.message.shipping_rules?.find(
+                    ({ name }: { name: string }) =>
+                      name === serverCart?.message.doc.shipping_rule
+                  )}
+                />
+              )}
+              {addressLoading ? (
+                <div className="flex flex-col gap-y-2">
+                  <Skeleton className="h-4 w-[120px]"/>
+                  <div className="flex items-center gap-4">
+                    <Skeleton className="h-12.5 w-full" />
+                    <Skeleton className="h-12.5 w-full" />
+                  </div>
+                </div>
+              ) : (
                 <FormField
                   control={form.control}
-                  name="address"
+                  name="paymentMethod"
                   render={({ field }) => {
                     return (
                       <FormItem>
-                        <div className="flex items-center justify-between">
-                          <FormLabel className="text-darkgray-200 font-semibold text-base">{t("Address")}</FormLabel>
-                          <FormControl>
-                            <AddressSelect
-                              {...field}
-                              onSelect={(value) =>
-                                form.setValue("address", value.name)
-                              }
-                            />
-                          </FormControl>
-                        </div>
+                        <FormLabel className="text-darkgray-200 font-semibold text-base">{t("Payment Method")}</FormLabel>
+                        <FormControl>
+                          <RadioGroup
+                            {...field}
+                            className="grid grid-cols-2 gap-4 !m-0"
+                            onValueChange={(value) =>
+                              form.setValue("paymentMethod", value)
+                            }
+                          >
+                            {(paymentMethods?.message ?? [])?.map(
+                              (method: any) => (
+                                <div>
+                                  <RadioGroupItem
+                                    value={method.name}
+                                    id={method.key}
+                                    className="peer sr-only"
+                                  />
+                                  <Label
+                                    htmlFor={method.key}
+                                    className="flex items-center justify-center border border-darkgray-100 bg-popover p-4 bg-accent text-darkgray-500 font-semibold peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary rounded-xl"
+                                  >
+                                    {paymentMethodIconMap[method.key ?? "2"]}
+                                    {method.name}
+                                  </Label>
+                                </div>
+                              )
+                            )}
+                          </RadioGroup>
+                        </FormControl>
                         <FormMessage />
                       </FormItem>
                     );
                   }}
                 />
-                {addressLoading &&
-                  !!serverCart?.message.doc.shipping_address_name && (
-                    <Skeleton className="h-40 rounded-xl w-full"/>
-                  )}
-                {address && <AddressCard {...address?.message} />}
-                {!address && (
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="w-full justify-start text-gray-500 border-darkgray-100 bg-accent rounded-xl px-4 font-semibold h-12.5"
-                    onClick={() => navigate("/account/addresses/new")}
-                  >
-                    <MarkerPin04 className="mr-2" /> {t("Add Address")}
-                  </Button>
-                )}
-              </section>
-              <ShippingRuleSelect
-                initialShippingRule={serverCart?.message.shipping_rules?.find(
-                  ({ name }: { name: string }) =>
-                    name === serverCart?.message.doc.shipping_rule
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="paymentMethod"
-                render={({ field }) => {
-                  return (
-                    <FormItem>
-                      <FormLabel className="text-darkgray-200 font-semibold text-base">{t("Payment Method")}</FormLabel>
-                      <FormControl>
-                        <RadioGroup
-                          {...field}
-                          className="grid grid-cols-2 gap-4 !m-0"
-                          onValueChange={(value) =>
-                            form.setValue("paymentMethod", value)
-                          }
-                        >
-                          {(paymentMethods?.message ?? [])?.map(
-                            (method: any) => (
-                              <div>
-                                <RadioGroupItem
-                                  value={method.name}
-                                  id={method.key}
-                                  className="peer sr-only"
-                                />
-                                <Label
-                                  htmlFor={method.key}
-                                  className="flex items-center justify-center border border-darkgray-100 bg-popover p-4 bg-accent text-darkgray-500 font-semibold peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary rounded-xl"
-                                >
-                                  {paymentMethodIconMap[method.key ?? "2"]}
-                                  {method.name}
-                                </Label>
-                              </div>
-                            )
-                          )}
-                        </RadioGroup>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  );
-                }}
-              />
+              )}
 
-              <div className="mt-4">
-                <Button
-                  size="lg"
-                  className="w-full rounded-xl text-base font-semibold h-12.5"
-                  disabled={placingOrder || cartCount === 0}
-                  type="submit"
-                >
-                  {placingOrder && (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  )}
-                  {t("Continue to Payment")}
-                </Button>
-                <p className="mt-2 text-sm text-darkgray-200">
-                  {t("By continuing, you agree to our")}{" "}
-                  <b className="text-primary">{t("Privacy Policy")}</b> {t("and")}{" "}
-                  <b className="text-primary">{t("Terms of Service")}</b>.
-                </p>
-              </div>
-              <div className="w-full flex justify-center h-10 items-center">
-                <Button variant="link" className="font-bold text-base flex items-center gap-x-2">
-                  <MessageQuestionCircle className="h-5 w-5" />{" "}
-                  {t("Ask for help")}
-                </Button>
-              </div>
+              {addressLoading ? (
+                <div className="flex flex-col gap-y-16">
+                  <div className="flex flex-col gap-y-4">
+                    <Skeleton className="h-12.5 w-full"/>
+                    <Skeleton className="h-3 w-3/4"/>
+                    <Skeleton className="h-3 w-1/2"/>
+                  </div>
+
+                  <Skeleton className="mx-auto h-3 w-1/2"/>
+                </div>
+              ) : (
+                <>
+                  <div className="mt-4">
+                    <Button
+                      size="lg"
+                      className="w-full rounded-xl text-base font-semibold h-12.5"
+                      disabled={placingOrder || cartCount === 0}
+                      type="submit"
+                    >
+                      {placingOrder && (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      )}
+                      {t("Continue to Payment")}
+                    </Button>
+                    <p className="mt-2 text-sm text-darkgray-200">
+                      {t("By continuing, you agree to our")}{" "}
+                      <b className="text-primary">{t("Privacy Policy")}</b> {t("and")}{" "}
+                      <b className="text-primary">{t("Terms of Service")}</b>.
+                    </p>
+                  </div>
+                  <div className="w-full flex justify-center h-10 items-center">
+                    <Button variant="link" className="font-bold text-base flex items-center gap-x-2">
+                      <MessageQuestionCircle className="h-5 w-5" />{" "}
+                      {t("Ask for help")}
+                    </Button>
+                  </div>
+                </>
+              )}
             </form>
           </Form>
         </div>

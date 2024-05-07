@@ -27,6 +27,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import PaymentSkeleton from "@/components/skeletons/PaymentSkeleton";
 
 {/* There are some currency numbers that I use formatCurrency, which was created on lib/utils.ts 
     Because I want the currency and the amount to be separate like this 
@@ -79,7 +80,7 @@ const Summary = () => {
   const { data: profile } = useGetIdentity();
 
   if (!order) {
-    return <div>Loading....</div>;
+    return <PaymentSkeleton />;
   }
 
   return (

@@ -16,6 +16,7 @@ import { useWishlist } from "@/hooks/useWishlist";
 import EmptyList from "../customComponents/EmptyList";
 import useConfig from "@/hooks/useConfig";
 import { FlipBackward, Heart, ShoppingBag01 } from "@untitled-ui/icons-react";
+import { formatCurrency } from "@/lib/utils";
 
 const Cart = () => {
   const t = useTranslate();
@@ -75,15 +76,7 @@ const Cart = () => {
             {cartCount > 0 && (
               <div className="flex justify-between items-center text-sm font-semibold">
                 <h5>{t("Total")}</h5>
-                <p>
-                  {typeof cartTotal === "string"
-                    ? cartTotal
-                    : new Intl.NumberFormat("th-TH", {
-                        style: "currency",
-                        currency:
-                          serverCart?.message.doc.price_list_currency ?? "THB",
-                      }).format(cartTotal)}
-                </p>
+                <p>{typeof cartTotal === "string" ? cartTotal : formatCurrency(cartTotal, serverCart?.message.doc.price_list_currency ?? "THB")}</p>
               </div>
             )}
 

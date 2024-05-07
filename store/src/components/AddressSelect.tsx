@@ -18,6 +18,7 @@ import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
 import { FlipBackward, ArrowRight } from "@untitled-ui/icons-react";
+import { Skeleton } from "./ui/skeleton";
 
 type AddressSelectProps = {
   onSelect: (address: any) => void;
@@ -46,7 +47,7 @@ const AddressSelect = ({ onSelect, ...props }: AddressSelectProps) => {
   });
 
   if (isLoading || isFetching || isRefetching) {
-    return <div>Liading...</div>;
+    return <Skeleton className="w-4 h-4"/>;
   }
 
   return (

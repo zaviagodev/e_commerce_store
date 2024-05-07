@@ -1,6 +1,7 @@
 import { useConfig } from "@/hooks/useConfig";
 import { getFileURL } from "@/lib/utils";
 import { useOne } from "@refinedev/core";
+import { Skeleton } from "../ui/skeleton";
 
 type CheckoutItemProps = {
   itemCode: string;
@@ -15,7 +16,19 @@ const CheckoutItem = ({ itemCode, qty }: CheckoutItemProps) => {
   });
 
   if (isLoading) {
-    return <li>Loading...</li>;
+    return (
+      <div className="flex justify-between">
+        <div className="flex gap-x-4">
+          <Skeleton className="h-[53px] w-[53px]"/>
+          <div className="flex flex-col gap-y-2">
+            <Skeleton className="h-3 w-[160px]"/>
+            <Skeleton className="h-3 w-9" />
+          </div>
+        </div>
+
+        <Skeleton className="h-3 w-10"/>
+      </div>
+    )
   }
 
   const item = data?.message.product_info;
