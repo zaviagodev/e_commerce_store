@@ -1,16 +1,5 @@
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { useDelete, useTranslate } from "@refinedev/core";
 import { useNavigate } from "react-router-dom";
 import { Edit03, MarkerPin04, Trash01 } from "@untitled-ui/icons-react";

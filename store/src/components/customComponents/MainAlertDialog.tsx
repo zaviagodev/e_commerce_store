@@ -19,12 +19,13 @@ type MainAlertDialogProps = {
   action: string | ReactNode
   onClickAction: () => void
   asChild?: boolean
+  triggerClassName?: string
 }
 
-const MainAlertDialog = ({ trigger, title, description, cancel, action, onClickAction, asChild } : MainAlertDialogProps) => {
+const MainAlertDialog = ({ trigger, title, description, cancel, action, onClickAction, asChild, triggerClassName } : MainAlertDialogProps) => {
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild={asChild}>
+      <AlertDialogTrigger asChild={asChild} className={triggerClassName}>
         {trigger}
       </AlertDialogTrigger>
       <AlertDialogContent className="w-[456px] p-8 !rounded-2xl">

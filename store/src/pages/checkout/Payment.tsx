@@ -16,18 +16,8 @@ import { BankPMDetail, BankUploadSlip } from "./BankPM";
 import { Wallet04 } from "@untitled-ui/icons-react";
 import { formatCurrency } from "@/lib/utils";
 import Logo from "@/components/customComponents/Logo";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
 import PaymentSkeleton from "@/components/skeletons/PaymentSkeleton";
+import MainAlertDialog from "@/components/customComponents/MainAlertDialog";
 
 {/* There are some currency numbers that I use formatCurrency, which was created on lib/utils.ts 
     Because I want the currency and the amount to be separate like this 
@@ -293,22 +283,14 @@ const PaymentCancel = () => {
   const navigate = useNavigate()
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger className="flex justify-center w-full">
-        <Logo />
-      </AlertDialogTrigger>
-      <AlertDialogContent className="w-[456px] p-8 !rounded-2xl">
-        <AlertDialogHeader className="flex flex-col gap-y-2 items-center">
-          <AlertDialogTitle className="text-2xl font-semibold text-center">{t("leave payment page.title")}?</AlertDialogTitle>
-          <AlertDialogDescription className="text-darkgray-500 text-base text-center">
-            {t("leave payment page.desc")}
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter className="mt-2">
-          <AlertDialogCancel className="main-btn bg-accent border-darkgray-100">{t("Cancel")}</AlertDialogCancel>
-          <AlertDialogAction className="main-btn" onClick={() => navigate("/")}>{t("leave payment page.title")}</AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+    <MainAlertDialog 
+      trigger={<Logo />}
+      triggerClassName="flex justify-center w-full"
+      title={t("leave payment page.title")}
+      description={t("leave payment page.desc")}
+      cancel={t("Cancel")}
+      action={t("leave payment page.title")}
+      onClickAction={() => navigate("/")}
+    />
   )
 }
