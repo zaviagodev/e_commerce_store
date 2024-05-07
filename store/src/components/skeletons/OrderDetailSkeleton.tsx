@@ -14,14 +14,14 @@ const OrderDetailSkeleton = () => {
       <div className="flex flex-col gap-y-2">
         <Skeleton className="h-3 w-[100px]"/>
         <div className="flex items-center justify-between w-full">
-          <Skeleton className="w-1/2 h-12.5"/>
-          <Skeleton className="w-[100px] h-12.5"/>
+          <Skeleton className="w-1/2 h-12.5 rounded-xl"/>
+          <Skeleton className="w-[100px] h-12.5 rounded-xl"/>
         </div>
       </div>
 
       <div className="flex flex-col gap-y-2">
         <Skeleton className="h-3 w-[100px]"/>
-        <Skeleton className="h-[200px] w-full"/>
+        <Skeleton className="h-[200px] w-full rounded-xl"/>
       </div>
 
       <div className="flex flex-col gap-y-8">

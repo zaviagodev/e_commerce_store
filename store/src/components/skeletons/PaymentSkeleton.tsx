@@ -56,7 +56,7 @@ const PaymentSkeleton = () => {
         </div>
       </div>
 
-      <Separator className="bg-[#E3E3E3]"/>
+      <Separator className="bg-[#F4F4F4]"/>
 
       <div className="w-full">
         <CheckoutDetailSkeleton />

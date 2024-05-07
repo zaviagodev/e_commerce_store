@@ -131,11 +131,11 @@ const OrderTableSkeleton = () => {
       <div className="lg:hidden mt-12">
         <div className="border-b pb-8 flex flex-col gap-y-5">
           <OrderListSkeleton />
-          <Skeleton className="h-12.5 w-full"/>
+          <Skeleton className="h-12.5 w-full rounded-xl"/>
         </div>
         <div className="border-b pb-8 flex flex-col gap-y-5 mt-8">
           <OrderListSkeleton />
-          <Skeleton className="h-12.5 w-full"/>
+          <Skeleton className="h-12.5 w-full rounded-xl"/>
         </div>
       </div>
     </>

@@ -26,7 +26,7 @@ const ProductSkeleton = () => {
           </div>
         </div>
       </div>
-      <section className="w-full px-4 lg:px-10 lg:py-[30px] lg:max-w-[536px] h-full top-0 z-10">
+      <section className="w-full lg:px-10 lg:py-[30px] lg:max-w-[536px] h-full top-0 z-10">
         <div className="flex flex-col gap-y-3 lg:gap-y-[10px]">
           <Skeleton className="w-[100px] max-w-full h-3">
             <br />
@@ -66,21 +66,29 @@ const ProductSkeleton = () => {
         </div>
         <div className="pb-6 border-gray-100 border-b">
           <div className="items-start flex flex-col gap-y-[14px]">
-            <div className="flex flex-col gap-y-3">
-              <Skeleton className="w-[150px] max-w-full">
+            <div className="flex items-center w-full justify-between lg:hidden">
+              <Skeleton className="w-16 max-w-full h-3">
+                <br />
+              </Skeleton>
+              <Skeleton className="w-[120px] max-w-full h-12.5 rounded-xl">
+                <br />
+              </Skeleton>
+            </div>
+            <div className="hidden lg:flex flex-col gap-y-3">
+              <Skeleton className="w-[120px] max-w-full h-12.5 rounded-xl">
                 <br />
               </Skeleton>
               <Skeleton className="w-[250px] max-w-full h-3">
                 <br />
               </Skeleton>
             </div>
-            <div className="fixed bottom-0 left-0 p-4 lg:static lg:p-0 flex lg:flex-col w-full gap-y-[14px] flex-col-reverse z-10">
+            <div className="lg:flex flex-col w-full gap-y-[14px] flex-col-reverse z-10 hidden">
               <div className="flex items-center gap-x-[10px] w-full">
-                <div className="inline-flex items-center justify-center transition-colors gap-x-4 w-full">
-                  <Skeleton className="w-full h-12.5">
+                <div className="inline-flex items-center justify-center transition-colors gap-4 w-full">
+                  <Skeleton className="w-full h-12.5 rounded-xl">
                     <br />
                   </Skeleton>
-                  <Skeleton className="w-[60px] h-12.5">
+                  <Skeleton className="w-16 h-12.5 rounded-xl">
                     <br />
                   </Skeleton>
                 </div>
@@ -93,7 +101,7 @@ const ProductSkeleton = () => {
             <div className="border-b border-darkgray-100">
               <h3 className="flex">
                 <div className="flex flex-1 items-center justify-between p-4">
-                  <Skeleton className="w-[150px] max-w-full h-4">
+                  <Skeleton className="w-[200px] max-w-full h-4">
                     <br />
                   </Skeleton>
                   <SvgSkeleton className="shrink-0 w-4 h-4" />
@@ -103,7 +111,7 @@ const ProductSkeleton = () => {
             <div className="border-b border-darkgray-100">
               <h3 className="flex">
                 <div className="flex flex-1 items-center justify-between p-4">
-                  <Skeleton className="w-[150px] max-w-full h-4">
+                  <Skeleton className="w-[200px] max-w-full h-4">
                     <br />
                   </Skeleton>
                   <SvgSkeleton className="shrink-0 w-4 h-4" />
@@ -114,6 +122,18 @@ const ProductSkeleton = () => {
           <div className="w-full flex justify-center h-10 items-center mt-6">
             <div className="inline-flex items-center justify-center transition-colors h-10 px-4 py-2">
               <Skeleton className="w-[150px] max-w-full">
+                <br />
+              </Skeleton>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col w-full gap-y-[14px] flex-col-reverse z-10 lg:hidden mt-8">
+          <div className="flex items-center gap-x-[10px] w-full">
+            <div className="flex flex-col items-center justify-center transition-colors gap-4 w-full">
+              <Skeleton className="w-full h-12.5 rounded-xl">
+                <br />
+              </Skeleton>
+              <Skeleton className="w-[200px] h-3">
                 <br />
               </Skeleton>
             </div>

@@ -12,7 +12,7 @@ import {
 import AddressCreate from "./AddressCreate";
 import { PlusCircle } from "@untitled-ui/icons-react";
 import { useState } from "react";
-import AccountSkeleton from "@/components/skeletons/AccountSkeleton";
+import MyAddressSkeleton from "@/components/skeletons/MyAddressSkeleton";
 
 const Addresses = () => {
   const t = useTranslate();
@@ -20,7 +20,7 @@ const Addresses = () => {
   const { data, isLoading } = useList();
 
   if (isLoading) {
-    return <AccountSkeleton />;
+    return <MyAddressSkeleton />;
   }
 
   return (

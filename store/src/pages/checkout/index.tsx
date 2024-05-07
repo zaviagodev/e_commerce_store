@@ -146,14 +146,87 @@ const Checkout = () => {
             </h2>
           </>
         ) : (
-          <div className="flex flex-col gap-y-4">
-            <div className="flex items-center justify-between">
-              <Skeleton className="h-4 w-[100px]"/>
-              <Skeleton className="h-4 w-20"/>
+          <>
+            {/* DESKTOP VERSION */}
+            <div className="lg:flex flex-col gap-y-4 hidden">
+              <div className="flex items-center justify-between">
+                <Skeleton className="h-4 w-[100px]"/>
+                <Skeleton className="h-4 w-20"/>
+              </div>
+              <Skeleton className="h-10 w-[160px] rounded-xl"/>
             </div>
 
-            <Skeleton className="h-10 w-[120px]"/>
-          </div>
+            {/* MOBILE VERSION */}
+            <div className="lg:hidden flex flex-col items-center gap-y-4">
+              <Skeleton className="h-4 w-[140px]"/>
+              <Skeleton className="h-10 w-[160px] rounded-xl"/>
+            </div>
+          </>
+        )}
+      </div>
+    )
+  }
+
+  const CheckoutDetail = () => {
+    return (
+      <div className="lg:ml-[69px] lg:mr-5">
+        <Separator className="my-4 bg-[#F4F4F4]" />
+        {serverCart?.message.doc.grand_total ? (
+          <>
+            <div className="flex flex-col gap-y-4">
+              <div className="w-full flex justify-between text-sm">
+                <p>{t("Subtotal")}</p>
+                <strong>
+                  {typeof cartTotal === "string"
+                    ? cartTotal // ? t("Loading...")
+                    : formatCurrency(cartTotal)
+                  }
+                </strong>
+              </div>
+              {checkoutSummary.totalShipping > 0 && (
+                <div className="w-full flex justify-between text-darkgray-200 text-sm">
+                  <p>{t("Shipping Cost")}</p>
+                  <span>
+                    {formatCurrency(checkoutSummary.totalShipping)}
+                  </span>
+                </div>
+              )}
+              <div className="w-full flex justify-between text-darkgray-200 text-sm">
+                <p>{t("Tax")}</p>
+                <span>
+                  {formatCurrency(checkoutSummary.totalTax)}
+                </span>
+              </div>
+              {checkoutSummary.totalDiscount > 0 && (
+                <div className="w-full flex justify-between text-darkgray-200 text-sm">
+                  <p>{t("Discount")}</p>
+                  <strong>
+                    {formatCurrency(checkoutSummary.totalDiscount?.toFixed(2) ?? 0)}
+                  </strong>
+                </div>
+              )}
+              {serverCart?.message.doc.coupon_code && (
+                <div className="w-full flex justify-between text-darkgray-200 text-sm">
+                  <p className="text-muted-foreground">
+                    {t("Coupon Code")}
+                  </p>
+                  <strong className="text-muted-foreground">
+                    {serverCart?.message.doc.coupon_code}
+                  </strong>
+                </div>
+              )}
+              <CouponCodeInput />
+            </div>
+            <Separator className="my-4 bg-[#F4F4F4]" />
+            <div className="w-full flex justify-between font-semibold text-sm">
+              <p>{t("Grand total")}</p>
+              <strong>
+                {formatCurrency(serverCart?.message.doc.grand_total)}
+              </strong>
+            </div>
+          </>
+        ) : (
+          <CheckoutDetailSkeleton />
         )}
       </div>
     )
@@ -163,9 +236,6 @@ const Checkout = () => {
   const CartList = () => {
     return (
       <section>
-        {/* <h2 className="font-semibold text-darkgray">
-          {t("Order summary")}
-        </h2> */}
         <div className="flex flex-col gap-y-4 lg:mr-5">
           <ul className="my-3 flex flex-col gap-y-8">
             {Object.entries(cart).map(([itemCode, quantity]) => {
@@ -182,67 +252,7 @@ const Checkout = () => {
             })}
           </ul>
         </div>
-
-        <div className="lg:ml-[69px] lg:mr-5">
-          <Separator className="my-4 bg-[#E3E3E3]" />
-          {serverCart?.message.doc.grand_total ? (
-            <>
-              <div className="flex flex-col gap-y-4">
-                <div className="w-full flex justify-between text-sm">
-                  <p>{t("Subtotal")}</p>
-                  <strong>
-                    {typeof cartTotal === "string"
-                      ? cartTotal // ? t("Loading...")
-                      : formatCurrency(cartTotal)
-                    }
-                  </strong>
-                </div>
-                {checkoutSummary.totalShipping > 0 && (
-                  <div className="w-full flex justify-between text-darkgray-200 text-sm">
-                    <p>{t("Shipping Cost")}</p>
-                    <span>
-                      {formatCurrency(checkoutSummary.totalShipping)}
-                    </span>
-                  </div>
-                )}
-                <div className="w-full flex justify-between text-darkgray-200 text-sm">
-                  <p>{t("Tax")}</p>
-                  <span>
-                    {formatCurrency(checkoutSummary.totalTax)}
-                  </span>
-                </div>
-                {checkoutSummary.totalDiscount > 0 && (
-                  <div className="w-full flex justify-between text-darkgray-200 text-sm">
-                    <p>{t("Discount")}</p>
-                    <strong>
-                      {formatCurrency(checkoutSummary.totalDiscount?.toFixed(2) ?? 0)}
-                    </strong>
-                  </div>
-                )}
-                {serverCart?.message.doc.coupon_code && (
-                  <div className="w-full flex justify-between text-darkgray-200 text-sm">
-                    <p className="text-muted-foreground">
-                      {t("Coupon Code")}
-                    </p>
-                    <strong className="text-muted-foreground">
-                      {serverCart?.message.doc.coupon_code}
-                    </strong>
-                  </div>
-                )}
-                <CouponCodeInput />
-              </div>
-              <Separator className="my-4 bg-[#E3E3E3]" />
-              <div className="w-full flex justify-between font-semibold text-sm">
-                <p>{t("Grand total")}</p>
-                <strong>
-                  {formatCurrency(serverCart?.message.doc.grand_total)}
-                </strong>
-              </div>
-            </>
-          ) : (
-            <CheckoutDetailSkeleton />
-          )}
-        </div>
+        <CheckoutDetail />
       </section>
     )
   }
@@ -252,7 +262,6 @@ const Checkout = () => {
       <div className="flex items-center gap-x-2.5">
         <FlipBackward className="h-5 w-5 cursor-pointer hover:opacity-75" onClick={() => navigate("/")}/>
         <h2 className="lg:hidden font-semibold">{t("Order details")}</h2>
-
         <div className="hidden lg:block">
           <Logo />
         </div>
@@ -280,15 +289,13 @@ const Checkout = () => {
 
         {/* This is the total cart on the mobile version */}
         <div className="mb-10 lg:hidden">
-
           {/* NEED TO FETCH THE IMAGE OF THE FIRST PRODUCT */}
           <img src="" className="w-[120px] h-[120px] rounded-md bg-gray-100 mx-auto mb-4"/>
           <TotalCart />
         </div>
-
         <div className="w-full">
           {addressLoading ? (
-            <Skeleton className="h-4 w-40"/>
+            <Skeleton className="h-4 w-40 hidden lg:block"/>
           ) : (
             <h2 className="font-semibold text-darkgray-500 text-lg hidden lg:block">
               {t("Shipping Information")}
@@ -305,7 +312,7 @@ const Checkout = () => {
               {addressLoading ? (
                 <div className="flex flex-col gap-y-2">
                   <Skeleton className="h-4 w-[120px]"/>
-                  <Skeleton className="h-40 w-full"/>
+                  <Skeleton className="h-40 w-full rounded-xl"/>
                 </div>
               ) : (
                 <section className="space-y-1">
@@ -347,7 +354,7 @@ const Checkout = () => {
               {addressLoading ? (
                 <div className="flex flex-col gap-y-2">
                   <Skeleton className="h-4 w-[120px]"/>
-                  <Skeleton className="h-16 w-full"/>
+                  <Skeleton className="h-16 w-full rounded-xl"/>
                 </div>
               ) : (
                 <ShippingRuleSelect
@@ -361,8 +368,8 @@ const Checkout = () => {
                 <div className="flex flex-col gap-y-2">
                   <Skeleton className="h-4 w-[120px]"/>
                   <div className="flex items-center gap-4">
-                    <Skeleton className="h-12.5 w-full" />
-                    <Skeleton className="h-12.5 w-full" />
+                    <Skeleton className="h-12.5 w-full rounded-xl" />
+                    <Skeleton className="h-12.5 w-full rounded-xl" />
                   </div>
                 </div>
               ) : (
@@ -408,10 +415,14 @@ const Checkout = () => {
                 />
               )}
 
+              <div className="lg:hidden">
+                {!addressLoading ? <CheckoutDetail /> : <CheckoutDetailSkeleton />}
+              </div>
+
               {addressLoading ? (
                 <div className="flex flex-col gap-y-16">
                   <div className="flex flex-col gap-y-4">
-                    <Skeleton className="h-12.5 w-full"/>
+                    <Skeleton className="h-12.5 w-full rounded-xl"/>
                     <Skeleton className="h-3 w-3/4"/>
                     <Skeleton className="h-3 w-1/2"/>
                   </div>

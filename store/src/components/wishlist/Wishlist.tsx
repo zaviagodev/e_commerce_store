@@ -45,7 +45,7 @@ const Wishlist = () => {
           <SheetTitle className="!mx-auto !my-0 text-base">{t("Favorites")}</SheetTitle>
         </SheetHeader>
         {wishlistCount > 0 ? (
-          <ul className="my-3 flex flex-col gap-y-3 pt-3">
+          <ul className="my-3 flex flex-col gap-y-9 pt-4">
             {wishlist.map((itemCode) => (
               <WishlistItem key={itemCode} itemCode={itemCode} />
             ))}

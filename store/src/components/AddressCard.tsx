@@ -53,8 +53,8 @@ const AddressCard = ({
 
   return (
     <Card className="w-full overflow-hidden bg-accent border border-darkgray-100 rounded-xl shadow-none">
-      <CardHeader className="flex flex-row justify-between items-center text-gray-500">
-        <CardTitle className="text-base flex items-center gap-x-2">
+      <CardHeader className="flex flex-row justify-between items-center">
+        <CardTitle className="text-base flex items-center gap-x-2 text-darkgray-500">
           <MarkerPin04 /> {name}
         </CardTitle>
         {actions && (
@@ -66,7 +66,7 @@ const AddressCard = ({
           </div>
         )}
       </CardHeader>
-      <CardContent className="text-gray-700 relative text-sm">
+      <CardContent className="text-[#2F2F2F] relative text-sm">
         {display ? (
           <p dangerouslySetInnerHTML={{ __html: display }} />
         ) : (

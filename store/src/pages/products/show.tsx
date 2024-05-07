@@ -23,7 +23,6 @@ import { MessageQuestionCircle, ShoppingBag01 } from "@untitled-ui/icons-react";
 import { Heart } from "lucide-react"
 import { useState } from "react";
 import { Toggle } from "@/components/ui/toggle";
-import { showProductSkeletons } from "@/components/skeletons/ProductListSkeleton";
 
 export const ProductShow: React.FC<IResourceComponentsProps> = () => {
   const [selectedVariant, setSelectedVariant] = useState();
@@ -89,7 +88,12 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
   });
 
   if (isFetching || isLoading || isRefetching) {
-    return <ProductSkeleton />;
+    return (
+      <div className="max-w-[1200px] space-y-6 lg:space-y-[140px] mx-auto">
+        <ProductSkeleton />
+        <RelatedProducts />
+      </div>
+    );
   }
 
   const product = data?.message.product_info;
@@ -113,7 +117,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
           },
         ]}
       />
-      <section className="w-full px-4 lg:px-10 lg:py-[30px] lg:max-w-[536px] h-full sticky top-0 z-10">
+      <section className="w-full lg:px-10 lg:py-[30px] lg:max-w-[536px] h-full sticky top-0 z-10">
         <div className="flex flex-col gap-y-3 lg:gap-y-[10px]">
           <h2 className="text-secgray text-sm">{product.item_group}</h2>
           <h1 className="font-semibold text-texttag text-[22px]">
