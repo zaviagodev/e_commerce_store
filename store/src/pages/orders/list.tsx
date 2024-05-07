@@ -19,6 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import OrderTableSkeleton from "@/components/skeletons/OrderTableSkeleton";
 
 export type Order = {
   status: "To Deliver and Bill" | "processing" | "completed" | "failed";
@@ -99,7 +100,7 @@ export function OrderHistoryTable({
     usePagenation({ current, setCurrent, pageCount });
 
   if (isFetching || isLoading || isRefetching) {
-    return <div>Loading...</div>;
+    return <OrderTableSkeleton />;
   }
 
   return (

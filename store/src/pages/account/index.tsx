@@ -13,9 +13,9 @@ const Account = () => {
     isRefetching,
   } = useGetIdentity();
 
-  if (isLoading || isFetching || isRefetching) {
-    return <div>Loading...</div>;
-  }
+  // if (isLoading || isFetching || isRefetching) {
+  //   return <div>Loading...</div>;
+  // }
 
   const location = useLocation()
 

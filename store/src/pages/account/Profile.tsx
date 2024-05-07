@@ -1,7 +1,9 @@
 import ProfileForm from "@/components/forms/ProfileForm";
+import AccountSkeleton from "@/components/skeletons/AccountSkeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   useCustomMutation,
   useGetIdentity,
@@ -30,7 +32,7 @@ const Profile = () => {
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <AccountSkeleton />;
   }
 
   return (

@@ -80,7 +80,9 @@ const Summary = () => {
   const { data: profile } = useGetIdentity();
 
   if (!order) {
-    return <PaymentSkeleton />;
+    return <div className="mt-10">
+      <PaymentSkeleton />
+    </div>;
   }
 
   return (

@@ -19,7 +19,7 @@ const CheckoutDetailSkeleton = () => {
 
       <Skeleton className="my-4 h-4 w-[100px]"/>
 
-      <Separator className="bg-[#E3E3E3]" />
+      <Separator className="bg-[#F4F4F4]" />
       <div className="flex items-center justify-between">
         <Skeleton className="h-4 w-20"/>
         <Skeleton className="h-4 w-12"/>

@@ -19,6 +19,7 @@ import { useState } from "react";
 import { FlipBackward } from "@untitled-ui/icons-react"
 import { formatCurrency } from "@/lib/utils";
 import { MessageQuestionCircle, Download01 } from "@untitled-ui/icons-react"
+import OrderDetailSkeleton from "@/components/skeletons/OrderDetailSkeleton";
 
 const OrderDetail = () => {
   const [paymentMethod, setPaymentMethod] = useState();
@@ -59,7 +60,7 @@ const OrderDetail = () => {
   const checkoutSummary = useSummary(order);
 
   if (isLoading || isFetching || isRefetching) {
-    return <div>Loading...</div>;
+    return <OrderDetailSkeleton />;
   }
 
   return (
