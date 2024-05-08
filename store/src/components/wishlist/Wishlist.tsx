@@ -13,7 +13,11 @@ import { useWishlist } from "@/hooks/useWishlist";
 import EmptyList from "../customComponents/EmptyList";
 import { FlipBackward, Heart } from "@untitled-ui/icons-react";
 
-const Wishlist = () => {
+type WishlistProps = {
+  isHiddenOnMobile?: boolean
+}
+
+const Wishlist = ({ isHiddenOnMobile } : WishlistProps) => {
   const t = useTranslate();
   const { wishlist, wishlistCount, isOpen, setIsOpen } = useWishlist();
 
@@ -23,7 +27,7 @@ const Wishlist = () => {
         <Button
           variant="ghost"
           size="icon"
-          className="rounded-full relative hover:bg-transparent"
+          className={`rounded-full relative hover:bg-transparent ${isHiddenOnMobile ? "hidden lg:flex" : ""}`}
         >
           <Heart />
           {wishlistCount > 0 && (

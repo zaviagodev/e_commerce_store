@@ -238,7 +238,7 @@ const Header = () => {
             </TopSheet>
           )}
 
-          {config?.enable_wishlist == 1 && <Wishlist />}
+          {config?.enable_wishlist == 1 && <Wishlist isHiddenOnMobile={true}/>}
           <Cart />
         </div>
       </div>
