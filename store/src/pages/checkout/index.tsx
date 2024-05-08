@@ -39,6 +39,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { FlipBackward, MarkerPin04, MessageQuestionCircle } from "@untitled-ui/icons-react";
 import { formatCurrency } from "@/lib/utils";
 import CheckoutDetailSkeleton from "@/components/skeletons/CheckoutDetailSkeleton";
+import ProductImage from "@/components/ProductImage";
 
 export const paymentMethodIconMap: { [key: string]: React.ReactNode } = {
   "2": <Landmark className="mr-2 h-4 w-4" />,
@@ -290,7 +291,10 @@ const Checkout = () => {
         {/* This is the total cart on the mobile version */}
         <div className="mb-10 lg:hidden">
           {/* NEED TO FETCH THE IMAGE OF THE FIRST PRODUCT */}
-          <img src="" className="w-[120px] h-[120px] rounded-md bg-gray-100 mx-auto mb-4"/>
+          <ProductImage
+            itemCode={Object.keys(cart)[0]}
+            className="w-[120px] h-[120px] rounded-md bg-gray-100 mx-auto mb-4"
+          />
           <TotalCart />
         </div>
         <div className="w-full">
