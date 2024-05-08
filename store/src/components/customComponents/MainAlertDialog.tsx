@@ -28,7 +28,13 @@ const MainAlertDialog = ({ trigger, title, description, cancel, action, onClickA
       <AlertDialogTrigger asChild={asChild} className={triggerClassName}>
         {trigger}
       </AlertDialogTrigger>
-      <AlertDialogContent className="w-[456px] p-8 !rounded-2xl">
+      <AlertDialogContent 
+        className={`data-[state=open]:zoom-in-100 lg:data-[state=open]:zoom-in-95 
+        data-[state=closed]:zoom-out-100 lg:data-[state=closed]:zoom-out-95 
+        data-[state=open]:slide-in-from-bottom-[48%] data-[state=closed]:slide-out-to-bottom-[48%] 
+        lg:data-[state=open]:slide-in-from-bottom-[initial] lg:data-[state=closed]:slide-out-to-bottom-[initial] 
+        top-[inherit] bottom-0 translate-y-0 lg:bottom-[inherit] lg:top-[50%] lg:-translate-y-[50%] 
+        max-w-none lg:w-[456px] p-8 !rounded-t-2xl lg:!rounded-2xl`}>
         <AlertDialogHeader className="flex flex-col gap-y-2 items-center">
           <AlertDialogTitle className="text-2xl font-semibold text-center">{title}?</AlertDialogTitle>
           <AlertDialogDescription className="text-darkgray-500 text-base text-center">

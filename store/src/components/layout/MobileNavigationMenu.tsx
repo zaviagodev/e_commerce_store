@@ -13,6 +13,7 @@ import { useMemo, useState } from "react";
 import { getCategories, getFileURL } from "@/lib/utils";
 import { useConfig } from "@/hooks/useConfig";
 import { LogIn02 } from "@untitled-ui/icons-react";
+import MainAlertDialog from "../customComponents/MainAlertDialog";
 
 const MobileNavigationMenu = () => {
   const [open, setOpen] = useState(false);
@@ -139,10 +140,19 @@ const MobileNavigationMenu = () => {
           </nav>
 
           {authState?.authenticated && (
-            <button onClick={() => logout()} className="flex items-center gap-x-2 font-semibold">
-              <LogIn02 className="h-[22px] w-[22px]"/>
-              {t("Logout")}
-            </button>
+            <MainAlertDialog 
+              trigger={(
+                <button className="flex items-center gap-x-2 font-semibold">
+                  <LogIn02 className="h-[22px] w-[22px]"/>
+                  {t("Logout")}
+                </button>
+              )}
+              title={t("Logout")}
+              description={t("Logout desc")}
+              cancel={t("Cancel")}
+              action={t("Logout")}
+              onClickAction={() => logout()}
+            />
           )}
         </section>
       </SheetContent>

@@ -288,7 +288,7 @@ const PaymentCancel = () => {
       triggerClassName="flex justify-center w-full"
       title={t("leave payment page.title")}
       description={t("leave payment page.desc")}
-      cancel={t("Cancel")}
+      cancel={t("leave payment page.cancel")}
       action={t("leave payment page.title")}
       onClickAction={() => navigate("/")}
     />

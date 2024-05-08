@@ -156,7 +156,8 @@
     "Logout desc": "You can login again anytime without losing the detail, account, and orders",
     "leave payment page": {
         "title": "Leave the payment page",
-        "desc": "Your order status will be shown as \"Unpaid\". To complete the payment, you can access the order history page. If you would like to edit your orders, please repurchase the product and make a payment in a correct order."
+        "desc": "Your order status will be shown as \"Unpaid\". To complete the payment, you can access the order history page. If you would like to edit your orders, please repurchase the product and make a payment in a correct order.",
+        "cancel": "Stay here"
     },
     "Delete address": {
         "title": "Want to delete address?",
