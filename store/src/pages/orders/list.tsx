@@ -74,7 +74,7 @@ export function OrderHistoryTable({
       align: "right",
       cell: ({ row }: any) => {
         return (
-          <Link to={`/account/orders/${row.name}`} className="text-base lg:text-sm flex items-center gap-x-0.5 text-black w-full h-12.5 lg:h-fit lg:w-fit justify-center lg:justify-end">
+          <Link to={`/account/orders/${row.name}`} className="text-base lg:text-sm flex items-center gap-x-0.5 text-black w-full h-12.5 lg:h-fit lg:w-fit justify-center">
             <File06 className="h-4 w-4" />
             {t("Details")}
           </Link>
@@ -133,14 +133,14 @@ export function OrderHistoryTable({
                 {tableData?.data.map((row) => (
                   <TableRow key={row.id} className="hover:bg-transparent">
                     {columns.map((column) => (
-                      <TableCell key={column.id} className="border-none py-6 text-darkgray-500 pl-0" style={{textAlign: column.align}}>{column?.cell({ row })}</TableCell>
+                      <TableCell key={column.id} className={`border-none py-6 text-darkgray-500 pl-0 ${column.id === "actions" ? "flex justify-end" : ""}`} style={{textAlign: column.align}}>{column?.cell({ row })}</TableCell>
                     ))}
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </div>
-    
+
           {/* MOBILE VERSION: orders list */}
           <div className="lg:hidden mt-12">
             {tableData?.data.map((row) => (
