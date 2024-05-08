@@ -31,7 +31,7 @@ const MainAlertDialog = ({ trigger, title, description, cancel, action, onClickA
       <AlertDialogContent 
         className={`data-[state=open]:zoom-in-100 lg:data-[state=open]:zoom-in-95 
         data-[state=closed]:zoom-out-100 lg:data-[state=closed]:zoom-out-95 
-        data-[state=open]:slide-in-from-bottom-[48%] data-[state=closed]:slide-out-to-bottom-[48%] 
+        data-[state=open]:slide-in-from-bottom-[100%] data-[state=closed]:slide-out-to-bottom-[100%] 
         lg:data-[state=open]:slide-in-from-bottom-[initial] lg:data-[state=closed]:slide-out-to-bottom-[initial] 
         top-[inherit] bottom-0 translate-y-0 lg:bottom-[inherit] lg:top-[50%] lg:-translate-y-[50%] 
         max-w-none lg:w-[456px] p-8 !rounded-t-2xl lg:!rounded-2xl`}>
