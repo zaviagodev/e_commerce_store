@@ -94,7 +94,7 @@ export const Login = () => {
           <div className="flex flex-col gap-y-3">
             <h2 className="font-semibold text-darkgray-500 text-lg">{t("New customer")}</h2>
             <p className="text-darkgray-200">{t("Register privilege")}</p>
-            <Link to="/register" className="mt-7">
+            <Link to="/register" className="mt-7 w-fit">
               <Button className="text-base h-12.5 rounded-xl font-semibold">
                 {t("Sign up")}
               </Button>

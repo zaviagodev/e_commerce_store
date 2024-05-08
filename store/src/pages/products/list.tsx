@@ -79,7 +79,7 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
   return (
     <div className="flex flex-col gap-y-6">
       {isFetching || isLoading || isRefetching ? (
-        <Skeleton className="h-8 w-[200px] mx-auto"/>
+        <Skeleton className="h-10 w-[200px] mx-auto mb-6"/>
       ) : (<h1 className="text-4xl font-semibold text-center mb-6">
         {t("All products")}
       </h1>)}
