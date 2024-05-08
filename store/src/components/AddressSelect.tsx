@@ -52,10 +52,10 @@ const AddressSelect = ({ onSelect, ...props }: AddressSelectProps) => {
 
   return (
     <Sheet>
-      <SheetTrigger>
+      <SheetTrigger className="-mb-24 mr-6">
         <ArrowRight className="h-6 w-6" />
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className="overflow-y-scroll">
         <SheetHeader className="bg-white -m-5 flex flex-row items-center justify-between z-10 px-4 py-3 border-b">
           <SheetClose asChild>
             <FlipBackward className="h-5 w-5 cursor-pointer hover:opacity-75 absolute" />
@@ -72,9 +72,7 @@ const AddressSelect = ({ onSelect, ...props }: AddressSelectProps) => {
         >
           {data?.data.map((address: any) => (
             <div
-              className={`cursor-pointer rounded-lg ${
-                props?.value === address.name ? "outline outline-1" : ""
-              }`}
+              className={`cursor-pointer rounded-lg`}
               onClick={() => {
                 mutate({
                   dataProviderName: "storeProvider",
@@ -94,8 +92,10 @@ const AddressSelect = ({ onSelect, ...props }: AddressSelectProps) => {
                 id={address.name}
                 className="peer sr-only"
               />
-
-              <AddressCard {...address} />
+              <AddressCard
+                {...address}
+                isActive={props?.value === address.name}
+              />
             </div>
           ))}
         </RadioGroup>
