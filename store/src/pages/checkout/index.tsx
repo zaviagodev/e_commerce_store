@@ -61,6 +61,8 @@ const Checkout = () => {
     },
   });
 
+  const isAddressLoaded = serverCart === undefined && (addressLoading)
+
   const { data: paymentMethods } = useCustom({
     dataProviderName: "storeProvider",
     url: "payment_methods",
@@ -290,7 +292,6 @@ const Checkout = () => {
 
         {/* This is the total cart on the mobile version */}
         <div className="mb-10 lg:hidden">
-          {/* NEED TO FETCH THE IMAGE OF THE FIRST PRODUCT */}
           <ProductImage
             itemCode={Object.keys(cart)[0]}
             className="w-[120px] h-[120px] rounded-md bg-gray-100 mx-auto mb-4"
@@ -298,7 +299,7 @@ const Checkout = () => {
           <TotalCart />
         </div>
         <div className="w-full">
-          {addressLoading ? (
+          {isAddressLoaded ? (
             <Skeleton className="h-4 w-40 hidden lg:block"/>
           ) : (
             <h2 className="font-semibold text-darkgray-500 text-lg hidden lg:block">
@@ -313,7 +314,7 @@ const Checkout = () => {
               {/* I have changed the condition due to the skeleton creation 
                   This is the original one : addressLoading && !!serverCart?.message.doc.shipping_address_name
               */}
-              {addressLoading ? (
+              {isAddressLoaded ? (
                 <div className="flex flex-col gap-y-2">
                   <Skeleton className="h-4 w-[120px]"/>
                   <Skeleton className="h-40 w-full rounded-xl"/>
@@ -355,7 +356,7 @@ const Checkout = () => {
                 </section>
               )}
               
-              {addressLoading ? (
+              {isAddressLoaded ? (
                 <div className="flex flex-col gap-y-2">
                   <Skeleton className="h-4 w-[120px]"/>
                   <Skeleton className="h-16 w-full rounded-xl"/>
@@ -368,7 +369,7 @@ const Checkout = () => {
                   )}
                 />
               )}
-              {addressLoading ? (
+              {isAddressLoaded ? (
                 <div className="flex flex-col gap-y-2">
                   <Skeleton className="h-4 w-[120px]"/>
                   <div className="flex items-center gap-4">
@@ -420,10 +421,10 @@ const Checkout = () => {
               )}
 
               <div className="lg:hidden">
-                {!addressLoading ? <CheckoutDetail /> : <CheckoutDetailSkeleton />}
+                {isAddressLoaded ? <CheckoutDetailSkeleton /> : <CheckoutDetail />}
               </div>
 
-              {addressLoading ? (
+              {isAddressLoaded ? (
                 <div className="flex flex-col gap-y-16">
                   <div className="flex flex-col gap-y-4">
                     <Skeleton className="h-12.5 w-full rounded-xl"/>
