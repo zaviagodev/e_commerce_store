@@ -59,7 +59,7 @@ const AddressForm = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Title" className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
+                <Input placeholder={`${t("Address Title")} *`} className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -71,7 +71,7 @@ const AddressForm = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Phone" className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
+                <Input placeholder={`${t("Phone")} *`} className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -83,7 +83,7 @@ const AddressForm = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Address" className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
+                <Input placeholder={`${t("address line 1")} *`} className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -95,7 +95,27 @@ const AddressForm = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Address Line 2" className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
+                <Input placeholder={`${t("address line 2")} *`} className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="country"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <CountrySelect
+                  {...field}
+                  onChange={({ value }) =>
+                    form.setValue("country", value, {
+                      shouldDirty: true,
+                      shouldTouch: true,
+                    })
+                  }
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -122,27 +142,6 @@ const AddressForm = ({
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="country"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <CountrySelect
-                  {...field}
-                  onChange={({ value }) =>
-                    form.setValue("country", value, {
-                      shouldDirty: true,
-                      shouldTouch: true,
-                    })
-                  }
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
         <div className="grid grid-cols-2 gap-3">
           <FormField
             control={form.control}
@@ -172,7 +171,7 @@ const AddressForm = ({
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input placeholder="Pincode" className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
+                  <Input placeholder={`${t("pincode")} *`} className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

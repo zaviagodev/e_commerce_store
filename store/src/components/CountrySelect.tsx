@@ -1,4 +1,4 @@
-import { useSelect } from "@refinedev/core";
+import { useSelect, useTranslate } from "@refinedev/core";
 import Select from "react-select";
 import { Input } from "./ui/input";
 
@@ -25,9 +25,11 @@ const CountrySelect: React.FC<CountrySelectProps> = ({
     },
   });
 
+  const t = useTranslate()
+
   return (
     <Select
-      placeholder="Country"
+      placeholder={`${t("country")} *`} 
       isLoading={overtime.elapsedTime !== undefined}
       loadingMessage={() =>
         options.length === 0 ? "No results" : "Loading..."

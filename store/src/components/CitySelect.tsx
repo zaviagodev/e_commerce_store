@@ -1,4 +1,4 @@
-import { CrudFilters, useSelect } from "@refinedev/core";
+import { CrudFilters, useSelect, useTranslate } from "@refinedev/core";
 import React, { useMemo } from "react";
 import Select from "react-select";
 
@@ -52,9 +52,11 @@ const CitySelect: React.FC<CitySelectProps> = ({
     },
   });
 
+  const t = useTranslate()
+
   return (
     <Select
-      placeholder="City"
+      placeholder={`${t("city")} *`} 
       isLoading={overtime.elapsedTime !== undefined}
       loadingMessage={() =>
         options.length === 0 ? "No results" : "Loading..."
