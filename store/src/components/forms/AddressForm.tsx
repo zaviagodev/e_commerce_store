@@ -59,7 +59,7 @@ const AddressForm = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder={`${t("Address Title")} *`} className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
+                <Input placeholder={`${t("address title")} *`} className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
