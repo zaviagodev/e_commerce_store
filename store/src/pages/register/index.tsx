@@ -14,11 +14,20 @@ import { useForm } from "@refinedev/react-hook-form";
 import { Link } from "react-router-dom";
 import { registerSchema } from "./registerSchema";
 import { Loader2 } from "lucide-react";
+import { Eye, EyeOff } from "@untitled-ui/icons-react";
+import { useState } from "react";
 
 export const Register = () => {
   const t = useTranslate();
   const { mutate: register, isLoading: signingUp } = useRegister();
   const { mutate: login, isLoading: loggingIn } = useLogin();
+
+  const [showPassword, setShowPassword] = useState(false)
+
+  const handleShowPassword = (e) => {
+    e.preventDefault()
+    setShowPassword(!showPassword)
+  }
 
   const form = useForm({
     resolver: yupResolver(registerSchema),
@@ -89,14 +98,18 @@ export const Register = () => {
                     control={form.control}
                     name="password"
                     render={({ field }) => (
-                      <FormItem>
+                      <FormItem className="relative">
                         {/* <FormLabel htmlFor="password">
                           {t("Password")}
                         </FormLabel> */}
                         <FormControl>
-                          <Input type="password" disabled={(signingUp || loggingIn)} placeholder={`${t("Password")} *`} className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" {...field} />
+                          <Input type={showPassword ? "text" : "password"} disabled={(signingUp || loggingIn)} placeholder={`${t("Password")} *`} className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" {...field} />
                         </FormControl>
                         <FormMessage />
+
+                        <button onClick={handleShowPassword} className="absolute right-4 top-2">
+                          {showPassword ? <Eye className="h-4 w-4"/> : <EyeOff className="h-4 w-4"/>}
+                        </button>
                       </FormItem>
                     )}
                   />

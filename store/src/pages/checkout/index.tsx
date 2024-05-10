@@ -405,7 +405,7 @@ const Checkout = () => {
                                     htmlFor={method.key}
                                     className="flex items-center justify-center border border-darkgray-100 bg-popover p-4 bg-accent text-darkgray-500 font-semibold peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary rounded-xl"
                                   >
-                                    {paymentMethodIconMap[method.key ?? "2"]}
+                                    {/* {paymentMethodIconMap[method.key ?? "2"]} */}
                                     {method.name}
                                   </Label>
                                 </div>

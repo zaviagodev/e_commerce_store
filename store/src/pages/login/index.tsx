@@ -14,10 +14,19 @@ import { useForm } from "@refinedev/react-hook-form";
 import { Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { loginSchema } from "./loginSchema";
+import { Eye, EyeOff } from "@untitled-ui/icons-react";
+import { useState } from "react";
 
 export const Login = () => {
   const t = useTranslate();
   const { mutate: login, isLoading: loggingIn } = useLogin();
+
+  const [showPassword, setShowPassword] = useState(false)
+
+  const handleShowPassword = (e) => {
+    e.preventDefault()
+    setShowPassword(!showPassword)
+  }
 
   const form = useForm({
     resolver: yupResolver(loginSchema),
@@ -61,13 +70,17 @@ export const Login = () => {
                     control={form.control}
                     name="password"
                     render={({ field }) => (
-                      <FormItem>
+                      <FormItem className="relative">
                         {/* <FormLabel htmlFor="password">
                           {t("Password")}
                         </FormLabel> */}
                         <FormControl>
-                          <Input disabled={loggingIn} type="password" className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" placeholder={t("Password")} {...field} />
+                          <Input disabled={loggingIn} type={showPassword ? "text" : "password"} className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" placeholder={t("Password")} {...field} />
                         </FormControl>
+
+                        <button onClick={handleShowPassword} className="absolute right-4 top-2">
+                          {showPassword ? <Eye className="h-4 w-4"/> : <EyeOff className="h-4 w-4"/>}
+                        </button>
                         <FormMessage />
                       </FormItem>
                     )}

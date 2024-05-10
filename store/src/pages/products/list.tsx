@@ -28,6 +28,7 @@ import usePagenation from "@/hooks/usePagenation";
 import { useConfig } from "@/hooks/useConfig";
 import { getFileURL } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
+import { FilterLines } from "@untitled-ui/icons-react";
 
 export const ProductList: React.FC<IResourceComponentsProps> = () => {
   const {
@@ -100,11 +101,12 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
           </>
         )}
 
-        {/* TODO: integrate it later 
+        {/* TODO: integrate it later  
         <div className="flex items-center gap-4">
+          <FilterLines className="h-5 w-5"/>
           <strong>{t("Sort by")}</strong>
           <Select>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-[140px] bg-darkgray-100 border-0 text-[#7A7A7A] font-semibold h-9">
               <SelectValue placeholder="Theme" />
             </SelectTrigger>
             <SelectContent>
@@ -113,7 +115,8 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
               <SelectItem value="system">{t("Price Low to High")}</SelectItem>
             </SelectContent>
           </Select>
-        </div> */}
+        </div>
+        */}
       </div>
       {isFetching || isLoading || isRefetching ? (
         <ProductListSkeleton />
