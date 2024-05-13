@@ -27,15 +27,13 @@ export function AppNavigationMenu() {
   }, [data?.message.results]);
 
   return (
-    <NavigationMenu>
+    <NavigationMenu className="static xl:relative">
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuTrigger className="font-semibold text-base">{t("Categories")}</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="text-base px-6 py-10 max-w-[1136px] w-screen"> {/* Original grid columns: lg:grid-cols-[.75fr_1fr] */}
-              <div className="grid gap-3 lg:grid-cols-4">
-                <RecursiveComponent data={{ ...categories }} />
-              </div>
+          <NavigationMenuContent className="!w-screen xl:!max-w-[1136px] text-base px-6 py-10">
+            <ul className="grid gap-3 grid-cols-4"> {/* Original grid columns: lg:grid-cols-[.75fr_1fr] */}
+              <RecursiveComponent data={{ ...categories }} />
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
