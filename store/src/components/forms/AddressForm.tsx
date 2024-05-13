@@ -59,7 +59,7 @@ const AddressForm = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder={`${t("address title")} *`} className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
+                <Input placeholder={`${t("address title")} *`} className="placeholder:text-darkgray-300 form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -71,7 +71,7 @@ const AddressForm = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder={`${t("Phone")} *`} className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
+                <Input placeholder={`${t("Phone")} *`} className="placeholder:text-darkgray-300 form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -83,7 +83,7 @@ const AddressForm = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder={`${t("address line 1")} *`} className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
+                <Input placeholder={`${t("address line 1")} *`} className="placeholder:text-darkgray-300 form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -95,7 +95,7 @@ const AddressForm = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder={`${t("address line 2")} *`} className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
+                <Input placeholder={`${t("address line 2")} *`} className="placeholder:text-darkgray-300 form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -171,7 +171,7 @@ const AddressForm = ({
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input placeholder={`${t("pincode")} *`} className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
+                  <Input placeholder={`${t("pincode")} *`} className="placeholder:text-darkgray-300 form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

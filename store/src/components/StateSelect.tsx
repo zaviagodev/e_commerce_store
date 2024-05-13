@@ -53,7 +53,8 @@ const StateSelect: React.FC<StateSelectProps> = ({
         options.length === 0 ? "No results" : "Loading..."
       }
       classNames={{
-        control: () => "!border-darkgray-100 !bg-accent !rounded-xl px-3.5 text-sm h-12.5 !shadow-none"
+        control: () => "!border-darkgray-100 !bg-accent !rounded-xl px-3.5 text-sm h-12.5 !shadow-none",
+        placeholder: () => "!text-darkgray-300"
       }}
       styles={{
         indicatorSeparator: () => ({display: "none"})

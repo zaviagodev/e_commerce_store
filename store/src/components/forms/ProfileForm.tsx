@@ -44,7 +44,7 @@ const ProfileForm = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder={t("Name")} className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
+                <Input placeholder={t("Name")} className="placeholder:text-darkgray-300 form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -56,7 +56,7 @@ const ProfileForm = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder={t("Surname")} className="form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
+                <Input placeholder={t("Surname")} className="placeholder:text-darkgray-300 form-input focus-visible:ring-0 focus-visible:ring-offset-0" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

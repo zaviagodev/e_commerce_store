@@ -63,6 +63,7 @@ const CitySelect: React.FC<CitySelectProps> = ({
       }
       classNames={{
         control: () => "!border-darkgray-100 !bg-accent !rounded-xl px-3.5 text-sm h-12.5 !shadow-none",
+        placeholder: () => "!text-darkgray-300"
       }}
       styles={{
         indicatorSeparator: () => ({display: "none"})

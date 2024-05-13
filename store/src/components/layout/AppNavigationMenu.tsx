@@ -32,7 +32,7 @@ export function AppNavigationMenu() {
         <NavigationMenuItem>
           <NavigationMenuTrigger className="font-semibold text-base">{t("Categories")}</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="text-base grid gap-3 p-6 pb-3 md:w-[400px] lg:w-[calc(20rem_+_50vw)] lg:grid-cols-4"> {/* Original grid columns: lg:grid-cols-[.75fr_1fr] */}
+            <ul className="text-base grid gap-3 p-6 pb-3 md:w-[400px] lg:w-[calc(22rem_+_45vw)] lg:grid-cols-4"> {/* Original grid columns: lg:grid-cols-[.75fr_1fr] */}
               <RecursiveComponent data={{ ...categories }} />
             </ul>
           </NavigationMenuContent>
