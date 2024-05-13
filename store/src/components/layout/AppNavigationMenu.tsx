@@ -32,8 +32,10 @@ export function AppNavigationMenu() {
         <NavigationMenuItem>
           <NavigationMenuTrigger className="font-semibold text-base">{t("Categories")}</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="text-base grid gap-3 p-6 pb-3 md:w-[400px] lg:w-[calc(22rem_+_45vw)] lg:grid-cols-4"> {/* Original grid columns: lg:grid-cols-[.75fr_1fr] */}
-              <RecursiveComponent data={{ ...categories }} />
+            <ul className="text-base px-6 py-10 max-w-[1136px] w-screen"> {/* Original grid columns: lg:grid-cols-[.75fr_1fr] */}
+              <div className="grid gap-3 lg:grid-cols-4">
+                <RecursiveComponent data={{ ...categories }} />
+              </div>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
@@ -85,7 +87,7 @@ const RecursiveComponent = ({ data }) => {
         <div className="flex flex-col gap-y-3">
           <li
             key={categoryName}
-            className="ml-2 cursor-pointer font-semibold"
+            className="ml-2 cursor-pointer font-semibold hover:text-black"
             onClick={() =>
               go({
                 to: `/`,
