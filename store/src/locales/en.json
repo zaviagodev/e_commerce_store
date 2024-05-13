@@ -163,6 +163,12 @@
     "country": "Country",
     "state": "State",
     "city": "City",
+    "no order": "You don't have any orders yet.",
+    "notifications": {
+        "deleteSuccess": "Deleted successfully",
+        "createSuccess": "Created successfully",
+        "editSuccess": "Updated successfully"
+    },
     "leave payment page": {
         "title": "Leave the payment page",
         "desc": "Your order status will be shown as \"Unpaid\". To complete the payment, you can access the order history page. If you would like to edit your orders, please repurchase the product and make a payment in a correct order.",

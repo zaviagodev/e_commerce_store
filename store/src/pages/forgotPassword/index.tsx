@@ -49,7 +49,7 @@ export const ForgotPassword = () => {
                       <FormItem>
                         {/* <FormLabel htmlFor="email">{t("Email")}</FormLabel> */}
                         <FormControl>
-                          <Input placeholder={t("Your email")} className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" {...field} />
+                          <Input disabled={isLoading} placeholder={t("Your email")} className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

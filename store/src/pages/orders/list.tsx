@@ -181,7 +181,7 @@ export function OrderHistoryTable({
             </div>
           </div>
         </div>
-      ) : (<p className="mt-12 lg:m-0 text-darkgray-500 text-sm">คุณยังไม่มีคำสั่งซื้อ</p>)}
+      ) : (<p className="mt-12 lg:m-0 text-darkgray-500 text-sm">{t("no order")}</p>)}
     </>
   );
 }
