@@ -15,7 +15,7 @@ import { Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { loginSchema } from "./loginSchema";
 import { Eye, EyeOff } from "@untitled-ui/icons-react";
-import { useState } from "react";
+import { useState, MouseEvent } from "react";
 
 export const Login = () => {
   const t = useTranslate();
@@ -23,7 +23,7 @@ export const Login = () => {
 
   const [showPassword, setShowPassword] = useState(false)
 
-  const handleShowPassword = (e) => {
+  const handleShowPassword = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     setShowPassword(!showPassword)
   }
@@ -65,26 +65,25 @@ export const Login = () => {
                     )}
                   />
                 </div>
-                <div className="grid gap-2">
+                <div className="grid gap-2 relative">
                   <FormField
                     control={form.control}
                     name="password"
                     render={({ field }) => (
-                      <FormItem className="relative">
+                      <FormItem>
                         {/* <FormLabel htmlFor="password">
                           {t("Password")}
                         </FormLabel> */}
                         <FormControl>
                           <Input disabled={loggingIn} type={showPassword ? "text" : "password"} className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" placeholder={t("Password")} {...field} />
                         </FormControl>
-
-                        <button onClick={handleShowPassword} className="absolute right-4 top-2">
-                          {showPassword ? <Eye className="h-4 w-4"/> : <EyeOff className="h-4 w-4"/>}
-                        </button>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
+                  <button onClick={handleShowPassword} type="button" className="absolute right-4 top-4">
+                    {showPassword ? <Eye className="h-4 w-4"/> : <EyeOff className="h-4 w-4"/>}
+                  </button>
                 </div>
                 <div className="flex items-center gap-x-3 mt-7">
                   <Button type="submit" className="p-5 h-12.5 text-base font-semibold rounded-xl" disabled={loggingIn}>

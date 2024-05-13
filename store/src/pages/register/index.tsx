@@ -24,7 +24,7 @@ export const Register = () => {
 
   const [showPassword, setShowPassword] = useState(false)
 
-  const handleShowPassword = (e) => {
+  const handleShowPassword = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     setShowPassword(!showPassword)
   }
@@ -93,12 +93,12 @@ export const Register = () => {
                     )}
                   />
                 </div>
-                <div className="grid gap-2">
+                <div className="grid gap-2 relative">
                   <FormField
                     control={form.control}
                     name="password"
                     render={({ field }) => (
-                      <FormItem className="relative">
+                      <FormItem>
                         {/* <FormLabel htmlFor="password">
                           {t("Password")}
                         </FormLabel> */}
@@ -106,13 +106,12 @@ export const Register = () => {
                           <Input type={showPassword ? "text" : "password"} disabled={(signingUp || loggingIn)} placeholder={`${t("Password")} *`} className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" {...field} />
                         </FormControl>
                         <FormMessage />
-
-                        <button onClick={handleShowPassword} className="absolute right-4 top-2">
-                          {showPassword ? <Eye className="h-4 w-4"/> : <EyeOff className="h-4 w-4"/>}
-                        </button>
                       </FormItem>
                     )}
                   />
+                  <button onClick={handleShowPassword} type="button" className="absolute right-4 top-4">
+                    {showPassword ? <Eye className="h-4 w-4"/> : <EyeOff className="h-4 w-4"/>}
+                  </button>
                 </div>
                 <div className="grid gap-2">
                   <FormField
