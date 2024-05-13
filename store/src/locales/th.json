@@ -108,6 +108,7 @@
   "Delivery Pending": "รอการจัดส่ง",
   "Delivered": "จัดส่งแล้ว",
   "Cancelled": "ยกเลิก",
+  "Draft": "ยังไม่ได้ชำระเงิน",
   "Order History": "รายละเอียดคำสั่งซื้อ",
   "Order Date": "วันที่สั่งซื้อ",
   "Status": "สถานะ",

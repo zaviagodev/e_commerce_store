@@ -63,6 +63,10 @@ const OrderDetail = () => {
     return <OrderDetailSkeleton />;
   }
 
+  const orderStatus = 
+    order.status === "Draft" && t("Draft") ||
+    order.status === "Cancelled" && t("Cancelled")
+
   return (
     <div>
       <div className="flex items-center gap-x-2.5">
@@ -94,7 +98,7 @@ const OrderDetail = () => {
           <span className="text-sm text-darkgray-200">
             {t("Status")}
           </span>
-          <span className="text-sm font-bold">{order.status}</span>
+          <span className="text-sm font-bold">{orderStatus}</span>
         </li>
       </ul>
       {/* {order?.status && !["Completed", "Shipped"].includes(order.status) && (
