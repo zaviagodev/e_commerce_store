@@ -33,7 +33,7 @@ const Addresses = () => {
             <Button
               variant="outline"
               size="lg"
-              className="w-full px-4 border border-darkgray-100 bg-accent justify-start rounded-xl text-darkgray-500 flex items-center gap-x-2 h-[60px] font-semibold text-base"
+              className="w-full px-4 border border-darkgray-100 bg-accent justify-start rounded-xl text-darkgray-500 flex items-center gap-x-2 h-[60px] font-semibold text-base focus-visible:ring-0 focus-visible:ring-offset-0"
             >
               <PlusCircle /> {t("Add New Address")}
             </Button>
