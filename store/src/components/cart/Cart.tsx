@@ -118,7 +118,7 @@ const Cart = () => {
                   )}
                 </SheetClose>
 
-                <p className="text-darkgray-600 text-xs text-center">{t("When make payment cart")}</p>
+                <p className="text-darkgray-600 text-xs text-center">{t("Shipping fee and VAT (if available) are calculated when making a payment.")}</p>
               </div>
             </div>
           )}

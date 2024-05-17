@@ -153,7 +153,7 @@ const Header = () => {
                           </Button>
                         )}
                         title={t("Logout")}
-                        description={t("Logout desc")}
+                        description={t("You can login again anytime without losing the detail, account, and orders")}
                         cancel={t("Cancel")}
                         action={t("Logout")}
                         onClickAction={() => logout()}

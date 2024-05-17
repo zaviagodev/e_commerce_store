@@ -149,7 +149,7 @@ export const Register = () => {
             </form>
           </Form>
           <div className="mt-4 flex flex-col gap-y-3">
-            <p className="text-darkgray-200 text-sm">{t("Have an account?")}</p>
+            <p className="text-darkgray-200 text-sm">{t("Already have an account? Click here to sign in.")}</p>
             <Link to="/login">
               <Button variant="outline" className="w-full h-12.5 text-base rounded-xl bg-accent border-darkgray-100 font-semibold">
                 {t("Sign in")}

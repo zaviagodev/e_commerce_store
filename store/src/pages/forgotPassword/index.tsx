@@ -40,7 +40,7 @@ export const ForgotPassword = () => {
             >
               <div className="grid gap-3">
                 <h2 className="font-semibold text-darkgray-500 text-lg">{t("Reset Password")}</h2>
-                <p className="text-darkgray-200">{t("Send email to reset password")}</p>
+                <p className="text-darkgray-200">{t("We'll send you an email to reset your password.")}</p>
                 <div className="grid gap-2">
                   <FormField
                     control={form.control}
@@ -76,7 +76,7 @@ export const ForgotPassword = () => {
           </Form>
           <div className="flex flex-col gap-y-3">
             <h2 className="font-semibold text-darkgray-500 text-lg">{t("New customer")}</h2>
-            <p className="text-darkgray-200">{t("Register privilege")}</p>
+            <p className="text-darkgray-200">{t("Register to access special and new products, trends, discounts, and other promotions for members.")}</p>
             <Link to="/register" className="mt-7 w-fit">
               <Button className="text-base h-12.5 rounded-xl font-semibold">
                 {t("Sign up")}

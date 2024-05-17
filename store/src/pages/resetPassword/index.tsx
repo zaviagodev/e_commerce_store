@@ -68,7 +68,7 @@ export const ResetPassword = () => {
           </Form>
           <div className="flex flex-col gap-y-3">
             <h2 className="font-semibold text-darkgray-500 text-lg">{t("New customer")}</h2>
-            <p className="text-darkgray-200">{t("Register privilege")}</p>
+            <p className="text-darkgray-200">{t("Register to access special and new products, trends, discounts, and other promotions for members.")}</p>
             <Link to="/register" className="mt-7">
               <Button className="text-base h-12.5 rounded-xl font-semibold">
                 {t("Sign up")}
