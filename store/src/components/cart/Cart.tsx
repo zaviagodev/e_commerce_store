@@ -122,9 +122,7 @@ const Cart = () => {
                   )}
                 </SheetClose>
 
-                <p className="text-darkgray-600 text-xs text-center">
-                  {t("Shipping costs and taxes are calculated at checkout.")}
-                </p>
+                <p className="text-darkgray-600 text-xs text-center">{t("Shipping fee and VAT (if available) are calculated when making a payment.")}</p>
               </div>
             </div>
           )}

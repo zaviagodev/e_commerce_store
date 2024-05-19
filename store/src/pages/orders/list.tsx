@@ -212,7 +212,7 @@ export function OrderHistoryTable({
         </div>
       ) : (
         <p className="mt-12 lg:m-0 text-darkgray-500 text-sm">
-          {t("No orders yet")}
+          {t("You don't have any orders yet.")}
         </p>
       )}
     </>

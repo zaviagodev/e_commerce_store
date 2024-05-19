@@ -230,7 +230,7 @@ const AddressForm = ({
             name="is_shipping_address"
             render={({ field }) => (
               <FormItem className="flex items-center justify-between">
-                <FormLabel>{t("Default Shipping Address")}</FormLabel>
+                <FormLabel>{t("Set as default shipping address")}</FormLabel>
                 <FormControl>
                   <Switch
                     {...field}
