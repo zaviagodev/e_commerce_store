@@ -16,6 +16,8 @@ import { useWishlist } from "@/hooks/useWishlist";
 import EmptyList from "../customComponents/EmptyList";
 import useConfig from "@/hooks/useConfig";
 import { FlipBackward, Heart, ShoppingBag01 } from "@untitled-ui/icons-react";
+import { formatCurrency } from "@/lib/utils";
+import { Skeleton } from "../ui/skeleton";
 
 const Cart = () => {
   const t = useTranslate();
@@ -57,7 +59,7 @@ const Cart = () => {
           />
         </SheetHeader>
         {cartCount > 0 ? (
-          <ul className="my-3 flex flex-col gap-y-3 pt-3">
+          <ul className="my-3 flex flex-col gap-y-9 pt-4">
             {Object.entries(cart).map(([itemCode, quantity]) => {
               if (!quantity) {
                 return null;
@@ -75,53 +77,57 @@ const Cart = () => {
           />
         )}
         <SheetFooter className="block sm:justify-center mt-auto">
-          <div className="flex flex-col gap-y-6">
-            {cartCount > 0 && (
-              <div className="flex justify-between items-center text-sm font-semibold">
-                <h5>{t("Total")}</h5>
-                <p>
-                  {typeof cartTotal === "string"
-                    ? cartTotal
-                    : new Intl.NumberFormat("th-TH", {
-                        style: "currency",
-                        currency:
-                          serverCart?.message.doc.price_list_currency ?? "THB",
-                      }).format(cartTotal)}
+          {typeof cartTotal === "string" ? (
+            <FooterSkeleton />
+          ) : (
+            <div className="flex flex-col gap-y-6">
+              {cartCount > 0 && (
+                <div className="flex justify-between items-center text-sm font-semibold">
+                  <h5>{t("Total")}</h5>
+                  <p>
+                    {typeof cartTotal === "string"
+                      ? cartTotal
+                      : formatCurrency(
+                          cartTotal,
+                          serverCart?.message.doc.price_list_currency ?? "THB"
+                        )}
+                  </p>
+                </div>
+              )}
+              <div className="flex flex-col gap-y-2">
+                <SheetClose asChild>
+                  {config?.show_contact_us_button ? (
+                    <Button
+                      disabled={cartCount === 0}
+                      className="inset-2 w-full"
+                      size="lg"
+                      onClick={() =>
+                        window.open(config?.contact_us_url, "_blank")
+                      }
+                    >
+                      {config?.contact_us_label}
+                    </Button>
+                  ) : (
+                    <Button
+                      disabled={cartCount === 0}
+                      className="inset-2 w-full"
+                      size="lg"
+                      onClick={() =>
+                        navigate(cartCount > 0 ? "/checkout" : "/")
+                      }
+                    >
+                      {t(cartCount > 0 ? "Checkout" : "Shop now")}
+                      <ShoppingBag01 className="ml-2 h-5 w-5" />
+                    </Button>
+                  )}
+                </SheetClose>
+
+                <p className="text-darkgray-600 text-xs text-center">
+                  {t("Shipping costs and taxes are calculated at checkout.")}
                 </p>
               </div>
-            )}
-
-            <div className="flex flex-col gap-y-2">
-              <SheetClose asChild>
-                {config?.show_contact_us_button ? (
-                  <Button
-                    disabled={cartCount === 0}
-                    className="inset-2 w-full"
-                    size="lg"
-                    onClick={() =>
-                      window.open(config?.contact_us_url, "_blank")
-                    }
-                  >
-                    {config?.contact_us_label}
-                  </Button>
-                ) : (
-                  <Button
-                    disabled={cartCount === 0}
-                    className="inset-2 w-full"
-                    size="lg"
-                    onClick={() => navigate(cartCount > 0 ? "/checkout" : "/")}
-                  >
-                    {t(cartCount > 0 ? "Checkout" : "Shop now")}
-                    <ShoppingBag01 className="ml-2 h-5 w-5" />
-                  </Button>
-                )}
-              </SheetClose>
-
-              <p className="text-darkgray-600 text-xs text-center">
-                {t("Shipping costs and taxes are calculated at checkout.")}
-              </p>
             </div>
-          </div>
+          )}
         </SheetFooter>
       </SheetContent>
     </Sheet>
@@ -129,3 +135,19 @@ const Cart = () => {
 };
 
 export default Cart;
+
+const FooterSkeleton = () => {
+  return (
+    <div className="flex flex-col gap-y-9">
+      <div className="flex items-center justify-between w-full">
+        <Skeleton className="h-3 w-[120px]" />
+        <Skeleton className="h-3 w-20" />
+      </div>
+
+      <div className="flex flex-col gap-y-3 items-center">
+        <Skeleton className="h-12.5 w-full rounded-xl" />
+        <Skeleton className="h-3 w-3/4" />
+      </div>
+    </div>
+  );
+};

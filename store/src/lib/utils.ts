@@ -33,10 +33,10 @@ export function getFileURL(url?: string) {
   return url;
 }
 
-export function formatCurrency(value: number){
+export function formatCurrency(value: number, currency: string = "THB"){
   const formattedValue = new Intl.NumberFormat("th-TH", {
     style: "currency",
-    currency: "THB",
+    currency: currency,
   }).format(value);
 
   const index = formattedValue.search(/\d/);

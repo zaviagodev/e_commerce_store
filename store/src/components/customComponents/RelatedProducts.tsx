@@ -3,6 +3,8 @@ import { getFileURL } from "@/lib/utils";
 import ProductCard from "../ProductCard";
 import { useTable, useTranslate } from "@refinedev/core";
 import ProductCardSkeleton from "../skeletons/ProductCardSkeleton";
+import { showProductSkeletons } from "../skeletons/ProductListSkeleton";
+import { Skeleton } from "../ui/skeleton";
 
 const RelatedProducts = () => {
   const { config } = useConfig();
@@ -19,19 +21,19 @@ const RelatedProducts = () => {
   } = useTable();
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl lg:text-3xl font-semibold">{t("Related Products")}</h1>
+    <>
+      {isFetching || isLoading || isRefetching ? (
+        <div className="space-y-6">
+          <Skeleton className="h-6 w-40"/>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-12 mx-1 my-4">
+            {showProductSkeletons(4)}
+          </div>
+        </div>
+      ) : (
+        <div className="space-y-6">
+          <h1 className="text-2xl lg:text-3xl font-semibold">{t("Related Products")}</h1>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-12 mx-1 my-4">
-        {isFetching || isLoading || isRefetching ? (
-          <>
-            <ProductCardSkeleton />
-            <ProductCardSkeleton />
-            <ProductCardSkeleton />
-            <ProductCardSkeleton />
-          </>
-        ) : (
-          <>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-12 mx-1 my-4">
             {(tableData?.data ?? []).map((item) => (
               <ProductCard
                 key={item.item_code}
@@ -48,10 +50,10 @@ const RelatedProducts = () => {
                 height={341}
               />
             )).slice(0, 4)}
-          </>
-        )}
-      </div>
-    </div>
+          </div>
+        </div>
+      )}
+    </>
   )
 }
 

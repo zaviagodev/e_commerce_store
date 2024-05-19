@@ -1,18 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { useDelete, useTranslate } from "@refinedev/core";
 import { useNavigate } from "react-router-dom";
 import { Edit03, MarkerPin04, Trash01 } from "@untitled-ui/icons-react";
+import MainAlertDialog from "./customComponents/MainAlertDialog";
 
 type AddressCardActions = {
   edit?: boolean;
@@ -53,8 +43,8 @@ const AddressCard = ({
 
   return (
     <Card className="w-full overflow-hidden bg-accent border border-darkgray-100 rounded-xl shadow-none">
-      <CardHeader className="flex flex-row justify-between items-center text-gray-500">
-        <CardTitle className="text-base flex items-center gap-x-2">
+      <CardHeader className="flex flex-row justify-between items-center">
+        <CardTitle className="text-base flex items-center gap-x-2 text-darkgray-500">
           <MarkerPin04 /> {name}
         </CardTitle>
         <div className="flex items-center gap-x-4 !m-0">
@@ -67,7 +57,7 @@ const AddressCard = ({
           {actions.delete && <DeletionConfirmation name={name} />}
         </div>
       </CardHeader>
-      <CardContent className="text-gray-700 relative text-sm">
+      <CardContent className="text-[#2F2F2F] relative text-sm">
         {display ? (
           <p dangerouslySetInnerHTML={{ __html: display }} />
         ) : (
@@ -107,37 +97,26 @@ export const DeletionConfirmation = ({ name }: DeletionConfirmationProps) => {
   const t = useTranslate();
   const { mutate } = useDelete();
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
+    <MainAlertDialog
+      trigger={
         <Trash01 className="!m-0 h-5 w-5 hover:text-destructive cursor-pointer text-gray-500" />
-      </AlertDialogTrigger>
-      <AlertDialogContent className="w-[456px] p-8 !rounded-2xl">
-        <AlertDialogHeader className="flex flex-col gap-y-2 items-center">
-          <AlertDialogTitle className="text-2xl font-semibold">
-            {t("Want to delete address?")}
-          </AlertDialogTitle>
-          <AlertDialogDescription className="text-darkgray-500 text-base px-[60px] text-center">
-            {t("Deleting address cannot be undone")}
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter className="mt-2">
-          <AlertDialogCancel className="main-btn bg-accent border-darkgray-100">
-            {t("Cancel")}
-          </AlertDialogCancel>
-          <AlertDialogAction
-            onClick={() =>
-              mutate({
-                dataProviderName: "storeProvider",
-                resource: "address",
-                id: name,
-              })
-            }
-            className="main-btn"
-          >
-            {t("Delete address")}
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+      }
+      title={t("Delete address.title")}
+      description={
+        <span className="inline-block px-[60px]">
+          {t("Delete address.desc")}
+        </span>
+      }
+      cancel={t("Cancel")}
+      action={t("Delete address.confirm")}
+      onClickAction={() =>
+        mutate({
+          dataProviderName: "storeProvider",
+          resource: "address",
+          id: name,
+        })
+      }
+      asChild={true}
+    />
   );
 };

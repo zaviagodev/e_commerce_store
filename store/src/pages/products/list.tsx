@@ -20,6 +20,8 @@ import { useSearchParams } from "react-router-dom";
 import usePagenation from "@/hooks/usePagenation";
 import { useConfig } from "@/hooks/useConfig";
 import { getFileURL } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
+import { FilterLines } from "@untitled-ui/icons-react";
 
 export const ProductList: React.FC<IResourceComponentsProps> = () => {
   const {
@@ -70,9 +72,13 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
 
   return (
     <div className="flex flex-col gap-y-6">
-      <h1 className="text-4xl font-semibold text-center mb-6">
-        {t("All products")}
-      </h1>
+      {isFetching || isLoading || isRefetching ? (
+        <Skeleton className="h-10 w-[200px] mx-auto mb-6" />
+      ) : (
+        <h1 className="text-4xl font-semibold text-center mb-6">
+          {t("All products")}
+        </h1>
+      )}
       <div className="flex justify-between items-center">
         <div>
           <strong>{t("All products")}</strong>
@@ -88,9 +94,10 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
         </div>
         {/* TODO: integrate it later 
         <div className="flex items-center gap-4">
+          <FilterLines className="h-5 w-5"/>
           <strong>{t("Sort by")}</strong>
           <Select>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-[140px] bg-darkgray-100 border-0 text-[#7A7A7A] font-semibold h-9">
               <SelectValue placeholder="Theme" />
             </SelectTrigger>
             <SelectContent>
@@ -99,7 +106,8 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
               <SelectItem value="system">{t("Price Low to High")}</SelectItem>
             </SelectContent>
           </Select>
-        </div> */}
+        </div>
+        */}
       </div>
       {isFetching || isLoading || isRefetching ? (
         <ProductListSkeleton />

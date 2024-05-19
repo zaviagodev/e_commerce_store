@@ -14,11 +14,20 @@ import { useForm } from "@refinedev/react-hook-form";
 import { Link } from "react-router-dom";
 import { registerSchema } from "./registerSchema";
 import { Loader2 } from "lucide-react";
+import { Eye, EyeOff } from "@untitled-ui/icons-react";
+import { useState } from "react";
 
 export const Register = () => {
   const t = useTranslate();
   const { mutate: register, isLoading: signingUp } = useRegister();
   const { mutate: login, isLoading: loggingIn } = useLogin();
+
+  const [showPassword, setShowPassword] = useState(false)
+
+  const handleShowPassword = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    setShowPassword(!showPassword)
+  }
 
   const form = useForm({
     resolver: yupResolver(registerSchema),
@@ -84,7 +93,7 @@ export const Register = () => {
                     )}
                   />
                 </div>
-                <div className="grid gap-2">
+                <div className="grid gap-2 relative">
                   <FormField
                     control={form.control}
                     name="password"
@@ -94,12 +103,15 @@ export const Register = () => {
                           {t("Password")}
                         </FormLabel> */}
                         <FormControl>
-                          <Input type="password" disabled={(signingUp || loggingIn)} placeholder={`${t("Password")} *`} className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" {...field} />
+                          <Input type={showPassword ? "text" : "password"} disabled={(signingUp || loggingIn)} placeholder={`${t("Password")} *`} className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
+                  <button onClick={handleShowPassword} type="button" className="absolute right-4 top-4">
+                    {showPassword ? <Eye className="h-4 w-4"/> : <EyeOff className="h-4 w-4"/>}
+                  </button>
                 </div>
                 <div className="grid gap-2">
                   <FormField

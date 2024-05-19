@@ -19,6 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import OrderTableSkeleton from "@/components/skeletons/OrderTableSkeleton";
 
 export type Order = {
   status: "To Deliver and Bill" | "processing" | "completed" | "failed";
@@ -76,7 +77,7 @@ export function OrderHistoryTable({
         return (
           <Link
             to={`/account/orders/${row.name}`}
-            className="text-base lg:text-sm flex items-center gap-x-2 text-black w-full lg:w-fit justify-center lg:justify-end"
+            className="text-base lg:text-sm flex items-center gap-x-0.5 text-black w-full h-12.5 lg:h-fit lg:w-fit justify-center"
           >
             <File06 className="h-4 w-4" />
             {t("Details")}
@@ -110,7 +111,7 @@ export function OrderHistoryTable({
     usePagenation({ current, setCurrent, pageCount });
 
   if (isFetching || isLoading || isRefetching) {
-    return <div>Loading...</div>;
+    return <OrderTableSkeleton />;
   }
 
   return (
@@ -140,7 +141,9 @@ export function OrderHistoryTable({
                     {columns.map((column) => (
                       <TableCell
                         key={column.id}
-                        className="border-none py-6 text-darkgray-500 pl-0"
+                        className={`border-none py-6 text-darkgray-500 pl-0 ${
+                          column.id === "actions" ? "flex justify-end" : ""
+                        }`}
                         style={{ textAlign: column.align }}
                       >
                         {column?.cell({ row })}
@@ -152,6 +155,7 @@ export function OrderHistoryTable({
             </Table>
           </div>
 
+          {/* MOBILE VERSION: orders list */}
           <div className="lg:hidden mt-12">
             {tableData?.data.map((row) => (
               <ul

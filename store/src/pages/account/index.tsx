@@ -12,9 +12,9 @@ const Account = () => {
     isRefetching,
   } = useGetIdentity();
 
-  if (isLoading || isFetching || isRefetching) {
-    return <div>Loading...</div>;
-  }
+  // if (isLoading || isFetching || isRefetching) {
+  //   return <div>Loading...</div>;
+  // }
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-5 gap-x-8 px-4">

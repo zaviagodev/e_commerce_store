@@ -45,8 +45,9 @@ const ProfileForm = ({
             <FormItem>
               <FormControl>
                 <Input
-                  placeholder="Name"
-                  className="form-input focus-visible:ring-0 focus-visible:ring-offset-0"
+                  className="placeholder:text-darkgray-300 form-input focus-visible:ring-0 focus-visible:ring-offset-0"
+                  placeholder={t("Name")}
+                  disabled={isSubmitting}
                   {...field}
                 />
               </FormControl>
@@ -61,8 +62,9 @@ const ProfileForm = ({
             <FormItem>
               <FormControl>
                 <Input
+                  className="placeholder:text-darkgray-300 form-input focus-visible:ring-0 focus-visible:ring-offset-0"
                   placeholder={t("Surname")}
-                  className="form-input focus-visible:ring-0 focus-visible:ring-offset-0"
+                  disabled={isSubmitting}
                   {...field}
                 />
               </FormControl>

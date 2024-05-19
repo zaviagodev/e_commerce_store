@@ -62,8 +62,8 @@ const AddressForm = ({
             <FormItem>
               <FormControl>
                 <Input
-                  placeholder="Title"
-                  className="form-input focus-visible:ring-0 focus-visible:ring-offset-0"
+                  placeholder={`${t("address title")} *`}
+                  className="placeholder:text-darkgray-300 form-input focus-visible:ring-0 focus-visible:ring-offset-0"
                   {...field}
                 />
               </FormControl>
@@ -78,8 +78,8 @@ const AddressForm = ({
             <FormItem>
               <FormControl>
                 <Input
-                  placeholder="Phone"
-                  className="form-input focus-visible:ring-0 focus-visible:ring-offset-0"
+                  placeholder={`${t("Phone")} *`}
+                  className="placeholder:text-darkgray-300 form-input focus-visible:ring-0 focus-visible:ring-offset-0"
                   {...field}
                 />
               </FormControl>
@@ -94,8 +94,8 @@ const AddressForm = ({
             <FormItem>
               <FormControl>
                 <Input
-                  placeholder="Address"
-                  className="form-input focus-visible:ring-0 focus-visible:ring-offset-0"
+                  placeholder={`${t("Address line 1")} *`}
+                  className="placeholder:text-darkgray-300 form-input focus-visible:ring-0 focus-visible:ring-offset-0"
                   {...field}
                 />
               </FormControl>
@@ -110,9 +110,29 @@ const AddressForm = ({
             <FormItem>
               <FormControl>
                 <Input
-                  placeholder="Address Line 2"
-                  className="form-input focus-visible:ring-0 focus-visible:ring-offset-0"
+                  placeholder={`${t("Address line 2")} *`}
+                  className="placeholder:text-darkgray-300 form-input focus-visible:ring-0 focus-visible:ring-offset-0"
                   {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="country"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <CountrySelect
+                  {...field}
+                  onChange={({ value }) =>
+                    form.setValue("country", value, {
+                      shouldDirty: true,
+                      shouldTouch: true,
+                    })
+                  }
                 />
               </FormControl>
               <FormMessage />
@@ -140,27 +160,6 @@ const AddressForm = ({
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="country"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <CountrySelect
-                  {...field}
-                  onChange={({ value }) =>
-                    form.setValue("country", value, {
-                      shouldDirty: true,
-                      shouldTouch: true,
-                    })
-                  }
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
         <div className="grid grid-cols-2 gap-3">
           <FormField
             control={form.control}
@@ -191,8 +190,8 @@ const AddressForm = ({
               <FormItem>
                 <FormControl>
                   <Input
-                    placeholder="Pincode"
-                    className="form-input focus-visible:ring-0 focus-visible:ring-offset-0"
+                    placeholder={`${t("Pincode")} *`}
+                    className="placeholder:text-darkgray-300 form-input focus-visible:ring-0 focus-visible:ring-offset-0"
                     {...field}
                   />
                 </FormControl>

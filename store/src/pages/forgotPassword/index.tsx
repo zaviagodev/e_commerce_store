@@ -49,7 +49,7 @@ export const ForgotPassword = () => {
                       <FormItem>
                         {/* <FormLabel htmlFor="email">{t("Email")}</FormLabel> */}
                         <FormControl>
-                          <Input placeholder={t("Your email")} className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" {...field} />
+                          <Input disabled={isLoading} placeholder={t("Your email")} className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -77,7 +77,7 @@ export const ForgotPassword = () => {
           <div className="flex flex-col gap-y-3">
             <h2 className="font-semibold text-darkgray-500 text-lg">{t("New customer")}</h2>
             <p className="text-darkgray-200">{t("Register privilege")}</p>
-            <Link to="/register" className="mt-7">
+            <Link to="/register" className="mt-7 w-fit">
               <Button className="text-base h-12.5 rounded-xl font-semibold">
                 {t("Sign up")}
               </Button>

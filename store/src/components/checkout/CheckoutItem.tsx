@@ -1,6 +1,8 @@
 import { useConfig } from "@/hooks/useConfig";
 import { getFileURL } from "@/lib/utils";
 import { useOne } from "@refinedev/core";
+import { Skeleton } from "../ui/skeleton";
+import ItemSkeleton from "../skeletons/ItemSkeleton";
 
 type CheckoutItemProps = {
   itemCode: string;
@@ -15,7 +17,7 @@ const CheckoutItem = ({ itemCode, qty }: CheckoutItemProps) => {
   });
 
   if (isLoading) {
-    return <li>Loading...</li>;
+    return <ItemSkeleton />
   }
 
   const item = data?.message.product_info;

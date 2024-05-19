@@ -7,17 +7,6 @@ import {
   useLogout,
   useTranslate,
 } from "@refinedev/core";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { AppNavigationMenu } from "./AppNavigationMenu";
 import Cart from "../cart/Cart";
 import Wishlist from "../wishlist/Wishlist";
@@ -28,6 +17,8 @@ import { Skeleton } from "../ui/skeleton";
 import Logo from "../customComponents/Logo";
 import { LogIn02 } from "@untitled-ui/icons-react";
 import Search from "./Search";
+import MainAlertDialog from "../customComponents/MainAlertDialog";
+import { useEffect, useState } from "react";
 
 const Header = () => {
   const t = useTranslate();
@@ -43,39 +34,15 @@ const Header = () => {
   const { mutate: logout } = useLogout();
   const go = useGo();
 
-  const LogoutDialog = () => {
-    return (
-      <AlertDialog>
-        <AlertDialogTrigger>
-          <Button
-            size="icon"
-            className="!bg-transparent text-sm"
-            variant="ghost"
-          >
-            <LogIn02 className="h-[22px] w-[22px]" />
-          </Button>
-        </AlertDialogTrigger>
-        <AlertDialogContent className="w-[456px] p-8 !rounded-2xl">
-          <AlertDialogHeader className="flex flex-col gap-y-2 items-center">
-            <AlertDialogTitle className="text-2xl font-semibold text-center">
-              {t("Logout")}?
-            </AlertDialogTitle>
-            <AlertDialogDescription className="text-darkgray-500 text-base text-center">
-              {t("Logout desc")}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter className="mt-2">
-            <AlertDialogCancel className="main-btn bg-accent border-darkgray-100">
-              {t("Cancel")}
-            </AlertDialogCancel>
-            <AlertDialogAction className="main-btn" onClick={() => logout()}>
-              {t("Logout")}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    );
-  };
+  {
+    /* Create the state in case the searchbar sheet will close if users have searched for the products or clicked the 'cancel' button */
+  }
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
+
+  useEffect(() => {
+    isSearching && setSearchInput("");
+  }, [isSearching]);
 
   const LogoButton = () => {
     return (
@@ -171,7 +138,22 @@ const Header = () => {
                     >
                       {profile?.user?.name}
                     </Button>
-                    <LogoutDialog />
+                    <MainAlertDialog
+                      trigger={
+                        <Button
+                          size="icon"
+                          className="!bg-transparent text-sm"
+                          variant="ghost"
+                        >
+                          <LogIn02 className="h-[22px] w-[22px]" />
+                        </Button>
+                      }
+                      title={t("Logout")}
+                      description={t("Logout desc")}
+                      cancel={t("Cancel")}
+                      action={t("Logout")}
+                      onClickAction={() => logout()}
+                    />
                   </div>
                 ) : (
                   <Button
@@ -192,7 +174,7 @@ const Header = () => {
 
           {config?.is_search_enabled == 1 && <Search />}
 
-          {config?.enable_wishlist == 1 && <Wishlist />}
+          {config?.enable_wishlist == 1 && <Wishlist isHiddenOnMobile={true} />}
           <Cart />
         </div>
       </div>

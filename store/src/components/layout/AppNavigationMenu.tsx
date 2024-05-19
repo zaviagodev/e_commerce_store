@@ -27,12 +27,12 @@ export function AppNavigationMenu() {
   }, [data?.message.results]);
 
   return (
-    <NavigationMenu>
+    <NavigationMenu className="static xl:relative">
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuTrigger className="font-semibold text-base">{t("Categories")}</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+          <NavigationMenuContent className="!w-screen xl:!max-w-[1136px] text-base px-6 py-10">
+            <ul className="grid gap-3 grid-cols-4"> {/* Original grid columns: lg:grid-cols-[.75fr_1fr] */}
               <RecursiveComponent data={{ ...categories }} />
             </ul>
           </NavigationMenuContent>
@@ -82,10 +82,10 @@ const RecursiveComponent = ({ data }) => {
   return (
     <>
       {pairs.map(([categoryName, value]) => (
-        <div>
+        <div className="flex flex-col gap-y-3">
           <li
             key={categoryName}
-            className="ml-2 cursor-pointer"
+            className="ml-2 cursor-pointer font-semibold hover:text-black"
             onClick={() =>
               go({
                 to: `/`,
@@ -104,7 +104,7 @@ const RecursiveComponent = ({ data }) => {
           >
             {categoryName}
           </li>
-          <ul>
+          <ul className="text-darkgray-300 text-sm">
             <RecursiveComponent data={value} />
           </ul>
         </div>
