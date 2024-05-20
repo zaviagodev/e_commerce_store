@@ -63,7 +63,7 @@ export function OrderHistoryTable({
     },
     {
       accessorKey: "grand_total",
-      header: t("Grand Total"),
+      header: t("Grand total"),
       align: "right",
       cell: ({ row }: any) => (
         <div className="capitalize">฿ {row["grand_total"].toFixed(2)}</div>

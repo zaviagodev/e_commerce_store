@@ -88,7 +88,7 @@ const OrderDetail = () => {
           <span className="text-sm font-bold">{order.transaction_date}</span>
         </li>
         <li className="flex items-center justify-between">
-          <span className="text-sm text-darkgray-200">{t("Grand Total")}</span>
+          <span className="text-sm text-darkgray-200">{t("Grand total")}</span>
           <span className="text-sm font-bold">
             {formatCurrency(order.grand_total)}
           </span>
