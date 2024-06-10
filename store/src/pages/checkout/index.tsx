@@ -205,7 +205,7 @@ const Checkout = () => {
                         >
                           {(paymentMethods?.message ?? [])?.map(
                             (method: any) => (
-                              <div>
+                              <div key={method.key}>
                                 <RadioGroupItem
                                   value={method.name}
                                   id={method.key}
@@ -286,7 +286,7 @@ const Header = () => {
 
 const CartList = () => {
   const t = useTranslate();
-  const { cart, serverCart, cartTotal, cartCount, resetCart } = useCart();
+  const { cart, serverCart, cartTotal } = useCart();
   const checkoutSummary = useSummary(serverCart?.message.doc);
   return (
     <section>
