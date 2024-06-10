@@ -98,7 +98,7 @@ export const BankUploadSlip = () => {
         payment_method_key: selectedPaymentMethod.key,
         bank: "",
       },
-      file: {} as File,
+      file: "",
     },
     mode: "onChange",
   });
@@ -166,22 +166,28 @@ export const BankUploadSlip = () => {
                   </FormLabel>
                   <FormControl>
                     <RadioGroup
-                      className="flex flex-col gap-y-2 mt-2"
                       {...field}
+                      className="flex flex-col gap-y-2 mt-2"
+                      value={form.getValues("payment_info.bank")}
+                      onValueChange={(value) =>
+                        form.setValue("payment_info.bank", value)
+                      }
                     >
                       {selectedPaymentMethod.banks_list.map((bank: any) => (
-                        <div
+                        <label
+                          htmlFor={bank.bank}
                           key={bank.bank}
                           className={`flex items-center p-4 bg-accent border ${
                             form.getValues("payment_info.bank") === bank.bank
                               ? "border-primary"
                               : "border-darkgray-100"
                           } rounded-xl cursor-pointer`}
-                          onClick={() =>
-                            form.setValue("payment_info.bank", bank.bank)
-                          }
                         >
-                          <RadioGroupItem value={bank.bank} className="mx-2" />
+                          <RadioGroupItem
+                            className="mx-2"
+                            id={bank.bank}
+                            value={bank.bank}
+                          />
                           <img
                             src="https://source.unsplash.com/1600x900/?bank"
                             alt={bank.bank}
@@ -196,7 +202,7 @@ export const BankUploadSlip = () => {
                               {t("Account Name")}: {bank.bank_account_name}
                             </p>
                           </div>
-                        </div>
+                        </label>
                       ))}
                     </RadioGroup>
                   </FormControl>
@@ -215,16 +221,15 @@ export const BankUploadSlip = () => {
                   </FormLabel>
                   <FormControl>
                     <ImageInput
+                      {...field}
+                      value={field.value as any}
                       name="file"
-                      value={
-                        File.prototype.isPrototypeOf(form.watch("file"))
-                          ? (form.getValues("file") as File)
-                          : null
-                      }
                       onChange={(files) =>
-                        form.setValue("file", files ? files[0] : {})
+                        form.setValue("file", files ? files[0] : "", {
+                          shouldValidate: true,
+                        })
                       }
-                      onRemove={() => form.setValue("file", {})}
+                      onRemove={() => form.setValue("file", "")}
                     />
                   </FormControl>
                   <FormMessage />

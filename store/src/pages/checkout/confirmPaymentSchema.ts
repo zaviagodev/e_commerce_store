@@ -16,8 +16,6 @@ export const confirmPaymentSchema = yup.object().shape({
       if (value == "") {
         return false;
       }
-      console.log("value", value);
-
       if (typeof value !== "string") {
         const supportedFormats = ["png", "jpg", "jpeg"];
         return supportedFormats.includes(value?.name.split(".").pop());

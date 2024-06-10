@@ -217,15 +217,13 @@ export const QRUploadSlip = () => {
                   </FormLabel>
                   <FormControl>
                     <ImageInput
-                      // {...field}
+                      {...field}
                       name="file"
-                      // value={
-                      //   File.prototype.isPrototypeOf(form.watch("file"))
-                      //     ? (form.getValues("file") as any)
-                      //     : ""
-                      // }
+                      value={field.value as any}
                       onChange={(files) =>
-                        form.setValue("file", files ? files[0] : "")
+                        form.setValue("file", files ? files[0] : "", {
+                          shouldValidate: true,
+                        })
                       }
                       onRemove={() => form.setValue("file", "")}
                     />
