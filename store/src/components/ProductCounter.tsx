@@ -6,9 +6,14 @@ import { useTranslate } from "@refinedev/core";
 type ProductCounterProps = {
   itemCode: string;
   size: "sm" | "lg";
+  type: "readonly" | "editable";
 };
 
-const ProductCounter = ({ itemCode, size = "sm" }: ProductCounterProps) => {
+const ProductCounter = ({
+  itemCode,
+  size = "sm",
+  type = "editable",
+}: ProductCounterProps) => {
   const t = useTranslate();
   const { cart, addToCart } = useCart();
   return (
@@ -23,7 +28,16 @@ const ProductCounter = ({ itemCode, size = "sm" }: ProductCounterProps) => {
         >
           <Minus className={size === "sm" ? "h-3 w-3" : "h-5 w-5"} />
         </Button>
-        <span className="px-2">{cart[itemCode] ?? 0}</span>
+        {type === "editable" ? (
+          <input
+            className="w-min text-center !bg-darkgray-100"
+            type="number"
+            value={cart[itemCode] ?? 0}
+            onChange={(e) => addToCart(itemCode, +e.target.value)}
+          />
+        ) : (
+          <span className="px-2">{cart[itemCode] ?? 0}</span>
+        )}
         <Button
           variant="ghost"
           size={size}

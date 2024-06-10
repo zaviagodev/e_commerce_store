@@ -129,7 +129,13 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
   const addToCart = async (itemCode: string, quantity?: number) => {
     setCart((prevCart) => {
-      if (quantity) {
+      if (quantity && quantity >= 0) {
+        return {
+          ...prevCart,
+          [itemCode]: quantity,
+        };
+      }
+      if (quantity && quantity < 0) {
         const newQty = (prevCart[itemCode] ?? 0) + quantity;
         if (newQty <= 0) {
           return {
