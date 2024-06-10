@@ -40,7 +40,7 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
     setFilters,
     setPageSize,
   } = useTable();
-
+  console.log("pageCount", pageCount);
   // set the page size from the config for pagination
   useEffect(() => {
     if (config?.products_per_page) {
@@ -142,21 +142,23 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
                   disabled={!getCanPreviousPage()}
                 />
               </PaginationItem>
-              {pageCount > numberOfLastPageLinks &&
-                Array.from({
-                  length: 4,
-                }).map((_, index) => {
-                  return (
-                    <PaginationItem key={index} className="hidden md:block">
-                      <PaginationLink
-                        onClick={() => setCurrent(index + 1)}
-                        disabled={current === index + 1}
-                      >
-                        {index + 1}
-                      </PaginationLink>
-                    </PaginationItem>
-                  );
-                })}
+              {Array.from({
+                length: 4,
+              }).map((_, index) => {
+                if (index + 1 > pageCount) {
+                  return null;
+                }
+                return (
+                  <PaginationItem key={index} className="hidden md:block">
+                    <PaginationLink
+                      onClick={() => setCurrent(index + 1)}
+                      disabled={current === index + 1}
+                    >
+                      {index + 1}
+                    </PaginationLink>
+                  </PaginationItem>
+                );
+              })}
               {pageCount > numberOfLastPageLinks && (
                 <PaginationItem>
                   <PaginationEllipsis />
@@ -166,6 +168,13 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
                 Array.from({
                   length: 4,
                 }).map((_, index) => {
+                  if (
+                    pageCount - (numberOfLastPageLinks - 1) + index <
+                      numberOfLastPageLinks ||
+                    pageCount - (numberOfLastPageLinks - 1) + index > pageCount
+                  ) {
+                    return null;
+                  }
                   return (
                     <PaginationItem key={index} className="hidden md:block">
                       <PaginationLink
