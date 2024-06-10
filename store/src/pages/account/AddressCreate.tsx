@@ -1,6 +1,6 @@
 import AddressForm from "@/components/forms/AddressForm";
 import { Button } from "@/components/ui/button";
-import { useBack, useCreate, useTranslate } from "@refinedev/core";
+import { useCreate, useTranslate } from "@refinedev/core";
 
 // Used for opening the modal, which was created on 'Addresses.tsx', and when users click on the 'cancel' button
 type AddressCreateProps = {
@@ -9,16 +9,7 @@ type AddressCreateProps = {
 
 const AddressCreate = ({ setIsOpen }: AddressCreateProps) => {
   const t = useTranslate();
-  const back = useBack();
-  const { mutate, isLoading } = useCreate({
-    mutationOptions: {
-      onSettled: (data, err) => {
-        if (!err) {
-          back();
-        }
-      },
-    },
-  });
+  const { mutate, isLoading } = useCreate();
 
   return (
     <div className="lg:w-[410px] mx-auto">
