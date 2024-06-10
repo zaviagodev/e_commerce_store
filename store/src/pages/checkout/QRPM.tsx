@@ -58,7 +58,16 @@ export const QRPMDetail = () => {
             </Label>
             <strong className="flex items-center -mr-2">
               {selectedPaymentMethod.promptpay_number}
-              <Button size="icon" variant="link" className="text-accent">
+              <Button
+                size="icon"
+                variant="link"
+                className="text-accent"
+                onClick={() =>
+                  navigator.clipboard.writeText(
+                    selectedPaymentMethod.promptpay_number
+                  )
+                }
+              >
                 <Copy className="h-4 w-4 text-gray-700" />
               </Button>
             </strong>
@@ -116,7 +125,7 @@ export const QRUploadSlip = () => {
         payment_method_key: selectedPaymentMethod.key,
         bank: selectedPaymentMethod.account_name,
       },
-      file: {} as File,
+      file: "",
     },
     mode: "onChange",
   });
@@ -208,16 +217,17 @@ export const QRUploadSlip = () => {
                   </FormLabel>
                   <FormControl>
                     <ImageInput
+                      // {...field}
                       name="file"
-                      value={
-                        File.prototype.isPrototypeOf(form.watch("file"))
-                          ? (form.getValues("file") as File)
-                          : null
-                      }
+                      // value={
+                      //   File.prototype.isPrototypeOf(form.watch("file"))
+                      //     ? (form.getValues("file") as any)
+                      //     : ""
+                      // }
                       onChange={(files) =>
-                        form.setValue("file", files ? files[0] : {})
+                        form.setValue("file", files ? files[0] : "")
                       }
-                      onRemove={() => form.setValue("file", {})}
+                      onRemove={() => form.setValue("file", "")}
                     />
                   </FormControl>
                   <FormMessage />
