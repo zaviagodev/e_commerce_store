@@ -30,6 +30,7 @@ import _debounce from "lodash/debounce";
 
 interface Cart {
   cart: Record<string, number | undefined>;
+  isServerCartLoading: boolean;
   serverCart: Record<string, any>;
   cartCount: number;
   addToCart: (itemCode: string, quantity?: number) => void;
@@ -42,6 +43,7 @@ interface Cart {
 
 export const CartContext = createContext<Cart>({
   cart: {},
+  isServerCartLoading: false,
   serverCart: {},
   cartCount: 0,
   addToCart: () => {},
@@ -64,7 +66,13 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const { isLoading, data: authState } = useIsAuthenticated();
   const queryClient = useQueryClient();
 
-  const { data: serverCart, refetch: refreshServerCart } = useQuery({
+  const {
+    data: serverCart,
+    refetch: refreshServerCart,
+    isLoading: isServerCartLoading,
+    isFetching: isServerCartFetching,
+    isRefetching: isServerCartRefetching,
+  } = useQuery({
     queryKey: ["data", "storeProvider", "cart", "list", {}],
     queryFn: serverSideCart.get,
     enabled: authState?.authenticated && !isLoading,
@@ -196,6 +204,8 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     <CartContext.Provider
       value={{
         cart,
+        isServerCartLoading:
+          isServerCartLoading || isServerCartFetching || isServerCartRefetching,
         serverCart,
         isOpen,
         cartCount,
