@@ -40,7 +40,7 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
     setFilters,
     setPageSize,
   } = useTable();
-  console.log("pageCount", pageCount);
+
   // set the page size from the config for pagination
   useEffect(() => {
     if (config?.products_per_page) {
@@ -64,6 +64,7 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
 
     if (resetPagenation == 1) {
       setCurrent(1);
+      setFilters([], "replace");
       SetURLSearchParams({
         resetPagenation: "0",
       });
@@ -169,7 +170,7 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
                   length: 4,
                 }).map((_, index) => {
                   if (
-                    pageCount - (numberOfLastPageLinks - 1) + index <
+                    pageCount - (numberOfLastPageLinks - 1) + index <=
                       numberOfLastPageLinks ||
                     pageCount - (numberOfLastPageLinks - 1) + index > pageCount
                   ) {
