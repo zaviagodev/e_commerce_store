@@ -212,12 +212,29 @@ const Checkout = () => {
                   />
                 )}
               </section>
-              <ShippingRuleSelect
-                initialShippingRule={serverCart?.message.shipping_rules?.find(
-                  ({ name }: { name: string }) =>
-                    name === serverCart?.message.doc.shipping_rule
-                )}
+              <FormField
+                control={form.control}
+                name="paymentMethod"
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel className="text-darkgray-200 font-semibold text-base">
+                        {t("Shipping Rule")}
+                      </FormLabel>
+                      <FormControl>
+                        <ShippingRuleSelect
+                          {...field}
+                          onSelect={(shippingRule) =>
+                            form.setValue("shippingRule", shippingRule.name)
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
               />
+
               <FormField
                 control={form.control}
                 name="paymentMethod"
