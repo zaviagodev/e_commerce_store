@@ -115,7 +115,7 @@ const Cart = () => {
                   ) : (
                     <Button
                       disabled={cartCount === 0}
-                      className="inset-2 w-full"
+                      className="inset-2 w-full rounded-xl"
                       size="lg"
                       onClick={() =>
                         navigate(cartCount > 0 ? "/checkout" : "/")

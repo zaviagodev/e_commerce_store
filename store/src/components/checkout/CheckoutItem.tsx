@@ -3,6 +3,7 @@ import { getFileURL } from "@/lib/utils";
 import { useOne } from "@refinedev/core";
 import { Skeleton } from "../ui/skeleton";
 import ItemSkeleton from "../skeletons/ItemSkeleton";
+import { useTranslation } from "react-i18next";
 
 type CheckoutItemProps = {
   itemCode: string;
@@ -15,6 +16,8 @@ const CheckoutItem = ({ itemCode, qty }: CheckoutItemProps) => {
     resource: "products",
     id: itemCode,
   });
+
+  const { t } = useTranslation()
 
   if (isLoading) {
     return <ItemSkeleton />
@@ -38,7 +41,10 @@ const CheckoutItem = ({ itemCode, qty }: CheckoutItemProps) => {
       <div className="flex-1">
         <p className="text-sm text-darkgray-500">{item.web_item_name}</p>
         <strong className="text-sm">
-          {qty} {`${item.uom}${(qty ?? 0) > 1 ? "s" : ""}`}
+          {/* {qty} {`${item.uom}${(qty ?? 0) > 1 ? "s" : ""}`} */}
+
+          {/* I have used the condition of item.uom === "Unit" to translate the word 'Unit' into Thai */}
+          {qty} {`${item.uom === "Unit" ? (qty ?? 0) > 1 ? t("Units") : t("Unit") : ""}`}
         </strong>
       </div>
       <div>

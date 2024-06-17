@@ -134,6 +134,8 @@
     "changeLang": "changeLang",
     "Item": "item",
     "Items": "items",
+    "Item2": "item",
+    "Items2": "items",
     "Shop now": "Shop now",
     "Related Products": "Related Products",
     "Order details": "Order details",
@@ -163,6 +165,8 @@
     "state": "State",
     "city": "City",
     "You don't have any orders yet.": "You don't have any orders yet.",
+    "Unit": "Unit",
+    "Units": "Units",
     "notifications": {
         "deleteSuccess": "Deleted successfully",
         "createSuccess": "Created successfully",

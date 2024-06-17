@@ -465,7 +465,7 @@ const TotalCart = () => {
       <div className="flex items-center justify-center gap-x-1 lg:justify-between text-sm text-darkgray-200">
         <p>{t("Grand total")}</p>
         <p>
-          {cartCount} {cartCount === 1 ? t("Item") : t("Items")}
+          {cartCount} {cartCount === 1 ? t("Item2") : t("Items2")}
         </p>
 
         <div className="lg:hidden flex items-center">

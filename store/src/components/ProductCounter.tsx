@@ -30,7 +30,7 @@ const ProductCounter = ({
         </Button>
         {type === "editable" ? (
           <input
-            className="w-min text-center !bg-darkgray-100"
+            className="w-[22px] text-center !bg-darkgray-100"
             type="number"
             value={cart[itemCode] ?? 0}
             onChange={(e) => addToCart(itemCode, +e.target.value)}

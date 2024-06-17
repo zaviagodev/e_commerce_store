@@ -244,7 +244,7 @@ function App() {
             </CartProvider>
             <RefineKbar />
             {config?.enable_i18n && (
-              <LangSelect className="fixed bottom-16 right-4 w-max max-w-[180px] z-30" />
+              <LangSelect className="fixed bottom-4 right-4 w-max max-w-[180px] z-30" />
             )}
             <UnsavedChangesNotifier />
             <DocumentTitleHandler />
