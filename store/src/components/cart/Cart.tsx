@@ -49,14 +49,19 @@ const Cart = () => {
             <FlipBackward className="h-5 w-5 cursor-pointer hover:opacity-75" />
           </SheetClose>
 
-          <SheetTitle className="!m-0 text-base">
+          <SheetTitle
+            className={`text-base ${
+              config?.enable_wishlist == 1 ? "!mx-0" : "!mx-auto"
+            }`}
+          >
             {t("Shopping Cart")}
           </SheetTitle>
-
-          <Heart
-            className="h-5 w-5 cursor-pointer hover:opacity-75 !m-0"
-            onClick={() => setIsOpen(true)}
-          />
+          {config?.enable_wishlist == 1 && (
+            <Heart
+              className="h-5 w-5 cursor-pointer hover:opacity-75 !m-0"
+              onClick={() => setIsOpen(true)}
+            />
+          )}
         </SheetHeader>
         {cartCount > 0 ? (
           <ul className="my-3 flex flex-col gap-y-9 pt-4">
@@ -122,7 +127,11 @@ const Cart = () => {
                   )}
                 </SheetClose>
 
-                <p className="text-darkgray-600 text-xs text-center">{t("Shipping fee and VAT (if available) are calculated when making a payment.")}</p>
+                <p className="text-darkgray-600 text-xs text-center">
+                  {t(
+                    "Shipping fee and VAT (if available) are calculated when making a payment."
+                  )}
+                </p>
               </div>
             </div>
           )}

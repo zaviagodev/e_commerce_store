@@ -3,7 +3,7 @@ import { useTranslate } from "@refinedev/core";
 
 type ImageInputProps = {
   name: string;
-  value?: File | FileList | null;
+  value?: File | FileList;
   onChange: (event: FileList | null) => void;
   onRemove: (event: any) => void;
 };

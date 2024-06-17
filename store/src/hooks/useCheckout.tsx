@@ -13,6 +13,7 @@ interface Checkout {
   selectedPaymentMethod: any;
   orderId: any;
   order: any;
+  orderItemQty: number;
   setOrderId: (value: string) => void;
 }
 
@@ -26,6 +27,7 @@ export const CheckoutContext = createContext<Checkout>({
   selectedPaymentMethod: null,
   orderId: null,
   order: null,
+  orderItemQty: 0,
   setOrderId: () => {},
 });
 
@@ -90,6 +92,10 @@ export const CheckoutProvider = ({
         selectedPaymentMethod,
         orderId: searchParams.get("orderId"),
         order: order?.message,
+        orderItemQty: order?.message?.items?.reduce(
+          (acc: number, item: any) => acc + item.qty,
+          0
+        ),
         setOrderId,
       }}
     >

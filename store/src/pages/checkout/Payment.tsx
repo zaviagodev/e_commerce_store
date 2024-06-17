@@ -60,7 +60,8 @@ const Summary = () => {
   const t = useTranslate();
   const [showDetails, setshowDetails] = useState(true);
   const { config } = useConfig();
-  const { orderId, order, selectedPaymentMethod, next } = useCheckout();
+  const { orderId, order, orderItemQty, selectedPaymentMethod, next } =
+    useCheckout();
   const checkoutSummary = useSummary(order);
   const { data: profile } = useGetIdentity();
 
@@ -108,8 +109,8 @@ const Summary = () => {
         <div className="flex items-center justify-between text-darkgray-200 text-sm">
           <p>{t("Grand total")}</p>
           <p className="font-semibold">
-            {order?.items?.length}{" "}
-            {t(order?.items?.length === 1 ? "Item" : "Items")}
+            {orderItemQty}{" "}
+            {t(orderItemQty === 1 ? "Item" : "Items")}
           </p>
         </div>
         <h2 className="text-4xl font-semibold text-primary text-center">

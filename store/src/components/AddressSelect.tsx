@@ -51,7 +51,7 @@ const AddressSelect = ({ onSelect, ...props }: AddressSelectProps) => {
 
   return (
     <>
-      {(data as any)?.length > 0 && (
+      {(data?.data ?? []).length > 0 && (
         <Sheet>
           <SheetTrigger className="-mb-24 mr-6">
             <ArrowRight className="h-6 w-6" />

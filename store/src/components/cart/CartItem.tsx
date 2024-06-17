@@ -60,7 +60,12 @@ const CartItem = ({ itemCode }: CartItemProps) => {
             >
               <Minus className="h-3 w-3" />
             </Button>
-            <span className="px-2">{cart[itemCode]}</span>
+            <input
+              className="w-10 text-center bg-slate-50"
+              type="number"
+              value={cart[itemCode] ?? 0}
+              onChange={(e) => addToCart(itemCode, +e.target.value)}
+            />
             <Button
               variant="ghost"
               size="sm"

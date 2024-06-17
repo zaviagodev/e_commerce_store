@@ -1,22 +1,18 @@
 import AddressForm from "@/components/forms/AddressForm";
 import { Button } from "@/components/ui/button";
-import { useBack, useCreate, useTranslate } from "@refinedev/core";
+import { useCreate, useTranslate } from "@refinedev/core";
 
 // Used for opening the modal, which was created on 'Addresses.tsx', and when users click on the 'cancel' button
 type AddressCreateProps = {
-  setIsOpen: (val: boolean) => void;
+  onCancel: () => void;
+  onSettled?: (data: any, error: any) => void;
 };
 
-const AddressCreate = ({ setIsOpen }: AddressCreateProps) => {
+const AddressCreate = ({ onCancel, onSettled }: AddressCreateProps) => {
   const t = useTranslate();
-  const back = useBack();
   const { mutate, isLoading } = useCreate({
     mutationOptions: {
-      onSettled: (data, err) => {
-        if (!err) {
-          back();
-        }
-      },
+      onSettled: onSettled,
     },
   });
 
@@ -30,11 +26,7 @@ const AddressCreate = ({ setIsOpen }: AddressCreateProps) => {
           <h1 className="font-semibold text-gray-500">
             {t("Add New Address")}
           </h1>
-          <Button
-            variant="link"
-            className="text-sm p-0"
-            onClick={() => setIsOpen(false)}
-          >
+          <Button variant="link" className="text-sm p-0" onClick={onCancel}>
             {t("Cancel")}
           </Button>
         </div>
@@ -47,7 +39,6 @@ const AddressCreate = ({ setIsOpen }: AddressCreateProps) => {
                 dataProviderName: "storeProvider",
                 values,
               });
-              setIsOpen && setIsOpen(false);
             }}
           />
         </div>

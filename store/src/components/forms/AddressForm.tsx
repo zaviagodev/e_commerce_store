@@ -127,12 +127,14 @@ const AddressForm = ({
               <FormControl>
                 <CountrySelect
                   {...field}
-                  onChange={({ value }) =>
+                  onChange={({ value }) => {
                     form.setValue("country", value, {
                       shouldDirty: true,
                       shouldTouch: true,
-                    })
-                  }
+                    });
+                    form.setValue("state", "");
+                    form.setValue("city", "");
+                  }}
                 />
               </FormControl>
               <FormMessage />
@@ -148,12 +150,13 @@ const AddressForm = ({
                 <StateSelect
                   {...field}
                   country={form.watch("country")}
-                  onChange={({ value }) =>
+                  onChange={({ value }) => {
                     form.setValue("state", value, {
                       shouldDirty: true,
                       shouldTouch: true,
-                    })
-                  }
+                    });
+                    form.setValue("city", "");
+                  }}
                 />
               </FormControl>
               <FormMessage />

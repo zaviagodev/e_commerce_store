@@ -21,7 +21,7 @@ export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
       <Helmet>
         <link
           rel="icon"
-          href={getFileURL(config?.brand_logo) ?? "/favicon.ico"}
+          href={getFileURL(config?.site_favicon) ?? getFileURL(config?.brand_logo) ?? "/favicon.ico"}
         />
         <title>{config?.company + " " + t("Store")}</title>
       </Helmet>

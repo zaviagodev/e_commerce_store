@@ -1,7 +1,14 @@
 import AddressCard from "@/components/AddressCard";
 import { Label } from "@/components/ui/label";
 import { useCart } from "@/hooks/useCart";
-import { useCreate, useCustom, useOne, useTranslate } from "@refinedev/core";
+import {
+  useCreate,
+  useCustom,
+  useCustomMutation,
+  useInvalidate,
+  useOne,
+  useTranslate,
+} from "@refinedev/core";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Landmark, Loader2, QrCode, ChevronDown, ArrowUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -34,6 +41,8 @@ import {
 } from "@untitled-ui/icons-react";
 import { formatCurrency } from "@/lib/utils";
 import ProductImage from "@/components/ProductImage";
+import CartListSkeleton from "@/components/skeletons/CartListSkeleton";
+import AddressDialog from "@/components/address/AddressDialog";
 
 export const paymentMethodIconMap: { [key: string]: React.ReactNode } = {
   "2": <Landmark className="mr-2 h-4 w-4" />,
@@ -58,6 +67,22 @@ const Checkout = () => {
     dataProviderName: "storeProvider",
     url: "payment_methods",
     method: "get",
+  });
+
+  const invalidate = useInvalidate();
+
+  const { mutate: mutateCartAddress } = useCustomMutation({
+    mutationOptions: {
+      onSettled(data, error) {
+        if (!error) {
+          invalidate({
+            dataProviderName: "storeProvider",
+            resource: "cart",
+            invalidates: ["list"],
+          });
+        }
+      },
+    },
   });
 
   const form = useForm({
@@ -170,22 +195,46 @@ const Checkout = () => {
                   )}
                 {address && <AddressCard {...address?.message} />}
                 {!address && (
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="w-full justify-start text-gray-500 border-darkgray-100 bg-accent rounded-xl px-4 font-semibold h-12.5"
-                    onClick={() => navigate("/account/addresses/new")}
-                  >
-                    <MarkerPin04 className="mr-2" /> {t("Add Address")}
-                  </Button>
+                  <AddressDialog
+                    onSettled={(data, err) => {
+                      if (data?.message.name) {
+                        mutateCartAddress({
+                          dataProviderName: "storeProvider",
+                          url: "update_cart_address",
+                          method: "put",
+                          values: {
+                            address_name: data.message.name,
+                            address_type: "shipping",
+                          },
+                        });
+                      }
+                    }}
+                  />
                 )}
               </section>
-              <ShippingRuleSelect
-                initialShippingRule={serverCart?.message.shipping_rules?.find(
-                  ({ name }: { name: string }) =>
-                    name === serverCart?.message.doc.shipping_rule
-                )}
+              <FormField
+                control={form.control}
+                name="paymentMethod"
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel className="text-darkgray-200 font-semibold text-base">
+                        {t("Shipping Rule")}
+                      </FormLabel>
+                      <FormControl>
+                        <ShippingRuleSelect
+                          {...field}
+                          onSelect={(shippingRule) =>
+                            form.setValue("shippingRule", shippingRule.name)
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
               />
+
               <FormField
                 control={form.control}
                 name="paymentMethod"
@@ -205,7 +254,7 @@ const Checkout = () => {
                         >
                           {(paymentMethods?.message ?? [])?.map(
                             (method: any) => (
-                              <div>
+                              <div key={method.key}>
                                 <RadioGroupItem
                                   value={method.name}
                                   id={method.key}
@@ -286,8 +335,13 @@ const Header = () => {
 
 const CartList = () => {
   const t = useTranslate();
-  const { cart, serverCart, cartTotal, cartCount, resetCart } = useCart();
+  const { cart, serverCart, cartTotal, isServerCartLoading } = useCart();
   const checkoutSummary = useSummary(serverCart?.message.doc);
+
+  if (isServerCartLoading) {
+    return <CartListSkeleton />;
+  }
+
   return (
     <section>
       <div className="flex flex-col gap-y-4 lg:mr-5">
@@ -388,7 +442,24 @@ const OrderDetailSheet = ({
 
 const TotalCart = () => {
   const t = useTranslate();
-  const { cartCount, serverCart } = useCart();
+  const { cartCount, serverCart, isServerCartLoading } = useCart();
+
+  if (isServerCartLoading) {
+    return (
+      <div className="flex flex-col items-center lg:items-start rounded-lg gap-y-4">
+        <div className="flex items-center justify-center gap-x-1 lg:justify-between text-sm text-darkgray-200">
+          <Skeleton className="w-12 h-5" />
+          <Skeleton className="w-10 h-5" />
+
+          <div className="lg:hidden flex items-center">
+            <OrderDetailSheet trigger={<ChevronDown className="h-4 w-4" />} />
+          </div>
+        </div>
+        <Skeleton className="w-28 h-12 " />
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col rounded-lg gap-y-4">
       <div className="flex items-center justify-center gap-x-1 lg:justify-between text-sm text-darkgray-200">
@@ -402,7 +473,7 @@ const TotalCart = () => {
         </div>
       </div>
 
-      {serverCart?.message.doc.grand_total ? (
+      {!isServerCartLoading ? (
         <h2 className="text-4xl font-semibold text-primary text-center lg:text-left">
           {formatCurrency(serverCart?.message.doc.grand_total)}
         </h2>

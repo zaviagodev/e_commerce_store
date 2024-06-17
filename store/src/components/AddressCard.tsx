@@ -3,6 +3,7 @@ import { useDelete, useTranslate } from "@refinedev/core";
 import { useNavigate } from "react-router-dom";
 import { Edit03, MarkerPin04, Trash01 } from "@untitled-ui/icons-react";
 import MainAlertDialog from "./customComponents/MainAlertDialog";
+import { trailingCountryCodeRegex } from "@/lib/utils";
 
 type AddressCardActions = {
   edit?: boolean;
@@ -70,8 +71,8 @@ const AddressCard = ({
               </>
             )}
             {(city || state || country) && <br />}
-            {city}
-            {state && `, ${state}`}
+            {city?.replace(trailingCountryCodeRegex, "")}
+            {state && `, ${state?.replace(trailingCountryCodeRegex, "")}`}
             {country && `, ${country}`}
             {pincode && `, ${pincode}`}
             {phone && (

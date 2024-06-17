@@ -23,6 +23,7 @@ import { MessageQuestionCircle, ShoppingBag01 } from "@untitled-ui/icons-react";
 import { Heart } from "lucide-react";
 import { useState } from "react";
 import { Toggle } from "@/components/ui/toggle";
+import { getFileURL } from "@/lib/utils";
 
 export const ProductShow: React.FC<IResourceComponentsProps> = () => {
   const [selectedVariant, setSelectedVariant] = useState();
@@ -105,12 +106,14 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
         <ProductImages
           images={[
             {
-              imageThumbSrc: `${import.meta.env.VITE_BACKEND_URL ?? ""}${
-                variant?.thumbnail ?? product.thumbnail
-              }`,
-              imageSrc: `${import.meta.env.VITE_BACKEND_URL ?? ""}${
-                variant?.thumbnail ?? product.thumbnail
-              }`,
+              imageThumbSrc:
+                getFileURL(variant?.thumbnail ?? product.thumbnail) ??
+                getFileURL(config?.default_product_image) ??
+                "",
+              imageSrc:
+                getFileURL(variant?.thumbnail ?? product.thumbnail) ??
+                getFileURL(config?.default_product_image) ??
+                "",
               alt: `${product.web_item_name} image`,
             },
           ]}
