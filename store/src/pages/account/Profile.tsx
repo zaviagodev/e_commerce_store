@@ -44,6 +44,7 @@ const Profile = () => {
           <AvatarImage
             src={previewAvatar ?? profile.user?.user_image}
             alt={`${profile.user?.full_name} profile image`}
+            onClick={() => avatar.current.click()}
           />
           <AvatarFallback>{profile.user?.full_name[0]}</AvatarFallback>
         </Avatar>
@@ -52,14 +53,14 @@ const Profile = () => {
             {profile.user?.full_name}
           </p>
           <p className="text-sm text-muted-foreground">{profile.user?.email}</p> */}
-          <Button
+          {/* <Button
             variant="link"
             size="sm"
             className="w-fit text-darkgray-500 p-0 font-semibold"
             onClick={() => avatar.current.click()}
           >
             {t("Edit Profile Picture")}
-          </Button>
+          </Button> */}
           <Input
             type="file"
             className="hidden"

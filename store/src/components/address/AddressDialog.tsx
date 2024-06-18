@@ -32,7 +32,7 @@ const AddressDialog = ({ onOpenChange, onSettled }: AddressDialogProps) => {
           <PlusCircle /> {t("Add New Address")}
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-full h-full max-w-none lg:h-fit lg:w-fit">
+      <DialogContent className="w-full h-full max-w-none lg:h-fit lg:w-[680px]">
         <AddressCreate
           onCancel={() => setIsOpen(false)}
           onSettled={(data, err) => {

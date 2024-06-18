@@ -16,6 +16,24 @@ import { registerSchema } from "./registerSchema";
 import { Loader2 } from "lucide-react";
 import { Eye, EyeOff } from "@untitled-ui/icons-react";
 import { useState } from "react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+
+type RegisterCompleteProps = {
+  username: string
+  password: string
+  isDone: boolean
+  setIsDone: () => void
+}
 
 export const Register = () => {
   const t = useTranslate();
@@ -23,6 +41,7 @@ export const Register = () => {
   const { mutate: login, isLoading: loggingIn } = useLogin();
 
   const [showPassword, setShowPassword] = useState(false)
+  const [successfulRegister, setSuccessfulRegister] = useState(false)
 
   const handleShowPassword = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
@@ -39,6 +58,28 @@ export const Register = () => {
     },
   });
 
+  const RegisterComplete = ({ username, password, isDone, setIsDone } : RegisterCompleteProps) => {
+    return (
+      <AlertDialog open={isDone} onOpenChange={setIsDone}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your account
+              and remove your data from our servers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction onClick={() => login({
+              username: username,
+              password: password,
+            })}>Continue</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    )
+  }
+
   return (
     <section>
       <div className="flex flex-col items-center justify-center gap-y-12 max-w-[410px] mx-auto">
@@ -50,10 +91,12 @@ export const Register = () => {
               onSubmit={form.handleSubmit((userdata) =>
                 register(userdata, {
                   onSuccess: () =>
-                    login({
-                      username: userdata.email,
-                      password: userdata.password,
-                    }),
+                    <RegisterComplete 
+                      username={userdata.email}
+                      password={userdata.password}
+                      setIsDone={() => setSuccessfulRegister(true)}
+                      isDone={successfulRegister}
+                    />
                 })
               )}
             >

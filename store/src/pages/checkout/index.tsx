@@ -245,32 +245,38 @@ const Checkout = () => {
                         {t("Payment Method")}
                       </FormLabel>
                       <FormControl>
-                        <RadioGroup
-                          {...field}
-                          className="grid grid-cols-2 gap-4 !m-0"
-                          onValueChange={(value) =>
-                            form.setValue("paymentMethod", value)
-                          }
-                        >
-                          {(paymentMethods?.message ?? [])?.map(
-                            (method: any) => (
-                              <div key={method.key}>
-                                <RadioGroupItem
-                                  value={method.name}
-                                  id={method.key}
-                                  className="peer sr-only"
-                                />
-                                <Label
-                                  htmlFor={method.key}
-                                  className="flex items-center justify-center border border-darkgray-100 p-4 bg-accent text-darkgray-500 font-semibold peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary rounded-xl"
-                                >
-                                  {paymentMethodIconMap[method.key ?? "2"]}
-                                  {method.name}
-                                </Label>
-                              </div>
-                            )
-                          )}
-                        </RadioGroup>
+                        {paymentMethods?.message?.length > 0 ? (
+                          <RadioGroup
+                            {...field}
+                            className="grid grid-cols-2 gap-4"
+                            onValueChange={(value) =>
+                              form.setValue("paymentMethod", value)
+                            }
+                          >
+                            {(paymentMethods?.message ?? [])?.map(
+                              (method: any) => (
+                                <div key={method.key}>
+                                  <RadioGroupItem
+                                    value={method.name}
+                                    id={method.key}
+                                    className="peer sr-only"
+                                  />
+                                  <Label
+                                    htmlFor={method.key}
+                                    className="flex items-center justify-center border border-darkgray-100 p-4 bg-accent text-darkgray-500 font-semibold peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary rounded-xl"
+                                  >
+                                    {paymentMethodIconMap[method.key ?? "2"]}
+                                    {method.name}
+                                  </Label>
+                                </div>
+                              )
+                            )}
+                          </RadioGroup>
+                        ) : (
+                          <div className="w-full overflow-hidden bg-accent border border-darkgray-100 rounded-xl shadow-none px-6 py-4 text-darkgray-200 text-sm font-semibold">
+                            {t('No payment methods. Please contact the store.')}
+                          </div>
+                        )}
                       </FormControl>
                       <FormMessage />
                     </FormItem>

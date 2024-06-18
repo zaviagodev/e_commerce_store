@@ -103,7 +103,7 @@ const AddressForm = ({
             </FormItem>
           )}
         />
-        <FormField
+        {/* <FormField
           control={form.control}
           name="address_line2"
           render={({ field }) => (
@@ -118,7 +118,7 @@ const AddressForm = ({
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
         <FormField
           control={form.control}
           name="country"

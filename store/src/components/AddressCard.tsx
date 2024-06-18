@@ -51,7 +51,7 @@ const AddressCard = ({
         <div className="flex items-center gap-x-4 !m-0">
           {actions.edit && (
             <Edit03
-              className="!m-0 h-5 w-5 cursor-pointer text-gray-500"
+              className="!m-0 h-5 w-5 cursor-pointer text-darkgray-200"
               onClick={() => navigate(`/account/addresses/${name}`)}
             />
           )}
@@ -100,7 +100,7 @@ export const DeletionConfirmation = ({ name }: DeletionConfirmationProps) => {
   return (
     <MainAlertDialog
       trigger={
-        <Trash01 className="!m-0 h-5 w-5 hover:text-destructive cursor-pointer text-gray-500" />
+        <Trash01 className="!m-0 h-5 w-5 hover:text-destructive cursor-pointer text-darkgray-200" />
       }
       title={t("Delete address.title")}
       description={

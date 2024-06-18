@@ -114,26 +114,30 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
         <ProductListSkeleton />
       ) : (
         <>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-12">
-            {(tableData?.data ?? []).map((item) => (
-              <ProductCard
-                key={item.item_code}
-                itemCode={item.item_code}
-                name={item.item_name}
-                price={item.formatted_price}
-                discount={item.discount}
-                originalPrice={item.formatted_mrp}
-                image={
-                  getFileURL(item.website_image) ??
-                  getFileURL(config?.default_product_image) ??
-                  ""
-                }
-                hasVariants={item.has_variants}
-                width={341}
-                height={341}
-              />
-            ))}
-          </div>
+          {(tableData?.data as any).length > 0 ? (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-12">
+              {(tableData?.data ?? []).map((item) => (
+                <ProductCard
+                  key={item.item_code}
+                  itemCode={item.item_code}
+                  name={item.item_name}
+                  price={item.formatted_price}
+                  discount={item.discount}
+                  originalPrice={item.formatted_mrp}
+                  image={
+                    getFileURL(item.website_image) ??
+                    getFileURL(config?.default_product_image) ??
+                    ""
+                  }
+                  hasVariants={item.has_variants}
+                  width={341}
+                  height={341}
+                />
+              ))}
+            </div>
+          ) : (
+            <p className="text-darkgray-200 text-sm font-semibold text-center mt-8">{t("No products in this category")}</p>
+          )}
           <Pagination>
             <PaginationContent>
               <PaginationItem>
