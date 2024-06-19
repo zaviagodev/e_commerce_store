@@ -37,7 +37,10 @@ type AddressFormProps = {
 };
 
 const AddressForm = ({
-  initialValues,
+  initialValues = {
+    new: true,
+    is_shipping_address: 1,
+  },
   onSubmit,
   isSubmitting,
 }: AddressFormProps) => {
@@ -228,7 +231,7 @@ const AddressForm = ({
               </FormItem>
             )}
           />
-          <FormField
+          {/* <FormField
             control={form.control}
             name="is_shipping_address"
             render={({ field }) => (
@@ -250,7 +253,7 @@ const AddressForm = ({
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
         </div>
 
         <Button
@@ -261,7 +264,7 @@ const AddressForm = ({
           }
         >
           {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {initialValues ? t("Update Address") : t("Add Address")}
+          {initialValues?.new ? t("Add Address") : t("Update Address")}
         </Button>
       </form>
     </Form>

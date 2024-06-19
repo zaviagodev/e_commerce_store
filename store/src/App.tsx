@@ -247,7 +247,7 @@ function App() {
               <LangSelect className="fixed bottom-16 right-4 w-max max-w-[180px] z-30" />
             )}
             <UnsavedChangesNotifier />
-            <DocumentTitleHandler />
+            <DocumentTitleHandler handler={() => config.site_name ?? "Store"} />
             <ToastContainer />
             <ReactQueryDevtools initialIsOpen={false} />
           </Refine>

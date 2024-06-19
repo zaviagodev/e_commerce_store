@@ -18,6 +18,7 @@ import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
 import { FlipBackward, ArrowRight } from "@untitled-ui/icons-react";
 import { Skeleton } from "./ui/skeleton";
+import AddressDialog from "./address/AddressDialog";
 
 type AddressSelectProps = {
   onSelect: (address: any) => void;
@@ -26,7 +27,6 @@ type AddressSelectProps = {
 
 const AddressSelect = ({ onSelect, ...props }: AddressSelectProps) => {
   const t = useTranslate();
-  const navigate = useNavigate();
   const { data, isLoading, isFetching, isRefetching } = useList({
     dataProviderName: "storeProvider",
     resource: "address",
@@ -48,12 +48,13 @@ const AddressSelect = ({ onSelect, ...props }: AddressSelectProps) => {
   if (isLoading || isFetching || isRefetching) {
     return <Skeleton className="w-4 h-4" />;
   }
+  console.log(data?.data ?? []);
 
   return (
     <>
       {(data?.data ?? []).length > 0 && (
         <Sheet>
-          <SheetTrigger className="-mb-24 mr-6">
+          <SheetTrigger className="-mb-24 mr-6 z-10">
             <ArrowRight className="h-6 w-6" />
           </SheetTrigger>
           <SheetContent className="overflow-y-scroll">
@@ -102,12 +103,25 @@ const AddressSelect = ({ onSelect, ...props }: AddressSelectProps) => {
                 </div>
               ))}
             </RadioGroup>
-            <Button
-              className="w-full px-4 text-base rounded-xl h-12.5 mt-9"
-              onClick={() => navigate("/account/addresses/new")}
+            <AddressDialog
+              onSettled={(data, err) => {
+                if (data?.message.name) {
+                  mutate({
+                    dataProviderName: "storeProvider",
+                    url: "update_cart_address",
+                    method: "put",
+                    values: {
+                      address_name: data.message.name,
+                      address_type: "shipping",
+                    },
+                  });
+                }
+              }}
             >
-              {t("Add Address")}
-            </Button>
+              <Button className="w-full px-4 text-base rounded-xl h-12.5 mt-9">
+                {t("Add Address")}
+              </Button>
+            </AddressDialog>
           </SheetContent>
         </Sheet>
       )}

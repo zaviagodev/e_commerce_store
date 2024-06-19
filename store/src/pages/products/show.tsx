@@ -229,11 +229,17 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
-            <div className="w-full flex justify-center h-10 items-center mt-6">
-              <Button variant="link" className="font-bold">
-                <MessageQuestionCircle className="mr-2" /> {t("Ask for help")}
-              </Button>
-            </div>
+            {config?.help_url && (
+              <div className="w-full flex justify-center h-10 items-center mt-6">
+                <Button
+                  variant="link"
+                  className="font-bold"
+                  onClick={() => window.open(config.help_url, "_blank")}
+                >
+                  <MessageQuestionCircle className="mr-2" /> {t("Ask for help")}
+                </Button>
+              </div>
+            )}
           </div>
         </section>
       </div>

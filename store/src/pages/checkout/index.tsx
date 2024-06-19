@@ -10,7 +10,14 @@ import {
   useTranslate,
 } from "@refinedev/core";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Landmark, Loader2, QrCode, ChevronDown, ArrowUp } from "lucide-react";
+import {
+  Landmark,
+  Loader2,
+  QrCode,
+  ChevronDown,
+  ArrowUp,
+  PlusCircle,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import CheckoutItem from "@/components/checkout/CheckoutItem";
@@ -43,6 +50,7 @@ import { formatCurrency } from "@/lib/utils";
 import ProductImage from "@/components/ProductImage";
 import CartListSkeleton from "@/components/skeletons/CartListSkeleton";
 import AddressDialog from "@/components/address/AddressDialog";
+import useConfig from "@/hooks/useConfig";
 
 export const paymentMethodIconMap: { [key: string]: React.ReactNode } = {
   "2": <Landmark className="mr-2 h-4 w-4" />,
@@ -52,6 +60,7 @@ export const paymentMethodIconMap: { [key: string]: React.ReactNode } = {
 const Checkout = () => {
   const t = useTranslate();
   const navigate = useNavigate();
+  const config = useConfig();
   const { cartCount, cart, serverCart, resetCart } = useCart();
 
   const { data: address, isLoading: addressLoading } = useOne({
@@ -209,7 +218,15 @@ const Checkout = () => {
                         });
                       }
                     }}
-                  />
+                  >
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      className="w-full px-4 border border-darkgray-100 bg-accent justify-start rounded-xl text-darkgray-500 flex items-center gap-x-2 h-[60px] font-semibold text-base focus-visible:ring-0 focus-visible:ring-offset-0"
+                    >
+                      <PlusCircle /> {t("Add New Address")}
+                    </Button>
+                  </AddressDialog>
                 )}
               </section>
               <FormField
@@ -297,15 +314,18 @@ const Checkout = () => {
                   <b className="text-primary">{t("Terms of Service")}</b>.
                 </p>
               </div>
-              <div className="w-full flex justify-center h-10 items-center">
-                <Button
-                  variant="link"
-                  className="font-bold text-base flex items-center gap-x-2"
-                >
-                  <MessageQuestionCircle className="h-5 w-5" />{" "}
-                  {t("Ask for help")}
-                </Button>
-              </div>
+              {config?.help_url && (
+                <div className="w-full flex justify-center h-10 items-center">
+                  <Button
+                    variant="link"
+                    className="font-bold text-base flex items-center gap-x-2"
+                    onClick={() => window.open(config?.help_url, "_blank")}
+                  >
+                    <MessageQuestionCircle className="h-5 w-5" />{" "}
+                    {t("Ask for help")}
+                  </Button>
+                </div>
+              )}
             </form>
           </Form>
         </div>

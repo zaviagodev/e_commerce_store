@@ -20,12 +20,14 @@ import { FlipBackward } from "@untitled-ui/icons-react";
 import { formatCurrency } from "@/lib/utils";
 import { MessageQuestionCircle, Download01 } from "@untitled-ui/icons-react";
 import OrderDetailSkeleton from "@/components/skeletons/OrderDetailSkeleton";
+import useConfig from "@/hooks/useConfig";
 
 const OrderDetail = () => {
   const [paymentMethod, setPaymentMethod] = useState();
   const t = useTranslate();
   const navigate = useNavigate();
   const params = useParams();
+  const config = useConfig();
   const { data, isLoading, isFetching, isRefetching } = useOne({
     id: params.id,
   });
@@ -210,9 +212,16 @@ const OrderDetail = () => {
         </div>
       </div>
       <div className="w-full flex justify-center h-10 items-center mt-8">
-        <Button variant="link" className="font-bold">
-          <MessageQuestionCircle className="mr-2 h-5 w-5" /> {t("Ask for help")}
-        </Button>
+        {config?.help_url && (
+          <Button
+            variant="link"
+            className="font-bold"
+            onClick={() => window.open(config.help_url, "_blank")}
+          >
+            <MessageQuestionCircle className="mr-2 h-5 w-5" />{" "}
+            {t("Ask for help")}
+          </Button>
+        )}
         <Button variant="link" className="font-bold">
           <Download01 className="mr-2 h-5 w-5" /> {t("Download receipt")}
         </Button>

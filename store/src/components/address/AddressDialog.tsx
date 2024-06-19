@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
-import { Button } from "../ui/button";
-import { PlusCircle } from "lucide-react";
 import { useTranslate } from "@refinedev/core";
 import AddressCreate from "@/pages/account/AddressCreate";
 
 type AddressDialogProps = {
   onOpenChange?: (state: boolean) => void;
   onSettled?: (data: any, error: any) => void;
+  children?: React.ReactNode;
 };
 
-const AddressDialog = ({ onOpenChange, onSettled }: AddressDialogProps) => {
+const AddressDialog = ({
+  onOpenChange,
+  onSettled,
+  children,
+}: AddressDialogProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const t = useTranslate();
   return (
@@ -23,15 +26,7 @@ const AddressDialog = ({ onOpenChange, onSettled }: AddressDialogProps) => {
       }}
       open={isOpen}
     >
-      <DialogTrigger className="w-full">
-        <Button
-          variant="outline"
-          size="lg"
-          className="w-full px-4 border border-darkgray-100 bg-accent justify-start rounded-xl text-darkgray-500 flex items-center gap-x-2 h-[60px] font-semibold text-base focus-visible:ring-0 focus-visible:ring-offset-0"
-        >
-          <PlusCircle /> {t("Add New Address")}
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger className="w-full">{children}</DialogTrigger>
       <DialogContent className="w-full h-full max-w-none lg:h-fit lg:w-fit">
         <AddressCreate
           onCancel={() => setIsOpen(false)}

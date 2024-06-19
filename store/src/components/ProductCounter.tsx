@@ -40,7 +40,7 @@ const ProductCounter = ({
           size={size}
           onClick={() =>
             type === "editable"
-              ? onCountChange && onCountChange(count + 1)
+              ? onCountChange && onCountChange(count - 1 >= 0 ? count - 1 : 0)
               : addToCart(itemCode, -1)
           }
           className="px-4 !bg-darkgray-100"

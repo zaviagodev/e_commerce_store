@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useDelete, useTranslate } from "@refinedev/core";
+import { useDelete, useInvalidate, useTranslate } from "@refinedev/core";
 import { useNavigate } from "react-router-dom";
 import { Edit03, MarkerPin04, Trash01 } from "@untitled-ui/icons-react";
 import MainAlertDialog from "./customComponents/MainAlertDialog";
@@ -96,6 +96,7 @@ type DeletionConfirmationProps = {
 
 export const DeletionConfirmation = ({ name }: DeletionConfirmationProps) => {
   const t = useTranslate();
+  const invalidate = useInvalidate();
   const { mutate } = useDelete();
   return (
     <MainAlertDialog
@@ -115,6 +116,17 @@ export const DeletionConfirmation = ({ name }: DeletionConfirmationProps) => {
           dataProviderName: "storeProvider",
           resource: "address",
           id: name,
+          successNotification: () => {
+            invalidate({
+              dataProviderName: "storeProvider",
+              resource: "cart",
+              invalidates: ["list"],
+            });
+            return {
+              type: "success",
+              message: t("Delete address.success"),
+            };
+          },
         })
       }
       asChild={true}
