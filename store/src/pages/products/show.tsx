@@ -27,11 +27,12 @@ import { getFileURL } from "@/lib/utils";
 
 export const ProductShow: React.FC<IResourceComponentsProps> = () => {
   const [selectedVariant, setSelectedVariant] = useState();
+  const [tempCartQty, setTempCartQty] = useState(0);
   const [variants, setVariants] = useState({});
   const [selectedAttributes, setSelectedAttributes] = useState({});
   const t = useTranslate();
   const { config } = useConfig();
-  const { addToCart } = useCart();
+  const { cart, addToCart } = useCart();
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
   const { queryResult, showId } = useShow({
     queryOptions: {
@@ -144,12 +145,23 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
           </div>
           <div className="pb-6 border-b">
             <div className="items-start flex flex-col gap-y-[14px]">
-              <ProductCounter itemCode={showId! as string} size="sm" />
+              <ProductCounter
+                size="sm"
+                itemCode={showId! as string}
+                type="editable"
+                count={tempCartQty}
+                onCountChange={(count) => setTempCartQty(count)}
+              />
               <div className="fixed bottom-0 left-0 bg-white lg:bg-inherit p-4 lg:p-0 lg:static flex lg:flex-col w-full gap-y-[14px] flex-col-reverse z-10">
                 <div className="flex items-center gap-x-[10px] w-full">
                   <Button
                     className="w-full rounded-xl h-12.5 text-base font-semibold"
-                    onClick={() => addToCart(itemCode)}
+                    onClick={() => {
+                      setTempCartQty((prevQty) => {
+                        addToCart(itemCode, (cart[itemCode] ?? 0) + prevQty);
+                        return 0;
+                      });
+                    }}
                   >
                     <ShoppingBag01 className="mr-2.5 h-5 w-5" />
                     {t("Add to Cart")}
