@@ -192,5 +192,7 @@
     "language": {
         "en": "English",
         "th": "Thai"
-    }
+    },
+    "Copy": "Copy",
+    "Copied": "Copied"
 }

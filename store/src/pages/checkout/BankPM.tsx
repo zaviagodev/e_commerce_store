@@ -21,10 +21,21 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { formatCurrency } from "@/lib/utils";
 import ImageInput from "@/components/forms/controls/ImageInput";
+import { ChangeEvent, useState, MouseEvent } from "react";
 
 export const BankPMDetail = () => {
   const t = useTranslate();
   const { selectedPaymentMethod, orderId, order, next } = useCheckout();
+
+  const [isTextCopied, setIsTextCopied] = useState<number | null>()
+
+  const copyAccountNumber = (acc: any, index: number) => {
+    navigator.clipboard.writeText(acc)
+    setIsTextCopied(index)
+    setTimeout(() => {
+      setIsTextCopied(null)
+    }, 1000)
+  }
 
   return (
     <>
@@ -38,7 +49,7 @@ export const BankPMDetail = () => {
           <Label className="text-base text-darkgray-200">{t("Order ID")}</Label>
           <strong>{orderId}</strong>
         </div>
-        {selectedPaymentMethod.banks_list.map((bank: any) => (
+        {selectedPaymentMethod.banks_list.map((bank: any, index: number) => (
           <div
             key={bank.bank}
             className="flex items-center p-4 bg-accent border border-darkgray-100 rounded-xl"
@@ -58,11 +69,12 @@ export const BankPMDetail = () => {
             <Button
               size="icon"
               variant="link"
-              className="text-accent"
-              onClick={() =>
-                navigator.clipboard.writeText(bank.bank_account_number)
-              }
+              className="text-accent relative group focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+              onClick={() => copyAccountNumber(bank.bank_account_number, index)}
             >
+              <p className={`absolute bg-[#111111] px-2 py-1.5 text-xs rounded-full group-hover:opacity-100 group-hover:visible group-hover:-top-6 -top-5 transition-all ${isTextCopied === index ? 'opacity-100 visible -top-6' : 'opacity-0 invisible'}`}>
+                {t(isTextCopied == index ? "Copied" : "Copy")}
+              </p>
               <Copy className="h-4 w-4 text-gray-700" />
             </Button>
           </div>
@@ -184,7 +196,7 @@ export const BankUploadSlip = () => {
                           } rounded-xl cursor-pointer`}
                         >
                           <RadioGroupItem
-                            className="mx-2"
+                            className="mx-2 w-auto"
                             id={bank.bank}
                             value={bank.bank}
                           />

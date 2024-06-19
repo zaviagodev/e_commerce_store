@@ -126,7 +126,7 @@ const Summary = () => {
           {t("Pay Now")}
         </Button>
         <Button
-          className="text-muted-foreground mt-2"
+          className="text-muted-foreground mt-2 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
           variant="link"
           onClick={() => setshowDetails((prevState) => !prevState)}
         >
