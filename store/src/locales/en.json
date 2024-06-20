@@ -140,7 +140,7 @@
     "Search products": "Search products...",
     "Cart details": "Cart details",
     "Hide cart details": "Hide cart details",
-    "Bank Account": "Bank account",
+    "Bank Account": "Bank Account",
     "New customer": "New customer",
     "Register to access special and new products, trends, discounts, and other promotions for members.": "Register to access special and new products, trends, discounts, and other promotions for members.",
     "Accept and sign up": "Accept and sign up",
@@ -182,6 +182,10 @@
     "When the products are added to cart, they will appear here.": "When the products are added to cart, they will appear here.",
     "Your wishlist is empty": "Your wishlist is empty",
     "When the products are added to wishlist, they will appear here.": "When the products are added to wishlist, they will appear here.",
+    "I accept the": "I accept the",
+    "terms and conditions": "terms and conditions",
+    "This includes the processing of my data for the purposes set out in the": "This includes the processing of my data for the purposes set out in the",
+    "Privacy policy and use of cookies": "Privacy policy and use of cookies",
     "language": {
         "en": "English",
         "th": "Thai"

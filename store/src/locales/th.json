@@ -185,6 +185,10 @@
   "When the products are added to cart, they will appear here.": "เมื่อเพิ่มสินค้าแล้ว รายการสินค้าจะปรากฏขึ้นที่นี่",
   "Your wishlist is empty": "รายการสินค้าของคุณว่างเปล่า",
   "When the products are added to wishlist, they will appear here.": "เมื่อเพิ่มสินค้าที่ถูกใจแล้ว รายการสินค้าจะปรากฏขึ้นที่นี่",
+  "I accept the": "ฉันยอมรับ",
+  "terms and conditions": "ข้อตกลงและเงื่อนไข",
+  "This includes the processing of my data for the purposes set out in the": "รวมถึงการประมวลผลข้อมูลของฉันตามจุดประสงค์ดังที่ระบุไว้ใน",
+  "Privacy policy and use of cookies": "นโยบายความเป็นส่วนตัวและการใช้งานคุกกี้",
   "language": {
     "en": "อังกฤษ",
     "th": "ไทย"

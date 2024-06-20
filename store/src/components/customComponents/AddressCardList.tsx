@@ -1,8 +1,7 @@
 import { useList } from "@refinedev/core";
-import AddressCard from "../AddressCard"
+import AddressCard from "../AddressCard";
 
 const AddressCardList = () => {
-
   const { data, isLoading } = useList();
 
   if (isLoading) {
@@ -15,6 +14,7 @@ const AddressCardList = () => {
         <AddressCard
           key={address.name}
           name={address.name}
+          address_title={address.address_title}
           phone={address.phone}
           address_line1={address.address_line1}
           address_line2={address.address_line2}
@@ -22,6 +22,7 @@ const AddressCardList = () => {
           country={address.country}
           state={address.state}
           pincode={address.pincode}
+          isActive={address.is_primary_address == 1}
           actions={{
             edit: true,
             delete: true,
@@ -29,7 +30,7 @@ const AddressCardList = () => {
         />
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default AddressCardList
+export default AddressCardList;

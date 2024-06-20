@@ -26,8 +26,9 @@ import { Toggle } from "@/components/ui/toggle";
 import { getFileURL } from "@/lib/utils";
 
 export const ProductShow: React.FC<IResourceComponentsProps> = () => {
+  const INITIAL_COUNT: string = "01";
   const [selectedVariant, setSelectedVariant] = useState();
-  const [tempCartQty, setTempCartQty] = useState(0);
+  const [tempCartQty, setTempCartQty] = useState(INITIAL_COUNT);
   const [variants, setVariants] = useState({});
   const [selectedAttributes, setSelectedAttributes] = useState({});
   const t = useTranslate();
@@ -159,7 +160,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
                     onClick={() => {
                       setTempCartQty((prevQty) => {
                         addToCart(itemCode, (cart[itemCode] ?? 0) + prevQty);
-                        return 0;
+                        return INITIAL_COUNT;
                       });
                     }}
                   >

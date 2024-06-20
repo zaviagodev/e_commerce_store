@@ -12,6 +12,7 @@ type AddressCardActions = {
 
 type AddressCardProps = {
   name: string;
+  address_title: string;
   phone?: string;
   address_line1?: string;
   address_line2?: string;
@@ -26,6 +27,7 @@ type AddressCardProps = {
 
 const AddressCard = ({
   name,
+  address_title,
   phone,
   address_line1,
   address_line2,
@@ -46,7 +48,7 @@ const AddressCard = ({
     <Card className="w-full overflow-hidden bg-accent border border-darkgray-100 rounded-xl shadow-none">
       <CardHeader className="flex flex-row justify-between items-center">
         <CardTitle className="text-base flex items-center gap-x-2 text-darkgray-500">
-          <MarkerPin04 /> {name}
+          <MarkerPin04 /> {address_title}
         </CardTitle>
         <div className="flex items-center gap-x-4 !m-0">
           {actions.edit && (

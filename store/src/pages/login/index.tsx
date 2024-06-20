@@ -21,12 +21,12 @@ export const Login = () => {
   const t = useTranslate();
   const { mutate: login, isLoading: loggingIn } = useLogin();
 
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleShowPassword = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    setShowPassword(!showPassword)
-  }
+    e.preventDefault();
+    setShowPassword(!showPassword);
+  };
 
   const form = useForm({
     resolver: yupResolver(loginSchema),
@@ -47,7 +47,9 @@ export const Login = () => {
               onSubmit={form.handleSubmit((creds) => login(creds))}
             >
               <div className="grid gap-3">
-                <h2 className="font-semibold text-darkgray-500 text-lg">{t("Sign in")}</h2>
+                <h2 className="font-semibold text-darkgray-500 text-lg">
+                  {t("Sign in")}
+                </h2>
                 <div className="grid gap-2">
                   <FormField
                     control={form.control}
@@ -58,7 +60,12 @@ export const Login = () => {
                           {t("Email/username")}
                         </FormLabel> */}
                         <FormControl>
-                          <Input disabled={loggingIn} placeholder={t("Email")} className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" {...field} />
+                          <Input
+                            disabled={loggingIn}
+                            placeholder={t("Email")}
+                            className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -75,37 +82,61 @@ export const Login = () => {
                           {t("Password")}
                         </FormLabel> */}
                         <FormControl>
-                          <Input disabled={loggingIn} type={showPassword ? "text" : "password"} className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" placeholder={t("Password")} {...field} />
+                          <Input
+                            disabled={loggingIn}
+                            type={showPassword ? "text" : "password"}
+                            className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none"
+                            placeholder={t("Password")}
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                  <button onClick={handleShowPassword} type="button" className="absolute right-4 top-4">
-                    {showPassword ? <Eye className="h-4 w-4"/> : <EyeOff className="h-4 w-4"/>}
+                  <button
+                    onClick={handleShowPassword}
+                    type="button"
+                    className="absolute right-4 top-4"
+                  >
+                    {showPassword ? (
+                      <Eye className="h-4 w-4" />
+                    ) : (
+                      <EyeOff className="h-4 w-4" />
+                    )}
                   </button>
                 </div>
                 <div className="flex items-center gap-x-3 mt-7">
-                  <Button type="submit" className="p-5 h-12.5 text-base font-semibold rounded-xl" disabled={loggingIn}>
+                  <Button
+                    type="submit"
+                    className="p-5 h-12.5 text-base font-semibold rounded-xl"
+                    disabled={loggingIn}
+                  >
                     {loggingIn && (
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     )}
                     {t("Login")}
                   </Button>
-                  <Link
+                  {/* TODO: resolve SMTP not configured issue <Link
                     to="/forgot-password"
                   >
                     <Button variant="outline" className="bg-accent border-darkgray-100 p-5 h-12.5 text-base font-semibold rounded-xl">
                       {t("Forgot password")}
                     </Button>
-                  </Link>
+                  </Link> */}
                 </div>
               </div>
             </form>
           </Form>
           <div className="flex flex-col gap-y-3">
-            <h2 className="font-semibold text-darkgray-500 text-lg">{t("New customer")}</h2>
-            <p className="text-darkgray-200">{t("Register to access special and new products, trends, discounts, and other promotions for members.")}</p>
+            <h2 className="font-semibold text-darkgray-500 text-lg">
+              {t("New customer")}
+            </h2>
+            <p className="text-darkgray-200">
+              {t(
+                "Register to access special and new products, trends, discounts, and other promotions for members."
+              )}
+            </p>
             <Link to="/register" className="mt-7 w-fit">
               <Button className="text-base h-12.5 rounded-xl font-semibold">
                 {t("Sign up")}

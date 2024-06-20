@@ -22,17 +22,18 @@ export const Register = () => {
   const { mutate: register, isLoading: signingUp } = useRegister();
   const { mutate: login, isLoading: loggingIn } = useLogin();
 
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleShowPassword = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    setShowPassword(!showPassword)
-  }
+    e.preventDefault();
+    setShowPassword(!showPassword);
+  };
 
   const form = useForm({
     resolver: yupResolver(registerSchema),
     defaultValues: {
       full_name: "",
+      // birth_date: "",
       email: "",
       password: "",
       confirm_password: "",
@@ -47,27 +48,30 @@ export const Register = () => {
           <Form {...form}>
             <form
               className="space-y-4"
-              onSubmit={form.handleSubmit((userdata) =>
+              onSubmit={form.handleSubmit((userdata) => {
+                userdata.full_name = userdata.email.split("@")[0];
                 register(userdata, {
                   onSuccess: () =>
                     login({
                       username: userdata.email,
                       password: userdata.password,
                     }),
-                })
-              )}
+                });
+              })}
             >
               <div className="grid gap-3">
-                <h2 className="font-semibold text-darkgray-500 text-lg">{t("Sign up")}</h2>
-                <div className="grid gap-2">
+                <h2 className="font-semibold text-darkgray-500 text-lg">
+                  {t("Sign up")}
+                </h2>
+                {/* <div className="grid gap-2">
                   <FormField
                     control={form.control}
                     name="full_name"
                     render={({ field }) => (
                       <FormItem>
-                        {/* <FormLabel htmlFor="full_name">
+                         <FormLabel htmlFor="full_name">
                           {t("Full name")}
-                        </FormLabel> */}
+                        </FormLabel> 
                         <FormControl>
                           <Input placeholder={`${t("Full name")} *`} disabled={(signingUp || loggingIn)} className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" {...field} />
                         </FormControl>
@@ -75,7 +79,27 @@ export const Register = () => {
                       </FormItem>
                     )}
                   />
-                </div>
+                </div> */}
+                {/* <div className="grid gap-2">
+                  <FormField
+                    control={form.control}
+                    name="birth_date"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <DatePicker
+                            mode="single"
+                            className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none"
+                            placeholder={`${t("Date of Birth")} *`}
+                            onSelect={(date) => form.setValue("dob", date)}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div> */}
                 <div className="grid gap-2">
                   <FormField
                     control={form.control}
@@ -86,7 +110,12 @@ export const Register = () => {
                           {t("Email/username")}
                         </FormLabel> */}
                         <FormControl>
-                          <Input placeholder={`${t("Email")} *`} disabled={(signingUp || loggingIn)} className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" {...field} />
+                          <Input
+                            placeholder={`${t("Email")} *`}
+                            disabled={signingUp || loggingIn}
+                            className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -103,14 +132,28 @@ export const Register = () => {
                           {t("Password")}
                         </FormLabel> */}
                         <FormControl>
-                          <Input type={showPassword ? "text" : "password"} disabled={(signingUp || loggingIn)} placeholder={`${t("Password")} *`} className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" {...field} />
+                          <Input
+                            type={showPassword ? "text" : "password"}
+                            disabled={signingUp || loggingIn}
+                            placeholder={`${t("Password")} *`}
+                            className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                  <button onClick={handleShowPassword} type="button" className="absolute right-4 top-4">
-                    {showPassword ? <Eye className="h-4 w-4"/> : <EyeOff className="h-4 w-4"/>}
+                  <button
+                    onClick={handleShowPassword}
+                    type="button"
+                    className="absolute right-4 top-4"
+                  >
+                    {showPassword ? (
+                      <Eye className="h-4 w-4" />
+                    ) : (
+                      <EyeOff className="h-4 w-4" />
+                    )}
                   </button>
                 </div>
                 <div className="grid gap-2">
@@ -123,17 +166,30 @@ export const Register = () => {
                           {t("Confirm password")}
                         </FormLabel> */}
                         <FormControl>
-                          <Input type="password" disabled={(signingUp || loggingIn)} placeholder={`${t("Confirm password")} *`} className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" {...field} />
+                          <Input
+                            type="password"
+                            disabled={signingUp || loggingIn}
+                            placeholder={`${t("Confirm password")} *`}
+                            className="form-input text-base focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
                 </div>
-                <p className="text-sm text-darkgray-200">ฉันยอมรับ 
-                  <span className="text-black">ข้อตกลงและเงื่อนไข</span> 
-                  รวมถึงการประมวลผลข้อมูลของฉันตามจุดประสงค์ดังที่ระบุไว้ใน 
-                  <span className="text-black">นโยบายความเป็นส่วนตัวและการใช้งานคุกกี้</span>
+                <p className="text-sm text-darkgray-200">
+                  {t("I accept the")}{" "}
+                  <span className="text-black">
+                    {t("terms and conditions")}{" "}
+                  </span>
+                  {t(
+                    "This includes the processing of my data for the purposes set out in the"
+                  )}{" "}
+                  <span className="text-black">
+                    {t("Privacy policy and use of cookies")}
+                  </span>
                 </p>
                 <Button
                   type="submit"
@@ -149,9 +205,14 @@ export const Register = () => {
             </form>
           </Form>
           <div className="mt-4 flex flex-col gap-y-3">
-            <p className="text-darkgray-200 text-sm">{t("Already have an account? Click here to sign in.")}</p>
+            <p className="text-darkgray-200 text-sm">
+              {t("Already have an account? Click here to sign in.")}
+            </p>
             <Link to="/login">
-              <Button variant="outline" className="w-full h-12.5 text-base rounded-xl bg-accent border-darkgray-100 font-semibold">
+              <Button
+                variant="outline"
+                className="w-full h-12.5 text-base rounded-xl bg-accent border-darkgray-100 font-semibold"
+              >
                 {t("Sign in")}
               </Button>
             </Link>

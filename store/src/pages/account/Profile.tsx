@@ -39,7 +39,7 @@ const Profile = () => {
       <h1 className="font-semibold text-darkgray-500 text-lg">
         {t("Account Details")}
       </h1>
-      <div className="flex items-center gap-3 mt-10">
+      {/* FIXME: make the upload field functional <div className="flex items-center gap-3 mt-10">
         <Avatar className="h-16 w-16">
           <AvatarImage
             src={previewAvatar ?? profile.user?.user_image}
@@ -48,10 +48,10 @@ const Profile = () => {
           <AvatarFallback>{profile.user?.full_name[0]}</AvatarFallback>
         </Avatar>
         <div className="grid gap-1">
-          {/* <p className="text-sm font-medium leading-none">
+           <p className="text-sm font-medium leading-none">
             {profile.user?.full_name}
           </p>
-          <p className="text-sm text-muted-foreground">{profile.user?.email}</p> */}
+          <p className="text-sm text-muted-foreground">{profile.user?.email}</p> 
           <Button
             variant="link"
             size="sm"
@@ -69,7 +69,7 @@ const Profile = () => {
             }
           />
         </div>
-      </div>
+      </div> */}
       <div className="mt-6">
         <h1 className="font-semibold text-darkgray-200 mb-2">
           {t("Profile information")}
