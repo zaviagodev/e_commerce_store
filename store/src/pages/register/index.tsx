@@ -101,7 +101,7 @@ export const Register = () => {
               )}
             >
               <div className="grid gap-3">
-                <h2 className="font-semibold text-darkgray-500 text-lg">{t("Sign up")}</h2>
+                <h2 className="font-semibold text-darkgray-500 text-lg">{t("Sign up2")}</h2>
                 <div className="grid gap-2">
                   <FormField
                     control={form.control}
@@ -186,7 +186,7 @@ export const Register = () => {
                   {(signingUp || loggingIn) && (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   )}
-                  {t("Accept and sign up")}
+                  {t("Sign up2")}
                 </Button>
               </div>
             </form>
@@ -195,7 +195,7 @@ export const Register = () => {
             <p className="text-darkgray-200 text-sm">{t("Already have an account? Click here to sign in.")}</p>
             <Link to="/login">
               <Button variant="outline" className="w-full h-12.5 text-base rounded-xl bg-accent border-darkgray-100 font-semibold">
-                {t("Sign in")}
+                {t("Login")}
               </Button>
             </Link>
           </div>

@@ -37,7 +37,7 @@ export const AddressEdit: React.FC<IResourceComponentsProps> = () => {
   });
 
   if (queryResult?.isLoading) {
-    return <div>Loading...</div>;
+    return <div>{t("Loading")}...</div>;
   }
 
   const address = queryResult.data.message;

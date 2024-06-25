@@ -60,6 +60,7 @@
     "Order summary": "Order summary",
     "Subtotal": "Subtotal",
     "Loading": "Loading",
+    "Searching": "Searching",
     "Shipping Cost": "Shipping cost",
     "Tax": "Tax",
     "Discount": "Discount",
@@ -98,6 +99,7 @@
     "Forgot your password?": "Forgot your password?",
     "Don't have an account?": "Don't have an account?",
     "Sign up": "Sign up",
+    "Sign up2": "Sign up",
     "username or Email is required": "username or Email is required",
     "Password is required": "Password is required",
     "Showing": "Showing",
@@ -146,7 +148,6 @@
     "Bank Account": "Bank account",
     "New customer": "New customer",
     "Register to access special and new products, trends, discounts, and other promotions for members.": "Register to access special and new products, trends, discounts, and other promotions for members.",
-    "Accept and sign up": "Accept and sign up",
     "Confirm": "Confirm",
     "We'll send you an email to reset your password.": "We'll send you an email to reset your password.",
     "Your email": "Your email",
@@ -195,5 +196,6 @@
     },
     "Copy": "Copy",
     "Copied": "Copied",
-    "No products found": "No products found"
+    "No products found": "No products found",
+    "Suggestions": "Suggestions"
 }
