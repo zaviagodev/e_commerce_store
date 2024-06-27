@@ -27,7 +27,7 @@ const OrderDetail = () => {
   const t = useTranslate();
   const navigate = useNavigate();
   const params = useParams();
-  const config = useConfig();
+  const { config } = useConfig();
   const { data, isLoading, isFetching, isRefetching } = useOne({
     id: params.id,
   });

@@ -60,7 +60,7 @@ export const paymentMethodIconMap: { [key: string]: React.ReactNode } = {
 const Checkout = () => {
   const t = useTranslate();
   const navigate = useNavigate();
-  const config = useConfig();
+  const { config } = useConfig();
   const { cartCount, cart, serverCart, resetCart } = useCart();
 
   const { data: address, isLoading: addressLoading } = useOne({
@@ -130,6 +130,8 @@ const Checkout = () => {
       values: {},
     });
   };
+
+  console.log("config", config);
 
   return (
     <div className="flex flex-col justify-center lg:gap-y-8 lg:flex-row mx-auto">
@@ -317,6 +319,7 @@ const Checkout = () => {
               {config?.help_url && (
                 <div className="w-full flex justify-center h-10 items-center">
                   <Button
+                    type="button"
                     variant="link"
                     className="font-bold text-base flex items-center gap-x-2"
                     onClick={() => window.open(config?.help_url, "_blank")}

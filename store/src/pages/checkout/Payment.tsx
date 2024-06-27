@@ -109,8 +109,7 @@ const Summary = () => {
         <div className="flex items-center justify-between text-darkgray-200 text-sm">
           <p>{t("Grand total")}</p>
           <p className="font-semibold">
-            {orderItemQty}{" "}
-            {t(orderItemQty === 1 ? "Item" : "Items")}
+            {orderItemQty} {t(orderItemQty === 1 ? "Item" : "Items")}
           </p>
         </div>
         <h2 className="text-4xl font-semibold text-primary text-center">
@@ -137,6 +136,7 @@ const Summary = () => {
         <div className="flex flex-col gap-y-4">
           <AddressCard
             name={order.shipping_address_name}
+            address_title={order.shipping_address_name.split("-")[0]}
             display={order.address_display}
           />
           <div className="flex flex-col mt-10">
