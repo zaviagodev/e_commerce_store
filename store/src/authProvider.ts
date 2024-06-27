@@ -74,12 +74,18 @@ export const authProvider: AuthBindings = {
           name: "Email or password is missing",
         },
       };
-    } catch (error) {
+    } catch (error: any) {
+      const errorPayload = error.response?.data._server_messages
+        ? JSON.parse(
+            JSON.parse(error.response?.data._server_messages || "[]")[0]
+          )
+        : error.response?.data;
+      // throw errorPayload?.message;
       return {
         success: false,
         error: {
           message: "Register failed",
-          name: "Invalid email or password",
+          name: errorPayload?.message ?? "Invalid email",
         },
       };
     }

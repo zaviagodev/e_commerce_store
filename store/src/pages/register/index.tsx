@@ -51,11 +51,14 @@ export const Register = () => {
               onSubmit={form.handleSubmit((userdata) => {
                 userdata.full_name = userdata.email.split("@")[0];
                 register(userdata, {
-                  onSuccess: () =>
-                    login({
-                      username: userdata.email,
-                      password: userdata.password,
-                    }),
+                  onSettled(data) {
+                    if (data?.success) {
+                      login({
+                        username: userdata.email,
+                        password: userdata.password,
+                      });
+                    }
+                  },
                 });
               })}
             >
