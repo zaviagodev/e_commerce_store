@@ -19,36 +19,40 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Input } from "@/components/ui/input";
+import { formatCurrency } from "@/lib/utils";
+import ImageInput from "@/components/forms/controls/ImageInput";
+import { ChangeEvent, useState, MouseEvent } from "react";
 
 export const BankPMDetail = () => {
   const t = useTranslate();
   const { selectedPaymentMethod, orderId, order, next } = useCheckout();
 
+  const [isTextCopied, setIsTextCopied] = useState<number | null>()
+
+  const copyAccountNumber = (acc: any, index: number) => {
+    navigator.clipboard.writeText(acc)
+    setIsTextCopied(index)
+    setTimeout(() => {
+      setIsTextCopied(null)
+    }, 1000)
+  }
+
   return (
     <>
-      <div className="mt-4 text-center">
+      <div className="mt-10 text-center">
         <h1 className="text-2xl font-bold text-primary">
           {t("Bank Transfer")}
         </h1>
-        <p>
-          {t(
-            "Select one of the bank account below and continue your payment with bank number,"
-          )}
-          {t(
-            "Note that the store admin may takes sometime to review the bank slip"
-          )}
-        </p>
       </div>
       <div className="mt-6 w-full flex flex-col gap-y-6">
         <div className="flex justify-between items-center">
-          <Label>{t("Order ID")}</Label>
+          <Label className="text-base text-darkgray-200">{t("Order ID")}</Label>
           <strong>{orderId}</strong>
         </div>
-        {selectedPaymentMethod.banks_list.map((bank: any) => (
+        {selectedPaymentMethod.banks_list.map((bank: any, index: number) => (
           <div
             key={bank.bank}
-            className="flex items-center p-2 bg-secondary rounded-lg"
+            className="flex items-center p-4 bg-accent border border-darkgray-100 rounded-xl"
           >
             <img
               src="https://source.unsplash.com/1600x900/?bank"
@@ -65,25 +69,27 @@ export const BankPMDetail = () => {
             <Button
               size="icon"
               variant="link"
-              className="text-accent"
-              onClick={() =>
-                navigator.clipboard.writeText(bank.bank_account_number)
-              }
+              className="text-accent relative group focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+              onClick={() => copyAccountNumber(bank.bank_account_number, index)}
             >
+              <p className={`absolute bg-[#111111] px-2 py-1.5 text-xs rounded-full group-hover:opacity-100 group-hover:visible group-hover:-top-6 -top-5 transition-all ${isTextCopied === index ? 'opacity-100 visible -top-6' : 'opacity-0 invisible'}`}>
+                {t(isTextCopied == index ? "Copied" : "Copy")}
+              </p>
               <Copy className="h-4 w-4 text-gray-700" />
             </Button>
           </div>
         ))}
-        <div className="flex flex-col bg-secondary p-6 rounded-lg">
-          <p className=" text-xs">{t("Grand total")}</p>
-          <h2 className="text-2xl font-semibold text-primary">
-            {new Intl.NumberFormat("th-TH", {
-              style: "currency",
-              currency: "THB",
-            }).format(order.grand_total)}
+        <div className="flex flex-col items-center rounded-lg space-y-6">
+          <p className="text-darkgray-200 text-sm">{t("Grand total")}</p>
+          <h2 className="text-4xl font-semibold text-primary text-center">
+            {formatCurrency(order.grand_total)}
           </h2>
         </div>
-        <Button size="lg" className="w-full" onClick={next}>
+        <Button
+          size="lg"
+          className="w-full h-12.5 text-base font-semibold rounded-xl"
+          onClick={next}
+        >
           {t("Upload Payment Slip")}
         </Button>
       </div>
@@ -104,7 +110,7 @@ export const BankUploadSlip = () => {
         payment_method_key: selectedPaymentMethod.key,
         bank: "",
       },
-      file: {} as any,
+      file: "",
     },
     mode: "onChange",
   });
@@ -137,28 +143,29 @@ export const BankUploadSlip = () => {
 
   return (
     <>
-      <div className="mt-4 text-center">
+      <div className="mt-10 text-center">
         <h1 className="text-2xl font-bold text-primary">
-          {t("Confirm your payment")}
+          {t("Payment Slip Confirm")}
         </h1>
       </div>
       <div className="mt-6 w-full flex flex-col gap-y-6">
-        <div className="flex justify-between items-center">
-          <Label>{t("Order ID")}</Label>
-          <strong>{orderId}</strong>
-        </div>
-        <div className="flex justify-between items-center">
-          <Label>{t("Total")}</Label>
-          <strong>
-            {new Intl.NumberFormat("th-TH", {
-              style: "currency",
-              currency: "THB",
-            }).format(order?.grand_total)}
-          </strong>
+        <div className="flex flex-col gap-y-2">
+          <div className="flex justify-between items-center">
+            <Label className="text-base text-darkgray-200">
+              {t("Order ID")}
+            </Label>
+            <strong>{orderId}</strong>
+          </div>
+          <div className="flex justify-between items-center">
+            <Label className="text-base text-darkgray-200">
+              {t("Grand total")}
+            </Label>
+            <strong>{formatCurrency(order?.grand_total)}</strong>
+          </div>
         </div>
         <Form {...form}>
           <form
-            className="flex flex-col gap-y-4"
+            className="flex flex-col gap-y-10"
             onSubmit={form.handleSubmit(onSubmit)}
           >
             <FormField
@@ -166,23 +173,33 @@ export const BankUploadSlip = () => {
               name="payment_info.bank"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
-                    {t("Select the Bank Account you transfered to")}
+                  <FormLabel className="text-base text-primary font-semibold">
+                    {t("Bank Account")} <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
                     <RadioGroup
-                      className="flex flex-col gap-y-2 mt-2"
                       {...field}
+                      className="flex flex-col gap-y-2 mt-2"
+                      value={form.getValues("payment_info.bank")}
+                      onValueChange={(value) =>
+                        form.setValue("payment_info.bank", value)
+                      }
                     >
                       {selectedPaymentMethod.banks_list.map((bank: any) => (
-                        <div
+                        <label
+                          htmlFor={bank.bank}
                           key={bank.bank}
-                          className="flex items-center p-2 bg-secondary rounded-lg cursor-pointer"
-                          onClick={() =>
-                            form.setValue("payment_info.bank", bank.bank)
-                          }
+                          className={`flex items-center p-4 bg-accent border ${
+                            form.getValues("payment_info.bank") === bank.bank
+                              ? "border-primary"
+                              : "border-darkgray-100"
+                          } rounded-xl cursor-pointer`}
                         >
-                          <RadioGroupItem value={bank.bank} className="mx-2" />
+                          <RadioGroupItem
+                            className="mx-2 w-auto"
+                            id={bank.bank}
+                            value={bank.bank}
+                          />
                           <img
                             src="https://source.unsplash.com/1600x900/?bank"
                             alt={bank.bank}
@@ -193,11 +210,11 @@ export const BankUploadSlip = () => {
                               {bank.bank}
                             </p>
                             <strong>{bank.bank_account_number}</strong>
-                            <p className="text-sm text-muted-foreground">
+                            <p className="text-sm text-darkgray-500 font-semibold">
                               {t("Account Name")}: {bank.bank_account_name}
                             </p>
                           </div>
-                        </div>
+                        </label>
                       ))}
                     </RadioGroup>
                   </FormControl>
@@ -210,18 +227,21 @@ export const BankUploadSlip = () => {
               name="file"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="slip">{t("Payment Slip *")}</FormLabel>
+                  <FormLabel className="text-base text-primary font-semibold">
+                    {t("Payment Slip *")}{" "}
+                    <span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
-                    <Input
-                      type="file"
-                      accept="image/*"
-                      className="mt-2"
-                      onChange={(e) =>
-                        form.setValue(
-                          "file",
-                          e.target.files ? e.target.files[0] : null
-                        )
+                    <ImageInput
+                      {...field}
+                      value={field.value as any}
+                      name="file"
+                      onChange={(files) =>
+                        form.setValue("file", files ? files[0] : "", {
+                          shouldValidate: true,
+                        })
                       }
+                      onRemove={() => form.setValue("file", "")}
                     />
                   </FormControl>
                   <FormMessage />
@@ -230,14 +250,14 @@ export const BankUploadSlip = () => {
             />
             <Button
               size="lg"
-              className="w-full"
+              className="w-full h-12.5 text-base font-semibold rounded-xl"
               type="submit"
               disabled={!form.formState.isValid || isConfirmingPayment}
             >
               {isConfirmingPayment && (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               )}
-              {t("Upload Payment Slip")}
+              {t("Confirm your payment")}
             </Button>
           </form>
         </Form>

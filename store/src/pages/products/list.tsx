@@ -4,14 +4,7 @@ import {
   useTranslate,
   useTable,
 } from "@refinedev/core";
-import React, { useCallback, useEffect } from "react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import React, { useEffect } from "react";
 import {
   Pagination,
   PaginationContent,
@@ -27,6 +20,8 @@ import { useSearchParams } from "react-router-dom";
 import usePagenation from "@/hooks/usePagenation";
 import { useConfig } from "@/hooks/useConfig";
 import { getFileURL } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
+import { FilterLines } from "@untitled-ui/icons-react";
 
 export const ProductList: React.FC<IResourceComponentsProps> = () => {
   const {
@@ -69,6 +64,7 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
 
     if (resetPagenation == 1) {
       setCurrent(1);
+      setFilters([], "replace");
       SetURLSearchParams({
         resetPagenation: "0",
       });
@@ -76,19 +72,33 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
   }, [filters, resetPagenation]);
 
   return (
-    <div style={{ padding: "16px" }}>
-      <h1 className="text-3xl font-semibold text-center">
-        {t("All products")}
-      </h1>
+    <div className="flex flex-col gap-y-6">
+      {isFetching || isLoading || isRefetching ? (
+        <Skeleton className="h-10 w-[200px] mx-auto mb-6" />
+      ) : (
+        <h1 className="text-4xl font-semibold text-center mb-6">
+          {t("All products")}
+        </h1>
+      )}
       <div className="flex justify-between items-center">
         <div>
-          <strong>{t("All products")}</strong> ({tableData?.total})
+          <strong>{t("All products")}</strong>
+          <span className="text-darkgray-300">
+            {" "}
+            {tableData?.total && (
+              <>
+                ({tableData?.total}{" "}
+                {t(tableData?.total === 1 ? "Item" : "Items")})
+              </>
+            )}
+          </span>
         </div>
         {/* TODO: integrate it later 
         <div className="flex items-center gap-4">
+          <FilterLines className="h-5 w-5"/>
           <strong>{t("Sort by")}</strong>
           <Select>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-[140px] bg-darkgray-100 border-0 text-[#7A7A7A] font-semibold h-9">
               <SelectValue placeholder="Theme" />
             </SelectTrigger>
             <SelectContent>
@@ -97,19 +107,23 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
               <SelectItem value="system">{t("Price Low to High")}</SelectItem>
             </SelectContent>
           </Select>
-        </div> */}
+        </div>
+        */}
       </div>
       {isFetching || isLoading || isRefetching ? (
         <ProductListSkeleton />
       ) : (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-1 my-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-12">
             {(tableData?.data ?? []).map((item) => (
               <ProductCard
                 key={item.item_code}
                 itemCode={item.item_code}
                 name={item.item_name}
                 price={item.formatted_price}
+                discount={item.discount}
+                originalPrice={item.formatted_mrp}
+                inStock={item.in_stock}
                 image={
                   getFileURL(item.website_image) ??
                   getFileURL(config?.default_product_image) ??
@@ -130,21 +144,23 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
                   disabled={!getCanPreviousPage()}
                 />
               </PaginationItem>
-              {pageCount > numberOfLastPageLinks &&
-                Array.from({
-                  length: 4,
-                }).map((_, index) => {
-                  return (
-                    <PaginationItem key={index} className="hidden md:block">
-                      <PaginationLink
-                        onClick={() => setCurrent(index + 1)}
-                        disabled={current === index + 1}
-                      >
-                        {index + 1}
-                      </PaginationLink>
-                    </PaginationItem>
-                  );
-                })}
+              {Array.from({
+                length: 4,
+              }).map((_, index) => {
+                if (index + 1 > pageCount) {
+                  return null;
+                }
+                return (
+                  <PaginationItem key={index} className="hidden md:block">
+                    <PaginationLink
+                      onClick={() => setCurrent(index + 1)}
+                      disabled={current === index + 1}
+                    >
+                      {index + 1}
+                    </PaginationLink>
+                  </PaginationItem>
+                );
+              })}
               {pageCount > numberOfLastPageLinks && (
                 <PaginationItem>
                   <PaginationEllipsis />
@@ -154,6 +170,13 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
                 Array.from({
                   length: 4,
                 }).map((_, index) => {
+                  if (
+                    pageCount - (numberOfLastPageLinks - 1) + index <=
+                      numberOfLastPageLinks ||
+                    pageCount - (numberOfLastPageLinks - 1) + index > pageCount
+                  ) {
+                    return null;
+                  }
                   return (
                     <PaginationItem key={index} className="hidden md:block">
                       <PaginationLink

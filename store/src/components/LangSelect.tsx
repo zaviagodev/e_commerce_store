@@ -7,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Globe } from "lucide-react";
 
 const LangSelect = (props: any) => {
   const { i18n } = useTranslation();
@@ -28,6 +29,7 @@ const LangSelect = (props: any) => {
   return (
     <Select value={currentLocale} onValueChange={changeLanguage}>
       <SelectTrigger {...props}>
+        <Globe className="w-4 h-4 mr-2 stroke-[1.5]"/>
         <SelectValue className="w-full" />
       </SelectTrigger>
       <SelectContent>

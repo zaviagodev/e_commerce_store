@@ -1,4 +1,3 @@
-import { Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { useOne } from "@refinedev/core";
 import { useWishlist } from "@/hooks/useWishlist";
@@ -6,6 +5,7 @@ import { Link } from "react-router-dom";
 import WishlistItemSkeleton from "../skeletons/WishlistItemSkeleton";
 import { getFileURL } from "@/lib/utils";
 import { useConfig } from "@/hooks/useConfig";
+import { Trash01 } from "@untitled-ui/icons-react";
 
 type WishlistItemProps = {
   itemCode: string;
@@ -42,8 +42,8 @@ const WishlistItem = ({ itemCode }: WishlistItemProps) => {
       </div>
       <div className="ml-[10px] flex flex-1 flex-col justify-between">
         <div>
-          <div className="flex justify-between text-gray-900">
-            <h3 className="text-texttag hover:underline text-[13px] leading-[17px]">
+          <div className="flex justify-between">
+            <h3 className="text-sm">
               <Link to={`/product/${itemCode}`}>{item.web_item_name}</Link>
             </h3>
             <p className="ml-4 whitespace-pre text-sm font-semibold">
@@ -58,7 +58,7 @@ const WishlistItem = ({ itemCode }: WishlistItemProps) => {
             className="w-5 text-gray-500 hover:text-gray-900 hover:bg-transparent"
             onClick={() => removeFromWishlist(itemCode)}
           >
-            <Trash2 size={18} />
+            <Trash01 className="h-5 w-5" />
           </Button>
         </div>
       </div>

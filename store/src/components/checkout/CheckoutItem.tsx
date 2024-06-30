@@ -1,6 +1,9 @@
 import { useConfig } from "@/hooks/useConfig";
 import { getFileURL } from "@/lib/utils";
 import { useOne } from "@refinedev/core";
+import { Skeleton } from "../ui/skeleton";
+import ItemSkeleton from "../skeletons/ItemSkeleton";
+import { useTranslation } from "react-i18next";
 
 type CheckoutItemProps = {
   itemCode: string;
@@ -14,32 +17,38 @@ const CheckoutItem = ({ itemCode, qty }: CheckoutItemProps) => {
     id: itemCode,
   });
 
+  const { t } = useTranslation()
+
   if (isLoading) {
-    return <li>Loading...</li>;
+    return <ItemSkeleton />
   }
 
   const item = data?.message.product_info;
+
   return (
-    <div key={itemCode} className="flex items-center gap-x-4">
-      <div className="w-12 h-12 bg-gray-300 rounded-md flex items-center justify-center">
+    <div key={itemCode} className="flex gap-x-4">
+      <div className="w-[53px] h-[53px] bg-gray-300 rounded-md overflow-hidden flex items-center justify-center">
         <img
           src={
             getFileURL(item.thumbnail) ??
             getFileURL(config?.default_product_image) ??
             ""
           }
-          alt="มินิบราวนี่ 18 ชิ้น | Mini-brownie 18 ps."
-          className="object-cover object-center"
+          alt={item.web_item_name || "product-item"}
+          className="object-cover w-full h-full"
         />
       </div>
       <div className="flex-1">
-        <p className="text-sm text-muted-foreground">{item.web_item_name}</p>
-        <strong className="text-darkgray">
-          {qty} {`${item.uom}${(qty ?? 0) > 1 ? "s" : ""}`}
+        <p className="text-sm text-darkgray-500">{item.web_item_name}</p>
+        <strong className="text-sm">
+          {/* {qty} {`${item.uom}${(qty ?? 0) > 1 ? "s" : ""}`} */}
+
+          {/* I have used the condition of item.uom === "Unit" to translate the word 'Unit' into Thai */}
+          {qty} {`${item.uom === "Unit" ? (qty ?? 0) > 1 ? t("Units") : t("Unit") : ""}`}
         </strong>
       </div>
       <div>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm font-semibold">
           {item.price?.formatted_price}
         </p>
       </div>

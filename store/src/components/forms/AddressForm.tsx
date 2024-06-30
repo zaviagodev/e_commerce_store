@@ -9,7 +9,6 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import { addressSchema } from "./addressSchema";
 import { useForm } from "@refinedev/react-hook-form";
 import { Loader2 } from "lucide-react";
@@ -17,6 +16,7 @@ import CountrySelect from "../CountrySelect";
 import CitySelect from "../CitySelect";
 import StateSelect from "../StateSelect";
 import { useTranslate } from "@refinedev/core";
+import { Switch } from "../ui/switch";
 
 type AddressFormProps = {
   initialValues?: {
@@ -37,7 +37,10 @@ type AddressFormProps = {
 };
 
 const AddressForm = ({
-  initialValues,
+  initialValues = {
+    new: true,
+    is_shipping_address: 1,
+  },
   onSubmit,
   isSubmitting,
 }: AddressFormProps) => {
@@ -51,14 +54,21 @@ const AddressForm = ({
 
   return (
     <Form {...form}>
-      <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+      <form
+        className="flex flex-col gap-y-3"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
         <FormField
           control={form.control}
           name="address_title"
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Title" {...field} />
+                <Input
+                  placeholder={`${t("address title")} *`}
+                  className="placeholder:text-darkgray-300 form-input focus-visible:ring-0 focus-visible:ring-offset-0"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -70,7 +80,11 @@ const AddressForm = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Phone" {...field} />
+                <Input
+                  placeholder={`${t("Phone")} *`}
+                  className="placeholder:text-darkgray-300 form-input focus-visible:ring-0 focus-visible:ring-offset-0"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -82,19 +96,49 @@ const AddressForm = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Address" {...field} />
+                <Input
+                  placeholder={`${t("Address line 1")} *`}
+                  className="placeholder:text-darkgray-300 form-input focus-visible:ring-0 focus-visible:ring-offset-0"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <FormField
+        {/* <FormField
           control={form.control}
           name="address_line2"
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Address Line 2" {...field} />
+                <Input
+                  placeholder={`${t("Address line 2")} *`}
+                  className="placeholder:text-darkgray-300 form-input focus-visible:ring-0 focus-visible:ring-offset-0"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        /> */}
+        <FormField
+          control={form.control}
+          name="country"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <CountrySelect
+                  {...field}
+                  onChange={({ value }) => {
+                    form.setValue("country", value, {
+                      shouldDirty: true,
+                      shouldTouch: true,
+                    });
+                    form.setValue("state", "");
+                    form.setValue("city", "");
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -109,40 +153,20 @@ const AddressForm = ({
                 <StateSelect
                   {...field}
                   country={form.watch("country")}
-                  onChange={({ value }) =>
+                  onChange={({ value }) => {
                     form.setValue("state", value, {
                       shouldDirty: true,
                       shouldTouch: true,
-                    })
-                  }
+                    });
+                    form.setValue("city", "");
+                  }}
                 />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="country"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <CountrySelect
-                  {...field}
-                  onChange={({ value }) =>
-                    form.setValue("country", value, {
-                      shouldDirty: true,
-                      shouldTouch: true,
-                    })
-                  }
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-3">
           <FormField
             control={form.control}
             name="city"
@@ -171,7 +195,11 @@ const AddressForm = ({
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input placeholder="Pincode" {...field} />
+                  <Input
+                    placeholder={`${t("Pincode")} *`}
+                    className="placeholder:text-darkgray-300 form-input focus-visible:ring-0 focus-visible:ring-offset-0"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -179,16 +207,17 @@ const AddressForm = ({
           />
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-y-6 my-7">
           <FormField
             control={form.control}
             name="is_primary_address"
             render={({ field }) => (
-              <FormItem className="flex items-end">
+              <FormItem className="flex items-center justify-between">
+                <FormLabel>{t("Primary Address")}</FormLabel>
                 <FormControl>
-                  <Checkbox
+                  <Switch
                     {...field}
-                    className="mr-2"
+                    className="!m-0 !bg-darkgray-100 data-[state=checked]:!bg-primary"
                     checked={form.watch("is_primary_address") === 1}
                     onCheckedChange={(checked) => {
                       form.setValue("is_primary_address", checked ? 1 : 0, {
@@ -198,20 +227,20 @@ const AddressForm = ({
                     }}
                   />
                 </FormControl>
-                <FormLabel>{t("Primary Address")}</FormLabel>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <FormField
+          {/* <FormField
             control={form.control}
             name="is_shipping_address"
             render={({ field }) => (
-              <FormItem className="flex items-end">
+              <FormItem className="flex items-center justify-between">
+                <FormLabel>{t("Set as default shipping address")}</FormLabel>
                 <FormControl>
-                  <Checkbox
+                  <Switch
                     {...field}
-                    className="mr-2"
+                    className="!m-0 !bg-darkgray-100 data-[state=checked]:!bg-primary"
                     checked={form.watch("is_shipping_address") === 1}
                     onCheckedChange={(checked) =>
                       form.setValue("is_shipping_address", checked ? 1 : 0, {
@@ -221,22 +250,21 @@ const AddressForm = ({
                     }
                   />
                 </FormControl>
-                <FormLabel>{t("Default Shipping Address")}</FormLabel>
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
         </div>
 
         <Button
-          className="w-full"
+          className="w-full h-12.5 rounded-xl font-semibold text-base"
           type="submit"
           disabled={
             isSubmitting || !form.formState.isValid || !form.formState.isDirty
           }
         >
           {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {initialValues ? t("Update Address") : t("Add Address")}
+          {initialValues?.new ? t("Add Address") : t("Update Address")}
         </Button>
       </form>
     </Form>

@@ -37,14 +37,19 @@ const ProfileForm = ({
 
   return (
     <Form {...form}>
-      <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+      <form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name="first_name"
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Name" {...field} />
+                <Input
+                  className="placeholder:text-darkgray-300 form-input focus-visible:ring-0 focus-visible:ring-offset-0"
+                  placeholder={t("Name")}
+                  disabled={isSubmitting}
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -56,7 +61,12 @@ const ProfileForm = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Surname" {...field} />
+                <Input
+                  className="placeholder:text-darkgray-300 form-input focus-visible:ring-0 focus-visible:ring-offset-0"
+                  placeholder={t("Surname")}
+                  disabled={isSubmitting}
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -68,14 +78,19 @@ const ProfileForm = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input disabled placeholder="Email" {...field} />
+                <Input
+                  disabled
+                  placeholder={t("Email")}
+                  className="form-input focus-visible:ring-0 focus-visible:ring-offset-0"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
         <Button
-          className="w-full"
+          className="main-btn !mt-6"
           type="submit"
           disabled={
             isSubmitting || !form.formState.isValid || !form.formState.isDirty

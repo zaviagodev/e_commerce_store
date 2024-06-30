@@ -1,36 +1,47 @@
 import AddressForm from "@/components/forms/AddressForm";
-import { useBack, useCreate, useTranslate } from "@refinedev/core";
+import { Button } from "@/components/ui/button";
+import { useCreate, useTranslate } from "@refinedev/core";
 
-const AddressCreate = () => {
+// Used for opening the modal, which was created on 'Addresses.tsx', and when users click on the 'cancel' button
+type AddressCreateProps = {
+  onCancel: () => void;
+  onSettled?: (data: any, error: any) => void;
+};
+
+const AddressCreate = ({ onCancel, onSettled }: AddressCreateProps) => {
   const t = useTranslate();
-  const back = useBack();
   const { mutate, isLoading } = useCreate({
     mutationOptions: {
-      onSettled: (data, err) => {
-        if (!err) {
-          back();
-        }
-      },
+      onSettled: onSettled,
     },
   });
 
   return (
-    <div className="w-full lg:w-[450px] mx-auto">
-      <h1 className="font-semibold text-darkgray">{t("New Address")}</h1>
-      <div className="mt-6">
-        <h1 className="font-semibold text-gray-500 mb-2">
-          {t("Address Details")}
-        </h1>
-        <AddressForm
-          isSubmitting={isLoading}
-          onSubmit={(values) =>
-            mutate({
-              resource: "address",
-              dataProviderName: "storeProvider",
-              values,
-            })
-          }
-        />
+    <div className="w-full mx-auto">
+      <h1 className="font-semibold text-darkgray-500 text-lg">
+        {t("Address")}
+      </h1>
+      <div className="mt-10">
+        <div className="flex items-center justify-between">
+          <h1 className="font-semibold text-gray-500">
+            {t("Add New Address")}
+          </h1>
+          <Button variant="link" className="text-sm p-0" onClick={onCancel}>
+            {t("Cancel")}
+          </Button>
+        </div>
+        <div className="space-y-10">
+          <AddressForm
+            isSubmitting={isLoading}
+            onSubmit={(values) => {
+              mutate({
+                resource: "address",
+                dataProviderName: "storeProvider",
+                values,
+              });
+            }}
+          />
+        </div>
       </div>
     </div>
   );

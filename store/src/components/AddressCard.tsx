@@ -1,19 +1,9 @@
-import { Button } from "./ui/button";
-import { MapPinned, Pencil, Trash2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { useDelete, useTranslate } from "@refinedev/core";
+import { useDelete, useInvalidate, useTranslate } from "@refinedev/core";
 import { useNavigate } from "react-router-dom";
+import { Edit03, MarkerPin04, Trash01 } from "@untitled-ui/icons-react";
+import MainAlertDialog from "./customComponents/MainAlertDialog";
+import { trailingCountryCodeRegex } from "@/lib/utils";
 
 type AddressCardActions = {
   edit?: boolean;
@@ -22,6 +12,7 @@ type AddressCardActions = {
 
 type AddressCardProps = {
   name: string;
+  address_title: string;
   phone?: string;
   address_line1?: string;
   address_line2?: string;
@@ -30,11 +21,13 @@ type AddressCardProps = {
   state?: string;
   pincode?: string;
   display?: string;
+  isActive?: boolean;
   actions?: AddressCardActions;
 };
 
 const AddressCard = ({
   name,
+  address_title,
   phone,
   address_line1,
   address_line2,
@@ -43,6 +36,7 @@ const AddressCard = ({
   state,
   pincode,
   display,
+  isActive = true,
   actions = {
     edit: false,
     delete: false,
@@ -51,23 +45,22 @@ const AddressCard = ({
   const navigate = useNavigate();
 
   return (
-    <Card className="w-full overflow-hidden">
-      <CardHeader className="flex flex-row justify-between items-center text-gray-500 pb-2">
-        <CardTitle className="text-lg flex items-center">
-          <MapPinned size={20} className="mr-2" /> {name}
+    <Card className="w-full overflow-hidden bg-accent border border-darkgray-100 rounded-xl shadow-none">
+      <CardHeader className="flex flex-row justify-between items-center">
+        <CardTitle className="text-base flex items-center gap-x-2 text-darkgray-500">
+          <MarkerPin04 /> {address_title}
         </CardTitle>
-        {actions.edit && (
-          <Button
-            variant="ghost"
-            size="icon"
-            className="w-5 text-gray-500 hover:text-gray-900 hover:bg-transparent"
-            onClick={() => navigate(`/account/addresses/${name}`)}
-          >
-            <Pencil size={18} />
-          </Button>
-        )}
+        <div className="flex items-center gap-x-4 !m-0">
+          {actions.edit && (
+            <Edit03
+              className="!m-0 h-5 w-5 cursor-pointer text-darkgray-200"
+              onClick={() => navigate(`/account/addresses/${name}`)}
+            />
+          )}
+          {actions.delete && <DeletionConfirmation name={name} />}
+        </div>
       </CardHeader>
-      <CardContent className="text-gray-700 relative">
+      <CardContent className="text-[#2F2F2F] relative text-sm">
         {display ? (
           <p dangerouslySetInnerHTML={{ __html: display }} />
         ) : (
@@ -80,8 +73,8 @@ const AddressCard = ({
               </>
             )}
             {(city || state || country) && <br />}
-            {city}
-            {state && `, ${state}`}
+            {city?.replace(trailingCountryCodeRegex, "")}
+            {state && `, ${state?.replace(trailingCountryCodeRegex, "")}`}
             {country && `, ${country}`}
             {pincode && `, ${pincode}`}
             {phone && (
@@ -92,9 +85,8 @@ const AddressCard = ({
             )}
           </>
         )}
-        {actions.delete && <DeletionConfirmation name={name} />}
       </CardContent>
-      <img src="/border-line.png" className="w-full h-1.5" />
+      {isActive && <img src="/border-line.png" className="w-full h-2.5" />}
     </Card>
   );
 };
@@ -106,42 +98,40 @@ type DeletionConfirmationProps = {
 
 export const DeletionConfirmation = ({ name }: DeletionConfirmationProps) => {
   const t = useTranslate();
+  const invalidate = useInvalidate();
   const { mutate } = useDelete();
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="w-5 text-gray-500 hover:text-destructive hover:bg-transparent absolute right-6 bottom-4"
-        >
-          <Trash2 size={18} />
-        </Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>{t("Are you absolutely sure?")}</AlertDialogTitle>
-          <AlertDialogDescription>
-            {t(
-              "This action cannot be undone. This will permanently delete your address."
-            )}
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>{t("Cancel")}</AlertDialogCancel>
-          <AlertDialogAction
-            onClick={() =>
-              mutate({
-                dataProviderName: "storeProvider",
-                resource: "address",
-                id: name,
-              })
-            }
-          >
-            {t("Continue")}
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+    <MainAlertDialog
+      trigger={
+        <Trash01 className="!m-0 h-5 w-5 hover:text-destructive cursor-pointer text-darkgray-200" />
+      }
+      title={t("Delete address.title")}
+      description={
+        <span className="inline-block px-[60px]">
+          {t("Delete address.desc")}
+        </span>
+      }
+      cancel={t("Cancel")}
+      action={t("Delete address.confirm")}
+      onClickAction={() =>
+        mutate({
+          dataProviderName: "storeProvider",
+          resource: "address",
+          id: name,
+          successNotification: () => {
+            invalidate({
+              dataProviderName: "storeProvider",
+              resource: "cart",
+              invalidates: ["list"],
+            });
+            return {
+              type: "success",
+              message: t("Delete address.success"),
+            };
+          },
+        })
+      }
+      asChild={true}
+    />
   );
 };

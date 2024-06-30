@@ -15,8 +15,10 @@ import {
 import { useForm } from "@refinedev/react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { couponCodeSchema } from "./couponCodeSchema";
+import { useState } from "react";
 
 const CouponCodeInput = () => {
+  const [addCoupon, setAddCoupon] = useState<boolean>(false);
   const t = useTranslate();
   const invalidate = useInvalidate();
 
@@ -42,7 +44,7 @@ const CouponCodeInput = () => {
     },
   });
 
-  return (
+  return addCoupon ? (
     <Form {...form}>
       <form
         className="w-full"
@@ -63,21 +65,30 @@ const CouponCodeInput = () => {
               <FormItem className="w-full">
                 <FormControl>
                   <Input
-                    className="border-none bg-secondary"
-                    placeholder={t("Coupon code")}
+                    className="rounded-xl focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none"
+                    placeholder={t("Add coupon")}
                     {...field}
+                    onBlur={(e) => e.target.value === "" && setAddCoupon(false)}
                   />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button variant="outline" type="submit">
+          <Button className="rounded-xl" type="submit">
             {t("Apply")}
           </Button>
         </div>
       </form>
     </Form>
+  ) : (
+    <Button
+      className="!bg-transparent w-fit p-0 !text-[#4176FF] font-semibold"
+      variant="ghost"
+      onClick={() => setAddCoupon(true)}
+    >
+      {t("Add coupon")}
+    </Button>
   );
 };
 

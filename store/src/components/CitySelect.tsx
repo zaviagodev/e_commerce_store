@@ -1,4 +1,4 @@
-import { CrudFilters, useSelect } from "@refinedev/core";
+import { CrudFilters, useSelect, useTranslate } from "@refinedev/core";
 import React, { useMemo } from "react";
 import Select from "react-select";
 
@@ -39,7 +39,7 @@ const CitySelect: React.FC<CitySelectProps> = ({
 
   const { options, onSearch, overtime } = useSelect({
     resource: "City",
-    dataProviderName: "frappeeProvider",
+    dataProviderName: "frappeProvider",
     optionLabel: "city_name",
     optionValue: "name",
     searchField: "city_name",
@@ -52,14 +52,22 @@ const CitySelect: React.FC<CitySelectProps> = ({
     },
   });
 
+  const t = useTranslate()
+
   return (
     <Select
-      classNamePrefix="select"
-      placeholder="City"
+      placeholder={`${t("city")} *`} 
       isLoading={overtime.elapsedTime !== undefined}
       loadingMessage={() =>
         options.length === 0 ? "No results" : "Loading..."
       }
+      classNames={{
+        control: () => "!border-darkgray-100 !bg-accent !rounded-xl px-3.5 text-sm h-12.5 !shadow-none",
+        placeholder: () => "!text-darkgray-300"
+      }}
+      styles={{
+        indicatorSeparator: () => ({ display: "none" }),
+      }}
       value={
         value === undefined
           ? ""

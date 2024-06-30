@@ -24,6 +24,14 @@ module.exports = {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        darkgray: {
+          100: "#F3F3F3",
+          200: "#979797",
+          300: "#909090",
+          400: "#858585",
+          500: "#595959",
+          600: "#4F4F4F"
+        },
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -72,6 +80,12 @@ module.exports = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      height: {
+        12.5: "50px"
+      },
+      boxShadow: {
+        "checkout": "-17px 4px 28.8px 0px #00000008",
+      }
     },
   },
   plugins: [require("tailwindcss-animate")],

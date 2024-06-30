@@ -1,6 +1,8 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
+export const trailingCountryCodeRegex = /-([A-Z]{2})(?!.*-[A-Z]{2})/;
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -31,4 +33,17 @@ export function getFileURL(url?: string) {
   }
 
   return url;
+}
+
+export function formatCurrency(value: number, currency: string = "THB") {
+  const formattedValue = new Intl.NumberFormat("th-TH", {
+    style: "currency",
+    currency: currency,
+  }).format(value);
+
+  const index = formattedValue.search(/\d/);
+  const currencySymbol = formattedValue.slice(0, index);
+  const numberValue = formattedValue.slice(index);
+
+  return `${currencySymbol} ${numberValue}`;
 }

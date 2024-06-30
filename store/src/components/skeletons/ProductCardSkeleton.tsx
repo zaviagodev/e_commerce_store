@@ -3,28 +3,23 @@ import SvgSkeleton from "./SvgSkeleton";
 
 const ProductCardSkeleton = () => {
   return (
-    <div className="space-y-3 rounded overflow-hidden">
+    <div className="space-y-6 rounded overflow-hidden">
       <div>
         <div className="aspect-square relative">
-          <SvgSkeleton className="mx-auto object-cover transition-all hover:scale-105 aspect-square w-full h-full" />
-          <div className=" inline-flex items-center justify-center transition-colors h-10 px-4 py-2 w-64 absolute bottom-2 left-1/2 -translate-x-1/2">
-            <Skeleton className="w-[120px] max-w-full">
-              <br />
-            </Skeleton>
-          </div>
+          <SvgSkeleton className="mx-auto object-cover transition-all aspect-square w-full h-full" />
         </div>
       </div>
-      <div className="space-y-1">
-        <h3 className="leading-none">
+      <div className="space-y-6">
+        <h3>
           <Skeleton className="w-[168px] max-w-full">
             <br />
           </Skeleton>
         </h3>
-        <p>
-          <Skeleton className="w-[56px] max-w-full">
+        <h6>
+          <Skeleton className="w-20 max-w-full">
             <br />
           </Skeleton>
-        </p>
+        </h6>
       </div>
     </div>
   );

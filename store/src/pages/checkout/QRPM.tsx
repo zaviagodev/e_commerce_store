@@ -19,18 +19,33 @@ import {
 import { useForm } from "@refinedev/react-hook-form";
 import { ArrowDownCircle, Copy, Loader2 } from "lucide-react";
 import { confirmPaymentSchema } from "./confirmPaymentSchema";
+import { ImagePlus, X } from "@untitled-ui/icons-react";
+import { ChangeEvent, useState, MouseEvent } from "react";
+import { formatCurrency } from "@/lib/utils";
+import ImageInput from "@/components/forms/controls/ImageInput";
 
 export const QRPMDetail = () => {
   const t = useTranslate();
   const { orderId, order, selectedPaymentMethod, next } = useCheckout();
+
+  const [isTextCopied, setIsTextCopied] = useState(false)
+
+  const copyAccountNumber = () => {
+    navigator.clipboard.writeText(selectedPaymentMethod.promptpay_number)
+    setIsTextCopied(true)
+    setTimeout(() => {
+      setIsTextCopied(false)
+    }, 1000)
+  }
+
   return (
     <>
-      <div className="mt-4 text-center">
+      <div className="mt-10 text-center">
         <h1 className="text-2xl font-bold text-primary">{t("Pay with QR")}</h1>
       </div>
       <div className="mt-6 w-full flex flex-col gap-y-6">
         <div className="flex justify-between items-center">
-          <Label>{t("Order ID")}</Label>
+          <Label className="text-darkgray-200 text-base">{t("Order ID")}</Label>
           <strong>{orderId}</strong>
         </div>
         <img
@@ -40,33 +55,46 @@ export const QRPMDetail = () => {
           alt="QR Code"
           className="w-full"
         />
-        <div className="flex justify-between items-center">
-          <Label>{t("Account Name")}</Label>
-          <strong>{selectedPaymentMethod.account_name}</strong>
+
+        <div className="space-y-2">
+          <div className="flex justify-between items-center">
+            <Label className="text-darkgray-200 text-base">
+              {t("Account Name")}
+            </Label>
+            <strong>{selectedPaymentMethod.account_name}</strong>
+          </div>
+          <div className="flex justify-between items-center">
+            <Label className="text-darkgray-200 text-base">
+              {t("Account Number")}
+            </Label>
+            <strong className="flex items-center -mr-2">
+              {selectedPaymentMethod.promptpay_number}
+              <Button
+                size="icon"
+                variant="link"
+                className="text-accent relative group focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                onClick={copyAccountNumber}
+              >
+                <p className={`absolute bg-[#111111] px-2 py-1.5 text-xs rounded-full group-hover:opacity-100 group-hover:visible group-hover:-top-6 -top-5 transition-all ${isTextCopied ? 'opacity-100 visible -top-6' : 'opacity-0 invisible'}`}>
+                  {t(isTextCopied ? "Copied" : "Copy")}
+                </p>
+                <Copy className="h-4 w-4 text-gray-700" />
+              </Button>
+            </strong>
+          </div>
         </div>
-        <div className="flex justify-between items-center">
-          <Label>{t("Account Number")}</Label>
-          <strong className="flex items-center -mr-2">
-            {selectedPaymentMethod.promptpay_number}
-            <Button size="icon" variant="link" className="text-accent">
-              <Copy className="h-4 w-4 text-gray-700" />
-            </Button>
-          </strong>
-        </div>
-        <div className="flex flex-col bg-secondary p-6 rounded-lg">
-          <p className=" text-xs">{t("Grand total")}</p>
-          <h2 className="text-2xl font-semibold text-primary">
-            {new Intl.NumberFormat("th-TH", {
-              style: "currency",
-              currency: "THB",
-            }).format(order.grand_total)}
+
+        <div className="flex flex-col items-center rounded-lg space-y-6 mb-4">
+          <p className="text-darkgray-200 text-sm">{t("Grand total")}</p>
+          <h2 className="text-4xl font-semibold text-primary text-center">
+            {formatCurrency(order.grand_total)}
           </h2>
         </div>
-        <div>
+        <div className="space-y-4">
           <Button
             size="lg"
-            className="w-full"
-            variant="secondary"
+            className="w-full h-12.5 font-semibold text-base bg-accent border-darkgray-100 flex items-center gap-x-2 rounded-xl"
+            variant="outline"
             onClick={() => {
               const link = document.createElement("a");
               link.target = "_blank";
@@ -77,10 +105,14 @@ export const QRPMDetail = () => {
               link.click();
             }}
           >
-            <ArrowDownCircle className="mr-2 h-4 w-4" />
+            <ArrowDownCircle className="h-4 w-4" />
             {t("Save QR Code")}
           </Button>
-          <Button size="lg" className="w-full mt-4" onClick={next}>
+          <Button
+            size="lg"
+            className="w-full h-12.5 text-base font-semibold rounded-xl"
+            onClick={next}
+          >
             {t("Upload Payment Slip")}
           </Button>
         </div>
@@ -103,7 +135,7 @@ export const QRUploadSlip = () => {
         payment_method_key: selectedPaymentMethod.key,
         bank: selectedPaymentMethod.account_name,
       },
-      file: {} as any,
+      file: "",
     },
     mode: "onChange",
   });
@@ -136,46 +168,51 @@ export const QRUploadSlip = () => {
 
   return (
     <>
-      <div className="mt-4 text-center">
+      <div className="mt-10 text-center">
         <h1 className="text-2xl font-bold text-primary">
           {t("Payment Slip Confirm")}
         </h1>
       </div>
       <div className="mt-6 w-full flex flex-col gap-y-6">
-        <div className="flex justify-between items-center">
-          <Label>{t("Order ID")}</Label>
-          <strong>{orderId}</strong>
+        <div className="space-y-2">
+          <div className="flex justify-between items-center">
+            <Label className="text-darkgray-200 text-base">
+              {t("Order ID")}
+            </Label>
+            <strong>{orderId}</strong>
+          </div>
+          <div className="flex justify-between items-center">
+            <Label className="text-darkgray-200 text-base">
+              {t("Grand total")}
+            </Label>
+            <strong>{formatCurrency(order?.grand_total)}</strong>
+          </div>
         </div>
-        <div className="flex justify-between items-center">
-          <Label>{t("Total")}</Label>
-          <strong>
-            {new Intl.NumberFormat("th-TH", {
-              style: "currency",
-              currency: "THB",
-            }).format(order.grand_total)}
-          </strong>
-        </div>
+
         <Form {...form}>
           <form
-            className="flex flex-col gap-y-4"
+            className="flex flex-col gap-y-10"
             onSubmit={form.handleSubmit(onSubmit)}
           >
-            <div className="flex items-center p-2 bg-secondary rounded-lg">
-              <img
-                src={`${import.meta.env.VITE_BACKEND_URL ?? ""}${
-                  selectedPaymentMethod.promptpay_qr_image
-                }`}
-                alt={selectedPaymentMethod.name}
-                className="h-16 w-16 rounded"
-              />
-              <div className="w-full flex flex-col ml-4">
-                <p className="text-sm text-muted-foreground">
-                  {selectedPaymentMethod.name}
-                </p>
-                <strong>{selectedPaymentMethod.promptpay_number}</strong>
-                <p className="text-sm text-muted-foreground">
-                  {t("Account Name")}: {selectedPaymentMethod.account_name}
-                </p>
+            <div className="space-y-2">
+              <p className="text-primary font-semibold">{t("Bank Account")}</p>
+              <div className="flex items-center p-4 bg-accent border border-darkgray-100 rounded-xl">
+                <img
+                  src={`${import.meta.env.VITE_BACKEND_URL ?? ""}${
+                    selectedPaymentMethod.promptpay_qr_image
+                  }`}
+                  alt={selectedPaymentMethod.name}
+                  className="h-16 w-16 rounded"
+                />
+                <div className="w-full flex flex-col ml-4">
+                  <p className="text-sm text-muted-foreground">
+                    {selectedPaymentMethod.name}
+                  </p>
+                  <strong>{selectedPaymentMethod.promptpay_number}</strong>
+                  <p className="text-sm font-semibold text-darkgray-500">
+                    {t("Account Name")}: {selectedPaymentMethod.account_name}
+                  </p>
+                </div>
               </div>
             </div>
 
@@ -184,18 +221,21 @@ export const QRUploadSlip = () => {
               name="file"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="slip">{t("Payment Slip *")}</FormLabel>
+                  <FormLabel className="text-base text-primary font-semibold">
+                    {t("Payment Slip *")}{" "}
+                    <span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
-                    <Input
-                      type="file"
-                      accept="image/*"
-                      className="mt-2"
-                      onChange={(e) =>
-                        form.setValue(
-                          "file",
-                          e.target.files ? e.target.files[0] : null
-                        )
+                    <ImageInput
+                      {...field}
+                      name="file"
+                      value={field.value as any}
+                      onChange={(files) =>
+                        form.setValue("file", files ? files[0] : "", {
+                          shouldValidate: true,
+                        })
                       }
+                      onRemove={() => form.setValue("file", "")}
                     />
                   </FormControl>
                   <FormMessage />
@@ -204,14 +244,14 @@ export const QRUploadSlip = () => {
             />
             <Button
               size="lg"
-              className="w-full"
+              className="w-full h-12.5 text-base font-semibold rounded-xl"
               type="submit"
               disabled={!form.formState.isValid || isConfirmingPayment}
             >
               {isConfirmingPayment && (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               )}
-              {t("Upload Payment Slip")}
+              {t("Confirm your payment")}
             </Button>
           </form>
         </Form>

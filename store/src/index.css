@@ -3,6 +3,14 @@
 @tailwind utilities;
 
 @layer base {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+@layer base {
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
@@ -13,22 +21,22 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 0 0% 7% /* Original: 222.2 47.4% 11.2% */;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
-    --muted: 210 40% 96.1%;
+    --muted: 0 0 95%; /* Original: 210 40% 96.1% */
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 210 40% 96.1%;
+    --accent: 0 0% 98% /* Original: 210 40% 96.1% */;
     --accent-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
+    --border: 0 0% 96%; /* Original: 214.3 31.8% 91.4% */
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
 
@@ -73,4 +81,20 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.form-input {
+  @apply bg-accent border-darkgray-100 h-12.5 rounded-xl px-6;
+}
+
+.form-input::placeholder {
+  @apply text-darkgray-200
+}
+
+.main-btn {
+  @apply w-full h-12.5 rounded-xl font-semibold text-base;
+}
+
+.add-to-cart-btn {
+  @apply translate-y-[150%] group-hover:translate-y-0 transition-transform w-[calc(100%_-_16px)] absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-white text-black shadow-sm text-base font-semibold;
 }

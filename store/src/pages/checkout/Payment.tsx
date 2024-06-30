@@ -9,10 +9,16 @@ import { CheckoutProvider, useCheckout } from "@/hooks/useCheckout";
 import useSummary from "@/hooks/useSummary";
 import { useGetIdentity, useTranslate } from "@refinedev/core";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { paymentMethodIconMap } from ".";
 import { QRPMDetail, QRUploadSlip } from "./QRPM";
 import { BankPMDetail, BankUploadSlip } from "./BankPM";
+import { Wallet04 } from "@untitled-ui/icons-react";
+import { formatCurrency } from "@/lib/utils";
+import Logo from "@/components/customComponents/Logo";
+import useConfig from "@/hooks/useConfig";
+import PaymentSkeleton from "@/components/skeletons/PaymentSkeleton";
+import MainAlertDialog from "@/components/customComponents/MainAlertDialog";
 
 export const PaymentProvider: React.FC = () => {
   return (
@@ -24,19 +30,20 @@ export const PaymentProvider: React.FC = () => {
 export default PaymentProvider;
 
 const Payment = () => {
+  // const { config } = useConfig();
   return (
-    <div className="w-full min-h-screen mx-auto flex items-center py-6 px-4 lg:w-[450px] lg:px-0">
+    <div className="w-full min-h-screen mx-auto flex py-10 px-4 lg:w-[450px] lg:px-0">
       <div className="w-full">
-        <Link
+        {/* <Link
           to="/"
-          className="flex flex-col items-center justify-center gap-2 text-lg font-semibold md:text-base mx-auto"
+          className="w-fit flex flex-col items-center justify-center mx-auto"
         >
-          <Avatar className="h-20 w-20">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
+          <Avatar className="h-[44px] w-[44px]">
+            <AvatarImage src={getFileURL(config?.brand_logo) ?? ""} />
+            <AvatarFallback>{config?.company.slice(0, 1)}</AvatarFallback>
           </Avatar>
-          <h2 className="text-2xl font-semibold text-primary">ABC Company</h2>
-        </Link>
+        </Link> */}
+        <PaymentCancel />
 
         <StepMaintainer useStateHook={useCheckout}>
           <Summary />
@@ -52,18 +59,27 @@ const Payment = () => {
 const Summary = () => {
   const t = useTranslate();
   const [showDetails, setshowDetails] = useState(true);
-  const { orderId, order, selectedPaymentMethod, next } = useCheckout();
+  const { config } = useConfig();
+  const { orderId, order, orderItemQty, selectedPaymentMethod, next } =
+    useCheckout();
   const checkoutSummary = useSummary(order);
   const { data: profile } = useGetIdentity();
 
   if (!order) {
-    return <div>Loading....</div>;
+    return (
+      <div className="mt-10">
+        <PaymentSkeleton />
+      </div>
+    );
   }
 
   return (
     <>
-      <div className="mt-4 text-center">
-        <p>
+      <h2 className="text-2xl font-semibold text-primary text-center mt-10">
+        {config?.company}
+      </h2>
+      <div className="mt-6 text-center">
+        <p className="text-sm">
           {t("Email")}: <strong>{profile?.user.email}</strong>
           {profile?.mobile_no && (
             <>
@@ -71,35 +87,45 @@ const Summary = () => {
               {t("Phone")}: <strong>{profile?.mobile_no}</strong>
             </>
           )}
+          <br />
+          {t("Order ID")}: <strong>{orderId}</strong>
         </p>
       </div>
-      <div className="mt-6 flex justify-between items-center">
-        <Label>{t("Order ID")}</Label>
-        <strong>{orderId}</strong>
-      </div>
       {selectedPaymentMethod?.key && (
-        <div className="mt-6">
-          <Label className="flex items-center justify-start rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
-            {paymentMethodIconMap[selectedPaymentMethod?.key as string]}
-            {selectedPaymentMethod?.name}
+        <div className="mt-10">
+          <Label className="flex items-center justify-between font-semibold text-base rounded-xl border border-darkgray-100 bg-accent px-6 py-4 peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
+            <span className="flex items-center text-darkgray-500 gap-x-2">
+              <Wallet04 />
+              {t("Payment Method")}
+            </span>
+            <span className="flex items-center">
+              {paymentMethodIconMap[selectedPaymentMethod?.key as string]}
+              {selectedPaymentMethod?.name}
+            </span>
           </Label>
         </div>
       )}
-      <div className="mt-6 flex flex-col bg-secondary p-6 rounded-lg">
-        <p className=" text-xs">{t("Grand total")}</p>
-        <h2 className="text-2xl font-semibold text-primary">
-          {new Intl.NumberFormat("th-TH", {
-            style: "currency",
-            currency: "THB",
-          }).format(order.grand_total)}
+      <div className="mt-9 flex flex-col rounded-lg space-y-6">
+        <div className="flex items-center justify-between text-darkgray-200 text-sm">
+          <p>{t("Grand total")}</p>
+          <p className="font-semibold">
+            {orderItemQty} {t(orderItemQty === 1 ? "Item" : "Items")}
+          </p>
+        </div>
+        <h2 className="text-4xl font-semibold text-primary text-center">
+          {formatCurrency(order.grand_total)}
         </h2>
       </div>
-      <div className="mt-6 mb-1 text-center">
-        <Button size="lg" className="w-full" onClick={next}>
+      <div className="mt-9 mb-6 text-center">
+        <Button
+          size="lg"
+          className="w-full h-12.5 text-base font-semibold rounded-xl"
+          onClick={next}
+        >
           {t("Pay Now")}
         </Button>
         <Button
-          className="text-muted-foreground mt-2"
+          className="text-muted-foreground mt-2 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
           variant="link"
           onClick={() => setshowDetails((prevState) => !prevState)}
         >
@@ -107,13 +133,14 @@ const Summary = () => {
         </Button>
       </div>
       {showDetails && (
-        <div className="flex flex-col gap-y-6">
+        <div className="flex flex-col gap-y-4">
           <AddressCard
             name={order.shipping_address_name}
+            address_title={order.shipping_address_name.split("-")[0]}
             display={order.address_display}
           />
-          <div className="flex flex-col">
-            <ul className="my-3 flex flex-col gap-y-3">
+          <div className="flex flex-col mt-10">
+            <ul className="flex flex-col gap-y-8">
               {order.items.map(
                 ({ item_code, qty }: { item_code: string; qty: number }) => {
                   if (!qty) {
@@ -130,47 +157,29 @@ const Summary = () => {
               )}
             </ul>
           </div>
-          <Separator className="-mt-4" />
-          <div className="flex flex-col">
-            <div className="w-full flex justify-between">
-              <p className="text-sm text-muted-foreground">{t("Subtotal")}</p>
-              <strong className="text-darkgray">
-                {new Intl.NumberFormat("th-TH", {
-                  style: "currency",
-                  currency: "THB",
-                }).format(order.total)}
-              </strong>
+          <Separator />
+          <div className="flex flex-col gap-y-4">
+            <div className="w-full flex justify-between text-sm">
+              <p>{t("Subtotal")}</p>
+              <strong>{formatCurrency(order.total)}</strong>
             </div>
             {checkoutSummary.totalShipping > 0 && (
-              <div className="w-full flex justify-between">
-                <p className="text-sm text-muted-foreground">
-                  {t("Shipping Cost")}
-                </p>
-                <strong className="text-muted-foreground">
-                  {new Intl.NumberFormat("th-TH", {
-                    style: "currency",
-                    currency: "THB",
-                  }).format(checkoutSummary.totalShipping)}
-                </strong>
+              <div className="w-full flex justify-between text-sm text-darkgray-200">
+                <p>{t("Shipping Cost")}</p>
+                <span>{formatCurrency(checkoutSummary.totalShipping)}</span>
               </div>
             )}
-            <div className="w-full flex justify-between">
-              <p className="text-sm text-muted-foreground">{t("Tax")}</p>
-              <strong className="text-muted-foreground">
-                {new Intl.NumberFormat("th-TH", {
-                  style: "currency",
-                  currency: "THB",
-                }).format(checkoutSummary.totalTax)}
-              </strong>
+            <div className="w-full flex justify-between text-sm text-darkgray-200">
+              <p>{t("Tax")}</p>
+              <span>{formatCurrency(checkoutSummary.totalTax)}</span>
             </div>
             {checkoutSummary.totalDiscount > 0 && (
               <div className="w-full flex justify-between">
                 <p className="text-sm text-muted-foreground">{t("Discount")}</p>
                 <strong className="text-muted-foreground">
-                  {new Intl.NumberFormat("th-TH", {
-                    style: "currency",
-                    currency: "THB",
-                  }).format(checkoutSummary.totalDiscount?.toFixed(2) ?? 0)}
+                  {formatCurrency(
+                    checkoutSummary.totalDiscount?.toFixed(2) ?? 0
+                  )}
                 </strong>
               </div>
             )}
@@ -186,14 +195,9 @@ const Summary = () => {
             )}
           </div>
           <Separator />
-          <div className="w-full flex justify-between">
-            <p className="text-sm text-muted-foreground">{t("Grand total")}</p>
-            <strong className="text-darkgray">
-              {new Intl.NumberFormat("th-TH", {
-                style: "currency",
-                currency: "THB",
-              }).format(order.grand_total)}
-            </strong>
+          <div className="w-full flex justify-between text-sm">
+            <p>{t("Grand total")}</p>
+            <strong>{formatCurrency(order.grand_total)}</strong>
           </div>
         </div>
       )}
@@ -234,32 +238,35 @@ const Thankyou = () => {
   const { orderId, order } = useCheckout();
   return (
     <>
-      <div className="mt-4 text-center">
+      <div className="mt-10 text-center">
         <h1 className="text-2xl font-bold text-primary">
           {t("Payment Confirm sent")}
         </h1>
-        <p>
+        <p className="mt-6 px-[50px]">
           {t("Thank you for your oder !")}
           <br />
-          {t("You can go to your order history page to track order status.")}
+          {t("You can go to your order history page to track order status")}
         </p>
       </div>
-      <div className="mt-6 w-full flex flex-col gap-y-6">
-        <div className="flex justify-between items-center">
-          <Label>{t("Order ID")}</Label>
-          <strong>{orderId}</strong>
-        </div>
-        <div className="flex justify-between items-center">
-          <Label>{t("Total")}</Label>
-          <strong>
-            {new Intl.NumberFormat("th-TH", {
-              style: "currency",
-              currency: "THB",
-            }).format(order?.grand_total)}
-          </strong>
+      <div className="mt-12 w-full flex flex-col gap-y-6">
+        <div className="flex flex-col gap-y-2">
+          <div className="flex justify-between items-center">
+            <Label className="text-base text-darkgray-200">
+              {t("Order ID")}
+            </Label>
+            <strong>{orderId}</strong>
+          </div>
+          <div className="flex justify-between items-center">
+            <Label className="text-base text-darkgray-200">{t("Total")}</Label>
+            <strong>{formatCurrency(order?.grand_total)}</strong>
+          </div>
         </div>
         <div className="mt-6 mb-1 text-center">
-          <Button size="lg" className="w-full" onClick={() => navigate("/")}>
+          <Button
+            size="lg"
+            className="w-full h-12.5 rounded-xl font-semibold text-base"
+            onClick={() => navigate("/")}
+          >
             {t("Back to Store")}
           </Button>
           <Button
@@ -272,5 +279,22 @@ const Thankyou = () => {
         </div>
       </div>
     </>
+  );
+};
+
+const PaymentCancel = () => {
+  const t = useTranslate();
+  const navigate = useNavigate();
+
+  return (
+    <MainAlertDialog
+      trigger={<Logo />}
+      triggerClassName="flex justify-center w-full"
+      title={t("leave payment page.title")}
+      description={t("leave payment page.desc")}
+      cancel={t("leave payment page.cancel")}
+      action={t("leave payment page.title")}
+      onClickAction={() => navigate("/")}
+    />
   );
 };

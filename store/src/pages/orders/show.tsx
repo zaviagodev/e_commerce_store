@@ -16,12 +16,18 @@ import CheckoutItem from "@/components/checkout/CheckoutItem";
 import { Separator } from "@/components/ui/separator";
 import useSummary from "@/hooks/useSummary";
 import { useState } from "react";
+import { FlipBackward } from "@untitled-ui/icons-react";
+import { formatCurrency } from "@/lib/utils";
+import { MessageQuestionCircle, Download01 } from "@untitled-ui/icons-react";
+import OrderDetailSkeleton from "@/components/skeletons/OrderDetailSkeleton";
+import useConfig from "@/hooks/useConfig";
 
 const OrderDetail = () => {
   const [paymentMethod, setPaymentMethod] = useState();
   const t = useTranslate();
   const navigate = useNavigate();
   const params = useParams();
+  const { config } = useConfig();
   const { data, isLoading, isFetching, isRefetching } = useOne({
     id: params.id,
   });
@@ -56,48 +62,41 @@ const OrderDetail = () => {
   const checkoutSummary = useSummary(order);
 
   if (isLoading || isFetching || isRefetching) {
-    return <div>Loading...</div>;
+    return <OrderDetailSkeleton />;
   }
 
+  const orderStatus =
+    (order.status === "Draft" && t("Draft")) ||
+    (order.status === "Cancelled" && t("Cancelled"));
+
   return (
-    <div>
-      <Button
-        variant="ghost"
-        size="sm"
-        onClick={() => navigate("/account/orders")}
-        className="flex items-center justify-center gap-x-2 text-neutral-700"
-      >
-        <Undo2 className="h-5 w-5 cursor-pointer hover:opacity-75" />
-        <p>{t("Order History")}</p>
-      </Button>
-      <ul className="grid gap-3 mt-6">
+    <div className="lg:w-[720px] mx-auto">
+      <div className="flex items-center gap-x-2.5">
+        <FlipBackward
+          className="h-5 w-5 cursor-pointer hover:opacity-75"
+          onClick={() => navigate("/account/orders")}
+        />
+        <h2 className="font-semibold text-darkgray-500 text-lg">
+          {t("Order History")}
+        </h2>
+      </div>
+      <ul className="grid gap-3 mt-10">
         <li className="flex items-center justify-between">
-          <span className="text-sm font-semibold text-muted-foreground">
-            {t("Order ID")}
-          </span>
+          <span className="text-sm text-darkgray-200">{t("Order ID")}</span>
           <span className="text-sm font-bold">{order?.name}</span>
         </li>
         <li className="flex items-center justify-between">
-          <span className="text-sm font-semibold text-muted-foreground">
-            {t("Order Date")}
-          </span>
+          <span className="text-sm text-darkgray-200">{t("Order Date")}</span>
           <span className="text-sm font-bold">{order.transaction_date}</span>
         </li>
         <li className="flex items-center justify-between">
-          <span className="text-sm font-semibold text-muted-foreground">
-            {t("Grand Total")}
-          </span>
+          <span className="text-sm text-darkgray-200">{t("Grand total")}</span>
           <span className="text-sm font-bold">
-            {new Intl.NumberFormat("th-TH", {
-              style: "currency",
-              currency: "THB",
-            }).format(order.grand_total)}
+            {formatCurrency(order.grand_total)}
           </span>
         </li>
         <li className="flex items-center justify-between">
-          <span className="text-sm font-semibold text-muted-foreground">
-            {t("Status")}
-          </span>
+          <span className="text-sm text-darkgray-200">{t("Status")}</span>
           <span className="text-sm font-bold">{order.status}</span>
         </li>
       </ul>
@@ -139,17 +138,21 @@ const OrderDetail = () => {
           </div>
         </div>
       )} */}
-      <div className="mt-6">
-        <Label>{t("Shipping Address")}</Label>
+      <div className="mt-10">
+        <Label className="text-darkgray-500 font-semibold text-base inline-block mb-2">
+          {t("Shipping Address")}
+        </Label>
         {addressLoading || addressFetching || addressRefetching ? (
-          <div>Loading...</div>
+          <div>{t("Loading")}...</div>
         ) : (
           <AddressCard {...address?.message} />
         )}
       </div>
-      <div className="mt-6">
-        <Label>{t("Order summary")}</Label>
-        <div className="mt-6 flex flex-col gap-y-4">
+      <div className="mt-10">
+        <Label className="text-darkgray-500 font-semibold text-base inline-block mb-2">
+          {t("Order summary")}
+        </Label>
+        <div className="flex flex-col gap-y-4">
           <ul className="my-3 flex flex-col gap-y-3">
             {(order.items ?? []).map(
               ({ item_code, qty }: { item_code: string; qty: number }) => {
@@ -167,76 +170,60 @@ const OrderDetail = () => {
             )}
           </ul>
         </div>
-        <Separator className="my-4" />
-        <div className="flex flex-col">
-          <div className="w-full flex justify-between">
-            <p className="text-sm text-muted-foreground">{t("Subtotal")}</p>
-            <strong className="text-darkgray">
-              {new Intl.NumberFormat("th-TH", {
-                style: "currency",
-                currency: "THB",
-              }).format(order.total)}
-            </strong>
+        <div className="lg:ml-[69px]">
+          <Separator className="my-4" />
+          <div className="flex flex-col gap-4">
+            <div className="w-full flex justify-between text-sm">
+              <p>{t("Subtotal")}</p>
+              <strong>{formatCurrency(order.total)}</strong>
+            </div>
+            {checkoutSummary.totalShipping > 0 && (
+              <div className="w-full flex justify-between text-sm text-darkgray-200">
+                <p>{t("Shipping Cost")}</p>
+                <span>{formatCurrency(checkoutSummary.totalShipping)}</span>
+              </div>
+            )}
+            <div className="w-full flex justify-between text-sm text-darkgray-200">
+              <p>{t("Tax")}</p>
+              <span>{formatCurrency(checkoutSummary.totalTax)}</span>
+            </div>
+            {checkoutSummary.totalDiscount > 0 && (
+              <div className="w-full flex justify-between text-sm text-darkgray-200">
+                <p>{t("Discount")}</p>
+                <span>
+                  {formatCurrency(
+                    checkoutSummary.totalDiscount?.toFixed(2) ?? 0
+                  )}
+                </span>
+              </div>
+            )}
+            {order.coupon_code && (
+              <div className="w-full flex justify-between text-sm">
+                <p>{t("Coupon Code")}</p>
+                <span>{order.coupon_code}</span>
+              </div>
+            )}
           </div>
-          {checkoutSummary.totalShipping > 0 && (
-            <div className="w-full flex justify-between">
-              <p className="text-sm text-muted-foreground">
-                {t("Shipping Cost")}
-              </p>
-              <strong className="text-muted-foreground">
-                {new Intl.NumberFormat("th-TH", {
-                  style: "currency",
-                  currency: "THB",
-                }).format(checkoutSummary.totalShipping)}
-              </strong>
-            </div>
-          )}
-          <div className="w-full flex justify-between">
-            <p className="text-sm text-muted-foreground">{t("Tax")}</p>
-            <strong className="text-muted-foreground">
-              {new Intl.NumberFormat("th-TH", {
-                style: "currency",
-                currency: "THB",
-              }).format(checkoutSummary.totalTax)}
-            </strong>
+          <Separator className="my-4" />
+          <div className="w-full flex justify-between text-sm">
+            <p>{t("Grand total")}</p>
+            <strong>{formatCurrency(order.grand_total)}</strong>
           </div>
-          {checkoutSummary.totalDiscount > 0 && (
-            <div className="w-full flex justify-between">
-              <p className="text-sm text-muted-foreground">{t("Discount")}</p>
-              <strong className="text-muted-foreground">
-                {new Intl.NumberFormat("th-TH", {
-                  style: "currency",
-                  currency: "THB",
-                }).format(checkoutSummary.totalDiscount?.toFixed(2) ?? 0)}
-              </strong>
-            </div>
-          )}
-          {order.coupon_code && (
-            <div className="w-full flex justify-between">
-              <p className="text-sm text-muted-foreground">
-                {t("Coupon Code")}
-              </p>
-              <strong className="text-muted-foreground">
-                {order.coupon_code}
-              </strong>
-            </div>
-          )}
-        </div>
-        <Separator className="my-4" />
-        <div className="w-full flex justify-between">
-          <p className="text-sm text-muted-foreground">{t("Grand total")}</p>
-          <strong className="text-darkgray">
-            {new Intl.NumberFormat("th-TH", {
-              style: "currency",
-              currency: "THB",
-            }).format(order.grand_total)}
-          </strong>
         </div>
       </div>
       <div className="w-full flex justify-center h-10 items-center mt-8">
+        {config?.help_url && (
+          <Button
+            variant="link"
+            className="font-bold"
+            onClick={() => window.open(config.help_url, "_blank")}
+          >
+            <MessageQuestionCircle className="mr-2 h-5 w-5" />{" "}
+            {t("Ask for help")}
+          </Button>
+        )}
         <Button variant="link" className="font-bold">
-          <MessageCircleQuestion size={20} className="mr-1" />{" "}
-          {t("Ask for help")}
+          <Download01 className="mr-2 h-5 w-5" /> {t("Download receipt")}
         </Button>
       </div>
     </div>

@@ -1,16 +1,5 @@
-import { CircleUser, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Input } from "@/components/ui/input";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   useGetIdentity,
   useGo,
@@ -23,7 +12,13 @@ import Cart from "../cart/Cart";
 import Wishlist from "../wishlist/Wishlist";
 import MobileNavigationMenu from "./MobileNavigationMenu";
 import { useConfig } from "@/hooks/useConfig";
-import { getFileURL } from "@/lib/utils";
+import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "../ui/skeleton";
+import Logo from "../customComponents/Logo";
+import { LogIn02 } from "@untitled-ui/icons-react";
+import Search from "./Search";
+import MainAlertDialog from "../customComponents/MainAlertDialog";
+import { useEffect, useState } from "react";
 
 const Header = () => {
   const t = useTranslate();
@@ -39,110 +34,149 @@ const Header = () => {
   const { mutate: logout } = useLogout();
   const go = useGo();
 
-  return (
-    <header className="lg:px-64 sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6 z-20">
-      <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
-        <button
-          onClick={() =>
-            go({
-              to: `/`,
-              query: {
-                filters: [],
-                resetPagenation: 1,
-              },
-              type: "push",
-            })
-          }
-          className="flex items-center gap-2 text-lg font-semibold md:text-base"
-        >
-          {config?.brand_logo ? (
-            <img
-              src={getFileURL(config?.brand_logo) ?? ""}
-              alt={config?.company}
-              className="min-h-[40px] h-[40px] w-auto max-w-[200px]"
-            />
-          ) : (
-            <h2>{config?.company}</h2>
-          )}
-        </button>
-        <AppNavigationMenu />
-      </nav>
-      <MobileNavigationMenu />
-      <div className="flex ml-auto items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-        {config?.is_search_enabled == 1 && (
-          <form
-            className="flex-1 sm:flex-initial"
-            onSubmit={(e) => {
-              e.preventDefault();
-              go({
-                to: `/`,
-                query: {
-                  filters: [
-                    {
-                      field: "search",
-                      operator: "eq",
-                      value: e.currentTarget.search.value,
-                    },
-                  ],
-                  resetPagenation: 1,
-                },
-                type: "push",
-              });
-            }}
-          >
-            <div className="relative">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="search"
-                name="search"
-                placeholder={t("Search products...")}
-                className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
-              />
-            </div>
-          </form>
-        )}
-        {config?.enable_wishlist == 1 && <Wishlist />}
-        <Cart />
-        <DropdownMenu>
-          <DropdownMenuTrigger
-            asChild
-            onClick={() => {
-              authState?.authenticated ? undefined : navigate("/login");
-            }}
-          >
-            <Button variant="secondary" size="icon" className="rounded-full">
-              {!isLoading &&
-              !isFetching &&
-              !isRefetching &&
-              profile?.user?.user_image ? (
-                <Avatar>
-                  <AvatarImage
-                    src={profile.user?.user_image}
-                    alt={`${profile.user?.full_name} profile image`}
-                  />
-                  <AvatarFallback>{profile.user?.full_name[0]}</AvatarFallback>
-                </Avatar>
-              ) : (
-                <CircleUser className="h-5 w-5" />
-              )}
+  {
+    /* Create the state in case the searchbar sheet will close if users have searched for the products or clicked the 'cancel' button */
+  }
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
 
-              <span className="sr-only">{t("Toggle user menu")}</span>
-            </Button>
-          </DropdownMenuTrigger>
-          {authState?.authenticated && (
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>{t("My Account")}</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => navigate("/account")}>
-                {t("Profile")}
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => logout()}>
-                {t("Logout")}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          )}
-        </DropdownMenu>
+  useEffect(() => {
+    isSearching && setSearchInput("");
+  }, [isSearching]);
+
+  const LogoButton = () => {
+    return (
+      <button
+        onClick={() =>
+          go({
+            to: `/`,
+            query: {
+              filters: [],
+              resetPagenation: 1,
+            },
+            type: "push",
+          })
+        }
+        className="flex items-center gap-2 text-lg font-semibold md:text-base"
+      >
+        {/* Create the Logo component file onto the customComponent folder */}
+        <Logo />
+      </button>
+    );
+  };
+
+  return (
+    <header className="sticky top-0 flex h-[57px] items-center gap-4 border-b bg-background z-20">
+      <div className="max-w-[1400px] m-auto w-full grid grid-cols-3 md:flex pl-4">
+        <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+          <LogoButton />
+          <AppNavigationMenu />
+        </nav>
+        <MobileNavigationMenu />
+
+        {/* Mobile logo: I have made it on the centre of the header */}
+        <div className="md:hidden justify-center flex">
+          <LogoButton />
+        </div>
+
+        <div className="flex ml-auto items-center gap-2">
+          {/* Move the account button to the left side
+              I have hidden the dropdown menu because I changed to menu and this dropdown may be used later
+              If not, please consider removing it
+          */}
+          {/* <DropdownMenu>
+            <DropdownMenuTrigger
+              asChild
+              onClick={() => {
+                authState?.authenticated ? undefined : navigate("/login");
+              }}
+            >
+              <Button variant="ghost" size="icon" className="rounded-full hover:bg-transparent">
+                {!isLoading &&
+                !isFetching &&
+                !isRefetching &&
+                profile?.user?.user_image ? (
+                  <Avatar className="h-7 w-7">
+                    <AvatarImage
+                      src={profile.user?.user_image}
+                      alt={`${profile.user?.full_name} profile image`}
+                    />
+                    <AvatarFallback>{profile.user?.full_name[0]}</AvatarFallback>
+                  </Avatar>
+                ) : (
+                  <CircleUser className="h-5 w-5" />
+                )}
+
+                <span className="sr-only">{t("Toggle user menu")}</span>
+              </Button>
+            </DropdownMenuTrigger>
+            {authState?.authenticated && (
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>{t("My Account")}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => navigate("/account")}>
+                  {t("Profile")}
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => logout()}>
+                  {t("Logout")}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            )}
+          </DropdownMenu> */}
+
+          {/* Set the menu instead of dropdown when users would like to access account page or log out if they have logged in */}
+          <div className="hidden md:flex items-center gap-2">
+            {!isLoading && !isFetching && !isRefetching ? (
+              <>
+                {authState?.authenticated ? (
+                  <div className="flex items-center">
+                    <Button
+                      className="!bg-transparent p-0 font-semibold text-base"
+                      variant="ghost"
+                      onClick={() => navigate("/account")}
+                    >
+                      {profile?.user?.name}
+                    </Button>
+                    <MainAlertDialog
+                      trigger={
+                        <Button
+                          size="icon"
+                          className="!bg-transparent text-sm"
+                          variant="ghost"
+                        >
+                          <LogIn02 className="h-[22px] w-[22px]" />
+                        </Button>
+                      }
+                      title={t("Logout")}
+                      description={t("You can login again anytime without losing the detail, account, and orders")}
+                      cancel={t("Cancel")}
+                      action={t("Logout")}
+                      onClickAction={() => logout()}
+                    />
+                  </div>
+                ) : (
+                  <Button
+                    onClick={() => navigate("/login")}
+                    className="!bg-transparent text-sm"
+                    variant="ghost"
+                  >
+                    {t("Login or register")}
+                  </Button>
+                )}
+              </>
+            ) : (
+              <Skeleton className="h-6 w-[100px]" />
+            )}
+
+            <Separator className="h-6 w-[1px] bg-[#F0F0F0]" />
+          </div>
+
+          {config?.is_search_enabled == 1 && <Search />}
+
+          {config?.enable_wishlist == 1 && <Wishlist isHiddenOnMobile={true} />}
+          <Cart />
+        </div>
       </div>
     </header>
   );

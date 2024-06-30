@@ -50,6 +50,7 @@ import OrderDetail from "./pages/orders/show";
 import { PaymentProvider } from "./pages/checkout/Payment";
 import { ConfigProvider, useConfig } from "./hooks/useConfig";
 import { useEffect } from "react";
+import NotFound from "./pages/NotFound";
 
 const providerConfig = {
   url: import.meta.env.VITE_BACKEND_URL,
@@ -82,7 +83,7 @@ function App() {
             dataProvider={{
               default: dataProvider("https://api.fake-rest.refine.dev"),
               storeProvider: storeProvider,
-              frappeeProvider: frappeDataProvider(providerConfig),
+              frappeProvider: frappeDataProvider(providerConfig),
             }}
             i18nProvider={i18nProvider}
             routerProvider={routerBindings}
@@ -167,13 +168,15 @@ function App() {
                       index
                       element={<NavigateToResource resource="products" />}
                     />
-                    <Route path="/checkout" element={<Checkout />} />
                     <Route path="/account" element={<Account />}>
                       <Route index element={<Profile />} />
                       <Route path="addresses">
                         <Route index element={<Addresses />} />
                         <Route path=":id" element={<AddressEdit />} />
-                        <Route path="new" element={<AddressCreate />} />
+                        <Route
+                          path="new"
+                          element={<AddressCreate setIsOpen={() => {}} />}
+                        />
                       </Route>
                       <Route path="orders">
                         <Route index element={<OrderList />} />
@@ -184,14 +187,18 @@ function App() {
                       <Route index element={<BlogPostList />} />
                       <Route path="create" element={<BlogPostCreate />} />
                       <Route path="edit/:id" element={<BlogPostEdit />} />
-                      <Route path="show/:id" element={<BlogPostShow />} />R
+                      <Route path="show/:id" element={<BlogPostShow />} />
                     </Route>
                     <Route path="/address">
                       <Route index element={<AddressList />} />
-                      <Route path="create" element={<AddressCreate />} />
+                      <Route
+                        path="create"
+                        element={<AddressCreate setIsOpen={() => {}} />}
+                      />
                       <Route path="edit/:id" element={<AddressEdit />} />
                     </Route>
-                    <Route path="*" element={<ErrorComponent />} />
+                    <Route path="*" element={<NotFound />} />{" "}
+                    {/* Original component for 404 page: <ErrorComponent /> */}
                   </Route>
                   <Route
                     element={
@@ -203,6 +210,7 @@ function App() {
                       </Authenticated>
                     }
                   >
+                    <Route path="/checkout" element={<Checkout />} />
                     <Route
                       path="/checkout/payment"
                       element={<PaymentProvider />}
@@ -210,12 +218,14 @@ function App() {
                   </Route>
                   <Route
                     element={
-                      <Authenticated
-                        key="authenticated-outer"
-                        fallback={<Outlet />}
-                      >
-                        <NavigateToResource />
-                      </Authenticated>
+                      <Layout>
+                        <Authenticated
+                          key="authenticated-outer"
+                          fallback={<Outlet />}
+                        >
+                          <NavigateToResource />
+                        </Authenticated>
+                      </Layout>
                     }
                   >
                     <Route path="/login" element={<Login />} />
@@ -234,10 +244,10 @@ function App() {
             </CartProvider>
             <RefineKbar />
             {config?.enable_i18n && (
-              <LangSelect className="fixed bottom-16 right-4 w-max max-w-[180px] z-30" />
+              <LangSelect className="fixed bottom-4 right-4 w-max max-w-[180px] z-30" />
             )}
             <UnsavedChangesNotifier />
-            <DocumentTitleHandler />
+            <DocumentTitleHandler handler={() => config.site_name ?? "Store"} />
             <ToastContainer />
             <ReactQueryDevtools initialIsOpen={false} />
           </Refine>
