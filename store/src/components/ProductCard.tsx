@@ -11,6 +11,7 @@ interface ProductProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
   price: string;
   originalPrice?: string;
+  inStock: boolean;
   image: string;
   hasVariants?: boolean | number;
   discount?: string | number;
@@ -25,6 +26,7 @@ const ProductCard = ({
   price,
   discount,
   originalPrice,
+  inStock,
   image,
   hasVariants = false,
   width,
@@ -61,16 +63,18 @@ const ProductCard = ({
                 <span>{t("View Variants")}</span>
               </Button>
             ) : (
-              <Button
-                variant="ghost"
-                className="add-to-cart-btn"
-                onClick={(e) => {
-                  e.preventDefault();
-                  addToCart(itemCode);
-                }}
-              >
-                {t("Add to Cart")}
-              </Button>
+              inStock && (
+                <Button
+                  variant="ghost"
+                  className="add-to-cart-btn"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    addToCart(itemCode);
+                  }}
+                >
+                  {t("Add to Cart")}
+                </Button>
+              )
             )}
           </div>
         </div>
