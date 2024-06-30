@@ -15,11 +15,11 @@ const ProductCardSkeleton = () => {
             <br />
           </Skeleton>
         </h3>
-        <p>
+        <h6>
           <Skeleton className="w-20 max-w-full">
             <br />
           </Skeleton>
-        </p>
+        </h6>
       </div>
     </div>
   );

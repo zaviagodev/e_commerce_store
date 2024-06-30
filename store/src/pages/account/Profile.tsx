@@ -16,15 +16,17 @@ const Profile = () => {
   const avatar = useRef();
   const [previewAvatar, setPreviewAvatar] = useState();
   const t = useTranslate();
-  const { data: profile, isLoading } = useGetIdentity();
+  const { data: profile, isLoading, refetch } = useGetIdentity();
 
   const { open } = useNotification();
   const { mutate, isLoading: isSubmitting } = useCustomMutation({
     mutationOptions: {
       onSettled: () => {
-        open?.({
-          message: t("Profile updated successfully"),
-          type: "success",
+        refetch().then(() => {
+          open?.({
+            message: t("Profile updated successfully"),
+            type: "success",
+          });
         });
       },
     },

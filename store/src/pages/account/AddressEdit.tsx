@@ -17,9 +17,9 @@ export const AddressEdit: React.FC<IResourceComponentsProps> = () => {
     refineCore: { queryResult, id },
   } = useForm({});
   const t = useTranslate();
-  const invalidate = useInvalidate();
   const back = useBack();
 
+  const invalidate = useInvalidate();
   const { mutate, isLoading } = useUpdate({
     mutationOptions: {
       onSettled: (data: any, err: any) => {
@@ -28,7 +28,7 @@ export const AddressEdit: React.FC<IResourceComponentsProps> = () => {
           invalidate({
             dataProviderName: "storeProvider",
             resource: "address",
-            invalidates: ["detail"],
+            invalidates: ["list", "detail"],
             id: id as string,
           });
         }
