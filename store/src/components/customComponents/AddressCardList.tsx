@@ -1,11 +1,12 @@
-import { useList } from "@refinedev/core";
-import AddressCard from "../AddressCard";
+import { useList, useTranslate } from "@refinedev/core";
+import AddressCard from "../AddressCard"
 
 const AddressCardList = () => {
   const { data, isLoading } = useList();
+  const t = useTranslate()
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div>{t("Loading")}...</div>;
   }
 
   return (

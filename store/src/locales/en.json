@@ -6,7 +6,7 @@
     "Checkout": "Checkout",
     "Add coupon": "Add coupon",
     "Apply": "Apply",
-    "Coupon code is too short or empty": "Coupon code is too short or empty",
+    "Invalid coupon code": "Invalid coupon code",
     "Shipping Rule": "Shipping Rule",
     "Update Address": "Update Address",
     "Add Address": "Add Address",
@@ -60,6 +60,7 @@
     "Order summary": "Order summary",
     "Subtotal": "Subtotal",
     "Loading": "Loading",
+    "Searching": "Searching",
     "Shipping Cost": "Shipping cost",
     "Tax": "Tax",
     "Discount": "Discount",
@@ -98,6 +99,7 @@
     "Forgot your password?": "Forgot your password?",
     "Don't have an account?": "Don't have an account?",
     "Sign up": "Sign up",
+    "Sign up2": "Sign up",
     "username or Email is required": "username or Email is required",
     "Password is required": "Password is required",
     "Showing": "Showing",
@@ -119,6 +121,7 @@
     "Pay": "Pay",
     "Shipping Address": "Shipping Address",
     "All products": "All products",
+    "No products in this category": "No products in this category",
     "Sort by": "Sort by",
     "Default": "Default",
     "Price High to Low": "Price High to Low",
@@ -134,6 +137,8 @@
     "changeLang": "changeLang",
     "Item": "item",
     "Items": "items",
+    "Item2": "item",
+    "Items2": "items",
     "Shop now": "Shop now",
     "Related Products": "Related Products",
     "Order details": "Order details",
@@ -143,7 +148,6 @@
     "Bank Account": "Bank Account",
     "New customer": "New customer",
     "Register to access special and new products, trends, discounts, and other promotions for members.": "Register to access special and new products, trends, discounts, and other promotions for members.",
-    "Accept and sign up": "Accept and sign up",
     "Confirm": "Confirm",
     "We'll send you an email to reset your password.": "We'll send you an email to reset your password.",
     "Your email": "Your email",
@@ -155,6 +159,8 @@
     "You can login again anytime without losing the detail, account, and orders": "You can login again anytime without losing the detail, account, and orders",
     "Select Shipping Rule": "Select Shipping Rule",
     "Set as default shipping address": "Set as default shipping address",
+    "No shipping rules. Please contact the store.": "No shipping rules. Please contact the store.",
+    "No payment methods. Please contact the store.": "No payment methods. Please contact the store.",
     "pincode": "Pincode",
     "address title": "Address title",
     "address line 1": "Address Line 1",
@@ -163,6 +169,8 @@
     "state": "State",
     "city": "City",
     "You don't have any orders yet.": "You don't have any orders yet.",
+    "Unit": "Unit",
+    "Units": "Units",
     "notifications": {
         "deleteSuccess": "Deleted successfully",
         "createSuccess": "Created successfully",
@@ -189,5 +197,9 @@
     "language": {
         "en": "English",
         "th": "Thai"
-    }
+    },
+    "Copy": "Copy",
+    "Copied": "Copied",
+    "No products found": "No products found",
+    "Suggestions": "Suggestions"
 }

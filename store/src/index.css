@@ -27,7 +27,7 @@
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
-    --muted: 210 40% 96.1%;
+    --muted: 0 0 95%; /* Original: 210 40% 96.1% */
     --muted-foreground: 215.4 16.3% 46.9%;
 
     --accent: 0 0% 98% /* Original: 210 40% 96.1% */;
@@ -85,6 +85,10 @@
 
 .form-input {
   @apply bg-accent border-darkgray-100 h-12.5 rounded-xl px-6;
+}
+
+.form-input::placeholder {
+  @apply text-darkgray-200
 }
 
 .main-btn {

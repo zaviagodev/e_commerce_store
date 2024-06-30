@@ -221,7 +221,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
             ))}
             <Accordion type="single" collapsible className="w-full">
               <AccordionItem value="item-1">
-                <AccordionTrigger className="font-semibold">
+                <AccordionTrigger className="font-semibold h-[46px]">
                   {t("Details")}
                 </AccordionTrigger>
                 <AccordionContent>
@@ -237,7 +237,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
               <div className="w-full flex justify-center h-10 items-center mt-6">
                 <Button
                   variant="link"
-                  className="font-bold"
+                  className="font-bold text-base"
                   onClick={() => window.open(config.help_url, "_blank")}
                 >
                   <MessageQuestionCircle className="mr-2" /> {t("Ask for help")}

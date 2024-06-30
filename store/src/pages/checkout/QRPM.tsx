@@ -27,6 +27,17 @@ import ImageInput from "@/components/forms/controls/ImageInput";
 export const QRPMDetail = () => {
   const t = useTranslate();
   const { orderId, order, selectedPaymentMethod, next } = useCheckout();
+
+  const [isTextCopied, setIsTextCopied] = useState(false)
+
+  const copyAccountNumber = () => {
+    navigator.clipboard.writeText(selectedPaymentMethod.promptpay_number)
+    setIsTextCopied(true)
+    setTimeout(() => {
+      setIsTextCopied(false)
+    }, 1000)
+  }
+
   return (
     <>
       <div className="mt-10 text-center">
@@ -61,13 +72,12 @@ export const QRPMDetail = () => {
               <Button
                 size="icon"
                 variant="link"
-                className="text-accent"
-                onClick={() =>
-                  navigator.clipboard.writeText(
-                    selectedPaymentMethod.promptpay_number
-                  )
-                }
+                className="text-accent relative group focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                onClick={copyAccountNumber}
               >
+                <p className={`absolute bg-[#111111] px-2 py-1.5 text-xs rounded-full group-hover:opacity-100 group-hover:visible group-hover:-top-6 -top-5 transition-all ${isTextCopied ? 'opacity-100 visible -top-6' : 'opacity-0 invisible'}`}>
+                  {t(isTextCopied ? "Copied" : "Copy")}
+                </p>
                 <Copy className="h-4 w-4 text-gray-700" />
               </Button>
             </strong>

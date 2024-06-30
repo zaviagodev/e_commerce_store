@@ -143,7 +143,7 @@ const OrderDetail = () => {
           {t("Shipping Address")}
         </Label>
         {addressLoading || addressFetching || addressRefetching ? (
-          <div>Loading...</div>
+          <div>{t("Loading")}...</div>
         ) : (
           <AddressCard {...address?.message} />
         )}

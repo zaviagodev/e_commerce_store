@@ -17,7 +17,7 @@ const AddressCreate = ({ onCancel, onSettled }: AddressCreateProps) => {
   });
 
   return (
-    <div className="lg:w-[410px] mx-auto">
+    <div className="w-full mx-auto">
       <h1 className="font-semibold text-darkgray-500 text-lg">
         {t("Address")}
       </h1>

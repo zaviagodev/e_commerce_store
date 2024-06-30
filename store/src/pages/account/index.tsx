@@ -36,7 +36,7 @@ const Account = () => {
           <NavLink
             className={({ isActive }) =>
               `flex font-bold items-center gap-x-[10px] h-[50px] ${
-                isActive ? "text-primary" : "text-gray-500"
+                isActive ? "text-primary" : "text-darkgray-500"
               }`
             }
             end
@@ -47,7 +47,7 @@ const Account = () => {
           <NavLink
             className={({ isActive }) =>
               `flex font-bold items-center gap-x-[10px] h-[50px] ${
-                isActive ? "text-primary" : "text-gray-500"
+                isActive ? "text-primary" : "text-darkgray-500"
               }`
             }
             to="/account/addresses"

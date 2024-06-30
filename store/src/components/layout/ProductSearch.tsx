@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 const ProductSearch = ({ onSelect = (product: object) => {} }) => {
   const [search, setSearch] = useState("");
   const t = useTranslate();
-  const { data, refetch } = useList({
+  const { data, refetch, isFetching } = useList({
     dataProviderName: "storeProvider",
     resource: "products",
     queryOptions: {
@@ -60,16 +60,11 @@ const ProductSearch = ({ onSelect = (product: object) => {} }) => {
           </div>
         </form>
 
-        <div className="space-y-6 font-semibold">
-          <h2 className="text-darkgray-300">{t("Suggestions")}</h2>
-          {products.length === 0 ? (
-            <div className="flex flex-col items-center justify-center space-y-4">
-              <Smile className="h-12 w-12 text-muted-foreground" />
-              <p className="text-lg text-muted-foreground">
-                {t("No products found")}
-              </p>
-            </div>
-          ) : (
+        {isFetching ? (
+          <p>{t("Searching")}...</p>
+        ) : (
+          <div className="space-y-6 font-semibold">
+            <h2 className="text-darkgray-300">{products.length === 0 && search !== "" ? t("No products found"): t("Suggestions")}</h2>
             <ul className="space-y-6">
               {products.map((product) => (
                 <li key={product.item_code}>
@@ -95,8 +90,8 @@ const ProductSearch = ({ onSelect = (product: object) => {} }) => {
                 </li>
               ))}
             </ul>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </>
   );

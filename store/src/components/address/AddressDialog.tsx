@@ -27,7 +27,7 @@ const AddressDialog = ({
       open={isOpen}
     >
       <DialogTrigger className="w-full">{children}</DialogTrigger>
-      <DialogContent className="w-full h-full max-w-none lg:h-fit lg:w-fit">
+      <DialogContent className="w-full h-full max-w-none lg:h-fit lg:w-[680px]">
         <AddressCreate
           onCancel={() => setIsOpen(false)}
           onSettled={(data, err) => {

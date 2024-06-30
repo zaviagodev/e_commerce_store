@@ -50,7 +50,7 @@ const ProductCounter = ({
         </Button>
         {type === "editable" ? (
           <input
-            className="w-min text-center !bg-darkgray-100"
+            className="w-[22px] text-center !bg-darkgray-100"
             type="number"
             value={count ?? 0}
             onChange={(e) =>

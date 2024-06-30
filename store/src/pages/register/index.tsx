@@ -202,7 +202,7 @@ export const Register = () => {
                   {(signingUp || loggingIn) && (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   )}
-                  {t("Accept and sign up")}
+                  {t("Sign up2")}
                 </Button>
               </div>
             </form>
@@ -216,7 +216,7 @@ export const Register = () => {
                 variant="outline"
                 className="w-full h-12.5 text-base rounded-xl bg-accent border-darkgray-100 font-semibold"
               >
-                {t("Sign in")}
+                {t("Login")}
               </Button>
             </Link>
           </div>
