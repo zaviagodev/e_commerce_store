@@ -195,6 +195,31 @@ const Checkout = () => {
                             />
                           </FormControl>
                         </div>
+                        {!address && (
+                          <AddressDialog
+                            onSettled={(data, err) => {
+                              if (data?.message.name) {
+                                mutateCartAddress({
+                                  dataProviderName: "storeProvider",
+                                  url: "update_cart_address",
+                                  method: "put",
+                                  values: {
+                                    address_name: data.message.name,
+                                    address_type: "shipping",
+                                  },
+                                });
+                              }
+                            }}
+                          >
+                            <Button
+                              variant="outline"
+                              size="lg"
+                              className="w-full px-4 border border-darkgray-100 bg-accent justify-start rounded-xl text-darkgray-500 flex items-center gap-x-2 h-[60px] font-semibold text-base focus-visible:ring-0 focus-visible:ring-offset-0"
+                            >
+                              <PlusCircle /> {t("Add New Address")}
+                            </Button>
+                          </AddressDialog>
+                        )}
                         <FormMessage />
                       </FormItem>
                     );
@@ -205,31 +230,6 @@ const Checkout = () => {
                     <Skeleton className="h-40 rounded-xl w-full" />
                   )}
                 {address && <AddressCard {...address?.message} />}
-                {!address && (
-                  <AddressDialog
-                    onSettled={(data, err) => {
-                      if (data?.message.name) {
-                        mutateCartAddress({
-                          dataProviderName: "storeProvider",
-                          url: "update_cart_address",
-                          method: "put",
-                          values: {
-                            address_name: data.message.name,
-                            address_type: "shipping",
-                          },
-                        });
-                      }
-                    }}
-                  >
-                    <Button
-                      variant="outline"
-                      size="lg"
-                      className="w-full px-4 border border-darkgray-100 bg-accent justify-start rounded-xl text-darkgray-500 flex items-center gap-x-2 h-[60px] font-semibold text-base focus-visible:ring-0 focus-visible:ring-offset-0"
-                    >
-                      <PlusCircle /> {t("Add New Address")}
-                    </Button>
-                  </AddressDialog>
-                )}
               </section>
               <FormField
                 control={form.control}
@@ -266,7 +266,7 @@ const Checkout = () => {
                       <FormControl>
                         <RadioGroup
                           {...field}
-                          className="grid grid-cols-2 gap-4 !m-0"
+                          className="grid grid-cols-2 gap-4 "
                           onValueChange={(value) =>
                             form.setValue("paymentMethod", value)
                           }
