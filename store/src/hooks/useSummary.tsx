@@ -11,17 +11,18 @@ const useSummary = (orderDoc: any) => {
         orderDoc.total_taxes_and_charges - totalShipping,
         0
       );
-      const total = orderDoc.total;
+      // const total = orderDoc.total;
       return {
         totalTax,
         totalShipping,
-        totalDiscount: !orderDoc.grand_total
-          ? 0
-          : total +
-            totalTax +
-            totalShipping -
-            orderDoc.grand_total +
-            orderDoc.discount_amount,
+        totalDiscount: !orderDoc.grand_total ? 0 : orderDoc.discount_amount,
+        // totalDiscount: !orderDoc.grand_total
+        //   ? 0
+        //   : total +
+        //     totalTax +
+        //     totalShipping -
+        //     orderDoc.grand_total +
+        //     orderDoc.discount_amount,
       };
     }
     return {
