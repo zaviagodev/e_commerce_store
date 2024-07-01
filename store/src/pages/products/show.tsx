@@ -162,7 +162,10 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
                     className="w-full rounded-xl h-12.5 text-base font-semibold"
                     onClick={() => {
                       setTempCartQty((prevQty) => {
-                        addToCart(itemCode, (cart[itemCode] ?? 0) + prevQty);
+                        addToCart(
+                          itemCode,
+                          (cart[itemCode] ?? 0) + Number(prevQty)
+                        );
                         return INITIAL_COUNT;
                       });
                     }}
