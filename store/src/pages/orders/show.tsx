@@ -69,6 +69,8 @@ const OrderDetail = () => {
     (order.status === "Draft" && t("Draft")) ||
     (order.status === "Cancelled" && t("Cancelled"));
 
+  console.log("order", order);
+
   return (
     <div className="lg:w-[720px] mx-auto">
       <div className="flex items-center gap-x-2.5">
@@ -87,7 +89,13 @@ const OrderDetail = () => {
         </li>
         <li className="flex items-center justify-between">
           <span className="text-sm text-darkgray-200">{t("Order Date")}</span>
-          <span className="text-sm font-bold">{order.transaction_date}</span>
+          <span className="text-sm font-bold">
+            {new Intl.DateTimeFormat(["ban", "id"], {
+              year: "2-digit",
+              month: "2-digit",
+              day: "2-digit",
+            }).format(new Date(order.creation))}
+          </span>
         </li>
         <li className="flex items-center justify-between">
           <span className="text-sm text-darkgray-200">{t("Grand total")}</span>
