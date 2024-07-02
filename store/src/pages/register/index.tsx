@@ -29,8 +29,7 @@ import {
 } from "@/components/ui/alert-dialog"
 
 type RegisterCompleteProps = {
-  username: string
-  password: string
+  onClick: () => void
   isDone: boolean
   setIsDone: () => void
 }
@@ -58,22 +57,18 @@ export const Register = () => {
     },
   });
 
-  const RegisterComplete = ({ username, password, isDone, setIsDone } : RegisterCompleteProps) => {
+  const RegisterComplete = ({ onClick, isDone, setIsDone } : RegisterCompleteProps) => {
     return (
       <AlertDialog open={isDone} onOpenChange={setIsDone}>
-        <AlertDialogContent>
+        <AlertDialogContent className="p-8 space-y-2">
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete your account
-              and remove your data from our servers.
+            <AlertDialogTitle className="text-2xl font-semibold text-center">{t("Successfully registered")}</AlertDialogTitle>
+            <AlertDialogDescription className="text-darkgray-500 text-base text-center px-10">
+              {t("Thank you for registering. Click the button below to start shopping.")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogAction onClick={() => login({
-              username: username,
-              password: password,
-            })}>Continue</AlertDialogAction>
+            <AlertDialogAction onClick={onClick} className="main-btn">{t("Start shopping")}</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -90,13 +85,20 @@ export const Register = () => {
               className="space-y-4"
               onSubmit={form.handleSubmit((userdata) =>
                 register(userdata, {
-                  onSuccess: () =>
-                    <RegisterComplete 
-                      username={userdata.email}
-                      password={userdata.password}
-                      setIsDone={() => setSuccessfulRegister(true)}
-                      isDone={successfulRegister}
-                    />
+                  onSuccess: () => {
+                    setSuccessfulRegister(true)
+
+                    return (
+                      <RegisterComplete 
+                        onClick={() => login({
+                          username: userdata.email,
+                          password: userdata.password,
+                        })}
+                        setIsDone={() => setSuccessfulRegister(true)}
+                        isDone={successfulRegister}
+                      />
+                    )
+                  }
                 })
               )}
             >

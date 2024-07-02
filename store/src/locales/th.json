@@ -200,5 +200,8 @@
   "Copy": "คัดลอก",
   "Copied": "คัดลอกแล้ว",
   "No products found": "ไม่พบสินค้าที่คุณต้องการ",
-  "Suggestions": "หาสินค้าที่คุณต้องการ"
+  "Suggestions": "หาสินค้าที่คุณต้องการ",
+  "Successfully registered": "สมัครสมาชิกสำเร็จ",
+  "Thank you for registering. Click the button below to start shopping.": "ขอบคุณสำหรับการสมัครสมาชิก คลิกที่ปุ่มด้านล่างนี้เพื่อเริ่มต้นการซื้อสินค้า",
+  "Start shopping": "เริ่มต้นการใช้งาน"
 }
