@@ -244,7 +244,7 @@ function App() {
             </CartProvider>
             <RefineKbar />
             {config?.enable_i18n && (
-              <LangSelect className="fixed bottom-4 right-4 w-max max-w-[180px] z-30" />
+              <LangSelect className="hidden lg:flex fixed bottom-4 right-4 w-max max-w-[180px] z-30 gap-2" />
             )}
             <UnsavedChangesNotifier />
             <DocumentTitleHandler handler={() => config.site_name ?? "Store"} />

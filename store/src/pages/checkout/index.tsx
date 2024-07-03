@@ -136,7 +136,7 @@ const Checkout = () => {
   return (
     <div className="flex flex-col justify-center lg:gap-y-8 lg:flex-row mx-auto">
       <div className="w-full lg:max-w-[494px] lg:pl-0 lg:p-20 lg:pt-5 box-content">
-        <div className="flex items-center gap-x-4 border-b lg:border-0 p-4 lg:p-0 justify-between">
+        <div className="flex items-center gap-x-4 border-b lg:border-0 p-4 lg:p-0 justify-between fixed lg:static w-full lg:w-fit bg-white lg:bg-transparent">
           <Header />
 
           {/* CartList MOBILE VERSION */}
@@ -155,7 +155,7 @@ const Checkout = () => {
           <CartList />
         </div>
       </div>
-      <div className="w-full lg:max-w-[536px] lg:shadow-checkout p-4 lg:px-[60px] lg:pt-[120px] lg:h-screen">
+      <div className="w-full lg:max-w-[536px] lg:shadow-checkout p-4 lg:px-[60px] lg:pt-[120px] lg:h-screen mt-[57px] lg:mt-0">
         {/* This is the total cart on the mobile version */}
         <div className="mb-10 lg:hidden">
           {/* NEED TO FETCH THE IMAGE OF THE FIRST PRODUCT */}

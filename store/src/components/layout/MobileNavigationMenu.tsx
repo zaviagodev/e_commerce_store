@@ -21,6 +21,7 @@ import { getCategories, getFileURL } from "@/lib/utils";
 import { useConfig } from "@/hooks/useConfig";
 import { LogIn02 } from "@untitled-ui/icons-react";
 import MainAlertDialog from "../customComponents/MainAlertDialog";
+import LangSelect from "../LangSelect";
 
 const MobileNavigationMenu = () => {
   const [open, setOpen] = useState(false);
@@ -54,7 +55,7 @@ const MobileNavigationMenu = () => {
         <Button
           variant="outline"
           size="icon"
-          className="shrink-0 md:hidden border-0"
+          className="shrink-0 lg:hidden border-0"
         >
           <Menu className="h-5 w-5" />
           <span className="sr-only">{t("Toggle navigation menu")}</span>
@@ -158,22 +159,24 @@ const MobileNavigationMenu = () => {
               </CollapsibleContent>
             </Collapsible>
           </nav>
-
-          {authState?.authenticated && (
-            <MainAlertDialog
-              trigger={
-                <button className="flex items-center gap-x-2 font-semibold">
-                  <LogIn02 className="h-[22px] w-[22px]" />
-                  {t("Logout")}
-                </button>
-              }
-              title={t("Logout")}
-              description={t("You can login again anytime without losing the detail, account, and orders")}
-              cancel={t("Cancel")}
-              action={t("Logout")}
-              onClickAction={() => logout()}
-            />
-          )}
+          <nav className="grid gap-6 text-lg font-medium">
+            {config?.enable_i18n && <LangSelect className="border-none w-fit focus:outline-none focus:ring-0 focus:ring-offset-0 p-0 gap-2"/>}
+            {authState?.authenticated && (
+              <MainAlertDialog
+                trigger={
+                  <button className="flex items-center gap-x-2 font-semibold">
+                    <LogIn02 className="h-[22px] w-[22px]" />
+                    {t("Logout")}
+                  </button>
+                }
+                title={t("Logout")}
+                description={t("You can login again anytime without losing the detail, account, and orders")}
+                cancel={t("Cancel")}
+                action={t("Logout")}
+                onClickAction={() => logout()}
+              />
+            )}
+          </nav>
         </section>
       </SheetContent>
     </Sheet>

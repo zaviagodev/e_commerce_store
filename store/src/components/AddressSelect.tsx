@@ -96,10 +96,12 @@ const AddressSelect = ({ onSelect, ...props }: AddressSelectProps) => {
                     id={address.name}
                     className="peer sr-only"
                   />
-                  <AddressCard
-                    {...address}
-                    isActive={props?.value === address.name}
-                  />
+                  <SheetClose>
+                    <AddressCard
+                      {...address}
+                      isActive={props?.value === address.name}
+                    />
+                  </SheetClose>
                 </div>
               ))}
             </RadioGroup>

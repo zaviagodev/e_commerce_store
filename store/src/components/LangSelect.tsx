@@ -29,7 +29,7 @@ const LangSelect = (props: any) => {
   return (
     <Select value={currentLocale} onValueChange={changeLanguage}>
       <SelectTrigger {...props}>
-        <Globe className="w-4 h-4 mr-2 stroke-[1.5]"/>
+        <Globe className="w-4 h-4 stroke-[1.5]"/>
         <SelectValue className="w-full" />
       </SelectTrigger>
       <SelectContent>

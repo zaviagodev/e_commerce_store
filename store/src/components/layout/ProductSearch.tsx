@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import _debounce from "lodash/debounce";
-import { Smile } from "lucide-react";
+import { LoaderCircle, Smile } from "lucide-react";
 import { useList, useTranslate } from "@refinedev/core";
 import { SearchLg, XClose } from "@untitled-ui/icons-react";
 import { Input } from "../ui/input";
@@ -61,7 +61,10 @@ const ProductSearch = ({ onSelect = (product: object) => {} }) => {
         </form>
 
         {isFetching ? (
-          <p>{t("Searching")}...</p>
+          <p className="flex items-center gap-2">
+            <LoaderCircle className="animate-spin" />
+            {t("Searching")}...
+          </p>
         ) : (
           <div className="space-y-6 font-semibold">
             <h2 className="text-darkgray-300">{products.length === 0 && search !== "" ? t("No products found"): t("Suggestions")}</h2>
