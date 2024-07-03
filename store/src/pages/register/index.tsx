@@ -188,7 +188,7 @@ export const Register = () => {
                     {t("terms and conditions")}{" "}
                   </span>
                   {t(
-                    "This includes the processing of my data for the purposes set out in the"
+                    "including the processing of my data for the purposes set out in the"
                   )}{" "}
                   <span className="text-black">
                     {t("Privacy policy and use of cookies")}

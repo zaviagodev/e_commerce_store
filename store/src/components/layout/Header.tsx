@@ -57,7 +57,7 @@ const Header = () => {
             type: "push",
           })
         }
-        className="flex items-center gap-2 text-lg font-semibold md:text-base"
+        className="flex items-center gap-2 text-sm lg:text-lg font-semibold md:text-base"
       >
         {/* Create the Logo component file onto the customComponent folder */}
         <Logo />
@@ -67,7 +67,7 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 flex h-[57px] items-center gap-4 border-b bg-background z-20">
-      <div className="max-w-[1400px] m-auto w-full grid grid-cols-3 md:flex pl-4">
+      <div className="max-w-[1400px] m-auto w-full grid grid-cols-3 md:flex px-2 md:pl-4">
         <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
           <LogoButton />
           <AppNavigationMenu />

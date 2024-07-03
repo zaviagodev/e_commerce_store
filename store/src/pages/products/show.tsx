@@ -102,6 +102,9 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
   const itemCode = selectedVariant ?? (showId as string);
   const inWishlist = wishlist.includes(itemCode);
 
+  /* Will be set dynamically, the default value of the font size is 36px */
+  const PRODUCT_NAME_FONT_SIZE = "text-4xl"
+
   return (
     <section className="space-y-10 lg:space-y-[140px] pb-20 max-w-[1200px] mx-auto">
       <div className="flex flex-col lg:flex-row gap-[18px] lg:gap-[33px]">
@@ -122,8 +125,8 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
         />
         <section className="w-full lg:px-10 lg:py-[30px] lg:max-w-[536px] h-full sticky top-0 z-10">
           <div className="flex flex-col gap-y-3 lg:gap-y-[10px]">
-            <h2 className="text-secgray text-sm">{product.item_group}</h2>
-            <h1 className="font-semibold text-texttag text-[22px]">
+            <h2 className="text-[17px]">{product.item_group}</h2>
+            <h1 className={`font-semibold text-[#111111] ${PRODUCT_NAME_FONT_SIZE}`}>
               {product.web_item_name}
             </h1>
             <span className="flex flex-row items-center justify-start gap-2 mb-3">
