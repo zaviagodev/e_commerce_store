@@ -7,9 +7,9 @@ const CartListSkeleton = () => {
     <section>
       <div className="flex flex-col gap-y-4 lg:mr-5">
         <ul className="my-3 flex flex-col ">
-          <ItemSkeleton />;
-          <ItemSkeleton />;
-          <ItemSkeleton />;
+          <ItemSkeleton />
+          <ItemSkeleton />
+          <ItemSkeleton />
         </ul>
       </div>
 
