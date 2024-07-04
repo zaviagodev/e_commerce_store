@@ -118,7 +118,13 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
                 "",
               alt: `${product.web_item_name} image`,
             },
-          ]}
+          ].concat(
+            (product.website_images ?? []).map((image) => ({
+              imageThumbSrc: getFileURL(image.file_url),
+              imageSrc: getFileURL(image.file_url),
+              alt: `${product.web_item_name} image`,
+            }))
+          )}
         />
         <section className="w-full lg:px-10 lg:py-[30px] lg:max-w-[536px] h-full sticky top-0 z-10">
           <div className="flex flex-col gap-y-3 lg:gap-y-[10px]">
@@ -153,6 +159,9 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
                 count={tempCartQty}
                 onCountChange={(count) => setTempCartQty(count)}
               />
+              <div className="font-normal text-sm">
+                <p>{config.add_to_cart_label}</p>
+              </div>
               <div className="fixed bottom-0 left-0 bg-white lg:bg-inherit p-4 lg:p-0 lg:static flex lg:flex-col w-full gap-y-[14px] flex-col-reverse z-10">
                 <div className="flex items-center gap-x-[10px] w-full">
                   <Button
@@ -223,7 +232,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
               </div>
             ))}
             <Accordion type="single" collapsible className="w-full">
-              <AccordionItem value="item-1">
+              <AccordionItem value="details">
                 <AccordionTrigger className="font-semibold h-[46px]">
                   {t("Details")}
                 </AccordionTrigger>
@@ -235,6 +244,34 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
                   />
                 </AccordionContent>
               </AccordionItem>
+              {product.custom_return__refund_title && (
+                <AccordionItem value="refund_policy">
+                  <AccordionTrigger className="font-semibold h-[46px]">
+                    {`${product.custom_return__refund_title}`}
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: product.custom_long_description,
+                      }}
+                    />
+                  </AccordionContent>
+                </AccordionItem>
+              )}
+              {product.custom_shipping_title && (
+                <AccordionItem value="shipping">
+                  <AccordionTrigger className="font-semibold h-[46px]">
+                    {product.custom_shipping_title}
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: product.custom_shipping_description,
+                      }}
+                    />
+                  </AccordionContent>
+                </AccordionItem>
+              )}
             </Accordion>
             {config?.help_url && (
               <div className="w-full flex justify-center h-10 items-center mt-6">
