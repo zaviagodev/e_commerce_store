@@ -34,7 +34,7 @@ const ProductCard = ({
   ...props
 }: ProductProps) => {
   const t = useTranslate();
-  const { addToCart } = useCart();
+  const { addToCart, setIsOpen } = useCart();
   return (
     <Link to={`/product/${itemCode}`} className="group" onClick={() => window.scrollTo(0, 0)}>
       <div className={cn("space-y-3", className)} {...props}>
@@ -70,6 +70,7 @@ const ProductCard = ({
                   onClick={(e) => {
                     e.preventDefault();
                     addToCart(itemCode);
+                    setIsOpen(true)
                   }}
                 >
                   {t("Add to Cart")}

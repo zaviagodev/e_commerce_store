@@ -33,7 +33,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
   const [selectedAttributes, setSelectedAttributes] = useState({});
   const t = useTranslate();
   const { config } = useConfig();
-  const { cart, addToCart } = useCart();
+  const { cart, addToCart, setIsOpen } = useCart();
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
   const { queryResult, showId } = useShow({
     queryOptions: {
@@ -159,11 +159,12 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
               <div className="fixed bottom-0 left-0 bg-white lg:bg-inherit p-4 lg:p-0 lg:static flex lg:flex-col w-full gap-y-[14px] flex-col-reverse z-10">
                 <div className="flex items-center gap-x-[10px] w-full">
                   <Button
-                    disabled={
-                      product.stock_qty <= 0 || tempCartQty > product.stock_qty
-                    }
+                    // disabled={
+                    //   product.stock_qty <= 0 || tempCartQty > product.stock_qty
+                    // }
                     className="w-full rounded-xl h-12.5 text-base font-semibold"
                     onClick={() => {
+                      setIsOpen(true);
                       setTempCartQty((prevQty) => {
                         addToCart(
                           itemCode,
