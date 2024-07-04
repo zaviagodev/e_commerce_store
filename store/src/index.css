@@ -98,3 +98,57 @@
 .add-to-cart-btn {
   @apply translate-y-[150%] group-hover:translate-y-0 transition-transform w-[calc(100%_-_16px)] absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-white text-black shadow-sm text-base font-semibold;
 }
+
+@keyframes search-input-anim-in {
+  from {
+    @apply w-16
+  }
+  to {
+    @apply w-full
+  }
+}
+
+@keyframes search-input-anim-out {
+  from {
+    @apply w-full
+  }
+  to {
+    @apply w-16
+  }
+}
+
+@keyframes fade-in {
+  from {
+    @apply opacity-0
+  }
+  to {
+    @apply opacity-100
+  }
+}
+
+@keyframes fade-out {
+  from {
+    @apply opacity-100
+  }
+  to {
+    @apply opacity-0
+  }
+}
+
+.search-input-anim-in {
+  animation: search-input-anim-in 300ms forwards;
+  animation-delay: 200ms;
+}
+
+.search-input-anim-out {
+  animation: search-input-anim-out 300ms forwards;
+}
+
+.fade-in-search {
+  animation: fade-in 200ms forwards;
+  animation-delay: 200ms;
+}
+
+.fade-out-search {
+  animation: fade-out 200ms forwards;
+}

@@ -21,7 +21,7 @@ import { useConfig } from "@/hooks/useConfig";
 import RelatedProducts from "@/components/RelatedProducts";
 import { MessageQuestionCircle, ShoppingBag01 } from "@untitled-ui/icons-react";
 import { Heart } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Toggle } from "@/components/ui/toggle";
 import { getFileURL } from "@/lib/utils";
 
@@ -194,7 +194,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
             </div>
           </div>
 
-          <div className="py-4">
+          <div className="pb-4">
             {product.variant_attributes?.map((variant_attribute) => (
               <div key={variant_attribute.attribute}>
                 <div className="flex items-center justify-between gap-4 my-2">
@@ -227,7 +227,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
             ))}
             <Accordion type="single" collapsible className="w-full">
               <AccordionItem value="item-1">
-                <AccordionTrigger className="font-semibold h-[46px]">
+                <AccordionTrigger className="font-semibold h-16">
                   {t("Details")}
                 </AccordionTrigger>
                 <AccordionContent>

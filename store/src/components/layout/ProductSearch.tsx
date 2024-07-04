@@ -6,7 +6,7 @@ import { SearchLg, XClose } from "@untitled-ui/icons-react";
 import { Input } from "../ui/input";
 import { Link } from "react-router-dom";
 
-const ProductSearch = ({ onSelect = (product: object) => {} }) => {
+const ProductSearch = ({ onSelect = (product: object) => {}, className } : { onSelect: Function , className?: string}) => {
   const [search, setSearch] = useState("");
   const t = useTranslate();
   const { data, refetch, isFetching } = useList({
@@ -42,12 +42,12 @@ const ProductSearch = ({ onSelect = (product: object) => {} }) => {
             e.preventDefault();
           }}
         >
-          <div className="relative flex items-center">
+          <div className={`relative flex items-center ${className}`}>
             <SearchLg className="absolute left-4 h-5 w-5 text-muted-foreground" />
             <Input
               name="search"
               placeholder={t("Search products")}
-              className="pl-12 w-full focus-visible:ring-0 focus-visible:ring-offset-0 bg-neutral-100 rounded-full border-neutral-100"
+              className={`pl-12 w-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 bg-neutral-100 rounded-full border-neutral-100`}
               onChange={(e) => setSearch(e.target.value)}
               value={search}
             />
