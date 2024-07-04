@@ -57,7 +57,7 @@ const AddressSelect = ({ onSelect, ...props }: AddressSelectProps) => {
           <SheetTrigger className="-mb-24 mr-6 z-10">
             <ArrowRight className="h-6 w-6" />
           </SheetTrigger>
-          <SheetContent className="overflow-y-scroll">
+          <SheetContent className="overflow-y-scroll w-full">
             <SheetHeader className="bg-white -m-5 flex flex-row items-center justify-between z-10 px-4 py-3 border-b">
               <SheetClose asChild>
                 <FlipBackward className="h-5 w-5 cursor-pointer hover:opacity-75 absolute" />

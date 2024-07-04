@@ -51,7 +51,6 @@ const ProductImages = ({ images }: ProductImagesProps) => {
         activeIndex={activeIndex}
         prevDisabled={activeIndex === 0}
         nextDisabled={activeIndex === images.length - 1}
-
         // Button arrows may be used later, so I added 'hidden' class to them.
         slotPreviousButton={
           <SfButton
@@ -111,7 +110,7 @@ const ProductImages = ({ images }: ProductImagesProps) => {
               src={imageThumbSrc}
               width={134}
               height={134}
-              className="object-cover w-full h-full aspect-square"
+              className="object-scale-down w-full h-full aspect-square"
             />
           </button>
         ))}
