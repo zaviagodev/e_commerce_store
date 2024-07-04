@@ -46,9 +46,16 @@ const CartItem = ({ itemCode }: CartItemProps) => {
             <h3 className="text-sm">
               <Link to={`/product/${itemCode}`}>{item.web_item_name}</Link>
             </h3>
-            <p className="ml-4 whitespace-pre text-sm font-semibold">
-              {item.price?.formatted_price}
-            </p>
+            <div className="ml-4 whitespace-pre text-sm font-semibold">
+              <p className={item.price?.formatted_mrp ? "text-red-500" : ""}>
+                {item.price?.formatted_price}
+              </p>
+              {item.price?.formatted_mrp && (
+                <p className="text-darkgray-400 line-through">
+                  {item.price?.formatted_mrp}
+                </p>
+              )}
+            </div>
           </div>
         </div>
         <div className="flex items-center justify-between text-base">

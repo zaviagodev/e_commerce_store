@@ -17,10 +17,10 @@ const CheckoutItem = ({ itemCode, qty }: CheckoutItemProps) => {
     id: itemCode,
   });
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   if (isLoading) {
-    return <ItemSkeleton />
+    return <ItemSkeleton />;
   }
 
   const item = data?.message.product_info;
@@ -42,15 +42,22 @@ const CheckoutItem = ({ itemCode, qty }: CheckoutItemProps) => {
         <p className="text-sm text-darkgray-500">{item.web_item_name}</p>
         <strong className="text-sm">
           {/* {qty} {`${item.uom}${(qty ?? 0) > 1 ? "s" : ""}`} */}
-
           {/* I have used the condition of item.uom === "Unit" to translate the word 'Unit' into Thai */}
-          {qty} {`${item.uom === "Unit" ? (qty ?? 0) > 1 ? t("Units") : t("Unit") : ""}`}
+          {qty}{" "}
+          {`${
+            item.uom === "Unit" ? ((qty ?? 0) > 1 ? t("Units") : t("Unit")) : ""
+          }`}
         </strong>
       </div>
-      <div>
-        <p className="text-sm font-semibold">
+      <div className="text-sm font-semibold">
+        <p className={item.price?.formatted_mrp ? "text-red-500" : ""}>
           {item.price?.formatted_price}
         </p>
+        {item.price?.formatted_mrp && (
+          <p className="text-darkgray-400 line-through">
+            {item.price?.formatted_mrp}
+          </p>
+        )}
       </div>
     </div>
   );

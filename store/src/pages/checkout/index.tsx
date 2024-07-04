@@ -423,7 +423,7 @@ const CartList = () => {
               </strong>
             </div>
           )}
-          {/* TODO: enable later <CouponCodeInput /> */}
+          <CouponCodeInput />
         </div>
         <Separator className="my-4 bg-[#E3E3E3]" />
         <div className="w-full flex justify-between font-semibold text-sm">
