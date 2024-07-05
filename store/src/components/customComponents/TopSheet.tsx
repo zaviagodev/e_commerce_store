@@ -14,6 +14,7 @@ type SearchbarProps = {
   children: ReactNode
   onOpenChange?: (open: boolean) => void
   open?: boolean
+  triggerClassName?: string
   contentClassName?: string
 }
 
@@ -22,11 +23,12 @@ const TopSheet = ({
   children,
   onOpenChange,
   open,
+  triggerClassName,
   contentClassName
 } : SearchbarProps) => {
   return (
     <Sheet onOpenChange={onOpenChange} open={open}>
-      <SheetTrigger>
+      <SheetTrigger className={triggerClassName}>
         {trigger}
       </SheetTrigger>
       <SheetContent side="top" className={contentClassName}>

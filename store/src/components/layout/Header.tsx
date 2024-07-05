@@ -57,7 +57,7 @@ const Header = () => {
             type: "push",
           })
         }
-        className="flex items-center gap-2 text-lg font-semibold md:text-base"
+        className="flex items-center gap-2 text-sm lg:text-lg font-semibold md:text-base"
       >
         {/* Create the Logo component file onto the customComponent folder */}
         <Logo />
@@ -67,15 +67,15 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 flex h-[57px] items-center gap-4 border-b bg-background z-20">
-      <div className="max-w-[1400px] m-auto w-full grid grid-cols-3 md:flex pl-4">
-        <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+      <div className="max-w-[1400px] m-auto w-full grid grid-cols-3 lg:flex px-2 lg:pl-4">
+        <nav className="hidden flex-col gap-6 text-lg font-medium lg:flex lg:flex-row lg:items-center lg:gap-5 lg:text-sm">
           <LogoButton />
           <AppNavigationMenu />
         </nav>
         <MobileNavigationMenu />
 
         {/* Mobile logo: I have made it on the centre of the header */}
-        <div className="md:hidden justify-center flex">
+        <div className="lg:hidden justify-center flex">
           <LogoButton />
         </div>
 
@@ -126,7 +126,7 @@ const Header = () => {
           </DropdownMenu> */}
 
           {/* Set the menu instead of dropdown when users would like to access account page or log out if they have logged in */}
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden lg:flex items-center gap-2">
             {!isLoading && !isFetching && !isRefetching ? (
               <>
                 {authState?.authenticated ? (

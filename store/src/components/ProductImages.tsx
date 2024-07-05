@@ -43,7 +43,8 @@ const ProductImages = ({ images }: ProductImagesProps) => {
     }
   };
   return (
-    <div className="relative flex w-full aspect-square lg:aspect-[4/3]">
+    // <div className="relative flex w-full aspect-square lg:aspect-[4/3]">
+    <div className="relative flex w-full">
       <SfScrollable
         ref={thumbsRef}
         className="hidden lg:flex sticky top-[calc(57px_+_16px)] items-center w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
@@ -96,7 +97,7 @@ const ProductImages = ({ images }: ProductImagesProps) => {
             aria-current={activeIndex === index}
             key={`${alt}-${index}-thumbnail`}
             className={classNames(
-              "w-full h-full relative shrink-0 snap-center cursor-pointer focus-visible:outline focus-visible:outline-offset transition-colors flex-grow md:flex-grow-0",
+              "w-full h-auto relative shrink-0 snap-center cursor-pointer focus-visible:outline focus-visible:outline-offset transition-colors flex-grow md:flex-grow-0",
               {
                 "border-primary-700": activeIndex === index,
                 "border-transparent": activeIndex !== index,
@@ -119,7 +120,7 @@ const ProductImages = ({ images }: ProductImagesProps) => {
         className="lg:ml-8 w-full h-full snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         activeIndex={activeIndex}
         direction="vertical"
-        wrapperClassName="h-full m-auto"
+        wrapperClassName="w-full"
         buttonsPlacement="none"
         isActiveIndexCentered
         drag={{ containerWidth: true }}
@@ -133,7 +134,7 @@ const ProductImages = ({ images }: ProductImagesProps) => {
             <img
               aria-label={alt}
               aria-hidden={activeIndex !== index}
-              className="object-cover w-full h-full lg:min-w-[500px] lg:min-h-[500px] lg:max-w-[500px] lg:max-h-[500px]"
+              className="object-contain w-full h-fit lg:min-w-[500px] lg:min-h-[500px] lg:max-w-[500px] lg:max-h-[500px]"
               alt={alt}
               src={imageSrc}
             />

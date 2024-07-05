@@ -22,7 +22,7 @@ const Search = () => {
     <TopSheet
       open={isSearching}
       onOpenChange={setIsSearching}
-      contentClassName="py-0"
+      contentClassName={`p-0 data-[state=open]:!translate-y-0 data-[state=closed]:!translate-y-0 data-[state=open]:fade-in data-[state=closed]:fade-out shadow-none !duration-300`}
       trigger={
         <Button
           variant="ghost"
@@ -33,13 +33,13 @@ const Search = () => {
         </Button>
       }
     >
-      <div className="max-w-[1400px] mx-auto w-full">
-        <section className="flex items-start w-full justify-between gap-x-10 px-4 pt-3 py-10">
-          <Logo />
+      <div className={`max-w-[1400px] mx-auto w-full ${isSearching ? 'fade-in-search' : 'fade-out-search'} opacity-0`}>
+        <section className={`flex items-start w-full justify-between gap-x-4 md:gap-x-10 px-4 xl:px-2 pt-2 py-10 md:mx-auto border-box ${isSearching ? 'search-input-anim-in' : 'search-input-anim-out'}`}>
+          <Logo className="hidden md:block"/>
 
-          <ProductSearch onSelect={() => setIsSearching(false)} />
+          <ProductSearch onSelect={() => setIsSearching(false)} className={`pt-1`}/>
 
-          <Button onClick={() => setIsSearching(false)} variant="ghost">
+          <Button onClick={() => setIsSearching(false)} variant="ghost" className="hover:bg-transparent">
             {t("Cancel")}
           </Button>
         </section>
