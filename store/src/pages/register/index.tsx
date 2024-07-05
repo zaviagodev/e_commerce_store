@@ -36,7 +36,7 @@ type RegisterCompleteProps = {
 
 export const Register = () => {
   const t = useTranslate();
-  const { mutate: register, isLoading: signingUp, isSuccess } = useRegister();
+  const { mutate: register, isLoading: signingUp } = useRegister();
   const { mutate: login, isLoading: loggingIn } = useLogin();
 
   const [showPassword, setShowPassword] = useState(false);

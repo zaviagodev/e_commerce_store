@@ -101,7 +101,7 @@
 
 @keyframes search-input-anim-in {
   from {
-    @apply w-16
+    @apply w-20
   }
   to {
     @apply w-full
@@ -113,7 +113,7 @@
     @apply w-full
   }
   to {
-    @apply w-16
+    @apply w-20
   }
 }
 
@@ -132,6 +132,17 @@
   }
   to {
     @apply opacity-0
+  }
+}
+
+@keyframes search-list {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0)
   }
 }
 

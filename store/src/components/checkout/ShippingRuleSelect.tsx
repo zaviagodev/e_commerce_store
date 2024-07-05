@@ -118,23 +118,25 @@ const ShippingRuleSelect = ({
                   }}
                   key={shippingRule.name}
                 >
-                  <RadioGroupItem
-                    value={shippingRule.name}
-                    id={shippingRule.name}
-                    className="peer sr-only"
-                  />
-                  <Card className="w-full overflow-hidden bg-accent border border-darkgray-100 rounded-xl shadow-none px-3 py-2">
-                    <div className="flex flex-col justify-center w-full select-none items-start rounded-sm py-1.5 px-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
-                      <h2 className="font-semibold">{shippingRule.name}</h2>
+                  <SheetClose>
+                    <RadioGroupItem
+                      value={shippingRule.name}
+                      id={shippingRule.name}
+                      className="peer sr-only"
+                    />
+                    <Card className="w-full overflow-hidden bg-accent border border-darkgray-100 rounded-xl shadow-none px-3 py-2">
+                      <div className="flex flex-col justify-center w-full select-none items-start rounded-sm py-1.5 px-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+                        <h2 className="font-semibold">{shippingRule.name}</h2>
 
-                      <p className="text-xs text-muted-foreground">
-                        {new Intl.NumberFormat("th-TH", {
-                          style: "currency",
-                          currency: "THB",
-                        }).format(shippingRule.shipping_amount)}
-                      </p>
-                    </div>
-                  </Card>
+                        <p className="text-xs text-muted-foreground">
+                          {new Intl.NumberFormat("th-TH", {
+                            style: "currency",
+                            currency: "THB",
+                          }).format(shippingRule.shipping_amount)}
+                        </p>
+                      </div>
+                    </Card>
+                  </SheetClose>
                 </div>
               ))}
             </RadioGroup>

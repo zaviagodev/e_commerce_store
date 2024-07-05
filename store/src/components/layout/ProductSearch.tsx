@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 const ProductSearch = ({ onSelect = (product: object) => {}, className } : { onSelect: Function , className?: string}) => {
   const [search, setSearch] = useState("");
   const t = useTranslate();
-  const { data, refetch, isFetching } = useList({
+  const { data, refetch, isFetching, isLoading } = useList({
     dataProviderName: "storeProvider",
     resource: "products",
     queryOptions: {
@@ -67,32 +67,35 @@ const ProductSearch = ({ onSelect = (product: object) => {}, className } : { onS
           </p>
         ) : (
           <div className="space-y-6 font-semibold">
-            <h2 className="text-darkgray-300">{products.length === 0 && search !== "" ? t("No products found"): t("Suggestions")}</h2>
-            <ul className="space-y-6">
-              {products.map((product) => (
-                <li key={product.item_code}>
-                  <Link
-                    to={`/product/${product.item_code}`}
-                    className="flex items-center space-x-4"
-                    onClick={() => onSelect(product)}
-                  >
-                    <img
-                      src={product.website_image}
-                      alt={product.item_name}
-                      className="w-12 h-12 object-cover rounded-lg"
-                    />
-                    <div className="flex flex-col">
-                      <span className="text-darkgray-300">
-                        {product.web_item_name}
-                      </span>
-                      <span className="text-muted-foreground">
-                        {product.formatted_price}
-                      </span>
-                    </div>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <h2 className="text-darkgray-300 whitespace-pre">{products.length === 0 && search !== "" ? t("No products found"): t("Suggestions")}</h2>
+
+            {search !== "" ? (
+              <ul className="space-y-6">
+                {products.map((product, index) => (
+                  <li key={product.item_code} style={{animation:`search-list 200ms forwards`, opacity: 0, animationDelay:`${50 * (index + 1)}ms`}}>
+                    <Link
+                      to={`/product/${product.item_code}`}
+                      className="flex items-center space-x-4"
+                      onClick={() => onSelect(product)}
+                    >
+                      <img
+                        src={product.website_image}
+                        alt={product.item_name}
+                        className="w-12 h-12 object-cover rounded-lg"
+                      />
+                      <div className="flex flex-col">
+                        <span className="text-darkgray-300">
+                          {product.web_item_name}
+                        </span>
+                        <span className="text-muted-foreground">
+                          {product.formatted_price}
+                        </span>
+                      </div>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
           </div>
         )}
       </div>
