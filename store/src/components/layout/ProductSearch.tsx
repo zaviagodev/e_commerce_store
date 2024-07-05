@@ -6,7 +6,13 @@ import { SearchLg, XClose } from "@untitled-ui/icons-react";
 import { Input } from "../ui/input";
 import { Link } from "react-router-dom";
 
-const ProductSearch = ({ onSelect = (product: object) => {}, className } : { onSelect: Function , className?: string}) => {
+const ProductSearch = ({
+  onSelect = (product: object) => {},
+  className,
+}: {
+  onSelect: Function;
+  className?: string;
+}) => {
   const [search, setSearch] = useState("");
   const t = useTranslate();
   const { data, refetch, isFetching, isLoading } = useList({
@@ -67,12 +73,23 @@ const ProductSearch = ({ onSelect = (product: object) => {}, className } : { onS
           </p>
         ) : (
           <div className="space-y-6 font-semibold">
-            <h2 className="text-darkgray-300 whitespace-pre">{products.length === 0 && search !== "" ? t("No products found"): t("Suggestions")}</h2>
+            <h2 className="text-darkgray-300 whitespace-pre">
+              {products.length === 0 && search !== ""
+                ? t("No products found")
+                : t("Suggestions")}
+            </h2>
 
             {search !== "" ? (
               <ul className="space-y-6">
                 {products.map((product, index) => (
-                  <li key={product.item_code} style={{animation:`search-list 200ms forwards`, opacity: 0, animationDelay:`${50 * (index + 1)}ms`}}>
+                  <li
+                    key={product.item_code}
+                    style={{
+                      animation: `search-list 200ms forwards`,
+                      opacity: 0,
+                      animationDelay: `${50 * (index + 1)}ms`,
+                    }}
+                  >
                     <Link
                       to={`/product/${product.item_code}`}
                       className="flex items-center space-x-4"

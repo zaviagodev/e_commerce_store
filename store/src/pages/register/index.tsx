@@ -26,13 +26,41 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+} from "@/components/ui/alert-dialog";
 
 type RegisterCompleteProps = {
-  onClick: () => void
-  isDone: boolean
-  setIsDone: () => void
-}
+  onClick: () => void;
+  isDone: boolean;
+  setIsDone: () => void;
+};
+
+const RegisterComplete = ({
+  onClick,
+  isDone,
+  setIsDone,
+}: RegisterCompleteProps) => {
+  return (
+    <AlertDialog open={isDone} onOpenChange={setIsDone}>
+      <AlertDialogContent className="p-8 space-y-2">
+        <AlertDialogHeader>
+          <AlertDialogTitle className="text-2xl font-semibold text-center">
+            {t("Successfully registered")}
+          </AlertDialogTitle>
+          <AlertDialogDescription className="text-darkgray-500 text-base text-center px-10">
+            {t(
+              "Thank you for registering. Click the button below to start shopping."
+            )}
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogAction onClick={onClick} className="main-btn">
+            {t("Start shopping")}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+};
 
 export const Register = () => {
   const t = useTranslate();
@@ -40,7 +68,6 @@ export const Register = () => {
   const { mutate: login, isLoading: loggingIn } = useLogin();
 
   const [showPassword, setShowPassword] = useState(false);
-  const [successfulRegister, setSuccessfulRegister] = useState(false)
 
   const handleShowPassword = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -57,24 +84,6 @@ export const Register = () => {
       confirm_password: "",
     },
   });
-
-  const RegisterComplete = ({ onClick, isDone, setIsDone } : RegisterCompleteProps) => {
-    return (
-      <AlertDialog open={isDone} onOpenChange={setIsDone}>
-        <AlertDialogContent className="p-8 space-y-2">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="text-2xl font-semibold text-center">{t("Successfully registered")}</AlertDialogTitle>
-            <AlertDialogDescription className="text-darkgray-500 text-base text-center px-10">
-              {t("Thank you for registering. Click the button below to start shopping.")}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogAction onClick={onClick} className="main-btn">{t("Start shopping")}</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    )
-  }
 
   return (
     <section>
