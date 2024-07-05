@@ -157,11 +157,14 @@ const Checkout = () => {
       </div>
       <div className="w-full lg:max-w-[536px] lg:shadow-checkout p-4 lg:px-[60px] lg:pt-[120px] lg:h-screen mt-[57px] lg:mt-0">
         {/* This is the total cart on the mobile version */}
-        <div className="mb-10 lg:hidden">
-          {/* NEED TO FETCH THE IMAGE OF THE FIRST PRODUCT */}
-          <ProductImage
-            itemCode={Object.keys(cart)[0]}
-            className="w-[120px] h-[120px] rounded-md bg-gray-100 mx-auto mb-4"
+        <div className="mb-10 flex flex-col lg:hidden">
+          <OrderDetailSheet trigger={
+            <ProductImage
+              itemCode={Object.keys(cart)[0]}
+              className="w-[120px] h-[120px] rounded-md bg-gray-100 mx-auto mb-4"
+            />
+          }
+            triggerClassName="w-fit mx-auto"
           />
           <TotalCart />
         </div>
@@ -423,7 +426,7 @@ const CartList = () => {
               </strong>
             </div>
           )}
-          <CouponCodeInput />
+          {/* TODO: enable later <CouponCodeInput /> */}
         </div>
         <Separator className="my-4 bg-[#E3E3E3]" />
         <div className="w-full flex justify-between font-semibold text-sm">
@@ -437,8 +440,10 @@ const CartList = () => {
 
 const OrderDetailSheet = ({
   trigger,
+  triggerClassName
 }: {
   trigger: string | React.ReactNode;
+  triggerClassName?: string
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const t = useTranslate();
@@ -448,6 +453,7 @@ const OrderDetailSheet = ({
       contentClassName="p-0 rounded-b-2xl"
       onOpenChange={setIsOpen}
       open={isOpen}
+      triggerClassName={triggerClassName}
     >
       <div className="p-4 border-b">
         <Header />
@@ -491,15 +497,23 @@ const TotalCart = () => {
 
   return (
     <div className="flex flex-col rounded-lg gap-y-4">
-      <div className="flex items-center justify-center gap-x-1 lg:justify-between text-sm text-darkgray-200">
-        <p>{t("Grand total")}</p>
-        <p>
-          {cartCount} {cartCount === 1 ? t("Item2") : t("Items2")}
-        </p>
 
-        <div className="lg:hidden flex items-center">
-          <OrderDetailSheet trigger={<ChevronDown className="h-4 w-4" />} />
+      {/* Mobile order detail */}
+      <OrderDetailSheet trigger={
+        <div className="flex items-center justify-center gap-x-1 text-sm text-darkgray-200">
+          <p>{t("Grand total")}</p>
+          <p>{cartCount} {cartCount === 1 ? t("Item2") : t("Items2")}</p>
+  
+          <div className="lg:hidden flex items-center">
+            <ChevronDown className="h-4 w-4" />
+          </div>
         </div>
+      } triggerClassName="w-fit mx-auto lg:hidden"/>
+
+      {/* Desktop order detail */}
+      <div className="hidden lg:flex items-center justify-between text-sm text-darkgray-200">
+        <p>{t("Grand total")}</p>
+        <p>{cartCount} {cartCount === 1 ? t("Item2") : t("Items2")}</p>
       </div>
 
       {!isServerCartLoading ? (
