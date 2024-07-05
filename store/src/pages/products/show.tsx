@@ -26,7 +26,7 @@ import { Toggle } from "@/components/ui/toggle";
 import { getFileURL } from "@/lib/utils";
 
 export const ProductShow: React.FC<IResourceComponentsProps> = () => {
-  const INITIAL_COUNT: string = "01";
+  const INITIAL_COUNT: string = "1";
   const [selectedVariant, setSelectedVariant] = useState();
   const [tempCartQty, setTempCartQty] = useState(INITIAL_COUNT);
   const [variants, setVariants] = useState({});

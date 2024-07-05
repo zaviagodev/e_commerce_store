@@ -26,6 +26,7 @@ import _debounce from "lodash/debounce";
  *   - `removeFromCart`: A function to remove an item from the cart.
  *   - `resetCart`: A function to reset the cart.
  *   - `setIsOpen`: A function to toggle the cart open or closed.
+ *   - `updateCart`: A function to give loading as a reaction to any cart update.
  */
 
 interface Cart {
@@ -39,6 +40,7 @@ interface Cart {
   isOpen: boolean;
   setIsOpen: (value: boolean | undefined | null) => void;
   cartTotal: number | "Loading";
+  updateCart: (fn: (...args: any) => Promise<any>, ...args: any) => any;
 }
 
 export const CartContext = createContext<Cart>({
@@ -52,10 +54,12 @@ export const CartContext = createContext<Cart>({
   isOpen: false,
   setIsOpen: () => {},
   cartTotal: 0,
+  updateCart: () => {},
 });
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const [cart, setCart] = useState<Record<string, number | undefined>>({});
+  const [isSyncing, setIsSyncing] = useState<boolean>(false);
   const [isOpen, _] = useState<boolean>(false);
   const [cartTotal, setCartTotal] = useState<number | "Loading">(0);
   const cartCount: number = Object.keys(cart).reduce(
@@ -200,12 +204,26 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     return total.reduce((acc, cur) => acc + cur, 0);
   };
 
+  const updateCart = async (
+    fn: (...args: any) => Promise<any>,
+    ...args: any
+  ) => {
+    console.log("start Syncing");
+    setIsSyncing(true);
+    return fn(...args)
+      .then((res: any) => res)
+      .finally(() => setIsSyncing(false));
+  };
+
   return (
     <CartContext.Provider
       value={{
         cart,
         isServerCartLoading:
-          isServerCartLoading || isServerCartFetching || isServerCartRefetching,
+          isSyncing ||
+          isServerCartLoading ||
+          isServerCartFetching ||
+          isServerCartRefetching,
         serverCart,
         isOpen,
         cartCount,
@@ -214,6 +232,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         removeFromCart,
         resetCart,
         setIsOpen,
+        updateCart,
       }}
     >
       {children}
