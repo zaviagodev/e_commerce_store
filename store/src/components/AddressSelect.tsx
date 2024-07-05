@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { FlipBackward, ArrowRight } from "@untitled-ui/icons-react";
 import { Skeleton } from "./ui/skeleton";
 import AddressDialog from "./address/AddressDialog";
+import { useCart } from "@/hooks/useCart";
 
 type AddressSelectProps = {
   onSelect: (address: any) => void;
@@ -27,13 +28,14 @@ type AddressSelectProps = {
 
 const AddressSelect = ({ onSelect, ...props }: AddressSelectProps) => {
   const t = useTranslate();
+  const { updateCart } = useCart();
   const { data, isLoading, isFetching, isRefetching } = useList({
     dataProviderName: "storeProvider",
     resource: "address",
   });
 
   const invalidate = useInvalidate();
-  const { mutate } = useCustomMutation({
+  const { mutate, mutateAsync } = useCustomMutation({
     mutationOptions: {
       onSettled: () => {
         invalidate({
@@ -73,34 +75,35 @@ const AddressSelect = ({ onSelect, ...props }: AddressSelectProps) => {
               value={props?.value}
             >
               {data?.data.map((address: any) => (
-                <div
-                  className={`cursor-pointer rounded-lg ${
-                    props?.value === address.name ? "outline outline-1" : ""
-                  }`}
-                  onClick={() => {
-                    mutate({
-                      dataProviderName: "storeProvider",
-                      url: "update_cart_address",
-                      method: "post",
-                      values: {
-                        address_name: address.name,
-                        address_type: "shipping",
-                      },
-                    });
-                    onSelect(address);
-                  }}
-                  key={address.name}
-                >
-                  <RadioGroupItem
-                    value={address.name}
-                    id={address.name}
-                    className="peer sr-only"
-                  />
-                  <AddressCard
-                    {...address}
-                    isActive={props?.value === address.name}
-                  />
-                </div>
+                <SheetClose key={address.name} asChild>
+                  <div
+                    className={`cursor-pointer rounded-lg ${
+                      props?.value === address.name ? "outline outline-1" : ""
+                    }`}
+                    onClick={() => {
+                      updateCart(mutateAsync, {
+                        dataProviderName: "storeProvider",
+                        url: "update_cart_address",
+                        method: "post",
+                        values: {
+                          address_name: address.name,
+                          address_type: "shipping",
+                        },
+                      });
+                      onSelect(address);
+                    }}
+                  >
+                    <RadioGroupItem
+                      value={address.name}
+                      id={address.name}
+                      className="peer sr-only"
+                    />
+                    <AddressCard
+                      {...address}
+                      isActive={props?.value === address.name}
+                    />
+                  </div>
+                </SheetClose>
               ))}
             </RadioGroup>
             <AddressDialog

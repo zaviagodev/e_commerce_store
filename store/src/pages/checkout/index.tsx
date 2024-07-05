@@ -51,6 +51,7 @@ import ProductImage from "@/components/ProductImage";
 import CartListSkeleton from "@/components/skeletons/CartListSkeleton";
 import AddressDialog from "@/components/address/AddressDialog";
 import useConfig from "@/hooks/useConfig";
+import CheckoutFormSkeleton from "@/components/skeletons/CheckoutFormSkeleton";
 
 export const paymentMethodIconMap: { [key: string]: React.ReactNode } = {
   "2": <Landmark className="mr-2 h-4 w-4" />,
@@ -61,7 +62,8 @@ const Checkout = () => {
   const t = useTranslate();
   const navigate = useNavigate();
   const { config } = useConfig();
-  const { cartCount, cart, serverCart, resetCart } = useCart();
+  const { cartCount, cart, serverCart, resetCart, isServerCartLoading } =
+    useCart();
 
   const { data: address, isLoading: addressLoading } = useOne({
     resource: "address",
@@ -131,8 +133,6 @@ const Checkout = () => {
     });
   };
 
-  console.log("config", config);
-
   return (
     <div className="flex flex-col justify-center lg:gap-y-8 lg:flex-row mx-auto">
       <div className="w-full lg:max-w-[494px] lg:pl-0 lg:p-20 lg:pt-5 box-content">
@@ -166,7 +166,8 @@ const Checkout = () => {
           <TotalCart />
         </div>
 
-        <div className="w-full">
+        {isServerCartLoading && <CheckoutFormSkeleton />}
+        <div className={`w-full ${isServerCartLoading ? "hidden" : ""}`}>
           <h2 className="font-semibold text-darkgray-500 text-lg hidden lg:block">
             {t("Shipping Information")}
           </h2>

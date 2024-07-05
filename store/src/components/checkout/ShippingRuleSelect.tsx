@@ -37,7 +37,7 @@ const ShippingRuleSelect = ({
   ...props
 }: ShippingRuleSelectProps) => {
   const t = useTranslate();
-  const { serverCart } = useCart();
+  const { serverCart, updateCart } = useCart();
 
   const selectedShippingRule = useMemo(
     () =>
@@ -49,7 +49,7 @@ const ShippingRuleSelect = ({
   );
 
   const invalidate = useInvalidate();
-  const { mutate } = useCustomMutation({
+  const { mutateAsync } = useCustomMutation({
     mutationOptions: {
       onSettled: () => {
         invalidate({
@@ -99,50 +99,51 @@ const ShippingRuleSelect = ({
               value={selectedShippingRule?.name}
             >
               {serverCart?.message.shipping_rules?.map((shippingRule: any) => (
-                <div
-                  className={`cursor-pointer rounded-lg ${
-                    selectedShippingRule?.name === shippingRule.name
-                      ? "outline outline-1"
-                      : ""
-                  }`}
-                  onClick={() => {
-                    mutate({
-                      dataProviderName: "storeProvider",
-                      url: "apply_shipping_rule",
-                      method: "post",
-                      values: {
-                        shipping_rule: shippingRule.name,
-                      },
-                    });
-                    onSelect(shippingRule);
-                  }}
-                  key={shippingRule.name}
-                >
-                  <RadioGroupItem
-                    value={shippingRule.name}
-                    id={shippingRule.name}
-                    className="peer sr-only"
-                  />
-                  <Card className="w-full overflow-hidden bg-accent border border-darkgray-100 rounded-xl shadow-none px-3 py-2">
-                    <div className="flex flex-col justify-center w-full select-none items-start rounded-sm py-1.5 px-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
-                      <h2 className="font-semibold">{shippingRule.name}</h2>
+                <SheetClose asChild key={shippingRule.name}>
+                  <div
+                    className={`cursor-pointer rounded-lg ${
+                      selectedShippingRule?.name === shippingRule.name
+                        ? "outline outline-1"
+                        : ""
+                    }`}
+                    onClick={() => {
+                      updateCart(mutateAsync, {
+                        dataProviderName: "storeProvider",
+                        url: "apply_shipping_rule",
+                        method: "post",
+                        values: {
+                          shipping_rule: shippingRule.name,
+                        },
+                      });
+                      onSelect(shippingRule);
+                    }}
+                  >
+                    <RadioGroupItem
+                      value={shippingRule.name}
+                      id={shippingRule.name}
+                      className="peer sr-only"
+                    />
+                    <Card className="w-full overflow-hidden bg-accent border border-darkgray-100 rounded-xl shadow-none px-3 py-2">
+                      <div className="flex flex-col justify-center w-full select-none items-start rounded-sm py-1.5 px-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+                        <h2 className="font-semibold">{shippingRule.name}</h2>
 
-                      <p className="text-xs text-muted-foreground">
-                        {new Intl.NumberFormat("th-TH", {
-                          style: "currency",
-                          currency: "THB",
-                        }).format(shippingRule.shipping_amount)}
-                      </p>
-                    </div>
-                  </Card>
-                </div>
+                        <p className="text-xs text-muted-foreground">
+                          {new Intl.NumberFormat("th-TH", {
+                            style: "currency",
+                            currency: "THB",
+                          }).format(shippingRule.shipping_amount)}
+                        </p>
+                      </div>
+                    </Card>
+                  </div>
+                </SheetClose>
               ))}
             </RadioGroup>
           </SheetContent>
         </Sheet>
       ) : (
         <div className="w-full overflow-hidden bg-accent border border-darkgray-100 rounded-xl shadow-none px-6 py-4 text-darkgray-200 text-sm font-semibold">
-          {t('No shipping rules. Please contact the store.')}
+          {t("No shipping rules. Please contact the store.")}
         </div>
       )}
     </>
