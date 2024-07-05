@@ -107,13 +107,25 @@ const OrderDetail = () => {
           <span className="text-sm text-darkgray-200">{t("Status")}</span>
           <span className="text-sm font-bold">{order.status}</span>
         </li>
+        {order.custom_add_tracking_number &&
+          order.custom_add_tracking_number.length > 0 && (
+            <li className="flex items-center justify-between">
+              <span className="text-sm text-darkgray-200">
+                {t("Tracking Number")}
+              </span>
+              <span className="text-sm font-bold">
+                {order.custom_add_tracking_number.at(-1).shipping_provider},{" "}
+                {order.custom_add_tracking_number.at(-1).tracking_number}
+              </span>
+            </li>
+          )}
       </ul>
-      {/* {order?.status && !["Completed", "Shipped"].includes(order.status) && (
+      {!order?.have_payment_entry && (
         <div className="mt-6">
           <Label>{t("Payment Method")}</Label>
           <div className="flex justify-between items-center mt-2">
             <Select
-              value={paymentMethod || paymentMethods.message[0].name}
+              value={paymentMethod || paymentMethods.message.at(0).name}
               onValueChange={(value) => setPaymentMethod(value)}
             >
               <SelectTrigger className="w-[180px]">
@@ -145,7 +157,7 @@ const OrderDetail = () => {
             </Button>
           </div>
         </div>
-      )} */}
+      )}
       <div className="mt-10">
         <Label className="text-darkgray-500 font-semibold text-base inline-block mb-2">
           {t("Shipping Address")}
