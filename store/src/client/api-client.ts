@@ -26,6 +26,19 @@ api.interceptors.response.use(
       //   removeToken();
       //   window.location.replace("/login");
     }
+
+    if (error.response?.data?.exc_type) {
+      // parse backend error format
+      const errorPayload = error.response?.data._server_messages
+        ? JSON.parse(
+            JSON.parse(error.response?.data._server_messages || "[]")[0]
+          )
+        : error.response?.data;
+      return Promise.reject({
+        ...errorPayload,
+        message: errorPayload?.message,
+      });
+    }
     return Promise.reject(error);
   }
 );
