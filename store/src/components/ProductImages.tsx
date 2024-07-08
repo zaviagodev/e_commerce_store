@@ -117,7 +117,7 @@ const ProductImages = ({ images }: ProductImagesProps) => {
         ))}
       </SfScrollable>
       <SfScrollable
-        className="lg:ml-8 w-full h-full snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+        className="lg:ml-8 w-full h-full snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] lg:max-h-[500px]"
         activeIndex={activeIndex}
         direction="vertical"
         wrapperClassName="w-full"

@@ -90,9 +90,10 @@ const MobileNavigationMenu = () => {
               <Link
                 to="/login"
                 className="flex items-center gap-x-3 font-semibold"
+                onClick={() => setOpen(false)}
               >
                 <CircleUser className="h-7 w-7" />
-                Login
+                {t("Login")}
               </Link>
             )}
             {/* <button

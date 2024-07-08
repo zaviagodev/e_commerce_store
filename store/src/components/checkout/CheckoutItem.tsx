@@ -27,7 +27,7 @@ const CheckoutItem = ({ itemCode, qty }: CheckoutItemProps) => {
 
   return (
     <div key={itemCode} className="flex gap-x-4">
-      <div className="w-[53px] h-[53px] bg-gray-300 rounded-md overflow-hidden flex items-center justify-center">
+      <div className="min-w-[53px] min-h-[53px] w-[53px] h-full bg-gray-300 rounded-md overflow-hidden flex items-center justify-center">
         <img
           src={
             getFileURL(item.thumbnail) ??
