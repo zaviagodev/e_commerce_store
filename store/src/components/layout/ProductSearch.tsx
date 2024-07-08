@@ -5,6 +5,7 @@ import { useList, useTranslate } from "@refinedev/core";
 import { SearchLg, XClose } from "@untitled-ui/icons-react";
 import { Input } from "../ui/input";
 import { Link } from "react-router-dom";
+import Loading from "../customComponents/Loading";
 
 const ProductSearch = ({ onSelect = (product: object) => {}, className } : { onSelect: Function , className?: string}) => {
   const [search, setSearch] = useState("");
@@ -53,7 +54,7 @@ const ProductSearch = ({ onSelect = (product: object) => {}, className } : { onS
             />
             {search !== "" && (
               <XClose
-                className="absolute right-4 h-5 w-5"
+                className="absolute right-4 h-5 w-5 cursor-pointer"
                 onClick={() => setSearch("")}
               />
             )}
@@ -61,10 +62,10 @@ const ProductSearch = ({ onSelect = (product: object) => {}, className } : { onS
         </form>
 
         {isFetching ? (
-          <p className="flex items-center gap-2">
-            <LoaderCircle className="animate-spin" />
+          <h2 className="flex items-center gap-6 flex-col justify-center font-semibold text-darkgray-300">
+            <Loading />
             {t("Searching")}...
-          </p>
+          </h2>
         ) : (
           <div className="space-y-6 font-semibold">
             <h2 className="text-darkgray-300 whitespace-pre">{products.length === 0 && search !== "" ? t("No products found"): t("Suggestions")}</h2>

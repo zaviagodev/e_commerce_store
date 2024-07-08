@@ -62,7 +62,9 @@ const OrderDetail = () => {
   const checkoutSummary = useSummary(order);
 
   if (isLoading || isFetching || isRefetching) {
-    return <OrderDetailSkeleton />;
+    return <div className="lg:w-[720px] mx-auto">
+      <OrderDetailSkeleton />
+    </div>;
   }
 
   const orderStatus =
