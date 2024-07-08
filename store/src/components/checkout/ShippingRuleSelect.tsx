@@ -128,10 +128,12 @@ const ShippingRuleSelect = ({
                         <h2 className="font-semibold">{shippingRule.name}</h2>
 
                         <p className="text-xs text-muted-foreground">
-                          {new Intl.NumberFormat("th-TH", {
-                            style: "currency",
-                            currency: "THB",
-                          }).format(shippingRule.shipping_amount)}
+                          {shippingRule.conditions.length === 0
+                            ? new Intl.NumberFormat("th-TH", {
+                                style: "currency",
+                                currency: "THB",
+                              }).format(shippingRule.shipping_amount)
+                            : t("Click to check shipping fee.")}
                         </p>
                       </div>
                     </Card>
