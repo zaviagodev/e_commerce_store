@@ -505,22 +505,16 @@ const TotalCart = () => {
 
   return (
     <div className="flex flex-col rounded-lg gap-y-4">
-      {/* Mobile order detail */}
-      <OrderDetailSheet
-        trigger={
-          <div className="flex items-center justify-center gap-x-1 text-sm text-darkgray-200">
-            <p>{t("Grand total")}</p>
-            <p>
-              {cartCount} {cartCount === 1 ? t("Item2") : t("Items2")}
-            </p>
+      <div className="flex items-center justify-center gap-x-1 text-sm text-darkgray-200 w-fit mx-auto lg:hidden">
+        <p>{t("Grand total")}</p>
+        <p>
+          {cartCount} {cartCount === 1 ? t("Item2") : t("Items2")}
+        </p>
 
-            <div className="lg:hidden flex items-center">
-              <ChevronDown className="h-4 w-4" />
-            </div>
-          </div>
-        }
-        triggerClassName="w-fit mx-auto lg:hidden"
-      />
+        <div className="lg:hidden flex items-center">
+          <ChevronDown className="h-4 w-4" />
+        </div>
+      </div>
 
       {/* Desktop order detail */}
       <div className="hidden lg:flex items-center justify-between text-sm text-darkgray-200">
