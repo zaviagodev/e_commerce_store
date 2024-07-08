@@ -24,7 +24,7 @@ const ProductImage = ({ itemCode, ...props }: ProductImageProps) => {
   const item = data?.message.product_info;
   return (
     <img
-      className="w-[120px] h-[120px] rounded-md bg-gray-100 mx-auto mb-4"
+      className="min-w-[120px] min-h-[120px] w-[120px] h-full rounded-md bg-gray-100 mx-auto mb-4"
       src={
         getFileURL(item.thumbnail) ??
         getFileURL(config?.default_product_image) ??

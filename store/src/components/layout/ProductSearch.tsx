@@ -68,7 +68,7 @@ const ProductSearch = ({
         </form>
 
         {isFetching ? (
-          <h2 className="flex items-center gap-6 flex-col justify-center font-semibold text-darkgray-300">
+          <h2 className="flex gap-6 flex-col justify-center font-semibold text-darkgray-300">
             <Loading />
             {t("Searching")}...
           </h2>

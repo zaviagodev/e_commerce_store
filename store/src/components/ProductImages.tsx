@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState,useEffect } from "react";
 import { useIntersection } from "react-use";
 import {
   SfScrollable,
@@ -22,6 +22,32 @@ const ProductImages = ({ images }: ProductImagesProps) => {
   const thumbsRef = useRef<HTMLDivElement>(null);
   const firstThumbRef = useRef<HTMLButtonElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [direction, setDirection] = useState("vertical");
+  const [currentimages, setCurrentimages] = useState(0);
+  const indicatorRef = useRef<HTMLDivElement>(null);
+
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 1024) {
+        setDirection("horizontal");
+      } else {
+        setDirection("vertical");
+      }
+    };
+
+    handleResize(); // Set initial direction
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  let scrollableClassNames = "lg:ml-8 w-full h-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]";
+  if (direction === "vertical") {
+    scrollableClassNames += " snap-x snap-mandatory";
+  }
 
   const firstThumbVisible = useIntersection(firstThumbRef, {
     root: thumbsRef.current,
@@ -36,12 +62,27 @@ const ProductImages = ({ images }: ProductImagesProps) => {
   });
 
   const onDragged = (event: SfScrollableOnDragEndData) => {
+    console.log('fffffffffffffff');
     if (event.swipeRight && activeIndex > 0) {
       setActiveIndex((currentActiveIndex) => currentActiveIndex - 1);
     } else if (event.swipeLeft && activeIndex < images.length - 1) {
       setActiveIndex((currentActiveIndex) => currentActiveIndex + 1);
     }
   };
+
+
+  const onScroll = (event: SfScrollableOnScrollData) => {
+    const totalImages = images.length; // Replace with your total number of images
+    const currentImageNumber = Math.floor(event.left / (event.scrollWidth / totalImages)) + 1;
+    const currentImagesText = `${currentImageNumber}/${totalImages}`;
+    //setCurrentimages(currentImageNumber);
+    console.log(currentImagesText);
+    if (indicatorRef.current) {
+      indicatorRef.current.textContent = currentImagesText;
+    }
+  };
+
+
   return (
     // <div className="relative flex w-full aspect-square lg:aspect-[4/3]">
     <div className="relative flex w-full">
@@ -116,16 +157,21 @@ const ProductImages = ({ images }: ProductImagesProps) => {
           </button>
         ))}
       </SfScrollable>
+
+
+
       <SfScrollable
-        className="lg:ml-8 w-full h-full snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+        className={scrollableClassNames}
         activeIndex={activeIndex}
-        direction="vertical"
+        direction={direction}
         wrapperClassName="w-full"
         buttonsPlacement="none"
         isActiveIndexCentered
         drag={{ containerWidth: true }}
         onDragEnd={onDragged}
+        onScroll={onScroll}
       >
+        <div ref={indicatorRef} className="absolute p-2 text-darkgray-200 right-3 bottom-3 bg-white text-xs border border-darkgray-100 rounded-full"></div>
         {images.map(({ imageSrc, alt }, index) => (
           <div
             key={`${alt}-${index}`}
@@ -141,6 +187,10 @@ const ProductImages = ({ images }: ProductImagesProps) => {
           </div>
         ))}
       </SfScrollable>
+
+
+
+
     </div>
   );
 };
