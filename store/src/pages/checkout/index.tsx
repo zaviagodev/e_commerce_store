@@ -160,18 +160,20 @@ const Checkout = () => {
         <div className="mb-10 flex flex-col lg:hidden">
           <OrderDetailSheet
             trigger={
-              <ProductImage
-                itemCode={
-                  Object.keys(cart).find(
-                    (itemCode) => Number(cart[itemCode]) > 0
-                  ) ?? ""
-                }
-                className="w-[120px] h-[120px] rounded-md bg-gray-100 mx-auto mb-4"
-              />
+              <>
+                <ProductImage
+                  itemCode={
+                    Object.keys(cart).find(
+                      (itemCode) => Number(cart[itemCode]) > 0
+                    ) ?? ""
+                  }
+                  className="w-[120px] h-[120px] rounded-md bg-gray-100 mx-auto mb-4"
+                />
+                <TotalCart />
+              </>
             }
             triggerClassName="w-fit mx-auto"
           />
-          <TotalCart />
         </div>
 
         {isServerCartLoading && <CheckoutFormSkeleton />}
