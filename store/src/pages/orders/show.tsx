@@ -117,7 +117,7 @@ const OrderDetail = () => {
             </li>
           )}
       </ul>
-      {!order?.have_payment_entry && (
+      {!order?.have_payment_entry && order.is_return != 1 && (
         <div className="mt-6">
           <Label>{t("Payment Method")}</Label>
           <div className="flex justify-between items-center mt-2">
