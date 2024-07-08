@@ -39,7 +39,7 @@ const Search = () => {
 
           <ProductSearch onSelect={() => setIsSearching(false)} className={`pt-1`}/>
 
-          <Button onClick={() => setIsSearching(false)} variant="ghost" className="hover:bg-transparent">
+          <Button onClick={() => setIsSearching(false)} variant="ghost" className="hover:bg-transparent mt-1">
             {t("Cancel")}
           </Button>
         </section>

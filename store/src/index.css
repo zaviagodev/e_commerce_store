@@ -146,6 +146,21 @@
   }
 }
 
+@keyframes loading-anim {
+  from {
+    opacity:1;
+    transform:scale(0)
+  }
+  to {
+    opacity:0;
+    transform:scale(1)
+  }
+}
+
+.loading-anim {
+  animation: loading-anim 500ms alternate infinite;
+}
+
 .search-input-anim-in {
   animation: search-input-anim-in 300ms forwards;
   animation-delay: 200ms;
