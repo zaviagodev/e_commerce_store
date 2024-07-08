@@ -34,7 +34,7 @@ const ProductCounter = ({
   return (
     <div className="flex items-center justify-between lg:justify-start w-full">
       <h2 className="text-darkgray-400 lg:hidden text-sm">{t("Quantity")}</h2>
-      <div className="flex items-center rounded-xl bg-darkgray-100 h-12.5 text-darkgray-200">
+      <div className="flex items-center rounded-xl bg-darkgray-100 h-12.5 text-primary">
         <Button
           variant="ghost"
           size={size}
@@ -50,7 +50,7 @@ const ProductCounter = ({
         </Button>
         {type === "editable" ? (
           <input
-            className="w-[22px] text-center !bg-darkgray-100 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+            className="w-[22px] text-center !bg-darkgray-100 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 text-primary"
             type="number"
             value={count ?? 0}
             onChange={(e) =>
