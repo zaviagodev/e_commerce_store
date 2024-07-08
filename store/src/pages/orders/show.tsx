@@ -61,17 +61,13 @@ const OrderDetail = () => {
 
   const checkoutSummary = useSummary(order);
 
-  if (isLoading || isFetching || isRefetching) {
-    return <div className="lg:w-[720px] mx-auto">
-      <OrderDetailSkeleton />
-    </div>;
-  }
-
   const orderStatus =
     (order.status === "Draft" && t("Draft")) ||
     (order.status === "Cancelled" && t("Cancelled"));
 
-  console.log("order", order);
+  if (isLoading || isFetching || isRefetching) {
+    return <OrderDetailSkeleton />;
+  }
 
   return (
     <div className="lg:w-[720px] mx-auto">
