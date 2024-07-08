@@ -203,7 +203,7 @@ function App() {
                   <Route
                     element={
                       <Authenticated
-                        key="authenticated-outer"
+                        key="authenticated-checkout-layout"
                         fallback={<CatchAllNavigate to="/login" />}
                       >
                         <Outlet />

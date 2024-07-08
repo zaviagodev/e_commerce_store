@@ -9,15 +9,18 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useLogin, useTranslate } from "@refinedev/core";
+import { useLogin, useParsed, useTranslate } from "@refinedev/core";
 import { useForm } from "@refinedev/react-hook-form";
 import { Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { loginSchema } from "./loginSchema";
 import { Eye, EyeOff } from "@untitled-ui/icons-react";
-import { useState, MouseEvent } from "react";
+import { useState, MouseEvent, useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const Login = () => {
+  const { params } = useParsed();
+  const queryClient = useQueryClient();
   const t = useTranslate();
   const { mutate: login, isLoading: loggingIn } = useLogin();
 
@@ -36,6 +39,10 @@ export const Login = () => {
     },
   });
 
+  useEffect(() => {
+    setTimeout(() => queryClient.clear(), 1000);
+  }, []);
+
   return (
     <section>
       <div className="flex flex-col items-center justify-center gap-y-12 max-w-[890px] mx-auto">
@@ -44,7 +51,9 @@ export const Login = () => {
           <Form {...form}>
             <form
               className="space-y-4"
-              onSubmit={form.handleSubmit((creds) => login(creds))}
+              onSubmit={form.handleSubmit((creds) =>
+                login({ ...creds, to: params?.to })
+              )}
             >
               <div className="grid gap-3">
                 <h2 className="font-semibold text-darkgray-500 text-lg">
