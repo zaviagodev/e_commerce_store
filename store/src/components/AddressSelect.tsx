@@ -50,7 +50,6 @@ const AddressSelect = ({ onSelect, ...props }: AddressSelectProps) => {
   if (isLoading || isFetching || isRefetching) {
     return <Skeleton className="w-4 h-4" />;
   }
-  console.log(data?.data ?? []);
 
   return (
     <>
