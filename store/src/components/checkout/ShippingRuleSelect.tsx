@@ -25,6 +25,8 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import useSummary from "@/hooks/useSummary";
+import { formatCurrency } from "@/lib/utils";
 
 type ShippingRuleSelectProps = {
   onSelect: (shippingRule: any) => void;
@@ -38,6 +40,7 @@ const ShippingRuleSelect = ({
 }: ShippingRuleSelectProps) => {
   const t = useTranslate();
   const { serverCart, updateCart } = useCart();
+  const checkoutSummary = useSummary(serverCart?.message.doc);
 
   const selectedShippingRule = useMemo(
     () =>
@@ -76,10 +79,10 @@ const ShippingRuleSelect = ({
               </h2>
 
               <p className="text-xs text-muted-foreground">
-                {new Intl.NumberFormat("th-TH", {
-                  style: "currency",
-                  currency: "THB",
-                }).format(selectedShippingRule?.shipping_amount || 0.0)}
+                {formatCurrency(
+                  checkoutSummary.totalShipping ||
+                    selectedShippingRule?.shipping_amount
+                )}
               </p>
             </div>
           </SheetTrigger>
