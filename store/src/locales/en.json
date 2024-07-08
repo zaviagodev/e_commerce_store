@@ -171,11 +171,6 @@
     "You don't have any orders yet.": "You don't have any orders yet.",
     "Unit": "Unit",
     "Units": "Units",
-    "notifications": {
-        "deleteSuccess": "Deleted successfully",
-        "createSuccess": "Created successfully",
-        "editSuccess": "Updated successfully"
-    },
     "leave payment page": {
         "title": "Leave the payment page",
         "desc": "Your order status will be shown as \"Unpaid\". To complete the payment, you can access the order history page. If you would like to edit your orders, please repurchase the product and make a payment in a correct order.",
@@ -201,5 +196,17 @@
     "Copy": "Copy",
     "Copied": "Copied",
     "No products found": "No products found",
-    "Suggestions": "Suggestions"
+    "Suggestions": "Suggestions",
+    "notifications": {
+        "success": "Successful",
+        "error": "Error (status code: {{statusCode}})",
+        "undoable": "You have {{seconds}} seconds to undo",
+        "createSuccess": "Successfully created {{resource}}",
+        "createError": "There was an error creating {{resource}} (status code: {{statusCode}})",
+        "deleteSuccess": "Successfully deleted {{resource}}",
+        "deleteError": "Error when deleting {{resource}} (status code: {{statusCode}})",
+        "editSuccess": "Successfully edited {{resource}}",
+        "editError": "Error when editing {{resource}} (status code: {{statusCode}})",
+        "importProgress": "Importing: {{processed}}/{{total}}"
+    }
 }
