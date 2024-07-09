@@ -250,7 +250,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
               </AccordionItem>
               {product.custom_return__refund_title && (
                 <AccordionItem value="refund_policy">
-                  <AccordionTrigger className="font-semibold h-[46px]">
+                  <AccordionTrigger className="font-semibold h-16">
                     {`${product.custom_return__refund_title}`}
                   </AccordionTrigger>
                   <AccordionContent>
@@ -264,7 +264,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
               )}
               {product.custom_shipping_title && (
                 <AccordionItem value="shipping">
-                  <AccordionTrigger className="font-semibold h-[46px]">
+                  <AccordionTrigger className="font-semibold h-16">
                     {product.custom_shipping_title}
                   </AccordionTrigger>
                   <AccordionContent>

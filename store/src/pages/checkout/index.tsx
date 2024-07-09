@@ -161,7 +161,7 @@ const Checkout = () => {
           <OrderDetailSheet trigger={
             <ProductImage
               itemCode={Object.keys(cart)[0]}
-              className="w-[120px] h-[120px] rounded-md bg-gray-100 mx-auto mb-4"
+              className="min-w-[120px] min-h-[120px] w-[120px] h-full rounded-md bg-gray-100 mx-auto mb-4"
             />
           }
             triggerClassName="w-fit mx-auto"
