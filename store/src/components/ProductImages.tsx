@@ -44,10 +44,12 @@ const ProductImages = ({ images }: ProductImagesProps) => {
     };
   }, []);
 
-  let scrollableClassNames = "lg:ml-8 w-full h-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]";
-  if (direction === "vertical") {
-    scrollableClassNames += " snap-x snap-mandatory";
-  }
+  let scrollableClassNames = "lg:ml-8 w-full h-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] snap-x snap-mandatory";
+
+  // I have commented this because it should snap on both vertical and horizontal side.
+  // if (direction === "vertical") {
+  //   scrollableClassNames += " snap-x snap-mandatory";
+  // }
 
   const firstThumbVisible = useIntersection(firstThumbRef, {
     root: thumbsRef.current,
@@ -62,7 +64,6 @@ const ProductImages = ({ images }: ProductImagesProps) => {
   });
 
   const onDragged = (event: SfScrollableOnDragEndData) => {
-    console.log('fffffffffffffff');
     if (event.swipeRight && activeIndex > 0) {
       setActiveIndex((currentActiveIndex) => currentActiveIndex - 1);
     } else if (event.swipeLeft && activeIndex < images.length - 1) {
@@ -171,16 +172,16 @@ const ProductImages = ({ images }: ProductImagesProps) => {
         onDragEnd={onDragged}
         onScroll={onScroll}
       >
-        <div ref={indicatorRef} className="absolute p-2 text-darkgray-200 right-3 bottom-3 bg-white text-xs border border-darkgray-100 rounded-full"></div>
+        <div ref={indicatorRef} className="absolute px-2 py-1 text-darkgray-200 right-3 top-3 bg-white text-xs border border-darkgray-100 rounded-full"></div>
         {images.map(({ imageSrc, alt }, index) => (
           <div
             key={`${alt}-${index}`}
-            className="flex justify-start h-full basis-full shrink-0 grow snap-center"
+            className="flex justify-start h-full basis-full shrink-0 grow snap-center min-h-[500px]"
           >
             <img
               aria-label={alt}
               aria-hidden={activeIndex !== index}
-              className="object-contain w-full h-fit lg:min-w-[500px] lg:min-h-[500px] lg:max-w-[500px] lg:max-h-[500px]"
+              className="object-contain w-full h-fit lg:min-w-[500px] lg:min-h-[500px] lg:max-w-[500px]"
               alt={alt}
               src={imageSrc}
             />
