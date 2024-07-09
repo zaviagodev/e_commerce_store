@@ -21,7 +21,7 @@ import { useConfig } from "@/hooks/useConfig";
 import RelatedProducts from "@/components/RelatedProducts";
 import { MessageQuestionCircle, ShoppingBag01 } from "@untitled-ui/icons-react";
 import { Heart } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Toggle } from "@/components/ui/toggle";
 import { getFileURL } from "@/lib/utils";
 
@@ -33,7 +33,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
   const [selectedAttributes, setSelectedAttributes] = useState({});
   const t = useTranslate();
   const { config } = useConfig();
-  const { cart, addToCart, setIsOpen } = useCart();
+  const { cart, addToCart } = useCart();
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
   const { queryResult, showId } = useShow({
     queryOptions: {
@@ -103,7 +103,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
   const inWishlist = wishlist.includes(itemCode);
 
   /* Will be set dynamically, the default value of the font size is 36px */
-  const PRODUCT_NAME_FONT_SIZE = "text-4xl"
+  const PRODUCT_NAME_FONT_SIZE = "text-4xl";
 
   return (
     <section className="space-y-10 lg:space-y-[140px] pb-20 max-w-[1200px] mx-auto">
@@ -132,7 +132,9 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
         <section className="w-full lg:px-10 lg:py-[30px] lg:max-w-[536px] h-full sticky top-0 z-10">
           <div className="flex flex-col gap-y-3 lg:gap-y-[10px]">
             <h2 className="text-[17px]">{product.item_group}</h2>
-            <h1 className={`font-semibold text-[#111111] ${PRODUCT_NAME_FONT_SIZE}`}>
+            <h1
+              className={`font-semibold text-[#111111] ${PRODUCT_NAME_FONT_SIZE}`}
+            >
               {product.web_item_name}
             </h1>
             <span className="flex flex-row items-center justify-start gap-2 mb-3">
@@ -168,12 +170,11 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
               <div className="fixed bottom-0 left-0 bg-white lg:bg-inherit p-4 lg:p-0 lg:static flex lg:flex-col w-full gap-y-[14px] flex-col-reverse z-10">
                 <div className="flex items-center gap-x-[10px] w-full">
                   <Button
-                    // disabled={
-                    //   product.stock_qty <= 0 || tempCartQty > product.stock_qty
-                    // }
+                    disabled={
+                      product.stock_qty <= 0 || tempCartQty > product.stock_qty
+                    }
                     className="w-full rounded-xl h-12.5 text-base font-semibold"
                     onClick={() => {
-                      setIsOpen(true);
                       setTempCartQty((prevQty) => {
                         addToCart(
                           itemCode,

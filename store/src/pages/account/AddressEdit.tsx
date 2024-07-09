@@ -63,14 +63,15 @@ export const AddressEdit: React.FC<IResourceComponentsProps> = () => {
           <AddressForm
             initialValues={address}
             isSubmitting={isLoading}
-            onSubmit={(values) =>
+            onSubmit={(values) => {
+              console.log("onSubmit", values);
               mutate({
                 id: id as string,
                 resource: "address",
                 dataProviderName: "storeProvider",
                 values,
-              })
-            }
+              });
+            }}
           />
 
           {/* This section is the address list that users may not want to go back to the address page

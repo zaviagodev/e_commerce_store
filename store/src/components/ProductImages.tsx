@@ -1,4 +1,4 @@
-import { useRef, useState,useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useIntersection } from "react-use";
 import {
   SfScrollable,
@@ -25,7 +25,6 @@ const ProductImages = ({ images }: ProductImagesProps) => {
   const [direction, setDirection] = useState("vertical");
   const [currentimages, setCurrentimages] = useState(0);
   const indicatorRef = useRef<HTMLDivElement>(null);
-
 
   useEffect(() => {
     const handleResize = () => {
@@ -71,10 +70,10 @@ const ProductImages = ({ images }: ProductImagesProps) => {
     }
   };
 
-
   const onScroll = (event: SfScrollableOnScrollData) => {
     const totalImages = images.length; // Replace with your total number of images
-    const currentImageNumber = Math.floor(event.left / (event.scrollWidth / totalImages)) + 1;
+    const currentImageNumber =
+      Math.floor(event.left / (event.scrollWidth / totalImages)) + 1;
     const currentImagesText = `${currentImageNumber}/${totalImages}`;
     //setCurrentimages(currentImageNumber);
     console.log(currentImagesText);
@@ -82,7 +81,6 @@ const ProductImages = ({ images }: ProductImagesProps) => {
       indicatorRef.current.textContent = currentImagesText;
     }
   };
-
 
   return (
     // <div className="relative flex w-full aspect-square lg:aspect-[4/3]">
@@ -159,8 +157,6 @@ const ProductImages = ({ images }: ProductImagesProps) => {
         ))}
       </SfScrollable>
 
-
-
       <SfScrollable
         className={scrollableClassNames}
         activeIndex={activeIndex}
@@ -172,7 +168,10 @@ const ProductImages = ({ images }: ProductImagesProps) => {
         onDragEnd={onDragged}
         onScroll={onScroll}
       >
-        <div ref={indicatorRef} className="absolute px-2 py-1 text-darkgray-200 right-3 top-3 bg-white text-xs border border-darkgray-100 rounded-full"></div>
+        <div 
+          ref={indicatorRef} 
+          className="absolute px-2 py-1 text-darkgray-200 right-3 top-3 bg-white text-xs border border-darkgray-100 rounded-full"
+        ></div>
         {images.map(({ imageSrc, alt }, index) => (
           <div
             key={`${alt}-${index}`}
@@ -188,10 +187,6 @@ const ProductImages = ({ images }: ProductImagesProps) => {
           </div>
         ))}
       </SfScrollable>
-
-
-
-
     </div>
   );
 };

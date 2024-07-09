@@ -17,6 +17,8 @@ import CitySelect from "../CitySelect";
 import StateSelect from "../StateSelect";
 import { useTranslate } from "@refinedev/core";
 import { Switch } from "../ui/switch";
+import { isEmpty } from "lodash";
+import { useEffect } from "react";
 
 type AddressFormProps = {
   initialValues?: {
@@ -46,11 +48,13 @@ const AddressForm = ({
 }: AddressFormProps) => {
   const t = useTranslate();
   const form = useForm({
-    resolver: yupResolver(addressSchema),
+    resolver: yupResolver(addressSchema, { abortEarly: false }),
     defaultValues: initialValues,
     values: initialValues,
     mode: "onChange",
   });
+
+  console.log("formState", form.formState);
 
   return (
     <Form {...form}>
@@ -260,7 +264,17 @@ const AddressForm = ({
           className="w-full h-12.5 rounded-xl font-semibold text-base"
           type="submit"
           disabled={
-            isSubmitting || !form.formState.isValid || !form.formState.isDirty
+            isSubmitting ||
+            !isEmpty(form.formState.errors) ||
+            !(initialValues?.new
+              ? [
+                  "address_title",
+                  "phone",
+                  "address_line1",
+                  "country",
+                  "city",
+                ].every((key: string) => form.formState.dirtyFields[key])
+              : form.formState.isDirty)
           }
         >
           {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

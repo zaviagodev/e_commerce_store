@@ -1,17 +1,16 @@
 import { AuthBindings } from "@refinedev/core";
 import { auth } from "./client/api";
-import { AxiosError } from "axios";
 
 export const TOKEN_KEY = "refine-auth";
 
 export const authProvider: AuthBindings = {
-  login: async ({ username, email, password }) => {
+  login: async ({ username, email, password, to }) => {
     try {
       await auth.login({ usr: username ?? email, pwd: password });
       localStorage.setItem(TOKEN_KEY, username ?? email);
       return {
         success: true,
-        redirectTo: "/",
+        redirectTo: to ?? "/",
       };
     } catch (error) {
       return {

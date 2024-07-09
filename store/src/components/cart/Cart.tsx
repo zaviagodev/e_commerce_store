@@ -23,11 +23,18 @@ const Cart = () => {
   const t = useTranslate();
   const { config } = useConfig();
   const navigate = useNavigate();
-  const { cart, cartCount, cartTotal, serverCart } = useCart();
+  const {
+    cart,
+    cartCount,
+    cartTotal,
+    serverCart,
+    isOpen: isCartOpen,
+    setIsOpen: setIsCartOpen,
+  } = useCart();
   const { setIsOpen } = useWishlist();
 
   return (
-    <Sheet>
+    <Sheet open={isCartOpen} onOpenChange={setIsCartOpen}>
       <SheetTrigger asChild>
         <Button
           variant="ghost"

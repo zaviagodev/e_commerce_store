@@ -161,7 +161,9 @@ const MobileNavigationMenu = () => {
             </Collapsible>
           </nav>
           <nav className="grid gap-6 text-lg font-medium">
-            {config?.enable_i18n && <LangSelect className="border-none w-fit focus:outline-none focus:ring-0 focus:ring-offset-0 p-0 gap-2"/>}
+            {config?.enable_i18n && (
+              <LangSelect className="border-none w-fit focus:outline-none focus:ring-0 focus:ring-offset-0 p-0 gap-2" />
+            )}
             {authState?.authenticated && (
               <MainAlertDialog
                 trigger={
@@ -171,7 +173,9 @@ const MobileNavigationMenu = () => {
                   </button>
                 }
                 title={t("Logout")}
-                description={t("You can login again anytime without losing the detail, account, and orders")}
+                description={t(
+                  "You can login again anytime without losing the detail, account, and orders"
+                )}
                 cancel={t("Cancel")}
                 action={t("Logout")}
                 onClickAction={() => logout()}
