@@ -4,7 +4,7 @@ import * as yup from "yup";
 export const addressSchema = yup.object().shape({
   address_title: yup.string().required(t("This field is required")), // Title is required
   address_line1: yup.string().required(t("This field is required")), // Address is required
-  address_line2: yup.string(),
+  address_line2: yup.string().nullable(),
   city: yup.string().required(t("This field is required")), // City is required
   state: yup.string(),
   country: yup.string().required(t("This field is required")), // Country is required
