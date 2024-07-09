@@ -54,7 +54,7 @@ const AddressForm = ({
     mode: "onChange",
   });
 
-  log("formState", form.formState);
+  console.log("formState", form.formState);
 
   return (
     <Form {...form}>
