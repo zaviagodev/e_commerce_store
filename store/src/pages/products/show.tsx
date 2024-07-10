@@ -109,25 +109,11 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
     <section className="space-y-10 lg:space-y-[140px] pb-20 max-w-[1200px] mx-auto">
       <div className="flex flex-col lg:flex-row gap-[18px] lg:gap-[33px]">
         <ProductImages
-          images={[
-            {
-              imageThumbSrc:
-                getFileURL(variant?.thumbnail ?? product.thumbnail) ??
-                getFileURL(config?.default_product_image) ??
-                "",
-              imageSrc:
-                getFileURL(variant?.thumbnail ?? product.thumbnail) ??
-                getFileURL(config?.default_product_image) ??
-                "",
-              alt: `${product.web_item_name} image`,
-            },
-          ].concat(
-            (product.website_images ?? []).map((image) => ({
-              imageThumbSrc: getFileURL(image.file_url),
-              imageSrc: getFileURL(image.file_url),
-              alt: `${product.web_item_name} image`,
-            }))
-          )}
+          images={(product.website_images ?? []).map((image) => ({
+            imageThumbSrc: getFileURL(image.file_url),
+            imageSrc: getFileURL(image.file_url),
+            alt: `${product.web_item_name} image`,
+          }))}
         />
         <section className="w-full lg:px-10 lg:py-[30px] lg:max-w-[536px] h-full sticky top-0 z-10">
           <div className="flex flex-col gap-y-3 lg:gap-y-[10px]">
