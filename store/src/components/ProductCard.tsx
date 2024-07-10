@@ -36,7 +36,7 @@ const ProductCard = ({
   const t = useTranslate();
   const { addToCart } = useCart();
   return (
-    <Link to={`/product/${itemCode}`} className="group">
+    <Link to={`/product/${itemCode}`} className="group" onClick={() => window.scrollTo(0, 0)}>
       <div className={cn("space-y-3", className)} {...props}>
         <div className="overflow-hidden rounded-md">
           <div className="aspect-square relative">
