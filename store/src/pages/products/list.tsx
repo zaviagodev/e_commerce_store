@@ -114,95 +114,101 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
         <ProductListSkeleton />
       ) : (
         <>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-12">
-            {(tableData?.data ?? []).map((item) => (
-              <ProductCard
-                key={item.item_code}
-                itemCode={item.item_code}
-                name={item.item_name}
-                price={item.formatted_price}
-                discount={item.discount}
-                originalPrice={item.formatted_mrp}
-                inStock={item.in_stock}
-                image={
-                  getFileURL(item.website_image) ??
-                  getFileURL(config?.default_product_image) ??
-                  ""
-                }
-                hasVariants={item.has_variants}
-                width={341}
-                height={341}
-              />
-            ))}
-          </div>
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  title="Previous Page"
-                  onClick={() => previousPage()}
-                  disabled={!getCanPreviousPage()}
-                />
-              </PaginationItem>
-              {Array.from({
-                length: 4,
-              }).map((_, index) => {
-                if (index + 1 > pageCount) {
-                  return null;
-                }
-                return (
-                  <PaginationItem key={index} className="hidden md:block">
-                    <PaginationLink
-                      onClick={() => setCurrent(index + 1)}
-                      disabled={current === index + 1}
-                    >
-                      {index + 1}
-                    </PaginationLink>
+          {(tableData?.total as any) > 0 ? (
+            <>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-12">
+                {(tableData?.data ?? []).map((item) => (
+                  <ProductCard
+                    key={item.item_code}
+                    itemCode={item.item_code}
+                    name={item.item_name}
+                    price={item.formatted_price}
+                    discount={item.discount}
+                    originalPrice={item.formatted_mrp}
+                    inStock={item.in_stock}
+                    image={
+                      getFileURL(item.website_image) ??
+                      getFileURL(config?.default_product_image) ??
+                      ""
+                    }
+                    hasVariants={item.has_variants}
+                    width={341}
+                    height={341}
+                  />
+                ))}
+              </div>
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      title="Previous Page"
+                      onClick={() => previousPage()}
+                      disabled={!getCanPreviousPage()}
+                    />
                   </PaginationItem>
-                );
-              })}
-              {pageCount > numberOfLastPageLinks && (
-                <PaginationItem>
-                  <PaginationEllipsis />
-                </PaginationItem>
-              )}
-              {pageCount > numberOfLastPageLinks &&
-                Array.from({
-                  length: 4,
-                }).map((_, index) => {
-                  if (
-                    pageCount - (numberOfLastPageLinks - 1) + index <=
-                      numberOfLastPageLinks ||
-                    pageCount - (numberOfLastPageLinks - 1) + index > pageCount
-                  ) {
-                    return null;
-                  }
-                  return (
-                    <PaginationItem key={index} className="hidden md:block">
-                      <PaginationLink
-                        onClick={() =>
-                          setCurrent(
-                            pageCount - (numberOfLastPageLinks - 1) + index
-                          )
-                        }
-                        disabled={
-                          current ===
-                          pageCount - (numberOfLastPageLinks - 1) + index
-                        }
-                      >
-                        {pageCount - (numberOfLastPageLinks - 1) + index}
-                      </PaginationLink>
+                  {Array.from({
+                    length: 4,
+                  }).map((_, index) => {
+                    if (index + 1 > pageCount) {
+                      return null;
+                    }
+                    return (
+                      <PaginationItem key={index} className="hidden md:block">
+                        <PaginationLink
+                          onClick={() => setCurrent(index + 1)}
+                          disabled={current === index + 1}
+                        >
+                          {index + 1}
+                        </PaginationLink>
+                      </PaginationItem>
+                    );
+                  })}
+                  {pageCount > numberOfLastPageLinks && (
+                    <PaginationItem>
+                      <PaginationEllipsis />
                     </PaginationItem>
-                  );
-                })}
-              <PaginationItem>
-                <PaginationNext
-                  onClick={nextPage}
-                  disabled={!getCanNextPage()}
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
+                  )}
+                  {pageCount > numberOfLastPageLinks &&
+                    Array.from({
+                      length: 4,
+                    }).map((_, index) => {
+                      if (
+                        pageCount - (numberOfLastPageLinks - 1) + index <=
+                          numberOfLastPageLinks ||
+                        pageCount - (numberOfLastPageLinks - 1) + index > pageCount
+                      ) {
+                        return null;
+                      }
+                      return (
+                        <PaginationItem key={index} className="hidden md:block">
+                          <PaginationLink
+                            onClick={() =>
+                              setCurrent(
+                                pageCount - (numberOfLastPageLinks - 1) + index
+                              )
+                            }
+                            disabled={
+                              current ===
+                              pageCount - (numberOfLastPageLinks - 1) + index
+                            }
+                          >
+                            {pageCount - (numberOfLastPageLinks - 1) + index}
+                          </PaginationLink>
+                        </PaginationItem>
+                      );
+                    })}
+                  <PaginationItem>
+                    <PaginationNext
+                      onClick={nextPage}
+                      disabled={!getCanNextPage()}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </>
+          ) : (
+            <h1 className="text-center text-darkgray-200">{t("No products in this category")}</h1>
+          )}
         </>
       )}
     </div>

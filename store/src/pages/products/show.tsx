@@ -103,7 +103,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
   const inWishlist = wishlist.includes(itemCode);
 
   /* Will be set dynamically, the default value of the font size is 36px */
-  const PRODUCT_NAME_FONT_SIZE = "text-4xl";
+  const PRODUCT_NAME_FONT_SIZE = "text-xl lg:text-4xl";
 
   return (
     <section className="space-y-10 lg:space-y-[140px] pb-20 max-w-[1200px] mx-auto">
