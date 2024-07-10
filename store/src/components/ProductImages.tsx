@@ -44,8 +44,10 @@ const ProductImages = ({ images }: ProductImagesProps) => {
   }, []);
 
   let scrollableClassNames = "lg:ml-8 w-full h-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]";
+  let ImageWrapperclassName = "flex justify-start h-full basis-full shrink-0 grow snap-center";
   if (direction === "vertical") {
     scrollableClassNames += " snap-x snap-mandatory";
+    ImageWrapperclassName = "flex justify-start h-full basis-full  grow snap-center";
   }
 
   const firstThumbVisible = useIntersection(firstThumbRef, {
@@ -61,7 +63,6 @@ const ProductImages = ({ images }: ProductImagesProps) => {
   });
 
   const onDragged = (event: SfScrollableOnDragEndData) => {
-    console.log('fffffffffffffff');
     if (event.swipeRight && activeIndex > 0) {
       setActiveIndex((currentActiveIndex) => currentActiveIndex - 1);
     } else if (event.swipeLeft && activeIndex < images.length - 1) {
@@ -84,6 +85,8 @@ const ProductImages = ({ images }: ProductImagesProps) => {
   return (
     // <div className="relative flex w-full aspect-square lg:aspect-[4/3]">
     <div className="relative flex w-full">
+
+
       <SfScrollable
         ref={thumbsRef}
         className="hidden lg:flex sticky top-[calc(57px_+_16px)] items-center w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
@@ -136,7 +139,7 @@ const ProductImages = ({ images }: ProductImagesProps) => {
             aria-current={activeIndex === index}
             key={`${alt}-${index}-thumbnail`}
             className={classNames(
-              "w-full h-auto relative shrink-0 snap-center cursor-pointer focus-visible:outline focus-visible:outline-offset transition-colors flex-grow md:flex-grow-0",
+              "w-full h-auto relative snap-center cursor-pointer focus-visible:outline focus-visible:outline-offset transition-colors flex-grow md:flex-grow-0",
               {
                 "border-primary-700": activeIndex === index,
                 "border-transparent": activeIndex !== index,
@@ -156,6 +159,9 @@ const ProductImages = ({ images }: ProductImagesProps) => {
         ))}
       </SfScrollable>
 
+
+
+
       <SfScrollable
         className={scrollableClassNames}
         activeIndex={activeIndex}
@@ -171,7 +177,7 @@ const ProductImages = ({ images }: ProductImagesProps) => {
         {images.map(({ imageSrc, alt }, index) => (
           <div
             key={`${alt}-${index}`}
-            className="flex justify-start h-full basis-full shrink-0 grow snap-center"
+            className={ImageWrapperclassName}
           >
             <img
               aria-label={alt}
