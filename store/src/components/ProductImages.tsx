@@ -43,12 +43,12 @@ const ProductImages = ({ images }: ProductImagesProps) => {
     };
   }, []);
 
-  let scrollableClassNames = "lg:ml-8 w-full h-[500px] [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] snap-x snap-mandatory";
+  let scrollableClassNames = "lg:ml-8 w-full h-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]";
 
   // I have commented this because it should snap on both vertical and horizontal side.
-  // if (direction === "vertical") {
-  //   scrollableClassNames += " snap-x snap-mandatory";
-  // }
+  if (direction === "vertical") {
+    scrollableClassNames += " snap-x snap-mandatory";
+  }
 
   const firstThumbVisible = useIntersection(firstThumbRef, {
     root: thumbsRef.current,
