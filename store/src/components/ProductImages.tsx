@@ -45,7 +45,6 @@ const ProductImages = ({ images }: ProductImagesProps) => {
 
   let scrollableClassNames = "lg:ml-8 w-full h-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]";
 
-  // I have commented this because it should snap on both vertical and horizontal side.
   if (direction === "vertical") {
     scrollableClassNames += " snap-x snap-mandatory";
   }
@@ -175,7 +174,8 @@ const ProductImages = ({ images }: ProductImagesProps) => {
         {images.map(({ imageSrc, alt }, index) => (
           <div
             key={`${alt}-${index}`}
-            className="flex justify-start h-full basis-full shrink-0 grow snap-center min-h-[500px]"
+            // className="flex justify-start h-full basis-full shrink-0 grow snap-center min-h-[500px]"
+            className="flex justify-start h-full basis-full min-h-fit grow snap-center min-h-[500px]"
           >
             <img
               aria-label={alt}
