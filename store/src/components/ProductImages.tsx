@@ -169,13 +169,13 @@ const ProductImages = ({ images }: ProductImagesProps) => {
       >
         <div 
           ref={indicatorRef} 
-          className="absolute px-2 py-1 text-darkgray-200 right-3 top-3 bg-white text-xs border border-darkgray-100 rounded-full"
+          className="absolute lg:hidden px-2 py-1 text-darkgray-200 right-3 top-3 bg-white text-xs border border-darkgray-100 rounded-full"
         ></div>
         {images.map(({ imageSrc, alt }, index) => (
           <div
             key={`${alt}-${index}`}
             // className="flex justify-start h-full basis-full shrink-0 grow snap-center min-h-[500px]"
-            className="flex justify-start h-full basis-full min-h-fit grow snap-center min-h-[500px]"
+            className="flex justify-start h-full basis-full shrink-0 lg:shrink-1 min-h-fit grow snap-center w-full"
           >
             <img
               aria-label={alt}
