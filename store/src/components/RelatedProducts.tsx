@@ -38,9 +38,7 @@ const RelatedProducts = () => {
                   originalPrice={item.formatted_mrp}
                   inStock={item.in_stock}
                   image={
-                    getFileURL(item.website_image) ??
-                    getFileURL(config?.default_product_image) ??
-                    ""
+                    getFileURL(item.website_image) ?? "/product_placeholder.png"
                   }
                   width={341}
                   height={341}

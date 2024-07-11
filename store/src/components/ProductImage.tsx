@@ -25,11 +25,7 @@ const ProductImage = ({ itemCode, ...props }: ProductImageProps) => {
   return (
     <img
       className="min-w-[120px] min-h-[120px] w-[120px] h-full rounded-md bg-gray-100 mx-auto mb-4"
-      src={
-        getFileURL(item.thumbnail) ??
-        getFileURL(config?.default_product_image) ??
-        ""
-      }
+      src={getFileURL(item.thumbnail) ?? "/product_placeholder.png"}
       alt={item.web_item_name}
       {...props}
     />

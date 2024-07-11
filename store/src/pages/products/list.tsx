@@ -128,8 +128,7 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
                     inStock={item.in_stock}
                     image={
                       getFileURL(item.website_image) ??
-                      getFileURL(config?.default_product_image) ??
-                      ""
+                      "/product_placeholder.png"
                     }
                     hasVariants={item.has_variants}
                     width={341}
@@ -175,7 +174,8 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
                       if (
                         pageCount - (numberOfLastPageLinks - 1) + index <=
                           numberOfLastPageLinks ||
-                        pageCount - (numberOfLastPageLinks - 1) + index > pageCount
+                        pageCount - (numberOfLastPageLinks - 1) + index >
+                          pageCount
                       ) {
                         return null;
                       }
@@ -207,7 +207,9 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
               </Pagination>
             </>
           ) : (
-            <h1 className="text-center text-darkgray-200">{t("No products in this category")}</h1>
+            <h1 className="text-center text-darkgray-200">
+              {t("No products in this category")}
+            </h1>
           )}
         </>
       )}
