@@ -49,7 +49,7 @@ const Wishlist = ({ isHiddenOnMobile } : WishlistProps) => {
           </SheetTitle>
         </SheetHeader>
         {wishlistCount > 0 ? (
-          <ul className="my-3 flex flex-col gap-y-9 pt-4">
+          <ul className="my-3 flex flex-col gap-y-9 pt-4 overflow-auto">
             {wishlist.map((itemCode) => (
               <WishlistItem key={itemCode} itemCode={itemCode} />
             ))}
