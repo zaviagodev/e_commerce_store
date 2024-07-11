@@ -11,7 +11,11 @@ export const UndoableNotification: React.FC<UndoableNotification> = ({
 }) => {
   return (
     <div>
-      <p>{message}</p>
+      <p
+        dangerouslySetInnerHTML={{
+          __html: message,
+        }}
+      />
       <button
         onClick={() => {
           cancelMutation?.();
