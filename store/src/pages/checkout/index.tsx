@@ -158,7 +158,6 @@ const Checkout = () => {
       <div className="w-full lg:max-w-[536px] lg:shadow-checkout p-4 lg:px-[60px] lg:pt-[120px] lg:h-screen mt-[57px] lg:mt-0">
         {/* This is the total cart on the mobile version */}
         <div className="mb-10 flex flex-col lg:hidden">
-
           <OrderDetailSheet
             trigger={
               <>
@@ -245,7 +244,7 @@ const Checkout = () => {
               </section>
               <FormField
                 control={form.control}
-                name="paymentMethod"
+                name="shippingRule"
                 render={({ field }) => {
                   return (
                     <FormItem>
