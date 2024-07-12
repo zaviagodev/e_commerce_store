@@ -71,7 +71,7 @@ const Cart = () => {
           )}
         </SheetHeader>
         {cartCount > 0 ? (
-          <ul className="my-3 flex flex-col gap-y-9 pt-4">
+          <ul className="my-3 flex flex-col gap-y-9 pt-4 overflow-auto">
             {Object.entries(cart).map(([itemCode, quantity]) => {
               if (!quantity) {
                 return null;
