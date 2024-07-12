@@ -36,7 +36,11 @@ const ProductCard = ({
   const t = useTranslate();
   const { addToCart } = useCart();
   return (
-    <Link to={`/product/${itemCode}`} className="group" onClick={() => window.scrollTo(0, 0)}>
+    <Link
+      to={`/product/${itemCode}`}
+      className="group"
+      onClick={() => window.scrollTo(0, 0)}
+    >
       <div className={cn("space-y-3", className)} {...props}>
         <div className="overflow-hidden rounded-md">
           <div className="aspect-square relative">
@@ -51,8 +55,18 @@ const ProductCard = ({
               )}
             />
 
-            {discount && (
+            {!inStock && (
               <Badge className="absolute top-4 left-4 py-1 px-1.5 flex items-center gap-x-1 rounded-md !bg-red-500">
+                {t("Out of Stock")}
+              </Badge>
+            )}
+
+            {discount && (
+              <Badge
+                className={`absolute ${
+                  !inStock ? "top-12" : "top-4"
+                } left-4 py-1 px-1.5 flex items-center gap-x-1 rounded-md !bg-red-500`}
+              >
                 <Tag01 className="h-3 w-3" />
                 {discount}
               </Badge>
