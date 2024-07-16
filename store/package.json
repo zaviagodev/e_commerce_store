@@ -9,7 +9,7 @@
     "build-with-type-check": "tsc && yarn refine build --base=/assets/e_commerce_store/store/ && yarn copy-html-entry",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "refine start",
-    "copy-html-entry": "cp ../e_commerce_store/public/store/index.html ../e_commerce_store/www/store.html && cp ../e_commerce_store/public/store/*.{jpg,png,gif} ../e_commerce_store/www/",
+    "copy-html-entry": "cp ../e_commerce_store/public/store/index.html ../e_commerce_store/www/store.html && cp ../e_commerce_store/public/store/*.{jpg,png,gif} ../www/",
     "extract-i18n": "yarn i18next",
     "translate": "node scripts/translate.js"
   },
