@@ -30,11 +30,7 @@ const CartItem = ({ itemCode }: CartItemProps) => {
       <div className="h-[90px] min-w-[90px] max-w-[90px]">
         <Link to={`/product/${itemCode}`}>
           <img
-            src={
-              getFileURL(item.thumbnail) ??
-              getFileURL(config?.default_product_image) ??
-              ""
-            }
+            src={getFileURL(item.thumbnail) ?? "/product_placeholder.png"}
             alt={item.web_item_name}
             className="h-full w-full object-cover object-center rounded-lg"
           />

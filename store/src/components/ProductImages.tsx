@@ -43,8 +43,8 @@ const ProductImages = ({ images }: ProductImagesProps) => {
     };
   }, []);
 
-  let scrollableClassNames =
-    "lg:ml-8 w-full h-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]";
+  let scrollableClassNames = "lg:ml-8 w-full h-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]";
+
   if (direction === "vertical") {
     scrollableClassNames += " snap-x snap-mandatory";
   }
@@ -167,19 +167,20 @@ const ProductImages = ({ images }: ProductImagesProps) => {
         onDragEnd={onDragged}
         onScroll={onScroll}
       >
-        <div
-          ref={indicatorRef}
-          className="absolute p-2 text-darkgray-200 right-3 bottom-3 bg-white text-xs border border-darkgray-100 rounded-full"
+        <div 
+          ref={indicatorRef} 
+          className="absolute lg:hidden px-2 py-1 text-darkgray-200 right-3 top-3 bg-white text-xs border border-darkgray-100 rounded-full"
         ></div>
         {images.map(({ imageSrc, alt }, index) => (
           <div
             key={`${alt}-${index}`}
-            className="flex justify-start h-full basis-full shrink-0 grow snap-center"
+            // className="flex justify-start h-full basis-full shrink-0 grow snap-center min-h-[500px]"
+            className="flex justify-start h-full basis-full shrink-0 lg:shrink-1 min-h-fit grow snap-center w-full"
           >
             <img
               aria-label={alt}
               aria-hidden={activeIndex !== index}
-              className="object-contain w-full h-fit lg:min-w-[500px] lg:min-h-[500px] lg:max-w-[500px] lg:max-h-[500px]"
+              className="object-contain w-full h-fit lg:min-w-[500px] lg:min-h-[500px]"
               alt={alt}
               src={imageSrc}
             />

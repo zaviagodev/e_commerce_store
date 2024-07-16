@@ -103,31 +103,17 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
   const inWishlist = wishlist.includes(itemCode);
 
   /* Will be set dynamically, the default value of the font size is 36px */
-  const PRODUCT_NAME_FONT_SIZE = "text-4xl";
+  const PRODUCT_NAME_FONT_SIZE = "text-xl lg:text-4xl";
 
   return (
     <section className="space-y-10 lg:space-y-[140px] pb-20 max-w-[1200px] mx-auto">
       <div className="flex flex-col lg:flex-row gap-[18px] lg:gap-[33px]">
         <ProductImages
-          images={[
-            {
-              imageThumbSrc:
-                getFileURL(variant?.thumbnail ?? product.thumbnail) ??
-                getFileURL(config?.default_product_image) ??
-                "",
-              imageSrc:
-                getFileURL(variant?.thumbnail ?? product.thumbnail) ??
-                getFileURL(config?.default_product_image) ??
-                "",
-              alt: `${product.web_item_name} image`,
-            },
-          ].concat(
-            (product.website_images ?? []).map((image) => ({
-              imageThumbSrc: getFileURL(image.file_url),
-              imageSrc: getFileURL(image.file_url),
-              alt: `${product.web_item_name} image`,
-            }))
-          )}
+          images={(product.website_images ?? []).map((image) => ({
+            imageThumbSrc: getFileURL(image.file_url),
+            imageSrc: getFileURL(image.file_url),
+            alt: `${product.web_item_name} image`,
+          }))}
         />
         <section className="w-full lg:px-10 lg:py-[30px] lg:max-w-[536px] h-full sticky top-0 z-10">
           <div className="flex flex-col gap-y-3 lg:gap-y-[10px]">
@@ -251,7 +237,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
               </AccordionItem>
               {product.custom_return__refund_title && (
                 <AccordionItem value="refund_policy">
-                  <AccordionTrigger className="font-semibold h-[46px]">
+                  <AccordionTrigger className="font-semibold h-16">
                     {`${product.custom_return__refund_title}`}
                   </AccordionTrigger>
                   <AccordionContent>
@@ -265,7 +251,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
               )}
               {product.custom_shipping_title && (
                 <AccordionItem value="shipping">
-                  <AccordionTrigger className="font-semibold h-[46px]">
+                  <AccordionTrigger className="font-semibold h-16">
                     {product.custom_shipping_title}
                   </AccordionTrigger>
                   <AccordionContent>
