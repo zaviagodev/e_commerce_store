@@ -83,6 +83,7 @@ const ProductCard = ({
                   className="add-to-cart-btn"
                   onClick={(e) => {
                     e.preventDefault();
+                    e.stopPropagation();
                     addToCart(itemCode);
                   }}
                 >
