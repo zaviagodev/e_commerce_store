@@ -121,7 +121,7 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
                   <ProductCard
                     key={item.item_code}
                     itemCode={item.item_code}
-                    name={item.item_name}
+                    name={item.web_item_name}
                     price={item.formatted_price}
                     discount={item.discount}
                     originalPrice={item.formatted_mrp}
