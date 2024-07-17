@@ -4,6 +4,7 @@ import { useOne } from "@refinedev/core";
 import { Skeleton } from "../ui/skeleton";
 import ItemSkeleton from "../skeletons/ItemSkeleton";
 import { useTranslation } from "react-i18next";
+import ProgressiveImage from "../ProgressiveImage";
 
 type CheckoutItemProps = {
   itemCode: string;
@@ -28,10 +29,11 @@ const CheckoutItem = ({ itemCode, qty }: CheckoutItemProps) => {
   return (
     <div key={itemCode} className="flex gap-x-4">
       <div className="min-w-[53px] min-h-[53px] w-[53px] h-full bg-gray-300 rounded-md overflow-hidden flex items-center justify-center">
-        <img
+        <ProgressiveImage
           src={getFileURL(item.thumbnail) ?? "/product_placeholder.png"}
           alt={item.web_item_name || "product-item"}
           className="object-cover w-full h-full"
+          skeletonClassName="h-[53px] w-[53px]"
         />
       </div>
       <div className="flex-1">

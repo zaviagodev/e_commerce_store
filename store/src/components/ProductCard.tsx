@@ -5,6 +5,7 @@ import { useCart } from "@/hooks/useCart";
 import { Link } from "react-router-dom";
 import { Badge } from "./ui/badge";
 import { Tag01 } from "@untitled-ui/icons-react";
+import ProgressiveImage from "./ProgressiveImage";
 
 interface ProductProps extends React.HTMLAttributes<HTMLDivElement> {
   itemCode: string;
@@ -44,7 +45,7 @@ const ProductCard = ({
       <div className={cn("space-y-3", className)} {...props}>
         <div className="overflow-hidden rounded-md">
           <div className="aspect-square relative">
-            <img
+            <ProgressiveImage
               src={image}
               alt={name}
               width={width}
@@ -53,6 +54,7 @@ const ProductCard = ({
                 "mx-auto object-cover transition-all group-hover:scale-105",
                 "aspect-square"
               )}
+              skeletonClassName="mx-auto object-cover transition-all aspect-square w-full h-full"
             />
 
             {!inStock && (
