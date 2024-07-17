@@ -8,6 +8,7 @@ import {
   type SfScrollableOnDragEndData,
 } from "@storefront-ui/react";
 import classNames from "classnames";
+import ProgressiveImage from "./ProgressiveImage";
 
 type ProductImagesProps = {
   images: {
@@ -43,7 +44,8 @@ const ProductImages = ({ images }: ProductImagesProps) => {
     };
   }, []);
 
-  let scrollableClassNames = "lg:ml-8 w-full h-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]";
+  let scrollableClassNames =
+    "lg:ml-8 w-full h-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]";
 
   if (direction === "vertical") {
     scrollableClassNames += " snap-x snap-mandatory";
@@ -145,12 +147,13 @@ const ProductImages = ({ images }: ProductImagesProps) => {
             onMouseOver={() => setActiveIndex(index)}
             onFocus={() => setActiveIndex(index)}
           >
-            <img
+            <ProgressiveImage
               alt={alt}
               src={imageThumbSrc}
               width={134}
               height={134}
               className="object-scale-down w-full h-full aspect-square"
+              skeletonClassName="w-full h-full aspect-square"
             />
           </button>
         ))}
@@ -167,8 +170,8 @@ const ProductImages = ({ images }: ProductImagesProps) => {
         onDragEnd={onDragged}
         onScroll={onScroll}
       >
-        <div 
-          ref={indicatorRef} 
+        <div
+          ref={indicatorRef}
           className="absolute lg:hidden px-2 py-1 text-darkgray-200 right-3 top-3 bg-white text-xs border border-darkgray-100 rounded-full"
         ></div>
         {images.map(({ imageSrc, alt }, index) => (
@@ -177,12 +180,13 @@ const ProductImages = ({ images }: ProductImagesProps) => {
             // className="flex justify-start h-full basis-full shrink-0 grow snap-center min-h-[500px]"
             className="flex justify-start h-full basis-full shrink-0 lg:shrink-1 min-h-fit grow snap-center w-full"
           >
-            <img
+            <ProgressiveImage
               aria-label={alt}
               aria-hidden={activeIndex !== index}
-              className="object-contain w-full h-fit lg:min-w-[500px] lg:min-h-[500px]"
               alt={alt}
               src={imageSrc}
+              className="object-contain w-full h-fit lg:min-w-[500px] lg:min-h-[500px]"
+              skeletonClassName="w-full h-fit lg:min-w-[500px] lg:min-h-[500px]"
             />
           </div>
         ))}
