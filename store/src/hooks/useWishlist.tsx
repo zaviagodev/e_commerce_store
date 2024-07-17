@@ -89,7 +89,7 @@ export const WishlistProvider = ({
     } else {
       //   get from server
       refreshServerWishlist().then(({ data }) => {
-        setWishlist(data.data.items.map((item: any) => item.item_code));
+        setWishlist(data.data.items?.map((item: any) => item.item_code) ?? []);
       });
     }
   }, []);
