@@ -45,10 +45,13 @@ const ProductImages = ({ images }: ProductImagesProps) => {
   }, []);
 
   let scrollableClassNames =
-    "lg:ml-8 w-full h-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]";
-
+    "lg:ml-8 w-full h-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]";
+  let ImageWrapperclassName =
+    "flex justify-start h-full basis-full shrink-0 grow snap-center";
   if (direction === "vertical") {
     scrollableClassNames += " snap-x snap-mandatory";
+    ImageWrapperclassName =
+      "flex justify-start h-full basis-full  grow snap-center";
   }
 
   const firstThumbVisible = useIntersection(firstThumbRef, {
@@ -138,7 +141,7 @@ const ProductImages = ({ images }: ProductImagesProps) => {
             aria-current={activeIndex === index}
             key={`${alt}-${index}-thumbnail`}
             className={classNames(
-              "w-full h-auto relative shrink-0 snap-center cursor-pointer focus-visible:outline focus-visible:outline-offset transition-colors flex-grow md:flex-grow-0",
+              "w-full h-auto relative snap-center cursor-pointer focus-visible:outline focus-visible:outline-offset transition-colors flex-grow md:flex-grow-0",
               {
                 "border-primary-700": activeIndex === index,
                 "border-transparent": activeIndex !== index,
@@ -170,16 +173,9 @@ const ProductImages = ({ images }: ProductImagesProps) => {
         onDragEnd={onDragged}
         onScroll={onScroll}
       >
-        <div
-          ref={indicatorRef}
-          className="absolute lg:hidden px-2 py-1 text-darkgray-200 right-3 top-3 bg-white text-xs border border-darkgray-100 rounded-full"
-        ></div>
+        <div ref={indicatorRef}></div>
         {images.map(({ imageSrc, alt }, index) => (
-          <div
-            key={`${alt}-${index}`}
-            // className="flex justify-start h-full basis-full shrink-0 grow snap-center min-h-[500px]"
-            className="flex justify-start h-full basis-full shrink-0 lg:shrink-1 min-h-fit grow snap-center w-full"
-          >
+          <div key={`${alt}-${index}`} className={ImageWrapperclassName}>
             <ProgressiveImage
               aria-label={alt}
               aria-hidden={activeIndex !== index}
