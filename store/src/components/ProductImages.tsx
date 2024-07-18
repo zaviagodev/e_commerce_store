@@ -1,4 +1,4 @@
-import { useRef, useState,useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useIntersection } from "react-use";
 import {
   SfScrollable,
@@ -8,6 +8,7 @@ import {
   type SfScrollableOnDragEndData,
 } from "@storefront-ui/react";
 import classNames from "classnames";
+import ProgressiveImage from "./ProgressiveImage";
 
 type ProductImagesProps = {
   images: {
@@ -43,11 +44,14 @@ const ProductImages = ({ images }: ProductImagesProps) => {
     };
   }, []);
 
-  let scrollableClassNames = "lg:ml-8 w-full h-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]";
-  let ImageWrapperclassName = "flex justify-start h-full basis-full shrink-0 grow snap-center";
+  let scrollableClassNames =
+    "lg:ml-8 w-full h-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]";
+  let ImageWrapperclassName =
+    "flex justify-start h-full basis-full shrink-0 grow snap-center";
   if (direction === "vertical") {
     scrollableClassNames += " snap-x snap-mandatory";
-    ImageWrapperclassName = "flex justify-start h-full basis-full  grow snap-center";
+    ImageWrapperclassName =
+      "flex justify-start h-full basis-full  grow snap-center";
   }
 
   const firstThumbVisible = useIntersection(firstThumbRef, {
@@ -70,10 +74,10 @@ const ProductImages = ({ images }: ProductImagesProps) => {
     }
   };
 
-
   const onScroll = (event: SfScrollableOnScrollData) => {
     const totalImages = images.length; // Replace with your total number of images
-    const currentImageNumber = Math.floor(event.left / (event.scrollWidth / totalImages)) + 1;
+    const currentImageNumber =
+      Math.floor(event.left / (event.scrollWidth / totalImages)) + 1;
     const currentImagesText = `${currentImageNumber}/${totalImages}`;
     //setCurrentimages(currentImageNumber);
     console.log(currentImagesText);
@@ -85,8 +89,6 @@ const ProductImages = ({ images }: ProductImagesProps) => {
   return (
     // <div className="relative flex w-full aspect-square lg:aspect-[4/3]">
     <div className="relative flex w-full">
-
-
       <SfScrollable
         ref={thumbsRef}
         className="hidden lg:flex sticky top-[calc(57px_+_16px)] items-center w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
@@ -148,19 +150,17 @@ const ProductImages = ({ images }: ProductImagesProps) => {
             onMouseOver={() => setActiveIndex(index)}
             onFocus={() => setActiveIndex(index)}
           >
-            <img
+            <ProgressiveImage
               alt={alt}
               src={imageThumbSrc}
               width={134}
               height={134}
               className="object-scale-down w-full h-full aspect-square"
+              skeletonClassName="w-full h-full aspect-square"
             />
           </button>
         ))}
       </SfScrollable>
-
-
-
 
       <SfScrollable
         className={scrollableClassNames}
@@ -175,24 +175,18 @@ const ProductImages = ({ images }: ProductImagesProps) => {
       >
         <div ref={indicatorRef}></div>
         {images.map(({ imageSrc, alt }, index) => (
-          <div
-            key={`${alt}-${index}`}
-            className={ImageWrapperclassName}
-          >
-            <img
+          <div key={`${alt}-${index}`} className={ImageWrapperclassName}>
+            <ProgressiveImage
               aria-label={alt}
               aria-hidden={activeIndex !== index}
-              className="object-contain w-full h-fit lg:min-w-[500px] lg:min-h-[500px] lg:max-w-[500px] lg:max-h-[500px]"
               alt={alt}
               src={imageSrc}
+              className="object-contain w-full h-fit lg:min-w-[500px] lg:min-h-[500px]"
+              skeletonClassName="w-full h-fit lg:min-w-[500px] lg:min-h-[500px]"
             />
           </div>
         ))}
       </SfScrollable>
-
-
-
-
     </div>
   );
 };

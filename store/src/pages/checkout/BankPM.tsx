@@ -19,7 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency, getFileURL } from "@/lib/utils";
 import ImageInput from "@/components/forms/controls/ImageInput";
 import { ChangeEvent, useState, MouseEvent } from "react";
 
@@ -27,15 +27,15 @@ export const BankPMDetail = () => {
   const t = useTranslate();
   const { selectedPaymentMethod, orderId, order, next } = useCheckout();
 
-  const [isTextCopied, setIsTextCopied] = useState<number | null>()
+  const [isTextCopied, setIsTextCopied] = useState<number | null>();
 
   const copyAccountNumber = (acc: any, index: number) => {
-    navigator.clipboard.writeText(acc)
-    setIsTextCopied(index)
+    navigator.clipboard.writeText(acc);
+    setIsTextCopied(index);
     setTimeout(() => {
-      setIsTextCopied(null)
-    }, 1000)
-  }
+      setIsTextCopied(null);
+    }, 1000);
+  };
 
   return (
     <>
@@ -55,7 +55,10 @@ export const BankPMDetail = () => {
             className="flex items-center p-4 bg-accent border border-darkgray-100 rounded-xl"
           >
             <img
-              src="https://source.unsplash.com/1600x900/?bank"
+              src={
+                getFileURL(bank.custom_bank_logo) ??
+                "https://source.unsplash.com/1600x900/?bank"
+              }
               alt={bank.bank}
               className="h-16 w-16 rounded"
             />
@@ -72,7 +75,13 @@ export const BankPMDetail = () => {
               className="text-accent relative group focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
               onClick={() => copyAccountNumber(bank.bank_account_number, index)}
             >
-              <p className={`absolute bg-[#111111] px-2 py-1.5 text-xs rounded-full group-hover:opacity-100 group-hover:visible group-hover:-top-6 -top-5 transition-all ${isTextCopied === index ? 'opacity-100 visible -top-6' : 'opacity-0 invisible'}`}>
+              <p
+                className={`absolute bg-[#111111] px-2 py-1.5 text-xs rounded-full group-hover:opacity-100 group-hover:visible group-hover:-top-6 -top-5 transition-all ${
+                  isTextCopied === index
+                    ? "opacity-100 visible -top-6"
+                    : "opacity-0 invisible"
+                }`}
+              >
                 {t(isTextCopied == index ? "Copied" : "Copy")}
               </p>
               <Copy className="h-4 w-4 text-gray-700" />
@@ -201,7 +210,7 @@ export const BankUploadSlip = () => {
                             value={bank.bank}
                           />
                           <img
-                            src="https://source.unsplash.com/1600x900/?bank"
+                            src={getFileURL(bank.custom_bank_logo) ?? ""}
                             alt={bank.bank}
                             className="h-16 w-16 rounded"
                           />

@@ -9,6 +9,7 @@ import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { products, cart as serverSideCart } from "../client/api";
 import { useIsAuthenticated } from "@refinedev/core";
 import _debounce from "lodash/debounce";
+import { useLocation } from "react-router-dom";
 
 /**
  * A custom React hook that provides cart functionality.
@@ -59,7 +60,7 @@ export const CartContext = createContext<Cart>({
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const [cart, setCart] = useState<Record<string, number | undefined>>({});
-  const [isSyncing, setIsSyncing] = useState<boolean>(false);
+  const [isSyncing, _setIsSyncing] = useState<boolean>(false);
   const [isOpen, _] = useState<boolean>(false);
   const [cartTotal, setCartTotal] = useState<number | "Loading">(0);
   const cartCount: number = Object.keys(cart).reduce(
@@ -67,6 +68,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     0
   );
 
+  const location = useLocation();
   const { isLoading, data: authState } = useIsAuthenticated();
   const queryClient = useQueryClient();
 
@@ -79,13 +81,23 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   } = useQuery({
     queryKey: ["data", "storeProvider", "cart", "list", {}],
     queryFn: serverSideCart.get,
-    enabled: authState?.authenticated && !isLoading,
+    enabled: !isLoading && authState?.authenticated,
   });
+
+  const setIsSyncing = (value: boolean) => {
+    if (value === true && authState?.authenticated) {
+      return _setIsSyncing(value);
+    }
+    return _setIsSyncing(false);
+  };
 
   const syncCartToServer = useCallback(
     _debounce(
       (cart: Record<string, number | undefined>) =>
-        serverSideCart.update(cart).then(() => refreshServerCart()),
+        serverSideCart
+          .update(cart)
+          .then(() => refreshServerCart())
+          .finally(() => setIsSyncing(false)),
       3000
     ),
     []
@@ -98,6 +110,8 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
       cart !== "{}" &&
       !!Object.values<number>(JSON.parse(cart ?? "{}")).find((qty) => qty > 0)
     ) {
+      // sync for skeleton loading
+      setIsSyncing(true);
       setCart(JSON.parse(cart));
     } else {
       // fetch cart from server
@@ -132,6 +146,23 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     getTotal().then(setCartTotal);
   }, [cart, authState?.authenticated]);
 
+  // to fix NAN issue on checkout page
+  useEffect(() => {
+    if (location.pathname === "/checkout") {
+      setCartTotal("Loading");
+      // sync cart state in local storage
+      if (Object.keys(cart).length) {
+        localStorage.setItem("cart", JSON.stringify(cart));
+      }
+      // sync cart state in server
+      if (authState?.authenticated) {
+        syncCartToServer(cart);
+      }
+      // update cart total
+      getTotal().then(setCartTotal);
+    }
+  }, [location.pathname]);
+
   const setIsOpen = (value: boolean | undefined | null) => {
     if (value !== undefined && value !== null) {
       return _(value);
@@ -141,34 +172,46 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
   const addToCart = async (itemCode: string, quantity?: number) => {
     setCart((prevCart) => {
-      if (quantity && quantity >= 0) {
-        return {
-          ...prevCart,
-          [itemCode]: quantity,
-        };
-      }
-      if (quantity && quantity < 0) {
-        const newQty = (prevCart[itemCode] ?? 0) + quantity;
-        if (newQty <= 0) {
+      const newCart = (() => {
+        if (quantity && quantity >= 0) {
           return {
             ...prevCart,
-            [itemCode]: 0,
+            [itemCode]: quantity,
+          };
+        }
+        if (quantity && quantity < 0) {
+          const newQty = (prevCart[itemCode] ?? 0) + quantity;
+          if (newQty <= 0) {
+            return {
+              ...prevCart,
+              [itemCode]: 0,
+            };
+          }
+          return {
+            ...prevCart,
+            [itemCode]: newQty,
           };
         }
         return {
           ...prevCart,
-          [itemCode]: newQty,
+          [itemCode]: quantity ?? (prevCart[itemCode] ?? 0) + 1,
         };
+      })();
+
+      // sync for skeleton loading
+      if (newCart[itemCode] !== prevCart[itemCode]) {
+        setIsSyncing(true);
       }
-      return {
-        ...prevCart,
-        [itemCode]: quantity ?? (prevCart[itemCode] ?? 0) + 1,
-      };
+      return newCart;
     });
   };
 
   const removeFromCart = (itemCode: string) => {
     setCart((prevCart) => {
+      // sync for skeleton loading
+      if (prevCart[itemCode]) {
+        setIsSyncing(true);
+      }
       return {
         ...prevCart,
         [itemCode]: 0,
@@ -176,7 +219,15 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
-  const resetCart = () => setCart({});
+  const resetCart = () => {
+    setCart((prevCart) => {
+      // sync for skeleton loading
+      if (Object.keys(prevCart).length) {
+        setIsSyncing(true);
+      }
+      return {};
+    });
+  };
 
   const getTotal = async () => {
     const total = await Promise.all(
@@ -208,7 +259,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     fn: (...args: any) => Promise<any>,
     ...args: any
   ) => {
-    console.log("start Syncing");
+    // sync for skeleton loading
     setIsSyncing(true);
     return fn(...args)
       .then((res: any) => res)
@@ -221,7 +272,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         cart,
         isServerCartLoading:
           isSyncing ||
-          isServerCartLoading ||
+          (isServerCartLoading && !isLoading && authState?.authenticated) ||
           isServerCartFetching ||
           isServerCartRefetching,
         serverCart,

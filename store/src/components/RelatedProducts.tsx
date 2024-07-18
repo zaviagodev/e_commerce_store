@@ -33,14 +33,12 @@ const RelatedProducts = () => {
                 <ProductCard
                   key={item.item_code}
                   itemCode={item.item_code}
-                  name={item.item_name}
+                  name={item.web_item_name}
                   price={item.formatted_price}
                   originalPrice={item.formatted_mrp}
                   inStock={item.in_stock}
                   image={
-                    getFileURL(item.website_image) ??
-                    getFileURL(config?.default_product_image) ??
-                    ""
+                    getFileURL(item.website_image) ?? "/product_placeholder.png"
                   }
                   width={341}
                   height={341}

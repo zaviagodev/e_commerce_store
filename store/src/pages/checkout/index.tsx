@@ -167,7 +167,7 @@ const Checkout = () => {
                       (itemCode) => Number(cart[itemCode]) > 0
                     ) ?? ""
                   }
-                  className="w-[120px] h-[120px] rounded-md bg-gray-100 mx-auto mb-4"
+                  className="min-w-[120px] min-h-[120px] w-[120px] h-full rounded-md bg-gray-100 mx-auto mb-4"
                 />
                 <TotalCart />
               </>
@@ -244,7 +244,7 @@ const Checkout = () => {
               </section>
               <FormField
                 control={form.control}
-                name="paymentMethod"
+                name="shippingRule"
                 render={({ field }) => {
                   return (
                     <FormItem>
@@ -434,7 +434,7 @@ const CartList = () => {
               </strong>
             </div>
           )}
-          {/* TODO: enable later <CouponCodeInput /> */}
+          <CouponCodeInput />
         </div>
         <Separator className="my-4 bg-[#E3E3E3]" />
         <div className="w-full flex justify-between font-semibold text-sm">

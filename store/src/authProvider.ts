@@ -63,7 +63,6 @@ export const authProvider: AuthBindings = {
         localStorage.setItem(TOKEN_KEY, params.email);
         return {
           success: true,
-          redirectTo: "/",
         };
       }
       return {

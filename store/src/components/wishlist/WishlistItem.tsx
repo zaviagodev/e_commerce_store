@@ -6,6 +6,7 @@ import WishlistItemSkeleton from "../skeletons/WishlistItemSkeleton";
 import { getFileURL } from "@/lib/utils";
 import { useConfig } from "@/hooks/useConfig";
 import { Trash01 } from "@untitled-ui/icons-react";
+import ProgressiveImage from "../ProgressiveImage";
 
 type WishlistItemProps = {
   itemCode: string;
@@ -29,14 +30,11 @@ const WishlistItem = ({ itemCode }: WishlistItemProps) => {
     <li className="flex">
       <div className="h-[90px] min-w-[90px] max-w-[90px]">
         <Link to={`/product/${itemCode}`}>
-          <img
-            src={
-              getFileURL(item.thumbnail) ??
-              getFileURL(config?.default_product_image) ??
-              ""
-            }
-            alt="มินิบราวนี่ 18 ชิ้น | Mini-brownie 18 ps."
+          <ProgressiveImage
+            src={getFileURL(item.thumbnail) ?? "/product_placeholder.png"}
+            alt={item.web_item_name}
             className="h-full w-full object-cover object-center rounded-lg"
+            skeletonClassName="object-cover object-center rounded-lg w-full h-full"
           />
         </Link>
       </div>

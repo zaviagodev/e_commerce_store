@@ -6,6 +6,7 @@ import CartItemSkeleton from "../skeletons/CartItemSkeleton";
 import { getFileURL } from "@/lib/utils";
 import { useConfig } from "@/hooks/useConfig";
 import { Trash01, Minus, Plus } from "@untitled-ui/icons-react";
+import ProgressiveImage from "../ProgressiveImage";
 
 type CartItemProps = {
   itemCode: string;
@@ -29,14 +30,11 @@ const CartItem = ({ itemCode }: CartItemProps) => {
     <li className="flex">
       <div className="h-[90px] min-w-[90px] max-w-[90px]">
         <Link to={`/product/${itemCode}`}>
-          <img
-            src={
-              getFileURL(item.thumbnail) ??
-              getFileURL(config?.default_product_image) ??
-              ""
-            }
+          <ProgressiveImage
+            src={getFileURL(item.thumbnail) ?? "/product_placeholder.png"}
             alt={item.web_item_name}
             className="h-full w-full object-cover object-center rounded-lg"
+            skeletonClassName="object-cover object-center rounded-lg w-full h-full"
           />
         </Link>
       </div>

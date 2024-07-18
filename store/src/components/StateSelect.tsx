@@ -1,6 +1,7 @@
 import { CrudFilters, useSelect, useTranslate } from "@refinedev/core";
 import React, { useMemo } from "react";
-import Select from "react-select";
+import { Pencil } from "lucide-react";
+import Select, { DropdownIndicatorProps, components } from "react-select";
 
 type StateSelectProps = {
   name: string;
@@ -45,6 +46,14 @@ const StateSelect: React.FC<StateSelectProps> = ({
 
   const t = useTranslate();
 
+  const DropdownIndicator = (props: DropdownIndicatorProps) => {
+    return (
+      <components.DropdownIndicator {...props}>
+        <Pencil className="w-4 h-4"/>
+      </components.DropdownIndicator>
+    )
+  }
+
   return (
     <Select
       placeholder={`${t("state")} *`}
@@ -52,6 +61,7 @@ const StateSelect: React.FC<StateSelectProps> = ({
       loadingMessage={() =>
         options.length === 0 ? "No results" : "Loading..."
       }
+      components={{ DropdownIndicator }}
       classNames={{
         control: () =>
           "!border-darkgray-100 !bg-accent !rounded-xl px-3.5 text-sm h-12.5 !shadow-none",

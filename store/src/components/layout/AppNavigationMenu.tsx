@@ -30,9 +30,13 @@ export function AppNavigationMenu() {
     <NavigationMenu className="static xl:relative">
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="font-semibold text-base">{t("Categories")}</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="font-semibold text-base">
+            {t("Categories")}
+          </NavigationMenuTrigger>
           <NavigationMenuContent className="!w-screen xl:!max-w-[1136px] text-base px-6 py-10">
-            <ul className="grid gap-3 grid-cols-4"> {/* Original grid columns: lg:grid-cols-[.75fr_1fr] */}
+            <ul className="grid gap-3 grid-cols-4">
+              {" "}
+              {/* Original grid columns: lg:grid-cols-[.75fr_1fr] */}
               <RecursiveComponent data={{ ...categories }} />
             </ul>
           </NavigationMenuContent>
@@ -82,7 +86,7 @@ const RecursiveComponent = ({ data }) => {
   return (
     <>
       {pairs.map(([categoryName, value]) => (
-        <div className="flex flex-col gap-y-3">
+        <div className="pl-3 flex flex-col gap-y-3">
           <li
             key={categoryName}
             className="ml-2 cursor-pointer font-semibold hover:text-black"
