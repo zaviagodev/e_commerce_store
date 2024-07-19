@@ -135,7 +135,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     setCartTotal("Loading");
     // sync cart state in local storage
-    if (Object.keys(cart).length) {
+    if (typeof cart === "object") {
       localStorage.setItem("cart", JSON.stringify(cart));
     }
     // sync cart state in server

@@ -8,7 +8,7 @@ export default defineConfig({
 	plugins: [react()],
 	server: {
 		port: 8080,
-		//proxy: proxyOptions
+		proxy: proxyOptions
 	},
 	resolve: {
 		alias: {
