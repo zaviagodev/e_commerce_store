@@ -239,9 +239,9 @@ const OrderDetail = () => {
             {t("Ask for help")}
           </Button>
         )}
-        <Button variant="link" className="font-bold">
+        {/* <Button variant="link" className="font-bold">
           <Download01 className="mr-2 h-5 w-5" /> {t("Download receipt")}
-        </Button>
+        </Button> */}
       </div>
     </div>
   );
