@@ -168,6 +168,8 @@
     "country": "Country",
     "state": "State",
     "city": "City",
+    "Delete address.title": "Delete {{title}}",
+    "Confirm delete address": "Are you sure you want to delete this address?",
     "You don't have any orders yet.": "You don't have any orders yet.",
     "Unit": "Unit",
     "Units": "Units",

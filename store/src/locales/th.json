@@ -172,6 +172,8 @@
   "country": "ประเทศ",
   "state": "จังหวัด",
   "city": "เขต / อำเภอ",
+  "Delete address.title": "ลบที่อยู่ {{title}}",
+  "Confirm delete address": "คุณแน่ใจหรือไม่ว่าต้องการลบที่อยู่นี้",
   "You don't have any orders yet.": "คุณยังไม่มีคำสั่งซื้อ",
   "Unit": "ชิ้น",
   "Units": "ชิ้น",

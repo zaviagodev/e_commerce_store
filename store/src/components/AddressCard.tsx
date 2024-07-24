@@ -105,14 +105,14 @@ export const DeletionConfirmation = ({ name }: DeletionConfirmationProps) => {
       trigger={
         <Trash01 className="!m-0 h-5 w-5 hover:text-destructive cursor-pointer text-darkgray-200" />
       }
-      title={t("Delete address.title")}
+      title={t("Delete address.title", { title: name })}
       description={
         <span className="inline-block px-[60px]">
-          {t("Delete address.desc")}
+          {t("Confirm delete address")}
         </span>
       }
       cancel={t("Cancel")}
-      action={t("Delete address.confirm")}
+      action={t("Confirm")}
       onClickAction={() =>
         mutate({
           dataProviderName: "storeProvider",
