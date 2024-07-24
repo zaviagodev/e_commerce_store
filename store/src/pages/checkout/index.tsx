@@ -426,15 +426,17 @@ const CartList = () => {
               </strong>
             </div>
           )}
-          {serverCart?.message.doc.coupon_code && (
-            <div className="w-full flex justify-between text-darkgray-200 text-sm">
-              <p className="text-muted-foreground">{t("Coupon Code")}</p>
-              <strong className="text-muted-foreground">
-                {serverCart?.message.doc.coupon_code}
-              </strong>
-            </div>
-          )}
-          <CouponCodeInput />
+          {/*
+            {serverCart?.message.doc.coupon_code && (
+              <div className="w-full flex justify-between text-darkgray-200 text-sm">
+                <p className="text-muted-foreground">{t("Coupon Code")}</p>
+                <strong className="text-muted-foreground">
+                  {serverCart?.message.doc.coupon_code}
+                </strong>
+              </div>
+            )}
+            <CouponCodeInput />
+         */}
         </div>
         <Separator className="my-4 bg-[#E3E3E3]" />
         <div className="w-full flex justify-between font-semibold text-sm">
