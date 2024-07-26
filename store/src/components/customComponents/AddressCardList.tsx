@@ -3,9 +3,9 @@ import AddressCard from "../AddressCard";
 import { Skeleton } from "../ui/skeleton";
 
 const AddressCardList = () => {
-  const { data, isLoading } = useList();
+  const { data, isLoading, isFetching, isRefetching } = useList();
 
-  if (isLoading) {
+  if (isLoading || isFetching || isRefetching) {
     return (
       <div className="space-y-2.5 w-full">
         <Skeleton className="h-40 rounded-xl w-full" />
