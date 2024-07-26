@@ -1,12 +1,18 @@
-import { useList, useTranslate } from "@refinedev/core";
-import AddressCard from "../AddressCard"
+import { useList } from "@refinedev/core";
+import AddressCard from "../AddressCard";
+import { Skeleton } from "../ui/skeleton";
 
 const AddressCardList = () => {
   const { data, isLoading } = useList();
-  const t = useTranslate()
 
   if (isLoading) {
-    return <div>{t("Loading")}...</div>;
+    return (
+      <div className="space-y-2.5 w-full">
+        <Skeleton className="h-40 rounded-xl w-full" />
+        <Skeleton className="h-40 rounded-xl w-full" />
+        <Skeleton className="h-40 rounded-xl w-full" />
+      </div>
+    );
   }
 
   return (
