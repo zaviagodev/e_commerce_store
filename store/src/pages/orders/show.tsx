@@ -42,9 +42,9 @@ const OrderDetail = () => {
   } = useOne({
     resource: "address",
     dataProviderName: "storeProvider",
-    id: order?.customer_address,
+    id: order?.shipping_address_name,
     queryOptions: {
-      enabled: !!order?.customer_address,
+      enabled: !!order?.shipping_address_name,
     },
   });
 
