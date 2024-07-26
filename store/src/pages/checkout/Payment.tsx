@@ -137,7 +137,7 @@ const Summary = () => {
           <AddressCard
             name={order.shipping_address_name}
             address_title={order.shipping_address_name.split("-")[0]}
-            display={order.address_display}
+            display={order.shipping_address}
           />
           <div className="flex flex-col mt-10">
             <ul className="flex flex-col gap-y-8">
