@@ -18,7 +18,8 @@ export const notificationProvider: NotificationProvider = {
           progress: undoableTimeout && (undoableTimeout / 10) * 2,
           render: (
             <UndoableNotification
-              message={description ?? message}
+              message={message}
+              description={description}
               cancelMutation={cancelMutation}
             />
           ),
@@ -27,7 +28,8 @@ export const notificationProvider: NotificationProvider = {
       } else {
         toast(
           <UndoableNotification
-            message={description ?? message}
+            message={message}
+            description={description}
             cancelMutation={cancelMutation}
           />,
           {
@@ -43,16 +45,21 @@ export const notificationProvider: NotificationProvider = {
     } else {
       if (toast.isActive(key as React.ReactText)) {
         toast.update(key as React.ReactText, {
-          render: description ?? message,
+          render: (
+            <UndoableNotification message={message} description={description} />
+          ),
           closeButton: true,
           autoClose: 5000,
           type,
         });
       } else {
-        toast(description ?? message, {
-          toastId: key,
-          type,
-        });
+        toast(
+          <UndoableNotification message={message} description={description} />,
+          {
+            toastId: key,
+            type,
+          }
+        );
       }
     }
   },

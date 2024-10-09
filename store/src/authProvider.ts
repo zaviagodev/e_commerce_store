@@ -68,8 +68,8 @@ export const authProvider: AuthBindings = {
       return {
         success: false,
         error: {
-          message: "Register failed",
-          name: "Email or password is missing",
+          message: "Email or password is missing",
+          name: "Register failed",
         },
       };
     } catch (error: any) {
@@ -82,8 +82,8 @@ export const authProvider: AuthBindings = {
       return {
         success: false,
         error: {
-          message: "Register failed",
-          name: errorPayload?.message ?? "Invalid email",
+          message: error?.message ?? errorPayload?.message ?? "Invalid email",
+          name: "Register failed",
         },
       };
     }
